@@ -1,0 +1,8 @@
+(define (pascal line index)
+  (cond ((= line 1) 1)
+        ((= index 1) 1)
+        ((= index line) 1)
+        (else (+ (pascal (- line 1)
+                        (- index 1))
+                (pascal (- line 1)
+                        index)))))

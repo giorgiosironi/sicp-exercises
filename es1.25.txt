@@ -1,0 +1,5 @@
+define (expmod base exp m)
+    (remainder (fast-expt base exp) m))
+This is not equivalent to our expomode (from 1.24), because that version always takes the remainder before returning a result, even when it was called by a previous iteration of expmod.
+Actually the mathematical definition in the book says THIS is the correct version. The original is probably using some unstated property of modulus (I later found out it is explained in footnote 46).
+The funny fact is that this version even has a smaller number of steps than the original, since it does only one remainder operation instead of `exp` ones. However the size of the power of `base` grows much without taking its modulo and so as it becomes large it does not fit into 32-bit or 64-bit registers, causing slowdowns. The model of considering the number of steps of a computation without looking at the size of the input shows its limits here.

@@ -1,0 +1,8 @@
+By writing
+(remainder (* (expmod base (/ exp 2) m)
+              (expmod base (/ exp 2) m))
+instead of
+(remainder (square (expmod base (/ exp 2) m)))
+`expmod` is evaluated twice for each square to compute, going back to `exp` evaluations. Now the process is O(exp).
+
+Also, http://www.billthelizard.com/2010/02/sicp-exercise-126-explicit.html notes that the best case of the process is now a tree recursion (teo calls to expmod per-each iteration) instead of a linear recursion.

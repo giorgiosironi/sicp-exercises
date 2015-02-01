@@ -1,0 +1,8 @@
+(fast-expt 2 7)
+(fast-expt-iter 2 7 1)
+(fast-expt-iter 2 6 2)
+(fast-expt-iter 4 3 2)
+(fast-expt-iter 4 2 8)
+(fast-expt-iter 16 1 8)
+(fast-expt-iter 16 0 128)
+128

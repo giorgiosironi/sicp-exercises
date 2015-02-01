@@ -1,0 +1,9 @@
+(mult 4 17)
+(mult-iter 4 17 0)
+(mult-iter 4 16 4)
+(mult-iter 8 8 4)
+(mult-iter 16 4 4)
+(mult-iter 32 2 4)
+(mult-iter 64 1 4)
+(mult-iter 64 0 68)
+68

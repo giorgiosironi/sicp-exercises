@@ -1,0 +1,16 @@
+Fib is an iterative process with two state variables (a is the largest)
+Fib(a, b) = (a + b, a)
+Generalization to Tpq suggested by SICP:
+Tpq(a, b) = (bq + aq + ap, bp + aq)
+Fib(a, b) = Tpq(a, b), p = 0, q = 1
+
+Show that Tpq(Tpq(a, b)) has the same form of Tpq(a, b):
+Tpq(Tpq(a, b))
+= Tpq(bq + aq + ap, bp + aq)
+= ((bp + aq)q + (bq + aq + ap)q + (bq + aq + ap)p, (bp + aq)p + (bq + aq + ap)q)
+= (bpq + aq2 + bq2 + aq2 + apq + bpq + apq + ap2, bp2 + apq + bq2 + aq2 + apq)
+= (b(2pq + q2) + a(q2 + q2 + pq + pq + p2), (b(p2 + q2) + a(2pq + q2)))
+= (b(2pq + q2) + a(2pq + q2) + a(q2 + p2), (b(p2 + q2) + a(2pq + q2)))
+
+p' = p2 + q2
+q' = 2pq + q2

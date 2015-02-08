@@ -27,3 +27,14 @@
   (define (sum x y) (+ x y))
   (define (square x) (* x x))
   (filtered-accumulate prime? sum 0 square a inc b))
+(define (product-positive-integers-less-than-and-prime-to n)
+  (define (inc x) (+ 1 x))
+  (define (identity x) x)
+  (define (product x y) (* x y))
+  (define (gcd a b)
+    (if (= b 0)
+      a
+      (gcd b (remainder a b))))
+  (define (prime-with x) (= 1
+                            (gcd x n)))
+  (filtered-accumulate prime-with product 1 identity 1 inc (- n 1)))

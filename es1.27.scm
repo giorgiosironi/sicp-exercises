@@ -7,7 +7,14 @@
           (remainder (* base (expmod base (- exp 1) m))
                      m))))
 (define (full-fermat-test n)
-  ; iterate i from 2 to n-1
+  (full-fermat-test-iter 1 n))
+; #t for prime numbers (usually), tested on 2-3-5-7-11
+; #f for other numbers, tested on 4-6-8-9-10
+; #t for 561, 1105, 1729, 2465, 2821, 6601 (Carmichael numbers)
+;     which however are not prime, e.g. 561=3*11*17
+(define (full-fermat-test-iter a n)
   (define (try-it a)
     (= (expmod a n n) a))
-  (try-it i))
+  (cond ((= a n) #t)
+        ((try-it a) (full-fermat-test-iter (+ a 1) n))
+        (else #f))) 

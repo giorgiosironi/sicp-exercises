@@ -1,0 +1,12 @@
+(define (sum term a next b)
+  (define (iter a result)
+    (if (> a b)
+        result
+        (iter (next a) (+ a result))))
+  (iter a 0))
+(define (identity x)
+  x)
+(define (inc x)
+  (+ x 1))
+(define (sum-first-integers n)
+  (sum identity 1 inc n))

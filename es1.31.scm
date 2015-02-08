@@ -7,3 +7,11 @@
   (define (identity x) x)
   (define (inc x) (+ 1 x))
   (product identity 1 inc n))
+(define (pi n)
+  (define (fractions-pair i)
+    (/ (* i (+ 2 i))
+       (* (+ 1 i) (+ 1 i))))
+  (define (inc-by-2 i)
+    (+ 2 i))
+  (* 4
+     (product fractions-pair 2 inc-by-2 n)))

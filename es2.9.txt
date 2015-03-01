@@ -1,0 +1,32 @@
+; Given: 
+(define (add-interval x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+                 (+ (upper-bound x) (upper-bound y))))
+
+(define (width-interval i)
+  (/ (- (upper-bound i)
+        (lower-bound i))
+     2))
+
+(width-interval (add-interval x y))
+(width-interval (make-interval (+ (lower-bound x) (lower-bound y))
+                               (+ (upper-bound x) (upper-bound y))))
+(/ (- (+ (upper-bound x) (upper-bound y))
+      (+ (lower-bound x) (lower-bound y)))
+   2)
+(/ (+ (- (upper-bound x) (lower-bound x))
+      (- (upper-bound y) (lower-bound y)))
+   2)
+(/ (+ (* (width-interval x) 2)
+      (* (width-interval y) 2))
+   2)
+(+ (width-interval x)
+   (width-interval y))
+
+; Instead for multiplication
+(make-interval 0 2) ; with width 1
+(make-interval 0 4) ; with width 2
+; multiplied they give (0 8) with width 4
+(make-interval 10 12) ; with width 1
+(make-interval 10 14) ; with width 2
+; multiplied they give (100 168) with width 34, which is different from 4

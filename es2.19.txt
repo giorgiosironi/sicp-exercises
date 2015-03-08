@@ -1,0 +1,10 @@
+The order does not affect the result:
+
+1 ]=> (cc 100 us-coins)
+;Value: 292
+
+1 ]=> (cc 100 out-of-order-us-coins)
+;Value: 292
+
+To explore other currencies we remove the head of the list and recur into the rest, so the order does not matter anymore as we get the full space of combinations.
+Previously order matter because we could only keep track of *which* kind-of-coins were left with a number, which told us only *how many* kind-of-coins were left; to translate that into a conceptual list of kind-of-coins we need to assume an order.

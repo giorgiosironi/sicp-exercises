@@ -1,0 +1,11 @@
+In general we can model measured intervals with their tolerance as:
+- a uniform distribution over [lower_bound, upper_bound]
+- a gaussian distribution with parameters mu=center, sigma | upper_bound-lower_bound=3sigma (or an higher number of sigma)
+- an unknown distribution with parameters depending on center, lower_bound and upper_bound
+
+Depending on this modeling choices, we can apply some theoretical result:
+http://en.wikipedia.org/wiki/Algebra_of_random_variables
+
+For example, the sum of two gaussian is still a gaussian. Its mu is the sum of the mu of the original gaussians.
+
+Even with this more theory-based representation, I think we will get a similar result when we do multiple operations. There is some space to instead simplify algebric formulas to get a version with the minimum number of operatios, which is a difficult problem (Wolphram Alpha-level).

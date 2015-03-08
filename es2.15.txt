@@ -1,0 +1,17 @@
+She's right, par2 has better precision in the center for example:
+
+1 ]=> (center (par1 r1 r2))
+;Value: 50.02000200020002
+
+1 ]=> (center (par2 r1 r2))
+;Value: 50.
+
+And also in bounds:
+
+1 ]=> (lower-bound (par1 r1 r2))
+;Value: 48.51980198019802
+
+1 ]=> (lower-bound (par2 r1 r2))
+;Value: 49.49999999999999
+
+Since we do fewer operations and each operation introduces errors, we have a result with less absolute/relative errors.

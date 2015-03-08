@@ -1,0 +1,11 @@
+Loss of precision even in the center at every additional arithmetics operation (to be expected as the center is not independently represented in the data structure but is instead calculated from lower and upper bound.)
+
+1 ]=> (center a)
+;Value: 200
+
+1 ]=> (center (div-interval a a))
+;Value: 1.0002000200020003
+
+1 ]=> (center (mul-interval (div-interval a a) a))
+;Value: 200.0800080008001
+

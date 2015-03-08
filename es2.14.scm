@@ -6,6 +6,22 @@
 (define (upper-bound interval)
   (max (car interval)
        (cdr interval)))
+(define (make-center-width c w)
+  (make-interval (- c w) (+ c w)))
+(define (center i)
+  (/ (+ (lower-bound i) (upper-bound i)) 2))
+(define (width i)
+  (/ (- (upper-bound i) (lower-bound i)) 2))
+
+(define (make-center-percent c p)
+  (let ((w (* c
+              (/ p
+                 100))))
+    (make-center-width c w)))
+(define (percent interval)
+  (* (/ (width interval)
+        (center interval))
+     100))
 (define (add-interval x y)
   (make-interval (+ (lower-bound x) (lower-bound y))
                  (+ (upper-bound x) (upper-bound y))))
@@ -26,12 +42,7 @@
   (>= 0
       (* (lower-bound interval)
          (upper-bound interval))))
-; Lem complaints
-(define (par1 r1 r2)
-  (div-interval (mul-interval r1 r2)
-                (add-interval r1 r2)))
-(define (par2 r1 r2)
-  (let ((one (make-interval 1 1)))
-    (div-interval one
-                  (add-interval (div-interval one r1)
-                                (div-interval one r2)))))
+
+; sample values for investigation
+(define a (make-center-percent 200 1))
+(define b (make-center-percent 100 1))

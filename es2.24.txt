@@ -1,0 +1,23 @@
+Interpreter:
+
+1 ]=> (list 1 (list 2 (list 3 4)))
+;Value 11: (1 (2 (3 4)))
+
+Box-and-pointer:
+
+[ x | x-]-> [ x | x-]-> nil
+  |           |           
+  1         [ x | x-]-> [ x | x-]-> nil
+              |           |
+              2         [ x | x-]-> [ x | x-]-> nil
+                          |           |
+                          3           4
+
+Tree:
+                        root
+     1                                  *     
+                                  *                nil
+                              2       *
+                                    *   nil
+                                  3  *
+                                    4 nil

@@ -14,3 +14,6 @@
   (map (lambda (mi) (dot-product mi v)) m))
 (define (transpose mat)
   (accumulate-n cons (list) mat))
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda(mi) (matrix-*-vector cols mi)) m)))

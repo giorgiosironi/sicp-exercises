@@ -1,0 +1,10 @@
+(flatmap
+  (lambda (new-row)
+    (map (lambda (rest-of-queens)
+           (adjoin-position new-row k rest-of-queens))
+         (queen-cols (- k 1))))
+(enumerate-interval 1 board-size))
+
+For each of the new-rows at level k, this program generates queen-cols for level k-1; the original generated all new-rows at level k for each of the queen-cols solutions for level k-1.
+
+Therefore the problem of level k has to solve n times the k-1 problem, growing exponentially with n. Assuming the original program grows with inferior complexity, T becomes n^n*T.

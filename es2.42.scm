@@ -18,17 +18,31 @@
   (if (> low high)
     (list)
     (cons low (enumerate-interval (+ low 1) high))))
-; data structure
+; data structure: single queen
+(define (make-queen column row)
+  (list column row))
+(define (column queen)
+  (car queen))
+(define (row queen)
+  (cadr queen))
+; data structure: positions
 (define empty-board (list))
 (define (rightest-column positions)
-  (car positions))
+  (column (car positions)))
 (define (all-but-last-columns positions)
-  (cdr positions))
-; specific operations
+  (map column (cdr positions)))
 (define (adjoin-position new-row k rest-of-queens)
-  (cons new-row rest-of-queens))
+  (cons (make-queen k new-row) rest-of-queens))
+(define (readable queen)
+  (display "column: ")
+  (display (column queen))
+  (display ", row: ")
+  (display (row queen))
+  (newline))
+; specific operations
 (define (safe? k positions)
   (eq? (list)
        (filter (lambda (queen-in-conflict) (= queen-in-conflict
                                               (rightest-column positions)))
                (all-but-last-columns positions))))
+

@@ -12,3 +12,5 @@
   (accumulate + 0 (map * v w)))
 (define (matrix-*-vector m v)
   (map (lambda (mi) (dot-product mi v)) m))
+(define (transpose mat)
+  (accumulate-n cons (list) mat))

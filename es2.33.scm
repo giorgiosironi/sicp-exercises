@@ -1,12 +1,17 @@
 (define (accumulate proc initial sequence)
   (if (null? sequence)
       initial
-      (accumulate proc
-                  (proc initial
-                        (car sequence))
-                  (cdr sequence))))
+      (proc (car sequence)
+            (accumulate proc initial (cdr sequence)))))
 (define (map p sequence)
-  (accumulate (lambda (x y) (append x
-                                    (list (p y))))
+  (accumulate (lambda (x y) (append (list (p x))
+                                    y))
               (list)
+              sequence))
+(define (append seq1 seq2)
+  (accumulate cons seq2 seq1))
+(define (length sequence)
+  (accumulate (lambda (total element)
+                      (+ total 1))
+              0
               sequence))

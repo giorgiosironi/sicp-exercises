@@ -48,7 +48,12 @@
           (error "unknown expression type -- DERIV" exp))))
 ; new data structure
 (define (make-exponentiation u n)
-  (list '** u n))
+  (cond ((= n 0)
+         1)
+        ((= n 1)
+         u)
+        (else 
+         (list '** u n))))
 (define (exponentiation? exp)
   (and (pair? exp)
        (eq? '** (car exp))))

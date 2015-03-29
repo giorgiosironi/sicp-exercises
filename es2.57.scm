@@ -11,7 +11,10 @@
 (define (make-sum . addends)
   (let ((numbers (filter number? addends))
         (not-numbers (filter not-number? addends)))
-    (cond ((eq? '() addends) 0)
+    (cond ((eq? '() addends)
+           0)
+          ((eq? '(0) numbers) 
+           (apply make-sum not-numbers))
           ((= 1
               (length addends))
            (car addends))

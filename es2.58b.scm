@@ -82,6 +82,10 @@
     (if (= 1 (length others))
         (car others)
         others)))
+(define (mixed? x)
+  (and (pair? x)
+       (any (lambda (term) (eq? '+ term)) x)
+       (any (lambda (term) (eq? '* term)) x)))
 ; deriv
 (define (deriv exp var)
   (cond ((number? exp) 0)
@@ -96,5 +100,7 @@
                          (deriv (multiplicand exp) var))
            (make-product (deriv (multiplier exp) var)
                          (multiplicand exp))))
+        ((mixed? exp)
+          (error "mixed expression type -- DERIV" exp))
         (else
           (error "unknown expression type -- DERIV" exp))))

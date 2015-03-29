@@ -87,8 +87,6 @@
        (any (lambda (term) (eq? '+ term)) x)
        (any (lambda (term) (eq? '* term)) x)))
 (define (add-parentheses mixed)
-  (display mixed)
-  (newline)
   (if (= 1 (length mixed))
       mixed
       (let ((one (car mixed))
@@ -115,6 +113,6 @@
            (make-product (deriv (multiplier exp) var)
                          (multiplicand exp))))
         ((mixed? exp)
-          (error "mixed expression type -- DERIV" exp))
+          (deriv (add-parentheses exp) var))
         (else
           (error "unknown expression type -- DERIV" exp))))

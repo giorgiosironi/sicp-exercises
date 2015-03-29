@@ -8,6 +8,14 @@
 (define (variable? x) (symbol? x))
 (define (same-variable? v1 v2)
   (and (variable? v1) (variable? v2) (eq? v1 v2)))
+(define (intersperse element sequence)
+  (if (>= 1
+          (length sequence))
+      sequence
+      (append (list (car sequence)
+                   element)
+              (intersperse element
+                           (cdr sequence)))))
 (define (make-sum . addends)
   (let ((numbers (filter number? addends))
         (not-numbers (filter not-number? addends)))
@@ -23,10 +31,12 @@
            (apply make-sum
                   (append (list (reduce-left + 0 numbers))
                            not-numbers)))
-          (else (cons '+ addends)))))
+          (else (intersperse '+ addends)))))
 (define (sum? x)
-  (and (pair? x) (eq? (car x) '+)))
-(define (addend s) (cadr s))
+  (and (pair? x)
+       (eq? (cadr x) '+)
+       (sum? (cddr x))))
+(define (addend s) (car s))
 (define (augend s) 
   (let ((others (cddr s)))
     (if (eq? '() others)

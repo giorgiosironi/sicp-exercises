@@ -86,6 +86,20 @@
   (and (pair? x)
        (any (lambda (term) (eq? '+ term)) x)
        (any (lambda (term) (eq? '* term)) x)))
+(define (add-parentheses mixed)
+  (display mixed)
+  (newline)
+  (if (= 1 (length mixed))
+      mixed
+      (let ((one (car mixed))
+            (operator (cadr mixed))
+            (two (caddr mixed)))
+        (if (eq? operator
+                 '*)
+            (add-parentheses (cons (list one operator two)
+                                   (cdddr mixed)))
+            (append (list one operator)
+                    (add-parentheses (cddr mixed)))))))
 ; deriv
 (define (deriv exp var)
   (cond ((number? exp) 0)

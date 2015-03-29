@@ -59,7 +59,7 @@
            (apply make-product
                   (append (list (reduce-left * 1 numbers))
                            not-numbers)))
-          (else (cons '* factors)))))
+          (else (intersperse '* factors)))))
   ; if one is zero everything is zero ((or (=number? m1 0) (=number? m2 0)) 0)
 (define (product? x)
   (and (pair? x) (eq? (car x) '*)))

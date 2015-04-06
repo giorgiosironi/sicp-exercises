@@ -51,3 +51,7 @@
 ; when there are 2 elements we get an empty left and 1-element right subtree
 ; when there are 3 elements we get both 1-element subtrees
 ; the trees composed by 1 element are a tree with 0-element subtrees
+
+; Complexity
+; At a first look the process seems O(n) and it is at least so as every element has to be considered. car, cdr and cons are constant time operations.
+; About the size of the generated process, there are at most 2 calls to partial-tree for each element, so it is O(2*n) which is O(n) anyway.

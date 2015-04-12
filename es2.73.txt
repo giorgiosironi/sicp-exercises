@@ -1,0 +1,18 @@
+a. We are dispatching basing on the operator contained in the expression, which must be a pair whose `car` is an operator. We can't assimilate numbers or variables (represented as symbols) because they're not pairs and `operator` would fail.
+
+b. Without using additional tags since the operators are already stored in the expressions:
+(define (deriv-sum operands var)
+  (make-sum (deriv (car operands) var)
+            (deriv (cadr operands) var)))
+(define (deriv-product operands var)
+  (let ((multiplier (car operands))
+        (multiplicand (cadr operands)))
+    (make-sum
+      (make-product multiplier
+                    (deriv multiplicand var))
+      (make-product (deriv multiplier var)
+                    multiplicand))))
+(put 'deriv '+ 'deriv-sum)
+(put 'deriv '* 'deriv-product)
+
+c. to be continued...

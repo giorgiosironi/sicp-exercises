@@ -1,0 +1,8 @@
+Order of growth of encode-symbol procedure:
+- for the most frequent symbol, we search it in the left and right branches and only one of them contains it.
+-- The branch that does not contain it finishes the search in O(n) as all n-1 elements of the symbols list are visited.
+-- The branch that does contain it finished in O(1) as it is a leaf
+-- so the encoding takes O(n) steps
+- for the least frequent symbol, to get the first bit we must do the same as for the most frequent symbol, so we have a first O(n) step.
+-- for the next bit, we choose between the two subtrees with a O(n-1) step on the n-2 elements subtree and the other leaf
+-- we continue doing so for n-1 bits, so we get in total a O(n^2) operation

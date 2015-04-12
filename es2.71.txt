@@ -1,0 +1,38 @@
+Relative frequencies of n symbols are 1, 2, 4, ..., 2^(n-1)
+
+Example: n = 5
+A 1
+B 2
+C 4
+D 8
+E 16
+Tree is:
+     |-----E
+   |-----D
+ |----C
+A- B
+
+Example: n = 10
+A 1
+B 2
+C 4
+D 8
+E 16
+F 32
+G 64
+H 128
+I 256
+J 512
+Tree is:
+               |-----J
+             |-----I
+           |-----H
+         |-----G
+       |-----F
+     |-----E
+   |-----D
+ |----C
+A-B
+
+Encoding the most frequent symbol: 1 bit as it is always in one of the two subtrees of the root
+Encoding the least frequent symbol: n-1 bits as starting from the root each time we add 1 bit we exclude the most frequent symbol in the remaining set. With 1 bit we know it's not J; with 2 bits we know it's not I too; and so on until n-1 bits are used and we know it's not one of the other n-1 symbols.

@@ -1,0 +1,13 @@
+Generic operations with explicit dispatch:
+- modifying all existing procedures adding a new clause for a new data type
+- new operation implementations to tie together in a generic one for new operations
+
+Data-directed style:
+- new calls to 'put to install the primitives for new data types
+- new operation implementation and their 'put installation for new operations
+
+Message-passing style:
+- creating a new isolated function for new data types
+- new operation implementations in all existing types for new operations
+
+The first two systems are better suited to add new operations, while message-passing style to add new data types.

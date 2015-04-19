@@ -1,0 +1,17 @@
+(magnitude z)
+z has the 'complex tag
+
+So apply-generic is invoked:
+(apply-generic 'magnitude z)
+
+It performs (get 'magnitude '(complex)) which returns the magnitude function for the complex module.
+
+(magnitude z)
+is called and z has the 'rectangular tag
+
+So apply-generic is invoked
+(apply-generic 'magnitude 'rectangular z)
+
+It performs (get 'magnitude '(rectangular)) which returns the magnitude function for the complex-rectangular module.
+
+(magnitude z) now returns the (sqrt (...)) implementation.

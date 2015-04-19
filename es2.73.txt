@@ -15,4 +15,18 @@ b. Without using additional tags since the operators are already stored in the e
 (put 'deriv '+ 'deriv-sum)
 (put 'deriv '* 'deriv-product)
 
-c. to be continued...
+c. We need to call put as for the previous ones:
+(define (deriv-exp operands var)
+  (let ((base (car operands))
+        (exponent (cadr operands)))
+    (make-product 
+      (make-product exponent
+                    (make-exponentiation base
+                                         (- exponent 1)))
+      (deriv base
+             var)))
+(put 'deriv '** 'deriv-exp)
+
+d. All the put calls become like:
+(put '** 'deriv 'deriv-exp)
+The order of the argument passed to deriv-something is still operands and var so further code should not change.

@@ -26,7 +26,6 @@
                   #f))
 ; current exercise
 (define (apply-generic op . args)
-  (bkpt 'apply-generic args)
   (let ((type-tags (map type-tag args)))
     (let ((proc (get op type-tags)))
       (if proc

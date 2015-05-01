@@ -90,9 +90,10 @@
 (define (equal-integer first second)
   (= first second))
 (put 'equal '(integer integer) equal-integer)
+; 15/5 == 3/1
 (define (equal-rational first second)
-  (and (= (car first) (car second))
-       (= (cadr first) (cadr second))))
+  (= (* (car first) (cadr second))
+     (* (car second) (cadr first))))
 (put 'equal '(rational rational) equal-rational)
 (define (equal-real first second)
   (= first second))
@@ -101,7 +102,17 @@
   (and (= (car first) (car second))
        (= (cadr first) (cadr second))))
 (put 'equal '(complex complex) equal-complex)
-; TODO: implement drop
+; drop
+(define (drop number)
+  (if (eq? (type-tag number)
+           'integer)
+      number
+      (let ((candidate (apply-generic 'project number)))
+        (if (apply-generic 'equal
+                           number
+                           (apply-generic 'raise candidate))
+            (drop candidate)
+            number))))
 ; apply-generic (will be modified to use drop)
 (define (apply-generic op . args)
   (let ((type-tags (map type-tag args)))

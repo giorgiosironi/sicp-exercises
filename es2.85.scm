@@ -71,7 +71,7 @@
 (put 'sum
      '(complex complex)
      (lambda (a b) (tag 'complex (sum-complex a b))))
-; TODO: implement project
+; project
 (define (project-rational rational)
   (floor->exact (/ (car rational) (cadr rational))))
 (put 'project '(rational)
@@ -86,7 +86,21 @@
   (real-part complex))
 (put 'project '(complex)
   (lambda (complex) (tag 'real (project-complex complex))))
-; TODO: implement equal
+; equal
+(define (equal-integer first second)
+  (= first second))
+(put 'equal '(integer integer) equal-integer)
+(define (equal-rational first second)
+  (and (= (car first) (car second))
+       (= (cadr first) (cadr second))))
+(put 'equal '(rational rational) equal-rational)
+(define (equal-real first second)
+  (= first second))
+(put 'equal '(real real) equal-real)
+(define (equal-complex first second)
+  (and (= (car first) (car second))
+       (= (cadr first) (cadr second))))
+(put 'equal '(complex complex) equal-complex)
 ; TODO: implement drop
 ; apply-generic (will be modified to use drop)
 (define (apply-generic op . args)

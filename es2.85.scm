@@ -115,11 +115,23 @@
             number))))
 ; apply-generic (will be modified to use drop)
 (define (apply-generic op . args)
-  (let ((type-tags (map type-tag args)))
-    (let ((proc (get op type-tags)))
-      (if proc
-        (apply proc (map contents args))
-        (let ((highest-type (highest type-tags)))
-          (apply apply-generic
-                 (append (list op)
-                         (raise-all-to highest-type args))))))))
+  (define (apply-generic-result-as-is op args)
+    (let ((type-tags (map type-tag args)))
+      (let ((proc (get op type-tags)))
+        (if proc
+          (apply proc (map contents args))
+          (let ((highest-type (highest type-tags)))
+            (apply apply-generic
+                   (append (list op)
+                           (raise-all-to highest-type args))))))))
+  ; it is not true apply-generic should simplify all results 
+  ; as the exercise says: raise *must not* be simplified or it cannot
+  ; be implemented with apply-generic
+  ; Morevoer, booleans are not tagged and they can't be dropped
+  (let ((result-as-is (apply-generic-result-as-is op args)))
+    (cond ((eq? 'raise op)
+           result-as-is)
+          ((boolean? result-as-is)
+           result-as-is)
+          (else
+           (drop result-as-is)))))

@@ -1,15 +1,3 @@
-; choosing the cartesian representation
-(define (make-complex-cartesian a b)
-  (list a b))
-(define (make-complex-polar ro tau)
-  (let ((a (apply-generic 'times
-                          ro
-                          (apply-generic 'cosine tau)))
-        (b (apply-generic 'times
-                          ro
-                          (apply-generic 'sine tau))))
-    (make-complex-cartesian a
-                            b)))
 ; previously on SICP: infrastructure stuff the book does not provide
 (define *operation-table* (make-hash-table))
 (define (put op types proc)
@@ -31,10 +19,6 @@
 (define (denom r) (cadr r))
 ; the simplest version because it's orthogonal to these new implementations
 (define (apply-generic op . args)
-  (display op)
-  (newline)
-  (display args)
-  (newline)
   (let ((type-tags (map type-tag args)))
     (let ((proc (get op type-tags)))
       (if proc
@@ -52,3 +36,39 @@
                                    (numer b))
                                 (* (denom a)
                                    (denom b))))))
+; defining sine
+(put 'sine
+     '(real)
+     (lambda (x)
+       (tag 'real (sin x))))
+(put 'sine
+     '(rational)
+     (lambda (x)
+       (tag 'rational (project-real (sin (/ (numer x)
+                                            (denom x)))))))
+(define (project-real real)
+  (let ((denominator 10000))
+    (list (floor->exact (* real denominator))
+          denominator)))
+; defining cosine
+(put 'cosine
+     '(real)
+     (lambda (x)
+       (tag 'real (sin x))))
+(put 'cosine
+     '(rational)
+     (lambda (x)
+       (tag 'rational (project-real (cos (/ (numer x)
+                                            (denom x)))))))
+; choosing the cartesian representation
+(define (make-complex-cartesian a b)
+  (list a b))
+(define (make-complex-polar ro tau)
+  (let ((a (apply-generic 'times
+                          ro
+                          (apply-generic 'cosine tau)))
+        (b (apply-generic 'times
+                          ro
+                          (apply-generic 'sine tau))))
+    (make-complex-cartesian a
+                            b)))

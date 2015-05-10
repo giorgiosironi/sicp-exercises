@@ -51,6 +51,77 @@
        (lambda (term term-list) (attach-tag 'sparse (adjoin-term term term-list))))
   'done)
 (install-term-list-sparse)
+(define (the-empty-termlist-sparse)
+  ((get 'the-empty-termlist 'sparse)))
+; dense term list code
+(define (install-term-list-dense)
+  (define (make-term-list terms-starting-from-zero-order)
+    (make-term-list-of-order 0 terms-starting-from-zero-order))
+  (define (make-term-list-of-order current-order terms-starting-from-current-order)
+    (list current-order terms-starting-from-current-order))
+  (define (minimum-order term-list)
+    (car term-list))
+  (define (elements term-list)
+    (cadr term-list))
+  (define (the-empty-termlist) (make-term-list '()))
+  (define (first-term term-list)
+    (make-term (minimum-order term-list)
+               (car (elements term-list))))
+  (define (rest-terms term-list)
+    (make-term-list-of-order (+ 1
+                                (minimum-order term-list))
+                             (cdr (elements term-list))))
+  (define (empty-termlist? term-list) (null? (elements term-list)))
+  (define (adjoin-term term term-list)
+    (define (extend-list-with-one-0 term-list)
+      (make-term-list-of-order (minimum-order term-list)
+                               '(0)))
+    (define (zero-fill-left how-many list)
+      (if (= how-many 0)
+          list
+          (cons 0 (zero-fill-left (- how-many 1)
+                                  list))))
+    (if (null? (elements term-list))
+        (adjoin-term term
+                     (extend-list-with-one-0 term-list))
+        (cond ((= (order term)
+                  (minimum-order term-list))
+               (make-term-list-of-order (order term)
+                                        ; using + because I don't want to paste sum here
+                                        (cons (+ (coeff term)
+                                                 (coeff (first-term term-list)))
+                                              (elements (rest-terms term-list)))))
+              ((> (order term)
+                  (minimum-order term-list))
+               (make-term-list-of-order (minimum-order term-list)
+                                        (cons (coeff (first-term term-list))
+                                              (elements (adjoin-term term
+                                                                     (rest-terms term-list))))))
+              ((< (order term)
+                  (minimum-order term-list))
+               (make-term-list-of-order (order term)
+                                        (cons (coeff term)
+                                              (zero-fill-left (- (- (minimum-order term-list)
+                                                                    (order term))
+                                                                 1)
+                                                              (elements term-list))))))))
+  
+  (put 'the-empty-termlist 'dense
+       (lambda () (attach-tag 'dense (the-empty-termlist))))
+  (put 'first-term '(dense)
+       (lambda (term-list) (first-term term-list)))
+  (put 'rest-terms '(dense)
+       (lambda (term-list) (attach-tag 'dense (rest-terms term-list))))
+  (put 'empty-termlist? '(dense)
+       (lambda (term-list) (empty-termlist? term-list)))
+  (put 'adjoin-term 'dense
+       (lambda (term term-list) (attach-tag 'dense (adjoin-term term term-list))))
+  'done)
+(install-term-list-dense)
+(define (the-empty-termlist-dense)
+  ((get 'the-empty-termlist 'dense)))
+; term-list generic code
+; default is sparse
 (define (the-empty-termlist)
   ((get 'the-empty-termlist 'sparse)))
 (define (first-term term-list)
@@ -62,7 +133,7 @@
 (define (adjoin-term term term-list)
   ((get 'adjoin-term (type-tag term-list)) term
                                            (contents term-list)))
-(define (make-term-list terms)
+(define (make-term-list-from a-empty-term-list terms)
   (define (add-to-term-list term-list terms)
     (cond ((null? terms)
            term-list)
@@ -70,9 +141,12 @@
            (add-to-term-list (adjoin-term (car terms)
                                           term-list)
                              (cdr terms)))))
-  (add-to-term-list (the-empty-termlist)
+  (add-to-term-list a-empty-term-list
                     terms))
-; term-list generic code
+(define (make-term-list terms)
+  (make-term-list-from (the-empty-termlist-sparse) terms))
+(define (make-term-list-dense terms)
+  (make-term-list-from (the-empty-termlist-dense) terms))
 (define (term-list-map proc term-list)
   (if (empty-termlist? term-list)
       (the-empty-termlist)
@@ -187,12 +261,19 @@
                    (make-term-list (list (make-term 2 1)
                                          (make-term 0 2)))))
 
+; default term list is sparse
 (define cubic
   (make-polynomial 'x
                    (make-term-list (list (make-term 3 1)
                                          (make-term 0 10)))))
+(define cubic-dense
+  (make-polynomial 'x
+                   (make-term-list-dense (list (make-term 3 1)
+                                               (make-term 0 10)))))
 
-(define sample-term-list (cadr (cadr cubic)))
+(define sample-term-list-sparse (cadr (cadr cubic)))
+(define sample-term-list-dense (cadr (cadr cubic-dense)))
+
 ;(newline)
 ;(display (sub cubic line))
 ;(newline)

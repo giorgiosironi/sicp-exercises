@@ -44,15 +44,15 @@
   (put 'first-term '(sparse)
        (lambda (term-list) (first-term term-list)))
   (put 'rest-terms '(sparse)
-       (lambda (term-list) (rest-term term-list)))
+       (lambda (term-list) (attach-tag 'sparse (rest-terms term-list))))
   (put 'empty-termlist? '(sparse)
        (lambda (term-list) (empty-termlist? term-list)))
-  (put 'adjoin-term '(sparse)
-       (lambda (term term-list) (adjoin-term term term-list)))
+  (put 'adjoin-term 'sparse
+       (lambda (term term-list) (attach-tag 'sparse (adjoin-term term term-list))))
   'done)
 (install-term-list-sparse)
 (define (the-empty-termlist)
-  ((get 'sparse 'the-empty-termlist)))
+  ((get 'the-empty-termlist 'sparse)))
 (define (first-term term-list)
   (apply-generic 'first-term term-list))
 (define (rest-terms term-list)
@@ -60,8 +60,18 @@
 (define (empty-termlist? term-list)
   (apply-generic 'empty-termlist? term-list))
 (define (adjoin-term term term-list)
-  ((get 'adjoin-term (tag term-list)) term
-                                      (contents term-list)))
+  ((get 'adjoin-term (type-tag term-list)) term
+                                           (contents term-list)))
+(define (make-term-list terms)
+  (define (add-to-term-list term-list terms)
+    (cond ((null? terms)
+           term-list)
+          (else
+           (add-to-term-list (adjoin-term (car terms)
+                                          term-list)
+                             (cdr terms)))))
+  (add-to-term-list (the-empty-termlist)
+                    terms))
 ; polynomial code
 (define (add-terms L1 L2)
   (cond ((empty-termlist? L1) L2)
@@ -80,6 +90,7 @@
                                  (add (coeff t1) (coeff t2)))
                       (add-terms (rest-terms L1)
                                  (rest-terms L2)))))))))
+
 (define (mul-terms L1 L2)
   (if (empty-termlist? L1)
     (the-empty-termlist)
@@ -92,13 +103,14 @@
       (adjoin-term
         (make-term (+ (order t1) (order t2))
                    (mul (coeff t1) (coeff t2)))(mul-term-by-all-terms t1 (rest-terms L))))))
+
 (define (install-polynomial-package)
   ;; internal procedures
   ;; representation of poly
   (define (make-poly variable term-list)
-    (cons variable term-list))
+    (list variable term-list))
   (define (variable p) (car p))
-  (define (term-list p) (cdr p))
+  (define (term-list p) (cadr p))
   (define (variable? x) (symbol? x))
   (define (same-variable? v1 v2)
     (and (variable? v1) (variable? v2) (eq? v1 v2)))
@@ -141,12 +153,14 @@
        (lambda (p1 p2) (tag (sub-poly p1 p2))))
   'done)
 (install-polynomial-package)
+
 (define (install-number-package)
   (put 'zero? '(number)
     (lambda (x) (= 0 x)))
   (put 'add '(number number)
     (lambda (a b) (+ a b))))
 (install-number-package)
+
 ; generic operations
 (define (=zero? exp)
   (apply-generic 'zero? exp))
@@ -156,15 +170,19 @@
   (apply-generic 'sub a b))
 (define (make-polynomial var terms)
   ((get 'make 'polynomial) var terms))
+
 ; examples
 (define line
   (make-polynomial 'x
-                   (list (make-term 2 1)
-                         (make-term 0 2))))
+                   (make-term-list (list (make-term 2 1)
+                                         (make-term 0 2)))))
+
 (define cubic
   (make-polynomial 'x
-                   (list (make-term 3 1)
-                         (make-term 0 10))))
-(newline)
-(display (sub cubic line))
-(newline)
+                   (make-term-list (list (make-term 3 1)
+                                         (make-term 0 10)))))
+
+(define sample-term-list (cadr (cadr cubic)))
+;(newline)
+;(display (sub cubic line))
+;(newline)

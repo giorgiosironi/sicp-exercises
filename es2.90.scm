@@ -72,7 +72,12 @@
                              (cdr terms)))))
   (add-to-term-list (the-empty-termlist)
                     terms))
-; polynomial code
+; term-list generic code
+(define (term-list-map proc term-list)
+  (if (empty-termlist? term-list)
+      (the-empty-termlist)
+      (adjoin-term (proc (first-term term-list))
+                   (term-list-map proc (rest-terms term-list)))))
 (define (add-terms L1 L2)
   (cond ((empty-termlist? L1) L2)
         ((empty-termlist? L2) L1)
@@ -104,6 +109,7 @@
         (make-term (+ (order t1) (order t2))
                    (mul (coeff t1) (coeff t2)))(mul-term-by-all-terms t1 (rest-terms L))))))
 
+; polynomial code
 (define (install-polynomial-package)
   ;; internal procedures
   ;; representation of poly
@@ -145,10 +151,12 @@
                (- 0 (coeff term))))
   (define (opposite-poly p)
       (make-poly (variable p)
-                 (map opposite-term (term-list p))))
+                 (term-list-map opposite-term (term-list p))))
   (define (sub-poly p1 p2)
     (add-poly p1
               (opposite-poly p2)))
+  (put 'opposite '(polynomial)
+       (lambda (p1) (tag (opposite-poly p1))))
   (put 'sub '(polynomial polynomial)
        (lambda (p1 p2) (tag (sub-poly p1 p2))))
   'done)
@@ -166,6 +174,8 @@
   (apply-generic 'zero? exp))
 (define (add a b)
   (apply-generic 'add a b))
+(define (opposite a)
+  (apply-generic 'opposite a))
 (define (sub a b)
   (apply-generic 'sub a b))
 (define (make-polynomial var terms)

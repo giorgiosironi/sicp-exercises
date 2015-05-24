@@ -1,0 +1,27 @@
+(define (monte-carlo trials experiment)
+  (define (iter trials-remaining trials-passed)
+    (cond ((= trials-remaining 0)
+           (/ trials-passed trials))
+          ((experiment)
+           (iter (- trials-remaining 1) (+ trials-passed 1)))
+          (else
+            (iter (- trials-remaining 1) trials-passed))))
+  (iter trials 0))
+(define (rectangle-area x1 x2 y1 y2)
+  (* (abs (- y2 y1))
+     (abs (- x2 x1))))
+(define (random-in-range low high)
+  (let ((range (- high low)))
+    (+ low (random range))))
+(define (estimate-integral p x1 x2 y1 y2 trials)
+  (* (rectangle-area x1 x2 y1 y2)
+     (monte-carlo trials
+                  (lambda () 
+                    (p (random-in-range x1 x2)
+                       (random-in-range y1 y2))))))
+; let's use 100 as a radius because our random-in-range produces
+; only integers
+(define (unit-circle x y)
+  (<= (+ (* x x)
+        (* y y))
+      10000))

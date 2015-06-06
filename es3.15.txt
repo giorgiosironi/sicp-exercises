@@ -1,0 +1,13 @@
+x = [a|b|nil]
+z1 = [x|x|nil]
+
+...after set-to-wow!
+
+x = [wow|b|nil]
+z1 = [x|x|nil]
+
+z2 = [[a|b|nil]|[a|b|nil]|nil]
+
+...after set-to-wow!
+
+z2 = [[wow|b|nil]|[a|b|nil]|nil]

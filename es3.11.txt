@@ -1,0 +1,75 @@
+(define (make-account balance)
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount))
+          balance)
+  (define (dispatch m)
+    (cond ((eq? m 'withdraw) withdraw)
+          ((eq? m 'deposit) deposit)
+          (else (error "Unknown request -- MAKE-ACCOUNT"
+                       m))))
+  dispatch)
+
+E0: make-account
+
+(define acc (make-account 50))
+
+E0: make-account
+E1: balance=50, withdraw, deposit, dispatch
+
+...after evaluation
+
+E0: make-account, acc
+E1: balance=50, withdraw, deposit, dispatch
+
+((acc 'deposit) 40)
+
+E0: make-account, acc
+E1: balance=50, withdraw, deposit, dispatch
+E2: m 'deposit
+
+(deposit 40)
+
+E0: make-account, acc
+E1: balance=50, withdraw, deposit, dispatch
+E3: amount=40
+
+...after evaluation
+
+E0: make-account, acc
+E1: balance=90, withdraw, deposit, dispatch
+
+((acc 'withdraw) 60)
+
+E0: make-account, acc
+E1: balance=90, withdraw, deposit, dispatch
+E4: m 'withdraw
+
+(withdraw 60)
+
+E0: make-account, acc
+E1: balance=90, withdraw, deposit, dispatch
+E5: amount=60
+
+...after evaluation
+
+E0: make-account, acc
+E1: balance=30, withdraw, deposit, dispatch
+
+Defining a new account with:
+(define acc2 (make-account 100))
+
+E0: make-account, acc
+E1: balance=30, withdraw, deposit, dispatch. E6: balance=100, withdraw, deposit, dispatch.
+
+...after evaluation
+
+E0: make-account, acc, acc2
+E1: balance=30, withdraw, deposit, dispatch. E6: balance=100, withdraw, deposit, dispatch.
+
+acc and acc2 are procedures with environments E1 and E6 respectively. The local states are kept into these two environment, precisely in the instances of balance.
+Also the procedures withdraw, deposit and dispatch seems to be redefined. They could be shared because their isolation depends on being bound to different environments, while their code will always be the same.

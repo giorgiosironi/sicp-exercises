@@ -1,0 +1,22 @@
+E0: cons
+
+(define x (cons 1 2) 
+
+E0: cons, car, cdr, set-car!, set-cdr!, x
+E1: x=1, y=2, set-x!, set-y!, dispatch
+
+(define z (cons x x))
+
+E0: cons, car, cdr, set-car!, set-cdr!, x, z
+E1: x=1, y=2, set-x!, set-y!, dispatch. E2: x=E1.x, y=E1.x, set-x!, set-y!, dispatch.
+
+(set-car! (cdr z) 17)
+
+E0: cons, car, cdr, set-car!, set-cdr!, x, z
+E1: x=1, y=2, set-x!, set-y!, dispatch. E2: x=E1.x, y=E1.x, set-x!, set-y!, dispatch. E3: z=E0.z. E5: z=E0.x, new-value=17
+E6: m'=dispatch                        E4: m='cdr                                                
+(car x)
+E0: cons, car, cdr, set-car!, set-cdr!, x, z
+E1: x=1, y=2, set-x!, set-y!, dispatch. E2: x=E1.x, y=E1.x, set-x!, set-y!, dispatch. E7: z=E0.x
+E7: m='car
+

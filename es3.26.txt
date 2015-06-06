@@ -1,0 +1,10 @@
+The list (cdr table) must be substituted by a tree of records.
+Each record is still (cons key value).
+The records can be ordered by their keys.
+(assoc key records) needs to check whether:
+- the current branch contains key
+- key is higher than the key of current branch, then recurring into the left branch
+- key is lower than the key of current branch, then recurring into the right branch
+If assoc reaches a null? value, the record is declared not found.
+
+insert! should use the insertion mechanism of the tree after lookup having found nothing. If lookup finds something, cdr-set! can still be used to change the value of the record.

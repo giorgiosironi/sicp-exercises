@@ -1,0 +1,51 @@
+(define (make-withdraw initial-amount)
+  (let ((balance initial-amount))
+    (lambda (amount)
+      (if (>= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))))
+
+E0: make-withdraw
+
+(define W1 (make-withdraw 100))
+
+E0: make-withdraw
+E1: initial-amount 100
+
+((lambda ...) 100)
+
+E0: make-withdraw
+E1: initial-amount=100
+E2: balance=100
+
+...after evaluation 
+
+E0: make-withdraw, W1
+E1: initial-amount=100
+E2: balance=100
+
+(W1 50)
+
+E0: make-withdraw, W1
+E1: initial-amount=100
+E2: balance=100
+E3: amount=50
+
+...after evaluation 
+
+E0: make-withdraw, W1
+E1: initial-amount=100
+E2: balance=50
+
+(define W2 (make-withdraw 100))
+
+E0: make-withdraw, W1
+E1: initial-amount=100, E4: initial-amount=100
+E2: balance=50
+
+((lambda ...) 100)
+
+E0: make-withdraw, W1
+E1: initial-amount=100, E4: initial-amount=100
+E2: balance=50        , E5: balance=100

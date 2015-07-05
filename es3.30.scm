@@ -1,6 +1,6 @@
 (define (ripple-carry-adder a b s c)
   (if (not (null? a))
-    (let ((c-in (generate-uninterned-symbol)))
+    (let ((c-in (make-wire)))
       (full-adder (car a)
                   (car b)
                   c-in

@@ -1,0 +1,2 @@
+When `a` has a value and we have to evaluate `b` no problem. However a multiplier finds out one of its factors by dividing `b` by `a` in this case, but `a` will either be set to a previous value or will be `nil` depending on implementation.
+So the multiplier cannot be used in the b->a constraint propagation because the inverse operation, `/`, lacks one input, the divider.

@@ -1,0 +1,12 @@
+E0 is the global environment
+EA and EB are the children environments created to support a and b private variables.
+When we evaluate
+(set-value! a 10 'user)
+`connector` is dispatched with a new environment E1 which is child of EA.
+Then the `set-my-value` procedure in the environment EA is called (new environment E2 also child of EA) and we get to:
+(for-each-except setter inform-about-value constraints)
+Here:
+- setter is a parameter so does not need to be resolved (E2 is the environment of the current procedure `set-my-value`)
+- inform-about-value is a procedure inherited from E0, the global environment
+- constraints is resolved to the EA environment
+- for-each-except is again a global procedure resolved to E0

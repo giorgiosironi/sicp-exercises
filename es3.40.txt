@@ -1,0 +1,12 @@
+A: r_x, r_x, w_x
+B: r_x, r_x, r_x, w_x
+
+1000000 (B runs exactly after A has finished)
+100000 (if B gets an old value of X in one place)
+10000 (if B gets an old value of X in one place)
+1000 (if B gets an old value of X in three places)
+100 (lost update of B)
+
+Other cases should still be covered by these values.
+
+If we serialize, the only possible result is 1000000 no matter the order in which the procedures are executed.

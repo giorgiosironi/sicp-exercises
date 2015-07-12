@@ -1,0 +1,6 @@
+The serializer is always one instance.
+The difference with the previous version is the procedures are created only once and then returned every time they are needed, instead of being created on-the-fly for each new operation.
+
+The problem I can see, depending on the implementation of the serializer, is that the same procedure can be executed multiple times concurrently (we can say it is not reentrant?). Therefore multiple calls to 'withdraw won't be properly serialized and this is not a safe change.
+
+If the serializer instead correctly schedules the same instance of the procedure run concurrently multiple times, the change is safe.

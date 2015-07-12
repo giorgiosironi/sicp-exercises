@@ -1,0 +1,2 @@
+What can happen without serialization in 'balance is that you can read a partial result of the other two operations.
+However, both withdraw and deposit only set balance once, with the final value they have calculated for their current execution. So read-only requests do not seem to have a problem with the current implementation of 'withdraw and 'deposit.

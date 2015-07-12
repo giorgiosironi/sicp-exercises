@@ -1,0 +1,20 @@
+Accounts a1, a2, a3
+Start from 10, 20, 30
+A: balance_a1, balance_a2, withdraw_a1, deposit_a2
+B: balance_a1, balance_a3, withdraw_a1, deposit_a3
+
+Without serialization over the two accounts involved:
+
+A_balance_a1 10, 20, 30
+B_balance_a1 10, 20, 30
+A_balance_a2 10, 20, 30
+A_withdraw_a1 20, 20, 30
+A_deposit_a2 20, 10, 30
+B_balance_a3 20, 10, 30
+B_withdraw_a1 40, 10, 30
+B_deposit_a3 40, 10, 10
+(The withdrawals and deposits are all of negative amounts)
+
+Still, only withdraw and deposit operations are executed and always in pair, with the same amount involved. So the total sum of the money stays constant.
+
+If we do not serialize the transaction on the individual account, any two 'withdraw (just as an example) can be executed concurrently losing the update of the first of the two and leaving in the account too much money.

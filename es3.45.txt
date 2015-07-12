@@ -1,0 +1,2 @@
+When we call serialized-exchange, its code runs inside the serializer of the two accounts. Then when we call any account operation from inside it, we get a new procedure which still wants to run in the serializer.
+However, the account operation cannot start until the serialized-exchange procedure (holding some lock) has finished. Therefore a deadlock or some error will happen depending on implementation.

@@ -1,0 +1,2 @@
+I don't think Louis is right as here we are making atomic operations which conserve money.
+In the exchange instead, we are performing multiple operations ('balance plus one 'withdraw or 'deposit). It is the 2 operations (out of the 4 total) on the same account that must be serialized.

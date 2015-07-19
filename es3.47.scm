@@ -38,7 +38,7 @@
                (set! counter
                      (- counter 1))
                (counter-mutex 'release)))))))
-; I made the sempahore return #t or #f to be able to test this program without concurrency, which apparently is not implemented. Acquisition retry is on the client
+; I made the semaphore return #t or #f to be able to test this program without concurrency, which apparently is not implemented. Acquisition retry is on the client
 (define (make-semaphore-test-and-set n)
   (define (make-cells c)
     (if (= c 0)

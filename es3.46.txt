@@ -1,0 +1,6 @@
+P1 (car cell) -> false
+P2 (car cell) -> false
+P1 (set-car! cell true)
+P2 (set-car! cell true)
+
+Both P1 and P2 now have acquired the mutex.

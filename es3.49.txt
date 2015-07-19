@@ -1,0 +1,3 @@
+For example: if account1 has less than 100, transfer everything to account2, otherwise ask the user to which account its money should be transferred.
+In case account3 (specified by the user) has a number which is lower than account1 or account2, we acquire locks in the wrong order. To solve this, we must ask the user for the optional account3 anyway even if we're not sure if we use it.
+We cannot simply restart when we know account3, releasing and acquiring again all the locks, as the amount of account1 which governs the branching condition may change when we release.

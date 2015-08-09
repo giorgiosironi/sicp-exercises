@@ -1,0 +1,6 @@
+Without memoization, the add-streams will navigate
+    (stream-cdr fibs)
+and 
+    fibs
+to add their members, but each element would be calculated again starting from 0 and 1 at the top of the stream.
+

@@ -1,0 +1,2 @@
+- if there is no local variable guesses, every time we have to calculate a new element of the stream we have to recreate one `sqrt-stream x` for each of the previous steps.
+- if we are comparing an implementation with the variables `guesses` but no memoization, and this version which recomputes `sqrt-stream x`, the efficiency would be similar because each `guesses` stream only has memory of the first element while all the other have to be recalculated on request.

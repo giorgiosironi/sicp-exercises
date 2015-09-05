@@ -1,0 +1,68 @@
+; library
+(define (monte-carlo trials experiment)
+  (define (iter trials-remaining trials-passed)
+    (cond ((= trials-remaining 0)
+           (cons trials-passed trials))
+          ((experiment)
+           (iter (- trials-remaining 1) (+ trials-passed 1)))
+          (else
+            (iter (- trials-remaining 1) trials-passed))))
+  (iter trials 0))
+(define (rectangle-area x1 x2 y1 y2)
+  (* (abs (- y2 y1))
+     (abs (- x2 x1))))
+(define (random-in-range low high)
+  (let ((range (- high low)))
+    (+ low (random range))))
+(define (display-line text)
+  (display text)
+  (newline))
+(define (display-stream s number-of-elements)
+  (if (> number-of-elements 0)
+      (if (empty-stream? s)
+          'finished
+          (begin (display-line (stream-car s))
+                 (display-stream (stream-cdr s) (- number-of-elements 1))))))
+; exercise
+(define (estimate-integral p x1 x2 y1 y2)
+  (define (in-proportion-to-rectangle monte-carlo-result)
+    (exact->inexact (* (rectangle-area x1 x2 y1 y2)
+                       monte-carlo-result)))
+  (define experiment
+    (lambda () 
+      (p (random-in-range x1 x2)
+         (random-in-range y1 y2))))
+  (define (make-trials passed total)
+    (cons passed total))
+  (define (proportion trials)
+    (/ (car trials)
+       (cdr trials)))
+  (define (merge trials another)
+    (cons (+ (car trials)
+             (car another))
+          (+ (cdr trials)
+             (cdr another))))
+  (define (re-estimate current-trials)
+    (let ((new-trials-set (monte-carlo 100 experiment)))
+      (merge current-trials
+             new-trials-set)))
+  (define trials-stream 
+    (cons-stream 
+      (re-estimate (make-trials 0 0))
+      (stream-map (lambda(trials) (re-estimate trials))
+                  trials-stream)))
+  (define output-stream
+    (stream-map (lambda(trials) (in-proportion-to-rectangle (proportion trials)))
+                trials-stream))
+  output-stream)
+; let's use 100 as a radius because our random-in-range produces
+; only integers
+(define (unit-circle x y)
+  (<= (+ (* x x)
+        (* y y))
+      10000))
+; exercise
+(newline)
+(display "Area of the circle with 100 radius: ")
+(display-stream (estimate-integral unit-circle -100 100 -100 100) 1000)
+(newline)

@@ -25,3 +25,7 @@
   (<= (+ (* x x)
         (* y y))
       10000))
+(newline)
+(display "Area of the circle with 100 radius: ")
+(display (estimate-integral unit-circle -100 100 -100 100 20000))
+(newline)

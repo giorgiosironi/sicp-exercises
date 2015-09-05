@@ -1,0 +1,53 @@
+; library
+(define (add-streams s1 s2)
+  (cons-stream (+ (stream-car s1)
+                  (stream-car s2))
+               (add-streams (stream-cdr s1)
+                               (stream-cdr s2))))
+(define (scale-stream s n)
+  (cons-stream (* (stream-car s)
+                  n)
+               (scale-stream (stream-cdr s)
+                             n)))
+(define (display-line text)
+  (display text)
+  (newline))
+(define (display-stream s number-of-elements)
+  (if (> number-of-elements 0)
+      (if (empty-stream? s)
+          'finished
+          (begin (display-line (stream-car s))
+                 (display-stream (stream-cdr s) (- number-of-elements 1))))))
+(define (rand-update x)
+    (let ((a (expt 2 32))
+                  (c 1103515245)
+                          (m 12345))
+          (modulo (+ (* a x) c) m)))
+(define random-init 137)
+; exercise
+(define input-requests (list->stream (list '(generate) '(generate) '(reset 42) '(generate) '(generate) '(reset 42) '(generate) '(generate) '(generate))))
+(define (generator input-requests)
+  (define (new-stream-from initial-value)
+    (define random-numbers
+      (cons-stream initial-value
+                   (stream-map rand-update random-numbers)))
+    random-numbers)
+  (define (output input-requests current-random)
+    (let ((command (stream-car input-requests)))
+      (let ((verb (car command)))
+        (cond ((eq? verb 'generate)
+               (cons-stream 
+                 (stream-car current-random)
+                 (output (stream-cdr input-requests)
+                         (stream-cdr current-random))))
+              ((eq? verb 'reset)
+               (let ((new-seed (cadr command)))
+                 (cons-stream 
+                   new-seed
+                   (output (stream-cdr input-requests)
+                           (stream-cdr (new-stream-from new-seed))))))
+              (else (error "Command not recognized -- GENERATOR" command))))))
+  (output input-requests (new-stream-from random-init)))
+(display-stream input-requests 8)        
+(display-stream (generator input-requests) 8)
+                    

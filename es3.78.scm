@@ -2,4 +2,5 @@
   (define dy (integral (delay ddy) dy0 dt))
   (define y (integral (delay dy) y0 dt))
   (define ddy (add-streams (scale-stream dy a)
-                           (scale-stream y b))))
+                           (scale-stream y b)))
+  y)

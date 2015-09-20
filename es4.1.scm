@@ -1,0 +1,32 @@
+; library, that as always we have to write ourselves because it's missing
+(define (no-operands? exps)
+  (null? exps))
+(define (first-operand exps)
+  (car exps))
+(define (rest-operands exps)
+  (cdr exps))
+; stubbing eval because we don't have a complete version yet
+(define (eval exp env)
+  (display exp)
+  (newline))
+; original version
+(define (list-of-values exps env)
+  (if (no-operands? exps)
+    '()
+    (cons (eval (first-operand exps) env)
+          (list-of-values (rest-operands exps) env))))
+; exercise
+(define (list-of-values-left-to-right exps env)
+  (if (no-operands? exps)
+    '()
+    (let ((left (eval (first-operand exps) env)))
+      (cons left
+            (list-of-values-left-to-right (rest-operands exps) env)))))
+(define (list-of-values-right-to-left exps env)
+  (if (no-operands? exps)
+    '()
+    (let ((right (list-of-values-right-to-left (rest-operands exps) env)))
+      (cons (eval (first-operand exps) env)
+            right))))
+(list-of-values-left-to-right '(1 2 3 4) '())
+(list-of-values-right-to-left '(1 2 3 4) '())

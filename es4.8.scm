@@ -34,9 +34,11 @@
 (define (make-define variable value)
   (list 'define variable value))
 (define (let->combination exp)
-  (make-application (make-lambda (let-vars exp)
-                                 (let-body exp))
-                    (let-exps exp)))
+  (if (= (length exp) 4)
+      (named-let->combination exp)
+      (make-application (make-lambda (let-vars exp)
+                                     (let-body exp))
+                        (let-exps exp))))
 (define (named-let->combination exp)
   (list 'begin
         (make-define 
@@ -46,5 +48,5 @@
         (make-application (named-let-name exp) (named-let-exps exp))))
 (display (let->combination '(let ((x 3) (y 2)) (+ x y))))
 (newline)
-(display (named-let->combination '(let factorial-iter ((input 6) (i 1) (result 1)) (if (> i input) result (factorial-iter input (+ i 1) (* i result))))))
+(display (let->combination '(let factorial-iter ((input 6) (i 1) (result 1)) (if (> i input) result (factorial-iter input (+ i 1) (* i result))))))
 (newline)

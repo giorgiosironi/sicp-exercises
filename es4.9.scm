@@ -6,6 +6,15 @@
   (cons proc parameters))
 (define (make-if predicate consequent alternative)
   (list 'if predicate consequent alternative))
+(define (make-let vars exps body)
+  (list 'let
+        (make-let-bindings vars exps)
+        body))
+(define (make-let-bindings vars exps)
+  (map (lambda (var exp)
+         (list var exp))
+       vars
+       exps))
 ; exercise
 (define for-cycle '(for i 1 10 (display i)))
 (define (for->combination exp)
@@ -23,9 +32,10 @@
         (lower-limit (caddr exp))
         (upper-limit (cadddr exp))
         (body (cddddr exp)))
-    (let ((step (make-step variable lower-limit upper-limit body)))
-      (make-application step
-                        (list lower-limit step)))))
+    (make-let '(step)
+              (list (make-step variable lower-limit upper-limit body))
+              (make-application 'step
+                                (list lower-limit 'step)))))
 (display (for->combination for-cycle))
 (newline)
 

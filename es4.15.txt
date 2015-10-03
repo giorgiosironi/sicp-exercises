@@ -1,0 +1,17 @@
+This procedure does not terminate:
+(define (run-forever) (run-forever))
+
+(define (try p)
+  (if (halts? p p)
+      (run-forever)
+      'halted))
+
+Let's evalute (try try).
+
+Case 1: it halts
+
+If (try try) halts, it means it's returning 'halted, which means the if condition is false. So (halts? try try) is false, which is a contradiction.
+
+Case 2: it does not halt
+
+If (try try) does not halt, it means it cannot return 'halted, which means the if condition must be true. So (halts? try try is true, which is a contradiction.

@@ -1,0 +1,4 @@
+Not very clear what code we are executing or what is the input, since the eval implementation is scattered throughout the chapter.
+I've found this explation of why Louis approach does not work:
+https://wizardbook.wordpress.com/2010/12/29/exercise-4-14/
+It seems that using the primitive map, we will pass '(primitive ...) which cannot be passed to it as it's not applicable to any argument. Everytime we have higher-order functions like map we cannot define them as just the primitives of the underlying Scheme as they will be passed tagged lists instead of something that can be applied.

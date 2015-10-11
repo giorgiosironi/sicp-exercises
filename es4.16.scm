@@ -37,3 +37,5 @@
       (let ((frame (first-frame env)))
         (scan (frame-bindings frame)))))
   (env-loop env))
+(define an-environment (extend-environment '(foo) '(*unassigned) the-empty-environment))
+

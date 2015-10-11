@@ -20,6 +20,15 @@
   (cons 'frame (map make-binding variables values)))
 (define (frame-bindings frame)
   (cdr frame))
+(define (make-let vars exps body)
+  (cons 'let
+        (cons (make-let-bindings vars exps)
+              body)))
+(define (make-let-bindings vars exps)
+  (map (lambda (var exp)
+         (list var exp))
+       vars
+       exps))
 ; exercise
 (define (lookup-variable-value var env)
   (define (env-loop env)
@@ -38,4 +47,39 @@
         (scan (frame-bindings frame)))))
   (env-loop env))
 (define an-environment (extend-environment '(foo) '(*unassigned) the-empty-environment))
-
+(define (scan-out-defines procedure-body)
+  (define (new-body names values remaining-body)
+    (make-let names 
+              (map (lambda (names) '*unassigned)
+                   names)
+              (append
+                (map (lambda (name value)
+                       (list 'set! name value))
+                     names
+                     values)
+                remaining-body)))
+  (define (iter-scan-out procedure-body names values executable-body)
+    (if (null? procedure-body)
+        (new-body names values executable-body)
+        (let ((expression (car procedure-body)))
+          (if (define? expression)
+              (iter-scan-out (cdr procedure-body)
+                             (cons (define-name expression)
+                                   names)
+                             (cons (define-value expression)
+                                   values)
+                             executable-body)
+              (iter-scan-out (cdr procedure-body)
+                             names
+                             values
+                             (append executable-body
+                                     (list expression)))))))
+  (iter-scan-out procedure-body '() '() '()))
+(define (define? expression)
+  (and (pair? expression)
+       (eq? 'define (car expression))))
+(define (define-name expression)
+  (cadr expression))
+(define (define-value expression)
+  (caddr expression))
+(define sample-body '((define u 41) (define v 42) 43))

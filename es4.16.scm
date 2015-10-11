@@ -83,3 +83,6 @@
 (define (define-value expression)
   (caddr expression))
 (define sample-body '((define u 41) (define v 42) 43))
+; I think make-procedure is better than procedure-body because this transformation is only performed once at compile-time
+(define (make-procedure parameters body env)
+  (list 'procedure parameters (scan-out-defines body) env))

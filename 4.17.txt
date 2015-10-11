@@ -1,0 +1,21 @@
+(lambda <vars>
+ (define u <e1>)
+ (define v <e2>)
+ <e3>)
+E0: the enclosing environment
+E1: the one created by calling this lambda
+
+(lambda <vars>
+ (let ((u '*unassigned*)
+       (v '*unassigned*))
+  (set! u <e1>)
+  (set! v <e2>)
+  <e3>))
+
+E0: the enclosing environment
+E1: the one created by calling this lambda
+E2: the one created by let, which is implemented as a lambda which is immediately called
+E2 is necessary in this implementation because otherwiser set! could overwrite variables inherited from E0 (we know E1 does not have these initializations.)
+
+A way to avoid the extra frame would be rewrite the lambda such as that it takes internal definitions variables names (such as u and v) and require them as parameters, but that would complicate each call made to the lambda.
+I've seen solutions online which consist of "just reorder and put defines as top" but that seems like cheating...

@@ -1,0 +1,19 @@
+(lambda <vars>
+ (define u <e1>)
+ (define v <e2>)
+ <e3>)
+E0: the environment in which it is called
+E1(extending E0): the environment of the lambda call
+
+(lambda <vars>
+ (let ((u '*unassigned*)
+       (v '*unassigned*))
+  (set! u <e1>)
+  (set! v <e2>)
+  <e3>))
+E0: the environment in which it is called
+E1(extending E0): the environment of the lambda call
+E2(extending E1): the environment of the lambda created by let
+
+Should not make a difference since all the variables are moved in E2 instead of E1, and all the code is moved there too.
+A way to implement simultaneouse scope rule could be hoisting the define calls at the top of procedure bodies...

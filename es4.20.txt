@@ -1,0 +1,13 @@
+With letrec:
+E0 is the global environment
+E1 is the environment created by the call to f
+E2 is the environment created by letrec (remember it's a lambda immediately called)
+even? and odd? are defined in E2 and overwriten with the two lambdas.
+When <rest of body of f> is evaluated, even? and odd? resolve each other by looking at E2.
+
+With let:
+E0 is the global environment
+E1 is the environment created by the call to f
+E2 is the environment created by let (remember it's a lambda immediately called)
+even? and odd? are defined in E1 as the parameters to the lambda that creates E2. They bind to E1 and cannot resolve each other there.
+When <rest of body of f> is evaluated, even? and odd? resolve each other still closing on E1 and mutual recursion breaks...

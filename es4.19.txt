@@ -1,0 +1,1 @@
+I support the viewpoint of Alyssa, which is what we just implemented. It is conservative as by changing the order of definitions we may change the behavior of the program, while Eva's behavior would force on us a particular behavior no matter how we order the defines of a and b.

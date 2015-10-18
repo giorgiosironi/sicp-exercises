@@ -1,0 +1,10 @@
+- For example, consider the common case (typical of procedure bodies) where the sequence has just one expression.  What work will the execution procedure produced by Alyssa's program do?
+It will perform analysis of the one expression that composes the procedure, and then execute it.
+
+- What about the execution procedure produced by the program in the text above?
+The one expression is analyzed at analysis time as you would expect.
+
+- How do the two versions compare for a sequence with two expressions?
+In the text version, analyze is mapped over all the expressions, so all the expressions in the sequence are actually analyzed at analysis time. All of them are a analyzed at execution time for Alyssa's version.
+
+Looking around in other solutions, I also saw that the overhead of sequencing (building a structure of lambdas in the 'sequentially procedure) is moved at analysis time in the text version.

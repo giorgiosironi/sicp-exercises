@@ -1,0 +1,3 @@
+factorial enters an infinite loop as all parameters to unless are evaluated before entering it.
+Therefore, every call (factorial n) generates another one to (factorial (- n 1)), with no end in sight.
+With normal order, this could work as the new call to factorial is not evaluated when n reaches 1.

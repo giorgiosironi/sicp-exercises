@@ -1,0 +1,22 @@
+; library
+(define (let-vars exp)
+  (map (lambda (binding) (car binding))
+       (cadr exp)))
+(define (let-exps exp)
+  (map (lambda (binding) (cadr binding))
+       (cadr exp)))
+(define (let-body exp)
+  (cddr exp))
+; exercise
+(define (letrec->let exp)
+  (append (list 'let
+                (map (lambda (var)
+                       (list var ''*unassigned*))
+                     (let-vars exp)))
+          (map (lambda (var exp)
+                 (list 'set! var exp))
+               (let-vars exp)
+               (let-exps exp))
+          (let-body exp)))
+(display (letrec->let '(letrec ((fact (lambda (n) (if (= n 1) 1 (* n (fact (- n 1))))))) (fact 10))))
+(newline)

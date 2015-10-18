@@ -1,0 +1,30 @@
+If they are scanned as shown in this exercise the resulting code is:
+(lambda <vars>
+ (let ((y '*unassigned*)
+       (dy '*unassigned*))
+  (let ((a (integral (delay dy) y0 dt))
+        (b (stream-map f y)))
+   (set! y a)
+   (set! dy b))
+  y))
+which is 
+(lambda <vars>
+ ((lambda (y dy) 
+    ((lambda (a b)
+      (set! y a)
+      (set! dy b)
+      y)
+       (integral (delay dy) y0 dt)
+       (b (stream-map f y)))
+    '*unassigned*
+    '*unassigned*)))
+Multiple environments E2 (containing y and dy) and E3 (containing a and b) are created. However, the arguments to the innermost lambda are evaluated in E2 where y and dy are still '*unassigned*, so I think this doesn't work as the mutual recursion is broken.
+
+If they are scanned out as shown in the previous text instead:
+(lambda <vars>
+ (let ((y '*unassigned*)
+       (dy '*unassigned*))
+  (set! y (integral (delay dy) y0 dt))
+  (set! dy (stream-map f y))
+  y))
+Let creates an additional environment E2 because a procedure is created with arguments y and dy. Since the assignments are inside the let, they will be put in the procedure body and correctly resolve y and dy referring them to the parameters that are passed in (initially as '*unassigned*).

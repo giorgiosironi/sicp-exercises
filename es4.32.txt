@@ -1,0 +1,2 @@
+Since the car of a pair is not evaluated immediately but is lazy, we can define many streams without actually computing anything:
+(define pi-approximations (cons (heavy-pi-approximation 1) (improve pi-approximations)))

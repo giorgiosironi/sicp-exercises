@@ -1,0 +1,23 @@
+Original eval-sequence:
+
+(define (eval-sequence exps env)
+  (cond ((last-exp? exps) (eval (first-exp exps) env))
+        (else (eval (first-exp exps) env)
+              (eval-sequence (rest-exps exps) env))))
+
+for-each:
+
+(define (for-each proc items)
+    (if (null? items) 'done
+        (begin (proc (car items))
+               (for-each proc (cdr items)))))
+
+a. It seems that each `(proc 57)` and similar calls are passed to eval, which will still execute the lambda body. What can happen is that if the lambda body returns a thunk, that will not be forced. So Ben is right on for-each.
+
+b. p1 is passed 1, and (set! ...) is evaluated so x becomes (1 2)
+p2 is passed 1, but (set! ...) is an argument to p so it's not executed immediately. However, inside p e is evaluated but not forced and remains a thunk. Therefore x remains just 1.
+With Cy's modifications the result is always (1 2) as thunks are forced more aggressively even if they are an intermediate step of p.
+
+c. In the case of part a, forcing the result of the lambda does not change anything: it does not even return a clear value, since display is the last statement.
+
+d. I think Cy's approach is adding much complexity and can introduce even further side-effects, so I would avoid adding this behavior to the interpreter.

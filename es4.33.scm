@@ -1,0 +1,12 @@
+(define (quote-unquote exp)
+  (cadr exp))
+(define (quoted-car seq)
+    (car (quote-unquote seq)))
+(define (quoted-cdr seq)
+  (list 'quote (cdr (quote-unquote seq))))
+(define (quoted->list quoted-list)
+  ; these internals should actually be different
+  (cons (quoted-car quoted-list)
+        (if (null? (quote-unquote (quoted-cdr quoted-list)))
+            '()
+            (quoted->list (quoted-cdr quoted-list)))))

@@ -1,0 +1,10 @@
+(define (if-greater-than-zero arg operator1 operator2)
+  (if (> arg 0)
+   operator1
+   operator2))
+
+(display ((if-greater-than-zero 42 + -)
+          6
+          2))
+; here `+` and `-` arguments of if-greater-than-zero and as such become thunks.
+; When they are returned by this procedure, they still are thunks but they must be forced to be correctly used in `apply`.

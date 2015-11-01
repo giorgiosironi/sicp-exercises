@@ -1,0 +1,18 @@
+(define count 0)
+(define (id x)
+  (set! count (+ count 1))
+  x)
+(define (square x)
+  (* x x))
+;;; L-Eval input:
+(square (id 10))
+;;; L-Eval value:
+100
+;;; L-Eval input:
+count
+;;; L-Eval value:
+; when square was evaluated, being a compound-procedure, (id 10) became a thunk and was passed in. There however it was evaluated as necessary to the evaluation of `*`.
+; in case memoization is present, (id 10) is evaluated only once and the interpreter behaves as the standard Scheme. The response is:
+1
+; in case memoization is not present, (id 10) will be evaluated twice, one for each usage. Therefore the response is;
+2

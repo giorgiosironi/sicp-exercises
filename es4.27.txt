@@ -1,0 +1,21 @@
+(define count 0)
+(define (id x)
+  (set! count (+ count 1))
+  x)
+
+(define w (id (id 10)))
+;;; L-Eval input:
+count
+;;; L-Eval value:
+; `w` has to be assigned the result of the outer `id` call, so `id` must be executed once. However its argument, the inner `id` call, is delayed as it is an argument of the application of a compound procedure.
+1
+;;; L-Eval input:
+w
+;;; L-Eval value:
+; showing `w` forces the evaluation of the inner `id`, which gives `10` as a result
+10
+;;; L-Eval input:
+count
+; now that both `id` have been evaluated, count has reached its maximum
+;;; L-Eval value:
+2

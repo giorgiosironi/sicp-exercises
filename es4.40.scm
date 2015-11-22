@@ -1,0 +1,22 @@
+; if there is no distinction restriction, there are 5^5=3125 possible combinations.
+; If there is a distinction restriction, the combinations become the permutations of 5 elements which are 5!=120
+(define (multiple-dwelling)
+  (let ((baker (amb 1 2 3 4 5)))
+    (require (not (= baker 5)))
+    (let ((cooper (amb 1 2 3 4 5)))
+      (require (not (= cooper 1)))
+      (let ((fletcher (amb 1 2 3 4 5)))
+        (require (not (= fletcher 5)))
+        (require (not (= fletcher 1)))
+        (require (not (= (abs (- fletcher cooper)) 1)))
+        (let ((miller (amb 1 2 3 4 5)))
+          (require (> miller cooper))
+          (let ((smith (amb 1 2 3 4 5)))
+            (require
+              (distinct? (list baker cooper fletcher miller smith)))
+            (require (not (= (abs (- smith fletcher)) 1)))
+            (list (list 'baker baker)
+                  (list 'cooper cooper)
+                  (list 'fletcher fletcher)
+                  (list 'miller miller)
+                  (list 'smith smith))))))))

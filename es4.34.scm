@@ -17,4 +17,4 @@
   (display ")")
   (newline))
 (display-list (lazy-cons 'a (lazy-cons 'b (lazy-cons 'c (lazy-cons 'd '())))))
-
+; however, distinguishing a lazy list from a simple lambda would require some tagging such as (list 'lazy-list ...)

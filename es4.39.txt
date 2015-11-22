@@ -1,0 +1,2 @@
+The order of the restrictions affects the time that it takes to reach an evaluation for a single 5-ple. For example, 'distinct? excludes a large number of candidate solutions with conflicting floors and therefore the other require do not need to be evaluted.
+On the other hand, all but 1 of the generated candidates do not satisfy all the conditions, and if execution time is dominated by generating all the possible alternatives then no matter how we exclude the candidates we still have to generate all the ones that come before the correct solution.

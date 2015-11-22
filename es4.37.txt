@@ -1,0 +1,1 @@
+Yes, it is more efficient since there is one fewer non-deterministic branch for k. Instead of choosing arbitrary values between j and high we zoom in on the candidate value calculated with the square root, considering it if it's an integer.

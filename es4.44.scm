@@ -1,0 +1,10 @@
+; see 2.42, this program cannot run anyway since we lack an interpreter supporting `amb`
+(define (queens board-size)
+  (define (queen-cols k)
+    (if (= k 0)
+      (list empty-board)
+      (let ((rest-of-queens (queen-cols (- k 1)))
+            (new-row (an-integer-between 1 board-size)))
+        (let ((positions (adjoin-position new-row k rest-of-queens)))
+          (require (safe? k positions))))))
+  (queen-cols board-size))

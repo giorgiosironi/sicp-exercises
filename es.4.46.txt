@@ -1,0 +1,15 @@
+'Lets look at parse-noun-phrase and parse-prepositional-phrase:
+(define (parse-prepositional-phrase)
+ (list 'prep-phrase
+  (parse-word prepositions)
+  (parse-noun-phrase)))
+
+(define (parse-noun-phrase)
+ (define (maybe-extend noun-phrase)
+  (amb noun-phrase
+   (maybe-extend (list 'noun-phrase
+                  noun-phrase
+                  (parse-prepositional-phrase)))))
+ (maybe-extend (parse-simple-noun-phrase)))
+
+It seems that is we evaluate the complex case first (right to left for example), there will be some changes to the *unparsed global variable that makes us lose possibilities when we backtrack (not clear to me if the rest of the variables outside of amb are restored).

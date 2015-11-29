@@ -1,0 +1,93 @@
+Here the professor is accompanied by the cat while lecturing to the student that is in the class.
+(sentence
+  (simple-noun-phrase (article the) (noun professor))
+  (verb-phrase
+    (verb-phrase
+      (verb lectures)
+      (prep-phrase (prep to)
+                   (noun-phrase
+                     (simple-noun-phrase
+                       (article the) (noun student))
+                     (prep-phrase (prep in)
+                                  (simple-noun-phrase
+                                    (article the) (noun class))))))
+    (prep-phrase (prep with)
+                 (simple-noun-phrase
+                   (article the) (noun cat)))))
+
+The student is lectured in the class containing the cat:
+(sentence
+  (simple-noun-phrase (article the) (noun professor))
+  (verb-phrase
+      (verb-phrase
+        (verb-phrase
+          (verb lectures)
+          (prep-phrase (prep to)
+                       (noun-phrase
+                         (simple-noun-phrase
+                           (article the) (noun student))))))
+      (prep-phrase (prep in)
+       (noun-phrase
+        (simple-noun-phrase
+         (article the) (noun class))
+        (prep-phrase (prep with)
+         (simple-noun-phrase
+          (article the) (noun cat)))))))
+
+Here the professor is accompanied by the cat while lecturing in the class. He is lecturing this student.
+(sentence
+  (simple-noun-phrase (article the) (noun professor))
+  (verb-phrase 
+    (verb-phrase
+      (verb-phrase
+        (verb-phrase
+          (verb lectures)
+          (prep-phrase (prep to)
+                       (noun-phrase
+                         (simple-noun-phrase
+                           (article the) (noun student))))))
+      (prep-phrase (prep in)
+       (noun-phrase
+        (simple-noun-phrase
+         (article the) (noun class)))))
+    (prep-phrase (prep with)
+     (simple-noun-phrase
+      (article the) (noun cat))))))
+The student chosen is the one in the class containing in the cat, that is, the class where the cat is sleeping there:
+(sentence
+  (simple-noun-phrase (article the) (noun professor))
+  (verb-phrase
+    (verb-phrase
+      (verb lectures)
+      (prep-phrase (prep to)
+                   (noun-phrase
+                     (simple-noun-phrase
+                       (article the) (noun student))
+                     (prep-phrase (prep in)
+                                  (noun-phrase
+                                    (simple-noun-phrase
+                                      (article the) (noun class))
+                                    (prep-phrase (prep with)
+                                      (simple-noun-phrase
+                                        (article the) (noun cat))))))))))
+
+The student chosen is the one in the class that owns the cat, only him.
+(sentence
+  (simple-noun-phrase (article the) (noun professor))
+  (verb-phrase
+    (verb-phrase
+      (verb lectures)
+      (prep-phrase (prep to)
+                   (noun-phrase
+                       (noun-phrase
+                         (simple-noun-phrase
+                           (article the) (noun student))
+                         (prep-phrase (prep in)
+                                      (noun-phrase
+                                        (simple-noun-phrase
+                                          (article the) (noun class)))))
+
+                       (prep-phrase (prep with)
+                         (simple-noun-phrase
+                           (article the) (noun cat))))))))
+

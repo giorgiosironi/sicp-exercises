@@ -1,0 +1,23 @@
+Before:
+(define (parse-verb-phrase)
+ (define (maybe-extend verb-phrase)
+  (amb verb-phrase
+       (maybe-extend (list 'verb-phrase
+                           verb-phrase
+                           (parse-prepositional-phrase)))))
+ (maybe-extend (parse-word verbs)))
+Proposed change:
+(define (parse-verb-phrase)
+ (amb (parse-word verbs)
+      (list 'verb-phrase
+            (parse-verb-phrase)
+            (parse-prepositional-phrase))))
+This doesn't work, I think, because (parse-word) is destructive and cannot be put inside amb in this way.
+The first case of amb would succeed, parsing (verb lectures), but then (parse-verb-phrase) in the second case would not find any remaining verb in the input and will fail.
+If we interchange the order of expressions:
+(define (parse-verb-phrase)
+ (amb (list 'verb-phrase
+            (parse-verb-phrase)
+            (parse-prepositional-phrase))
+      (parse-word verbs)))
+we may even get infinite recursion...

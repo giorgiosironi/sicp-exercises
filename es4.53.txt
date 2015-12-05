@@ -1,0 +1,4 @@
+First selected pair is 1, 20 which gives 21, it is not prime. However prime-sum-pair goes on backtracking inside itself until it produces all the pairs that are prime: <3, 20>, ...
+When the prime sum pairs are exhausted and the two ambs of the two lists are empty, former fails and we have to evaluate latter.
+Latter however is (amb) that always fails, so we have to backtrack and finish. 
+pairs then contains the various couples of numbers satisfying the prime sum condition.

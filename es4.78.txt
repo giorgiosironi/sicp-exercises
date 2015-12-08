@@ -1,0 +1,6 @@
+Example: when database is traversed, we can pick up the possible rules with amb:
+(define (find-assertions pattern frame)
+  (let ((datum (amb . (fetch-assertions pattern frame))))
+    (check-an-assertion datum pattern frame)))
+There are differences in behavior, for example in case of infinite loops as each time a new abd value is produced we will get the option to terminate.
+Also it's not clear to me if every new value of amb expressions will trigger new solutions. It's perfectly possible that it takes many different try-again calls to actually produce a new result as most of the values are discarded: amd values correspond loosely to frames, not solutions.

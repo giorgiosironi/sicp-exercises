@@ -1,0 +1,8 @@
+Text of the exercise: "This problem is open-ended. A good answer is probably worth a Ph.D."
+So I'm going to just describe what could be done for using environments:
+- rename-variables-in-rule must be removed, of course
+- frames should probably be built hierarchically like it's done for Scheme environments
+- qeval should call some version of apply like for procedures, instead of being told to just eval (rule-body clean-rule)
+- this (apply-rule) should create the new environment
+- it is normal that the topmost environments vanish when finished evaluating, as the rule applications can be considered encapsulated
+- however the values assigned to some of the variables (the ones belonging to the conclusion of the rule) must rise as they will be part of the solutions presented to the user. This seems to be inconsistent with Scheme environments as shadowing the external environments with new values does not propagate the new values back...

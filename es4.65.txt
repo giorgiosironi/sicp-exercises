@@ -1,0 +1,2 @@
+There are multiple possible frames that make us arrive at this conclusion - we assign different values to ?middle-manager and ?x that all lead to the same wheel.
+This is especially true if the wheel is the (albeit indirect) supervisor of many people.

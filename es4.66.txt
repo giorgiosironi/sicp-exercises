@@ -1,0 +1,2 @@
+Ben has realized that if results are returned multiple times, summing the values of ?amount in the results frames is going to count each repeated person multiple times in the total.
+To avoid this problem, Ben must select only distinct frame values from the result, but I don't know if this can be done in general.

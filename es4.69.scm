@@ -1,0 +1,10 @@
+; ((great grandson) Adam Irad)
+; given (rule (grandson ?a ?b) ...)
+(rule (ending-in-grandson (grandson)))
+(rule (ending-in-grandson (?a . ?b))
+      (ending-in-grandson ?b))
+(rule ((great . ?rel) ?x ?y)
+      (and (ending-in-grandson ?rel)
+           (son ?father-of-y ?y)
+           (?rel ?x ?father-of-y)))
+

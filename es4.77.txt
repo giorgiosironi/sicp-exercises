@@ -1,0 +1,30 @@
+The frame must become a data structure containing:
+- a list of bindings
+- a list of filters
+Each of the filter has to model:
+- the variables it needs
+- a lambda accepting one value for each of the variables
+Whenever the frame is extended (`extend` primitive), it should check if there are promised filters that can now be solved, and call them.
+If these filters evaluate to true, the frame can continue to be considered and extend returns the new frame with the additional variable.
+If one of these filters evaluated to false, extend should return 'failed which will make the other primitives discard the new frame.
+(define the-empty-frame '(frame () ()))
+(define (frame-bindings frame)
+  (cadr frame))
+(define (frame-filters frame)
+  (caddr frame))
+Preserve immutability:
+(define (add-binding binding frame)
+  (list 'frame (cons binding (frame-bindings frame)) (frame-filters frame)))
+(define (first-filter frame)
+  (car (frame-filters frame)))
+(define (drop-first-filter frame)
+  (list 'frame (frame-bindings frame) (cdr (frame-filters frame))))
+(define (extend var val frame)
+  (check-frame (add-binding (make-binding variable value) frame)))
+(define (check-frame frame)
+  (if (null? (frame-filters frame))
+      frame
+      (let ((filter (car (frame-filters frame))))
+        (if (not (evaluate-filter filter (frame-bindings frame)))
+            'failed
+            (check-frame (drop-first-filter frame))))))

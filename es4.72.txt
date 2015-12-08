@@ -1,0 +1,1 @@
+Interleaving corresponds to a breadth-first search into the possible streams, so if there are infinite loops or very long exploration paths in some of the stream we can avoid delving too deep into them and get results from the other branches sooner.

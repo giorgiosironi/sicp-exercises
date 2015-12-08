@@ -1,0 +1,8 @@
+(and (supervisor ?p (Bitdiddle Ben))
+     (address ?p ?a))
+(and (salary (Bitdiddle Ben) ?maximum-salary)
+     (salary ?p ?s)
+     (lisp-value < ?s ?maximum-salary))
+(and (supervisor ?p ?s)
+     (job ?s ?sj)
+     (not (job ?s (computer . ?j))))

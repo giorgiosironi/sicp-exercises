@@ -1,0 +1,7 @@
+The frame containing the intermediate results should contain:
+- variable assignments (to values or other variables/patterns)
+- a list of all rules currently evaluated
+However, some rules are recursive so just including an identity of the rule is going to remove power from the evaluator. So we must include a data structure containing:
+- the rule
+- the binding that have been made in the rule conclusion
+If we find duplicates in this list in the frame, we know we are in an infinite loop and can stop.

@@ -1,0 +1,30 @@
+It's an iterative process so at least we need one register for each of the state variables:
+- product
+- counter
+Moreover n is an input and should be in a register too.
+We need a test for (> counter n).
+
+Data path:
+              <--------------------|
+                                   |
+        1-->          1-->         |
+n         counter        product   |
+|____o_______|             |    ^  |
+     <       |______\/_____|    |  |
+             |      |           |  |
+           +1\/     |           |  |
+             |______t___________|__|
+
+Controller diagram:
+
+- start
+- counter=1
+- product=1
+- A test: (> counter n)
+-- yes: done
+-- no:
+--- (* counter product) -> t
+--- t -> product
+--- (+ 1 counter -> t)
+--- t -> counter
+--- go to A test

@@ -1,0 +1,14 @@
+- register machine
+-- data paths
+--- fixed set of registers
+--- operations on those registers using them as input/output
+--- only a single output register for each step
+-- controller
+- data-path diagram
+-- rectangles: registers
+-- trapezoids: operations (one output arrow)
+-- circles: tests (no output arrows)
+-- x: switches
+- controller diagram
+-- rectangle: switch to activate
+-- diamond: decision

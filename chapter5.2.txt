@@ -1,0 +1,5 @@
+building a simulator
+(make-machine <register-names> <operations> <controller>)
+(set-register-contents! <machine-model> <register-name> <value>)
+(get-register-contents <machine-model> <register-name>)
+(start <machine-model>)

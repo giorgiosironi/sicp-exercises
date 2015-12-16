@@ -1,7 +1,7 @@
 (load "chapter5.2.scm")
 (define ambiguous-code
   '(start
-    (goto (label here)e
+    (goto (label here))
     here
     (assign a (const 3))
     (goto (label there))

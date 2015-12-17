@@ -1,3 +1,8 @@
+; from rest of the book
+(define (tagged-list? exp tag)
+  (if (pair? exp)
+      (eq? (car exp) tag)
+      #f))
 ; make-machine facade
 (define (make-machine register-names ops controller-text)
   (let ((machine (make-new-machine)))

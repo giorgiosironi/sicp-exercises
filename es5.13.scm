@@ -1,0 +1,92 @@
+; from es5.6
+(define fibonacci-controller
+  '((assign continue (label fib-done))
+    fib-loop
+      (test (op <) (reg n) (const 2))
+      (branch (label immediate-answer))
+      (save continue)
+      (assign continue (label afterfib-n-1))
+      (save n)
+      (assign n (op -) (reg n) (const 1))
+      (goto (label fib-loop))
+    afterfib-n-1
+      (restore n)
+      ; this one
+      (restore continue)
+      (assign n (op -) (reg n) (const 2))
+      ; is offset by this one, I'm a compiler optimizer and I will delete them
+      (save continue)
+      (assign continue (label afterfib-n-2))
+      (save val)
+      (goto (label fib-loop))
+    afterfib-n-2
+      (assign n (reg val))
+      (restore val)
+      (restore continue)
+      (assign val (op +) (reg val) (reg n)) ; Fib(n - 1) + Fib(n - 2)
+      (goto (reg continue))
+    immediate-answer
+      (assign val (reg n))
+      (goto (reg continue))
+    fib-done))
+; duplicate here all the necessary code
+(load "chapter5.2.scm")
+; make-machine does not call allocate-register
+(define (make-machine ops controller-text)
+  (let ((machine (make-new-machine)))
+    (for-each (lambda (register-name)
+                ((machine 'allocate-register) register-name))
+              (register-names-from-controller-text controller-text))
+    ((machine 'install-operations) ops)
+    ((machine 'install-instruction-sequence)
+     (assemble controller-text machine))
+    machine))
+(define (register-names-from-controller-text controller-text)
+  (define (operation inst)
+    (car inst))
+  (define (operand inst)
+    (cadr inst))
+  (define (extract-assigned-to inst)
+    (if (eq? 'assign
+             (operation inst))
+        (list (operand inst))
+        '()))
+  (define (extract-stack inst)
+    (let ((operation-name (operation inst)))
+      (if (or (eq? 'save
+                   (operation inst))
+              (eq? 'restore
+                   (operation inst)))
+          (list (operand inst))
+          '())))
+  (define (extract-reg-arguments inst)
+    (define (reg? argument)
+      (and (pair? argument)
+           (eq? 'reg (car argument))))
+    (define (reg-name argument)
+      (cadr argument))
+    (let ((arguments (cdr inst)))
+      (map reg-name (filter reg? arguments))))
+  (define (label? inst)
+    (not (pair? inst)))
+  (define (flatten list)
+    (reduce append '() list))
+  (define (extract-register-names-from-instruction inst)
+    (if (label? inst)
+        '()
+        (append (extract-assigned-to inst)
+                (extract-stack inst)
+                (extract-reg-arguments inst))))
+  (delete-duplicates (flatten (map extract-register-names-from-instruction
+                                            controller-text))))
+(define fibonacci-machine
+  (make-machine (list (list '+ +)
+                      (list '- -)
+                      (list '< <))
+                fibonacci-controller))
+
+; registers are dispatching procedures
+(display ((fibonacci-machine 'get-register) 'val))
+(newline)
+(display ((fibonacci-machine 'get-register) 'n))
+(newline)

@@ -4,7 +4,7 @@
         (flag (make-register 'flag))
         (stack (make-stack))
         (the-instruction-sequence '())
-        (instruction-count 0))
+        (instruction-tracing #f))
     (let ((the-ops
             (list (list 'initialize-stack
                         (lambda () (stack 'initialize)))
@@ -29,7 +29,10 @@
           (if (null? insts)
             'done
             (begin
-              (set! instruction-count (+ instruction-count 1))
+              (if instruction-tracing
+                  (begin (display (car (car insts)))
+                         (newline))
+                  'nothing)
               ((instruction-execution-proc (car insts)))
               (execute)))))
       (define (dispatch message)
@@ -44,8 +47,8 @@
                (lambda (ops) (set! the-ops (append the-ops ops))))
               ((eq? message 'stack) stack)
               ((eq? message 'operations) the-ops)
-              ((eq? message 'instruction-count-get) instruction-count)
-              ((eq? message 'instruction-count-reset) (set! instruction-count 0))
+              ((eq? message 'instruction-tracing-on) (set! instruction-tracing #t))
+              ((eq? message 'instruction-tracing-off) (set! instruction-tracing #f))
               (else (error "Unknown request -- MACHINE" message))))
       dispatch)))
 ; inputs
@@ -79,14 +82,11 @@
                                         factorial-controller))
 (set-register-contents! factorial-machine 'n 6)
 (start factorial-machine)
-(display (factorial-machine 'instruction-count-get))
-(newline)
 
-(factorial-machine 'instruction-count-reset)
-(display (factorial-machine 'instruction-count-get))
-(newline)
-
+(factorial-machine 'instruction-tracing-on)
 (set-register-contents! factorial-machine 'n 6)
 (start factorial-machine)
-(display (factorial-machine 'instruction-count-get))
-(newline)
+
+(set-register-contents! factorial-machine 'n 6)
+(factorial-machine 'instruction-tracing-off)
+(start factorial-machine)

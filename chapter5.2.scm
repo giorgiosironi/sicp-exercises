@@ -112,7 +112,8 @@
                     insts)))
 ;; instruction data structure
 (define (make-instruction text)
-  (cons text '()))(define (instruction-text inst)
+  (cons text '()))
+(define (instruction-text inst)
   (car inst))
 (define (instruction-execution-proc inst)
   (cdr inst))
@@ -134,10 +135,15 @@
                     (lambda (insts labels)
                       (let ((next-inst (car text)))
                         (if (symbol? next-inst)
+                          ; case of a label
+                          ; insts remain the same
                           (receive insts
+                                   ; label entry points to insts, which is the
+                                   ; list of following instructions
                                    (cons (make-label-entry next-inst
                                                            insts)
                                          labels))
+                          ; case of an instruction
                           (receive (cons (make-instruction next-inst)
                                          insts)
                                    labels)))))))

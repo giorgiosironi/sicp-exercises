@@ -84,6 +84,8 @@
                  (set! breakpoints
                        (cons (make-breakpoint label n)
                              breakpoints))))
+              ((eq? message 'cancel-all-breakpoints)
+               (set! breakpoints '()))
               (else (error "Unknown request -- MACHINE" message))))
       dispatch)))
 (define (extract-labels text receive)
@@ -132,6 +134,8 @@
   ((machine 'set-breakpoint) label n))
 (define (proceed-machine machine)
   (machine 'proceed))
+(define (cancel-all-breakpoints machine)
+  (machine 'cancel-all-breakpoints))
 ; inputs
 (define factorial-controller
   '((assign continue (label fact-done))
@@ -165,11 +169,19 @@
 
 (set-breakpoint factorial-machine 'base-case 2)
 (set-register-contents! factorial-machine 'n 6)
+(display "Will stop at the breakpoint: ")
+(newline)
 (start factorial-machine)
-; multiples factorial by 10
+(display "Factorial is multipled by 10")
+(newline)
 (set-register-contents! factorial-machine 'val 10)
 (proceed-machine factorial-machine)
 (display (get-register-contents factorial-machine 'val))
 (newline)
-; (cancel-breakpoint ...)
-; (cancel-all-breakpoints ...)
+(display "Canceling breakpoints leads to new uninterrupted executions")
+(newline)
+(cancel-all-breakpoints factorial-machine)
+(set-register-contents! factorial-machine 'n 5)
+(start factorial-machine)
+(display (get-register-contents factorial-machine 'val))
+(newline)

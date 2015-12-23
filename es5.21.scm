@@ -60,3 +60,57 @@
 (display "Counted leaves: ")
 (display (get-register-contents count-leaves-machine 'val))
 (newline)
+
+(define count-leaves-iter-controller
+  '((assign n (const 0))
+    (assign continue (label end-machine))
+    count-iter
+    (test (op null?) (reg tree))
+    (branch (label n))
+    (assign test (op pair?) (reg tree))
+    (test (op not) (reg test))
+    (branch (label n-plus-1))
+    (goto (label else))
+    n
+    (assign val (reg n))
+    (goto (label end-count-iter))
+    n-plus-1
+    (assign val (op +) (const 1) (reg n))
+    (goto (label end-count-iter))
+    else
+    (save tree)
+    (save val)
+    (assign tree (op car) (reg tree))
+    (save continue)
+    (assign continue (label else-after-recursive-call))
+    (goto (label count-iter))
+    else-after-recursive-call
+    (restore continue)
+    (assign n (reg val))
+    (restore val)
+    (restore tree)
+    (assign tree (op cdr) (reg tree))
+    (goto (label count-iter))
+    end-count-iter
+    (goto (reg continue))
+    end-machine))
+
+(define count-leaves-iter-machine (make-machine '(test tree n val continue)
+                                                (list (list '+ +)
+                                                      (list 'car car)
+                                                      (list 'cdr cdr)
+                                                      (list 'pair? pair?)
+                                                      (list 'null? null?)
+                                                      (list 'true? (lambda (x) x))
+                                                      (list 'not not)
+                                                      (list 'dump
+                                                            (lambda (x)
+                                                              (display x)
+                                                              (newline))))
+                                                count-leaves-iter-controller))
+(define tree (cons (cons 1 2) (cons 3 (cons 4 5))))
+(set-register-contents! count-leaves-iter-machine 'tree tree)
+(start count-leaves-iter-machine)
+(display "Counted leaves: ")
+(display (get-register-contents count-leaves-iter-machine 'val))
+(newline)

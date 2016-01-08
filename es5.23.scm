@@ -1,0 +1,18 @@
+(load "chapter5.2.scm")
+(load "chapter5.4.scm")
+(define evaluation-machine (make-machine '(exp env val unev argl continue)
+                                     (list (list 'self-evaluating? self-evaluating?)
+                                           (list 'variable? variable?)
+                                           (list 'quoted? quoted?)
+                                           (list 'assignment? assignment?)
+                                           ; add everything missing...
+                                           (list 'dump
+                                                 (lambda (x)
+                                                   (display x)
+                                                   (newline))))
+                                     explicit-control-evaluator))
+(set-register-contents! evaluation-machine 'exp '(+ 2 3))
+(start evaluation-machine)
+(display "Evaluation result: ")
+(display (get-register-contents append!-machine 'val))
+(newline)

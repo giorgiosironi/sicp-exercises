@@ -84,7 +84,7 @@
   (analyze-application (make-application (make-lambda (let-vars exp)
                                                       (let-body exp))
                                          (let-exps exp))))
-(display 
-  ((let->combination '(let ((x 3) (y 2)) (+ x y)))
-   '()))
-(newline)
+;(display 
+;  ((let->combination '(let ((x 3) (y 2)) (+ x y)))
+;   '()))
+;(newline)

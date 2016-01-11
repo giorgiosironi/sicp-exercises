@@ -43,8 +43,10 @@
             (else (scan (cdr bindings)))))
     (if (eq? env the-empty-environment)
       (error "Unbound variable" var)
-      (let ((frame (first-frame env)))
-        (scan (frame-bindings frame)))))
+      (begin 
+        (display "Env: ") (display env) (newline)
+        (let ((frame (first-frame env)))
+          (scan (frame-bindings frame))))))
   (env-loop env))
 (define an-environment (extend-environment '(foo) '(*unassigned) the-empty-environment))
 (define (scan-out-defines procedure-body)

@@ -158,7 +158,8 @@
     (save env)
     (save continue)
     (assign continue (label ev-assignment-1))
-    (goto (label eval-dispatch)) ; evaluate the assignment valueev-assignment-1
+    (goto (label eval-dispatch)) ; evaluate the assignment value
+    ev-assignment-1
     (restore continue)
     (restore env)
     (restore unev)
@@ -183,7 +184,29 @@
     (op define-variable!) (reg unev) (reg val) (reg env))
     (assign val (const ok))
     (goto (reg continue))
-
+    read-eval-print-loop
+    (perform (op initialize-stack))
+    (perform
+      (op prompt-for-input) (const ";;; EC-Eval input:"))
+    (assign exp (op read))
+    (assign env (op get-global-environment))
+    (assign continue (label print-result))
+    (goto (label eval-dispatch))
+    print-result
+    (perform
+      (op announce-output) (const ";;; EC-Eval value:"))
+    (perform (op user-print) (reg val))
+    (goto (label read-eval-print-loop))
+    unknown-expression-type
+    (assign val (const unknown-expression-type-error))
+    (goto (label signal-error))
+    unknown-procedure-type
+    (restore continue) ; clean up stack (from apply-dispatch)
+    (assign val (const unknown-procedure-type-error))
+    (goto (label signal-error))
+    signal-error
+    (perform (op user-print) (reg val))
+    (goto (label read-eval-print-loop))
     ))
 (define (self-evaluating? exp)
   (cond ((number? exp) true)
@@ -254,3 +277,64 @@
   (first-operand ops) (car ops))
 (define
   (rest-operands ops) (cdr ops))
+; from fucking footnotes
+(define (empty-arglist) '())
+(define (adjoin-arg arg arglist)
+  (append arglist (list arg)))
+; We also use an additional syntax procedure to test for the last operand in a combination:
+(define (last-operand? ops)(null? (cdr ops)))
+; primitive procedures
+(define apply-in-underlying-scheme apply)
+(define (primitive-implementation proc) (cadr proc))
+(define (apply-primitive-procedure proc args)
+  (apply-in-underlying-scheme
+    (primitive-implementation proc) args))
+; from previous chapter 4
+(define (user-print object)
+  (if (compound-procedure? object)
+    (display (list 'compound-procedure
+                   (procedure-parameters object)
+                   (procedure-body object)
+                   '<procedure-env>))
+    (display object)))
+(define input-prompt ";;; M-Eval input:")
+(define output-prompt ";;; M-Eval value:")
+(define (driver-loop)
+  (prompt-for-input input-prompt)
+  (let ((input (read)))
+    (let ((output (eval input the-global-environment)))
+      (announce-output output-prompt)
+      (user-print output)))
+  (driver-loop))
+(define (prompt-for-input string)
+  (newline) (newline) (display string) (newline))
+(define (announce-output string)
+  (newline) (display string) (newline))
+; environment-related missing procedures
+(define primitive-procedures
+  (list (list 'car car)
+        (list 'cdr cdr)
+        (list 'cons cons)
+        (list 'null? null?)
+        (list '+ +)
+        ))
+(define (primitive-procedure? proc)
+  (tagged-list? proc 'primitive))
+(define (primitive-implementation proc) (cadr proc))
+(define (primitive-procedure-names)
+  (map car
+       primitive-procedures))
+(define (primitive-procedure-objects)
+  (map (lambda (proc) (list 'primitive (cadr proc)))
+       primitive-procedures))
+(define (get-global-environment)
+  the-global-environment)
+(define (setup-environment)
+  (let ((initial-env
+          (extend-environment (primitive-procedure-names)
+                              (primitive-procedure-objects)
+                              the-empty-environment)))
+    (define-variable! 'true true initial-env)
+    (define-variable! 'false false initial-env)
+    initial-env))
+(define the-global-environment (setup-environment))

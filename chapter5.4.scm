@@ -1,3 +1,7 @@
+(load "es4.5.scm")
+(load "es4.13.scm")
+(load "es4.22.scm")
+(load "chapter5.2.scm")
 (define explicit-control-evaluator '(
     read-eval-print-loop
     (perform (op initialize-stack))
@@ -24,6 +28,9 @@
     (branch (label ev-lambda))
     (test (op begin?) (reg exp))
     (branch (label ev-begin))
+    ; label to target for patching in derived expressions
+    extensions
+   (perform (op dump) (reg exp))
     (test (op application?) (reg exp))
     (branch (label ev-application))
     (goto (label unknown-expression-type))
@@ -170,8 +177,7 @@
     (restore continue)
     (restore env)
     (restore unev)
-    (perform
-    (op set-variable-value!) (reg unev) (reg val) (reg env))
+    (perform (op set-variable-value!) (reg unev) (reg val) (reg env))
     (assign val (const ok))
     (goto (reg continue))
     ; definitions are very similarly put into the current environment
@@ -187,13 +193,11 @@
     (restore continue)
     (restore env)
     (restore unev)
-    (perform
-    (op define-variable!) (reg unev) (reg val) (reg env))
+    (perform (op define-variable!) (reg unev) (reg val) (reg env))
     (assign val (const ok))
     (goto (reg continue))
     print-result
-    (perform
-      (op announce-output) (const ";;; EC-Eval value:"))
+    (perform (op announce-output) (const ";;; EC-Eval value:"))
     (perform (op user-print) (reg val))
     (goto (label read-eval-print-loop))
     unknown-expression-type
@@ -337,3 +341,78 @@
     (define-variable! 'false false initial-env)
     initial-env))
 (define the-global-environment (setup-environment))
+
+(define machine-operations
+  (list (list 'self-evaluating? self-evaluating?)
+        (list 'variable? variable?)
+        (list 'quoted? quoted?)
+        (list 'assignment? assignment?)
+        (list 'definition? definition?)
+        (list 'if? if?)
+        (list 'lambda? lambda?)
+        (list 'begin? begin?)
+        (list 'application? application?)
+        (list 'lookup-variable-value lookup-variable-value)
+        (list 'text-of-quotation text-of-quotation)
+        (list 'lambda-parameters lambda-parameters)
+        (list 'lambda-body lambda-body)
+        (list 'make-procedure make-procedure)
+        (list 'operands operands)
+        (list 'operator operator)
+        (list 'empty-arglist empty-arglist)
+        (list 'no-operands? no-operands?)
+        (list 'first-operand first-operand)
+        (list 'last-operand? last-operand?)
+        (list 'rest-operands rest-operands)
+        (list 'adjoin-arg adjoin-arg)
+        (list 'primitive-procedure? primitive-procedure?)
+        (list 'compound-procedure? compound-procedure?)
+        (list 'apply-primitive-procedure apply-primitive-procedure)
+        (list 'procedure-parameters procedure-parameters)
+        (list 'procedure-environment procedure-environment)
+        (list 'procedure-body procedure-body)
+        (list 'extend-environment extend-environment)
+        (list 'begin-actions begin-actions)
+        (list 'first-exp first-exp)
+        (list 'last-exp? last-exp?)
+        (list 'rest-exps rest-exps)
+        (list 'if-predicate if-predicate)
+        (list 'true? true?)
+        (list 'if-alternative if-alternative)
+        (list 'if-consequent if-consequent)
+        (list 'assignment-variable assignment-variable)
+        (list 'assignment-value assignment-value)
+        (list 'set-variable-value! set-variable-value!)
+        (list 'definition-variable definition-variable)
+        (list 'definition-value definition-value)
+        (list 'define-variable! define-variable!)
+        (list 'user-print user-print)
+        (list 'prompt-for-input prompt-for-input)
+        (list 'read read)
+        (list 'get-global-environment get-global-environment)
+        (list 'announce-output announce-output)
+        (list 'primitive-procedures primitive-procedures)
+        ; add everything missing...
+        (list 'dump
+              (lambda (x)
+                (display x)
+                (newline)))))
+(define eceval (make-machine '(exp env val proc argl continue unev)
+                             machine-operations
+                             explicit-control-evaluator))
+
+(define (apply-patch original-evaluator instructions after-label)
+  (if (null? instructions)
+      (error "Didn't find the label -- APPLY-PATCH" after-label)
+      (if (eq? (car original-evaluator)
+               after-label)
+          (set-cdr! original-evaluator
+                    (append instructions
+                            (cdr original-evaluator)))
+          (apply-patch (cdr original-evaluator)
+                       instructions
+                       after-label))))
+(define (add-operation name proc)
+  (set! machine-operations
+        (cons (list name proc)
+              machine-operations)))

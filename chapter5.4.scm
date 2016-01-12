@@ -1,4 +1,11 @@
 (define explicit-control-evaluator '(
+    read-eval-print-loop
+    (perform (op initialize-stack))
+    (perform (op prompt-for-input) (const ";;; EC-Eval input:"))
+    (assign exp (op read))
+    (assign env (op get-global-environment))
+    (assign continue (label print-result))
+    (goto (label eval-dispatch))
     ; eval starts with a case analysis on the type of the expression
     eval-dispatch
     (test (op self-evaluating?) (reg exp))
@@ -184,14 +191,6 @@
     (op define-variable!) (reg unev) (reg val) (reg env))
     (assign val (const ok))
     (goto (reg continue))
-    read-eval-print-loop
-    (perform (op initialize-stack))
-    (perform
-      (op prompt-for-input) (const ";;; EC-Eval input:"))
-    (assign exp (op read))
-    (assign env (op get-global-environment))
-    (assign continue (label print-result))
-    (goto (label eval-dispatch))
     print-result
     (perform
       (op announce-output) (const ";;; EC-Eval value:"))

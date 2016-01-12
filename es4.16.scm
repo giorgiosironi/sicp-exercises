@@ -46,7 +46,9 @@
       (begin 
         (display "Env: ") (display env) (newline)
         (let ((frame (first-frame env)))
+          (display "Frame: ") (display frame) (newline)
           (scan (frame-bindings frame))))))
+  (display "Lookup: ") (display var) (newline)
   (env-loop env))
 (define an-environment (extend-environment '(foo) '(*unassigned) the-empty-environment))
 (define (scan-out-defines procedure-body)

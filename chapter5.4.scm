@@ -401,17 +401,22 @@
                              machine-operations
                              explicit-control-evaluator))
 
-(define (apply-patch original-evaluator instructions after-label)
-  (if (null? instructions)
-      (error "Didn't find the label -- APPLY-PATCH" after-label)
-      (if (eq? (car original-evaluator)
-               after-label)
-          (set-cdr! original-evaluator
-                    (append instructions
-                            (cdr original-evaluator)))
-          (apply-patch (cdr original-evaluator)
-                       instructions
-                       after-label))))
+(define (apply-patch instructions after-label)
+  (define (modify-original-evaluator! original-evaluator instructions after-label)
+    (if (null? instructions)
+        (error "Didn't find the label -- APPLY-PATCH" after-label)
+        (if (eq? (car original-evaluator)
+                 after-label)
+            (set-cdr! original-evaluator
+                      (append instructions
+                              (cdr original-evaluator)))
+            (modify-original-evaluator! (cdr original-evaluator)
+                                        instructions
+                                        after-label))))
+  (modify-original-evaluator! explicit-control-evaluator instructions after-label)
+  (set! eceval (make-machine '(exp env val proc argl continue unev)
+                             machine-operations
+                             explicit-control-evaluator)))
 (define (add-operation name proc)
   (set! machine-operations
         (cons (list name proc)

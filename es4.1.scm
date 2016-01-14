@@ -28,5 +28,5 @@
     (let ((right (list-of-values-right-to-left (rest-operands exps) env)))
       (cons (eval (first-operand exps) env)
             right))))
-(list-of-values-left-to-right '(1 2 3 4) '())
-(list-of-values-right-to-left '(1 2 3 4) '())
+;(list-of-values-left-to-right '(1 2 3 4) '())
+;(list-of-values-right-to-left '(1 2 3 4) '())

@@ -66,10 +66,17 @@
     ev-appl-did-operator
     (restore unev) ; the operands
     (restore env)
-    (assign argl (op empty-arglist))
     (assign proc (reg val)) ; the operator
+    ;; try to keep strict evaluation working for primitive procedures,
+    ;; when that has been moved we can try working on normal order
+    ;; for compound procedures
+    ;; not doing anything to operands in this phase, we don't know the order
+    (goto (label apply-dispatch))
+    ; this has become a subroutine which will go to (reg continue) at the end
+    strict-evaluation-of-operands
+    (assign argl (op empty-arglist))
     (test (op no-operands?) (reg unev))
-    (branch (label apply-dispatch))
+    (branch (label no-operands))
     (save proc)
     ; cycle of the argument-evaluation loop
     ev-appl-operand-loop
@@ -99,7 +106,8 @@
     (restore argl)
     (assign argl (op adjoin-arg) (reg val) (reg argl))
     (restore proc)
-    (goto (label apply-dispatch))
+    no-operands
+    (goto (label primitive-operands-evaluated))
     ; apply procedure of the metacircular evaluator:
     ; choose between primitive or user-defined procedure
     apply-dispatch
@@ -110,11 +118,15 @@
     (goto (label unknown-procedure-type))
     ; let's apply a primitive operator such as +
     primitive-apply
+    ; here we have to evaluate the operands, if there are any
+    (goto (label strict-evaluation-of-operands))
+    primitive-operands-evaluated
     (assign val (op apply-primitive-procedure) (reg proc) (reg argl))
     (restore continue)
     (goto (reg continue))
     ; let's apply a compound procedure like a user-defined one
     compound-apply
+    ; here we have to delay the operands
     (assign unev (op procedure-parameters) (reg proc))
     (assign env (op procedure-environment) (reg proc))
     (assign env (op extend-environment) (reg unev) (reg argl) (reg env))

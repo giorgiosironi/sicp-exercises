@@ -69,6 +69,8 @@
     (restore env)
     (assign argl (op empty-arglist))
     (assign proc (reg val)) ; the operator
+    (goto (label before-apply-dispatch))
+    evaluate-operands
     (test (op no-operands?) (reg unev))
     (branch (label apply-dispatch))
     (save proc)
@@ -103,6 +105,8 @@
     (goto (label apply-dispatch))
     ; apply procedure of the metacircular evaluator:
     ; choose between primitive or user-defined procedure
+    before-apply-dispatch
+    (goto (label evaluate-operands))
     apply-dispatch
     (test (op primitive-procedure?) (reg proc))
     (branch (label primitive-apply))

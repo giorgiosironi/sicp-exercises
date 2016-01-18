@@ -1,10 +1,11 @@
 ; the changes are too diffused in the code to be able to patch it in a single place
 ; I have to paste here the full controller, forking it and start modifying
 
+;(load "es4.1.scm")
+
 (load "es4.5.scm")
 (load "es4.13.scm")
 (load "es4.22.scm")
-(load "es4.1.scm")
 (load "chapter5.2.scm")
 (define explicit-control-evaluator '(
     read-eval-print-loop
@@ -66,17 +67,10 @@
     ev-appl-did-operator
     (restore unev) ; the operands
     (restore env)
-    (assign proc (reg val)) ; the operator
-    ;; try to keep strict evaluation working for primitive procedures,
-    ;; when that has been moved we can try working on normal order
-    ;; for compound procedures
-    ;; not doing anything to operands in this phase, we don't know the order
-    (goto (label apply-dispatch))
-    ; this has become a subroutine which will go to (reg continue) at the end
-    strict-evaluation-of-operands
     (assign argl (op empty-arglist))
+    (assign proc (reg val)) ; the operator
     (test (op no-operands?) (reg unev))
-    (branch (label no-operands))
+    (branch (label apply-dispatch))
     (save proc)
     ; cycle of the argument-evaluation loop
     ev-appl-operand-loop
@@ -106,8 +100,7 @@
     (restore argl)
     (assign argl (op adjoin-arg) (reg val) (reg argl))
     (restore proc)
-    no-operands
-    (goto (label primitive-operands-evaluated))
+    (goto (label apply-dispatch))
     ; apply procedure of the metacircular evaluator:
     ; choose between primitive or user-defined procedure
     apply-dispatch
@@ -118,15 +111,11 @@
     (goto (label unknown-procedure-type))
     ; let's apply a primitive operator such as +
     primitive-apply
-    ; here we have to evaluate the operands, if there are any
-    (goto (label strict-evaluation-of-operands))
-    primitive-operands-evaluated
     (assign val (op apply-primitive-procedure) (reg proc) (reg argl))
     (restore continue)
     (goto (reg continue))
     ; let's apply a compound procedure like a user-defined one
     compound-apply
-    ; here we have to delay the operands
     (assign unev (op procedure-parameters) (reg proc))
     (assign env (op procedure-environment) (reg proc))
     (assign env (op extend-environment) (reg unev) (reg argl) (reg env))
@@ -436,6 +425,39 @@
   (set! machine-operations
         (cons (list name proc)
               machine-operations)))
-
 (start eceval)
 
+(define patch '(
+    delayed-evaluation-of-operands
+    (assign argl (op empty-arglist))
+    (test (op no-operands?) (reg unev))
+    (branch (label no-operands))
+    (save proc)
+    ; cycle of the argument-evaluation loop
+    ev-appl-operand-loop
+    (save argl)
+    (assign exp (op first-operand) (reg unev))
+    (test (op last-operand?) (reg unev))
+    (branch (label ev-appl-last-arg))
+    (save env)
+    (save unev)
+    (assign val (op delay-it) (reg exp) (reg env))
+    ; when an operand has been delayed, we put in in argl
+    ; and continue to delay the others from unev
+    ev-appl-accumulate-arg
+    (restore unev)
+    (restore env)
+    (restore argl)
+    (assign argl (op adjoin-arg) (reg val) (reg argl))
+    (assign unev (op rest-operands) (reg unev))
+    (goto (label ev-appl-operand-loop))
+    ; the last argument evaluation is different:
+    ; we need to dispatch on proc
+    ev-appl-last-arg
+    (assign val (op delay-it) (reg exp) (reg env))
+    ev-appl-accum-last-arg
+    (restore argl)
+    (assign argl (op adjoin-arg) (reg val) (reg argl))
+    (restore proc)
+    no-operands
+    (goto (label compound-operands-evaluated))))

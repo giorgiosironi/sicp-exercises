@@ -71,6 +71,7 @@
     (assign proc (reg val)) ; the operator
     (goto (label before-apply-dispatch))
     evaluate-operands
+    (save continue)
     (test (op no-operands?) (reg unev))
     (branch (label apply-dispatch))
     (save proc)
@@ -108,6 +109,7 @@
     before-apply-dispatch
     (goto (label evaluate-operands))
     apply-dispatch
+    (restore continue)
     (test (op primitive-procedure?) (reg proc))
     (branch (label primitive-apply))
     (test (op compound-procedure?) (reg proc))

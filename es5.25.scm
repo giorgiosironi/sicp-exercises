@@ -1,7 +1,7 @@
 ; the changes are too diffused in the code to be able to patch it in a single place
 ; I have to paste here the full controller, forking it and start modifying
 
-;(load "es4.1.scm")
+(load "es4.1.scm")
 
 (load "es4.5.scm")
 (load "es4.13.scm")

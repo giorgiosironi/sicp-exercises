@@ -136,7 +136,7 @@
     (assign continue (label apply-dispatch-compound))
     ; and eventually we can push this code down
     ; into the different primitive-procedure and compound-procedure branches
-    (goto (label evaluate-operands-applicative-order))
+    (goto (label evaluate-operands-normal-order))
     apply-dispatch-compound
     (restore continue)
 
@@ -238,6 +238,43 @@
     signal-error
     (perform (op user-print) (reg val))
     (goto (label read-eval-print-loop))
+
+    evaluate-operands-normal-order
+    (save continue)
+    (test (op no-operands?) (reg unev))
+    (branch (label jump-to-continue))
+    (save proc)
+    ; cycle of the argument-evaluation loop
+    ev-appl-operand-loop
+    (save argl)
+    (assign exp (op first-operand) (reg unev))
+    (test (op last-operand?) (reg unev))
+    (branch (label ev-appl-last-arg))
+    (save env)
+    (save unev)
+    (assign continue (label ev-appl-accumulate-arg))
+    (goto (label eval-dispatch))
+    ; when an operand has been evaluated, we put in in argl
+    ; and continue to evaluate the others from unev
+    ev-appl-accumulate-arg
+    (restore unev)
+    (restore env)
+    (restore argl)
+    (assign argl (op adjoin-arg) (reg val) (reg argl))
+    (assign unev (op rest-operands) (reg unev))
+    (goto (label ev-appl-operand-loop))
+    ; the last argument evaluation is different:
+    ; we need to dispatch on proc
+    ev-appl-last-arg
+    (assign continue (label ev-appl-accum-last-arg))
+    (goto (label eval-dispatch))
+    ev-appl-accum-last-arg
+    (restore argl)
+    (assign argl (op adjoin-arg) (reg val) (reg argl))
+    (restore proc)
+    (restore continue)
+    (goto (reg continue))
+    
     ))
 (define (self-evaluating? exp)
   (cond ((number? exp) true)
@@ -484,4 +521,9 @@
     (assign argl (op adjoin-arg) (reg val) (reg argl))
     (restore proc)
     no-operands
-    (goto (label compound-operands-evaluated))))
+    (goto (label compound-operands-evaluated))
+    
+    
+    
+    
+    ))

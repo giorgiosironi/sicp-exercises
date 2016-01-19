@@ -72,7 +72,7 @@
     (goto (label before-apply-dispatch))
     jump-to-continue
     (goto (reg continue))
-    evaluate-operands
+    evaluate-operands-applicative-order
     (save continue)
     (test (op no-operands?) (reg unev))
     (branch (label jump-to-continue))
@@ -110,13 +110,6 @@
     ; apply procedure of the metacircular evaluator:
     ; choose between primitive or user-defined procedure
     before-apply-dispatch
-    (save continue)
-    (assign continue (label apply-dispatch))
-    ; and eventually we can push this code down
-    ; into the different primitive-procedure and compound-procedure branches
-    (goto (label evaluate-operands))
-    apply-dispatch
-    (restore continue)
     (test (op primitive-procedure?) (reg proc))
     (branch (label primitive-apply))
     (test (op compound-procedure?) (reg proc))
@@ -124,11 +117,29 @@
     (goto (label unknown-procedure-type))
     ; let's apply a primitive operator such as +
     primitive-apply
+
+    (save continue)
+    (assign continue (label apply-dispatch-primitive))
+    ; and eventually we can push this code down
+    ; into the different primitive-procedure and compound-procedure branches
+    (goto (label evaluate-operands-applicative-order))
+    apply-dispatch-primitive
+    (restore continue)
+
     (assign val (op apply-primitive-procedure) (reg proc) (reg argl))
     (restore continue)
     (goto (reg continue))
     ; let's apply a compound procedure like a user-defined one
     compound-apply
+
+    (save continue)
+    (assign continue (label apply-dispatch-compound))
+    ; and eventually we can push this code down
+    ; into the different primitive-procedure and compound-procedure branches
+    (goto (label evaluate-operands-applicative-order))
+    apply-dispatch-compound
+    (restore continue)
+
     (assign unev (op procedure-parameters) (reg proc))
     (assign env (op procedure-environment) (reg proc))
     (assign env (op extend-environment) (reg unev) (reg argl) (reg env))

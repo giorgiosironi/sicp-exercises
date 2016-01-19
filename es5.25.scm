@@ -70,10 +70,12 @@
     (assign argl (op empty-arglist))
     (assign proc (reg val)) ; the operator
     (goto (label before-apply-dispatch))
+    jump-to-continue
+    (goto (reg continue))
     evaluate-operands
     (save continue)
     (test (op no-operands?) (reg unev))
-    (branch (label apply-dispatch))
+    (branch (label jump-to-continue))
     (save proc)
     ; cycle of the argument-evaluation loop
     ev-appl-operand-loop
@@ -103,10 +105,15 @@
     (restore argl)
     (assign argl (op adjoin-arg) (reg val) (reg argl))
     (restore proc)
-    (goto (label apply-dispatch))
+    (restore continue)
+    (goto (reg continue))
     ; apply procedure of the metacircular evaluator:
     ; choose between primitive or user-defined procedure
     before-apply-dispatch
+    (save continue)
+    (assign continue (label apply-dispatch))
+    ; and eventually we can push this code down
+    ; into the different primitive-procedure and compound-procedure branches
     (goto (label evaluate-operands))
     apply-dispatch
     (restore continue)

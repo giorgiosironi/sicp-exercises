@@ -253,7 +253,7 @@
     (save env)
     (save unev)
     (assign continue (label ev-appl-accumulate-arg))
-    (goto (label eval-dispatch))
+    (goto (label delay-dispatch))
     ; when an operand has been evaluated, we put in in argl
     ; and continue to evaluate the others from unev
     ev-appl-accumulate-arg
@@ -267,13 +267,15 @@
     ; we need to dispatch on proc
     ev-appl-last-arg
     (assign continue (label ev-appl-accum-last-arg))
-    (goto (label eval-dispatch))
+    (goto (label delay-dispatch))
     ev-appl-accum-last-arg
     (restore argl)
     (assign argl (op adjoin-arg) (reg val) (reg argl))
     (restore proc)
     (restore continue)
     (goto (reg continue))
+    delay-dispatch
+    (goto (label eval-dispatch))
     
     ))
 (define (self-evaluating? exp)

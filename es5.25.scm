@@ -226,6 +226,10 @@
     (goto (reg continue))
     print-result
     (perform (op announce-output) (const ";;; EC-Eval value:"))
+    (assign exp (reg val))
+    (assign continue (label print-result-value))
+    (goto (label force-it))
+    print-result-value
     (perform (op user-print) (reg val))
     (goto (label read-eval-print-loop))
     unknown-expression-type
@@ -245,39 +249,58 @@
     (branch (label jump-to-continue))
     (save proc)
     ; cycle of the argument-evaluation loop
-    ev-appl-operand-loop
+    ev-appl-operand-loop-normal-order
     (save argl)
     (assign exp (op first-operand) (reg unev))
     (test (op last-operand?) (reg unev))
-    (branch (label ev-appl-last-arg))
+    (branch (label ev-appl-last-arg-normal-order))
     (save env)
     (save unev)
-    (assign continue (label ev-appl-accumulate-arg))
+    (assign continue (label ev-appl-accumulate-arg-normal-order))
     (goto (label delay-dispatch))
     ; when an operand has been evaluated, we put in in argl
     ; and continue to evaluate the others from unev
-    ev-appl-accumulate-arg
+    ev-appl-accumulate-arg-normal-order
     (restore unev)
     (restore env)
     (restore argl)
     (assign argl (op adjoin-arg) (reg val) (reg argl))
     (assign unev (op rest-operands) (reg unev))
-    (goto (label ev-appl-operand-loop))
+    (goto (label ev-appl-operand-loop-normal-order))
     ; the last argument evaluation is different:
     ; we need to dispatch on proc
-    ev-appl-last-arg
-    (assign continue (label ev-appl-accum-last-arg))
+    ev-appl-last-arg-normal-order
+    (assign continue (label ev-appl-accum-last-arg-normal-order))
     (goto (label delay-dispatch))
-    ev-appl-accum-last-arg
+    ev-appl-accum-last-arg-normal-order
     (restore argl)
     (assign argl (op adjoin-arg) (reg val) (reg argl))
     (restore proc)
     (restore continue)
     (goto (reg continue))
     delay-dispatch
+    (assign val (op delay-it) (reg exp) (reg env))
+    (goto (reg continue))
+    force-it
+    (test (op thunk?) (reg exp))
+    (branch (label actual-value))
+    (assign val (reg exp))
+    (goto (reg continue))
+    actual-value
+    ; this is a simplified version that instead of running force-it on the
+    ; eval result, just runs eval
+    (assign env (op thunk-env) (reg exp))
+    (assign exp (op thunk-exp) (reg exp))
     (goto (label eval-dispatch))
-    
-    ))
+     ))
+
+(define (thunk? obj)
+  (tagged-list? obj 'thunk))
+(define (thunk-exp thunk) (cadr thunk))
+(define (thunk-env thunk) (caddr thunk))
+(define (delay-it exp env)
+  (list 'thunk exp env))
+
 (define (self-evaluating? exp)
   (cond ((number? exp) true)
         ((string? exp) true)
@@ -460,6 +483,10 @@
         (list 'announce-output announce-output)
         (list 'primitive-procedures primitive-procedures)
         ; add everything missing...
+        (list 'delay-it delay-it)
+        (list 'thunk? thunk?)
+        (list 'thunk-env thunk-env)
+        (list 'thunk-exp thunk-exp)
         (list 'dump
               (lambda (x)
                 (display x)
@@ -489,43 +516,3 @@
         (cons (list name proc)
               machine-operations)))
 (start eceval)
-
-(define patch '(
-    delayed-evaluation-of-operands
-    (assign argl (op empty-arglist))
-    (test (op no-operands?) (reg unev))
-    (branch (label no-operands))
-    (save proc)
-    ; cycle of the argument-evaluation loop
-    ev-appl-operand-loop
-    (save argl)
-    (assign exp (op first-operand) (reg unev))
-    (test (op last-operand?) (reg unev))
-    (branch (label ev-appl-last-arg))
-    (save env)
-    (save unev)
-    (assign val (op delay-it) (reg exp) (reg env))
-    ; when an operand has been delayed, we put in in argl
-    ; and continue to delay the others from unev
-    ev-appl-accumulate-arg
-    (restore unev)
-    (restore env)
-    (restore argl)
-    (assign argl (op adjoin-arg) (reg val) (reg argl))
-    (assign unev (op rest-operands) (reg unev))
-    (goto (label ev-appl-operand-loop))
-    ; the last argument evaluation is different:
-    ; we need to dispatch on proc
-    ev-appl-last-arg
-    (assign val (op delay-it) (reg exp) (reg env))
-    ev-appl-accum-last-arg
-    (restore argl)
-    (assign argl (op adjoin-arg) (reg val) (reg argl))
-    (restore proc)
-    no-operands
-    (goto (label compound-operands-evaluated))
-    
-    
-    
-    
-    ))

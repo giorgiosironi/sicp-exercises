@@ -291,7 +291,14 @@
     ; eval result, just runs eval
     (assign env (op thunk-env) (reg exp))
     (assign exp (op thunk-exp) (reg exp))
+    (perform (op dump) (const "Forcing: "))
+    (perform (op dump) (reg exp))
+    (save continue)
+    (assign continue (label actual-value-after-eval))
     (goto (label eval-dispatch))
+    actual-value-after-eval
+    (restore continue)
+    (goto (reg continue))
      ))
 
 (define (thunk? obj)

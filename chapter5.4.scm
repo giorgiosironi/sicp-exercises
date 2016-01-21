@@ -38,6 +38,8 @@
     (assign val (reg exp))
     (goto (reg continue))
     ev-variable
+    (perform (op dump) (reg exp))
+    (perform (op dump-environment) (reg env))
     (assign val (op lookup-variable-value) (reg exp) (reg env))
     (goto (reg continue))
     ev-quoted
@@ -395,8 +397,15 @@
         (list 'dump
               (lambda (x)
                 (display x)
+                (newline)))
+        (list 'dump-environment
+              (lambda (env)
+                (display "Environment: ")
+                (display (map frame-variables env)) 
                 (newline)))))
-(define eceval (make-machine '(exp env val proc argl continue unev)
+
+(define eceval-registers '(exp env val proc argl continue unev))
+(define eceval (make-machine eceval-registers
                              machine-operations
                              explicit-control-evaluator))
 
@@ -413,10 +422,16 @@
                                         instructions
                                         after-label))))
   (modify-original-evaluator! explicit-control-evaluator instructions after-label)
-  (set! eceval (make-machine '(exp env val proc argl continue unev)
+  (set! eceval (make-machine eceval-registers
                              machine-operations
                              explicit-control-evaluator)))
 (define (add-operation name proc)
   (set! machine-operations
         (cons (list name proc)
               machine-operations)))
+
+(define (add-primitive-procedure name proc)
+  (set! primitive-procedures
+        (cons (list name proc)
+              primitive-procedures))
+  (set! the-global-environment (setup-environment)))

@@ -38,8 +38,6 @@
     (assign val (reg exp))
     (goto (reg continue))
     ev-variable
-    (perform (op dump) (reg exp))
-    (perform (op dump-environment) (reg env))
     (assign val (op lookup-variable-value) (reg exp) (reg env))
     (goto (reg continue))
     ev-quoted

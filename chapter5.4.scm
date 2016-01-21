@@ -433,3 +433,6 @@
         (cons (list name proc)
               primitive-procedures))
   (set! the-global-environment (setup-environment)))
+
+; total pushes are equal to 29+n*35
+; maximum depth is equal to 10, constant

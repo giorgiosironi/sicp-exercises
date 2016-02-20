@@ -2,7 +2,12 @@
 (load "chapter5.4.scm")
 (load "chapter5.4.stack.scm")
 
-; redefining lookup-variable-value to return an error
+; primitive procedures to deal with errors
+(define (error? val)
+  (tagged-list? val 'error))
+(add-operation 'error? error?)
+
+; point a: redefining lookup-variable-value to return an error
 (define (env-loop env on-frame)
   (if (eq? env the-empty-environment)
     '(error lookup-variable)
@@ -18,15 +23,27 @@
                     var
                     (lambda (vars vals) (car vals))
                     continue))))
-; primitive procedures to deal with errors
-(define (error? val)
-  (tagged-list? val 'error))
-(add-primitive-procedure 'error? error?)
-
 ; patching in error management
 (apply-patch
     '((assign val (op lookup-variable-value) (reg exp) (reg env))
+      (test (op error?) (reg val))
+      (branch (label signal-error))
       (goto (reg continue)))
     'ev-variable)
+
+; point b: errors in primitive procedures applications
+(add-primitive-procedure '/ 
+                         (lambda (a b)
+                           (if (= b 0)
+                               '(error division-by-zero)
+                               (/ a b))))
+
+(apply-patch
+    '((assign val (op apply-primitive-procedure) (reg proc) (reg argl))
+      (test (op error?) (reg val))
+      (branch (label signal-error))
+      (restore continue)
+      (goto (reg continue)))
+    'primitive-apply)
 
 (start eceval)

@@ -11,7 +11,6 @@
 ; depth of the stack
 ;
 ; ;;; EC-Eval input:
-depth of the stack
 ;
 ; depth = 3 + 5*n
 ;

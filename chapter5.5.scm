@@ -24,3 +24,9 @@
 		 (compile-application exp target linkage))
 		(else
 		  (error "Unknown expression type -- COMPILE" exp))))
+; append-instruction-sequence: just appends together
+; preserving: appends seq1 and seq2 but wraps around seq1 stack save/restore operations for the registers used by seq2
+(define (make-instruction-sequence needs modifies statements)
+  (list needs modifies statements))
+(define (empty-instruction-sequence)
+  (make-instruction-sequence '() '() '()))

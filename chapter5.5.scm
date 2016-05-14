@@ -101,6 +101,14 @@
 ; over the alternative
 ; env and continue are preserved when evaluating the 
 ; predicate, as they can be used by branches
+(define label-counter 0)
+(define (new-label-number)
+  (set! label-counter (+ 1 label-counter))
+  label-counter)
+(define (make-label name)
+  (string->symbol
+    (string-append (symbol->string name)
+                   (number->string (new-label-number)))))
 (define (compile-if exp target linkage)
   (let ((t-branch (make-label 'true-branch))
         (f-branch (make-label 'false-branch))
@@ -173,3 +181,179 @@
                                             (reg argl)
                                             (reg env))))
       (compile-sequence (lambda-body exp) 'val 'return))))
+; the application consists of evaluating operator and operands first, but connecting them together while preserving respectively env and proc
+(define (compile-application exp target linkage)
+  (let ((proc-code (compile (operator exp) 'proc 'next))
+        (operand-codes
+          (map (lambda (operand) (compile operand 'val 'next))(operands exp))))
+    (preserving '(env continue)
+                proc-code
+                (preserving '(proc continue)
+                            (construct-arglist operand-codes)
+                            (compile-procedure-call target linkage)))))
+; building the argument list from last to first, with cons
+(define (construct-arglist operand-codes)
+  (let ((operand-codes (reverse operand-codes)))
+    (if (null? operand-codes)
+      ; 0-argument case
+      (make-instruction-sequence '() '(argl)
+                                 '((assign argl (const ()))))
+      (let ((code-to-get-last-arg
+              (append-instruction-sequences
+                (car operand-codes)
+                (make-instruction-sequence '(val) '(argl)
+                                           '((assign argl (op list) (reg val)))))))
+        (if (null? (cdr operand-codes))
+          ; 1-argument case
+          code-to-get-last-arg
+          (preserving '(env)
+                      code-to-get-last-arg
+                      (code-to-get-rest-args
+                        (cdr operand-codes))))))))
+; building all the arguments different from the last
+(define (code-to-get-rest-args operand-codes)
+  (let ((code-for-next-arg
+          (preserving '(argl)
+                      (car operand-codes)
+                      (make-instruction-sequence '(val argl) '(argl)
+                                                 '((assign argl
+                                                           (op cons) (reg val) (reg argl)))))))
+    (if (null? (cdr operand-codes))
+      code-for-next-arg
+      (preserving '(env)
+                  code-for-next-arg
+                  (code-to-get-rest-args (cdr operand-codes))))))
+; compiling the procedure call, either to a primitive or compiled procedure
+; the primitive branch is directly specified here
+(define (compile-procedure-call target linkage)
+  (let ((primitive-branch (make-label 'primitive-branch))
+        (compiled-branch (make-label 'compiled-branch))
+        (after-call (make-label 'after-call)))
+    (let ((compiled-linkage
+            (if (eq? linkage 'next) after-call linkage)))
+      (append-instruction-sequences
+        (make-instruction-sequence '(proc) '()`((test (op primitive-procedure?) (reg proc))
+                                                (branch (label ,primitive-branch))))
+        ; parallel becaue they won't be executed sequentially
+        (parallel-instruction-sequences
+          (append-instruction-sequences
+            compiled-branch
+            (compile-proc-appl target compiled-linkage))
+          (append-instruction-sequences
+            primitive-branch
+            (end-with-linkage linkage
+                              (make-instruction-sequence '(proc argl)
+                                                         (list target)
+                                                         `((assign ,target
+                                                                   (op apply-primitive-procedure)
+                                                                   (reg proc)
+                                                                   (reg argl)))))))
+        after-call))))
+; compiled procedure application
+(define all-regs '(env proc val argl continue))
+(define (compile-proc-appl target linkage)
+  (cond ((and (eq? target 'val) (not (eq? linkage 'return)))
+         ; target is val, linkage is not return, no tail recursion (it's not a tail)
+         (make-instruction-sequence '(proc) all-regs
+                                    `((assign continue (label ,linkage))
+                                      (assign val (op compiled-procedure-entry)
+                                              (reg proc))
+                                      (goto (reg val)))))
+        ((and (not (eq? target 'val))
+              (not (eq? linkage 'return)))
+         ; target is not val, linkage is not return, still no tail recursion
+         (let ((proc-return (make-label 'proc-return)))
+           (make-instruction-sequence '(proc) all-regs
+                                      `((assign continue (label ,proc-return))
+                                        (assign val (op compiled-procedure-entry)
+                                                (reg proc))
+                                        (goto (reg val))
+                                        ,proc-return
+                                        (assign ,target (reg val))
+                                        (goto (label ,linkage))))))
+        ((and (eq? target 'val) (eq? linkage 'return))
+         ; target is val, last instruction of a sequence, tail recursion 
+         (make-instruction-sequence '(proc continue) all-regs
+                                    '((assign val (op compiled-procedure-entry)
+                                              (reg proc))
+                                      (goto (reg val)))))
+        ((and (not (eq? target 'val)) (eq? linkage 'return))
+         ; why are you writing in something different from val
+         ; when you are then immediately returning and losing it?
+         (error "return linkage, target not val -- COMPILE"
+                target))))
+; building instruction sequence data structure
+;; selectors
+(define (registers-needed s)
+  (if (symbol? s) '() (car s)))
+(define (registers-modified s)
+  (if (symbol? s) '() (cadr s)))
+(define (statements s)
+  (if (symbol? s) (list s) (caddr s)))
+;; predicates
+(define (needs-register? seq reg)
+  (memq reg (registers-needed seq)))
+(define (modifies-register? seq reg)
+  (memq reg (registers-modified seq)))
+; appending arbitrary number of sequences
+(define (append-instruction-sequences . seqs)
+  (define (append-2-sequences seq1 seq2)
+    (make-instruction-sequence
+      ; registers needed by the combined sequence
+      (list-union (registers-needed seq1)
+                  (list-difference (registers-needed seq2)
+                                   (registers-modified seq1)))
+      ; registers modified by the combined sequence
+      (list-union (registers-modified seq1)
+                  (registers-modified seq2))
+      (append (statements seq1) (statements seq2))))
+  (define (append-seq-list seqs)
+    (if (null? seqs)
+      (empty-instruction-sequence)
+      (append-2-sequences (car seqs)
+                          (append-seq-list (cdr seqs)))))
+  (append-seq-list seqs))
+;; set operations needed by append-instruction-sequences
+(define (list-union s1 s2)
+  (cond ((null? s1) s2)
+        ((memq (car s1) s2) (list-union (cdr s1) s2))
+        (else (cons (car s1) (list-union (cdr s1) s2)))))
+(define (list-difference s1 s2)
+  (cond ((null? s1) '())
+        ((memq (car s1) s2) (list-difference (cdr s1) s2))
+        (else (cons (car s1)
+                    (list-difference (cdr s1) s2)))))
+; preserving registers while combining two sequences
+;; recursive over regs
+(define (preserving regs seq1 seq2)
+  (if (null? regs)
+    (append-instruction-sequences seq1 seq2)
+    (let ((first-reg (car regs)))
+      (if (and (needs-register? seq2 first-reg)
+               (modifies-register? seq1 first-reg))
+        (preserving (cdr regs)
+                    (make-instruction-sequence
+                      (list-union (list first-reg)
+                                  (registers-needed seq1))
+                      (list-difference (registers-modified seq1)
+                                       (list first-reg))
+                      (append `((save ,first-reg))
+                              (statements seq1)
+                              `((restore ,first-reg))))
+                    seq2)
+        (preserving (cdr regs) seq1 seq2)))))
+; simply putting code segments closed to each other
+;; body-seq should be unreachable from seq, like a closure body put there for convenience
+(define (tack-on-instruction-sequence seq body-seq)
+  (make-instruction-sequence
+    (registers-needed seq)
+    (registers-modified seq)
+    (append (statements seq) (statements body-seq))))
+; any of seq1 and seq2 may be executed
+(define (parallel-instruction-sequences seq1 seq2)
+  (make-instruction-sequence
+    (list-union (registers-needed seq1)
+                (registers-needed seq2))
+    (list-union (registers-modified seq1)
+                (registers-modified seq2))
+    (append (statements seq1) (statements seq2))))

@@ -145,9 +145,10 @@
 ; and continue (possibly for the last linkage)
 (define (compile-sequence seq target linkage)
   (if (last-exp? seq)
-    (compile (first-exp seq) target linkage)(preserving '(env continue)
-                                                        (compile (first-exp seq) target 'next)
-                                                        (compile-sequence (rest-exps seq) target linkage))))
+    (compile (first-exp seq) target linkage)
+    (preserving '(env continue)
+                (compile (first-exp seq) target 'next)
+                (compile-sequence (rest-exps seq) target linkage))))
 ; lambda expressions: code is inserted here but not immediately executed
 ; if the linkage is next, we'll skip over it
 ; notice that the lambda is tacked on, which means

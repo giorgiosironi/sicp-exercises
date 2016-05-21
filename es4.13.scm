@@ -50,7 +50,7 @@
     (scan (frame-variables frame)
           (frame-values frame)
           var
-          (lambda (vars vals) (set-var! vals val))
+          (lambda (vars vals) (set-car! vals val))
           (lambda () (add-binding-to-frame! var val frame)))))
 ; exercise
 ; completing the specification: we only remove the binding from the most specific environment where we find it, as:

@@ -51,7 +51,7 @@
     (scan (frame-variables frame)
           (frame-values frame)
           var
-          (lambda (vars vals) (set-var! vals val))
+          (lambda (vars vals) (set-car! vals val))
           (lambda () (add-binding-to-frame! var val frame)))))
 ; tests
 ; should be 32 128 256 512 1024

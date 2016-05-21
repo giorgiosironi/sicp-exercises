@@ -3,6 +3,7 @@
 (load "es4.22.scm")
 (load "chapter5.2.scm")
 (load "chapter5.scm")
+(load "chapter5.4.scm")
 (define (compile exp target linkage)
   (cond ((self-evaluating? exp)
 		 (compile-self-evaluating exp target linkage))
@@ -364,9 +365,32 @@
   (tagged-list? proc 'compiled-procedure))
 (define (compiled-procedure-entry c-proc) (cadr c-proc))
 (define (compiled-procedure-env c-proc) (caddr c-proc))
+; operations necessary for the machine to execute compiled code
+(add-operation 'make-compiled-procedure make-compiled-procedure)
+(add-operation 'compiled-procedure-env compiled-procedure-env)
+(add-operation 'compiled-procedure-entry compiled-procedure-entry)
+(add-operation 'list list)
+(add-operation 'cons cons)
 ; utility for dumping
 (define (dump machine-instructions)
   (map (lambda (inst) 
          (display inst)
          (newline))
        machine-instructions))
+(add-primitive-procedure 'debug (lambda (arg)
+                        (display "DEBUG: ")
+                        (display arg)
+                        (newline)))
+
+(define (compile-and-execute expression)
+  (let* ((compiled-program (caddr (compile expression 'val 'next)))
+         (linked-program (append
+                           '(
+                             (perform (op initialize-stack))
+                             (assign env (op get-global-environment))
+                           )
+                           compiled-program))
+         (machine-of-compiled-program (make-machine eceval-registers
+                               machine-operations
+                               linked-program)))
+    (start machine-of-compiled-program)))

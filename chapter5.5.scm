@@ -187,7 +187,9 @@
 (define (compile-application exp target linkage)
   (let ((proc-code (compile (operator exp) 'proc 'next))
         (operand-codes
-          (map (lambda (operand) (compile operand 'val 'next))(operands exp))))
+          (map (lambda (operand)
+                 (compile operand 'val 'next))
+               (operands exp))))
     (preserving '(env continue)
                 proc-code
                 (preserving '(proc continue)

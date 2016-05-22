@@ -374,6 +374,10 @@
 (add-operation 'compiled-procedure-entry compiled-procedure-entry)
 (add-operation 'list list)
 (add-operation 'cons cons)
+(add-operation '+ +)
+(add-operation '- -)
+(add-operation '* *)
+(add-operation 'false? false?)
 ; utility for dumping
 (define (dump machine-instructions)
   (map (lambda (inst) 
@@ -384,7 +388,9 @@
                         (display "DEBUG: ")
                         (display arg)
                         (newline)))
+(add-primitive-procedure '> >)
 
+(define general-registers eceval-registers)
 (define (compile-and-execute expression)
   (let* ((compiled-program (caddr (compile expression 'val 'next)))
          (linked-program (append
@@ -393,7 +399,7 @@
                              (assign env (op get-global-environment))
                            )
                            compiled-program))
-         (machine-of-compiled-program (make-machine eceval-registers
+         (machine-of-compiled-program (make-machine general-registers
                                machine-operations
                                linked-program)))
     (start machine-of-compiled-program)))

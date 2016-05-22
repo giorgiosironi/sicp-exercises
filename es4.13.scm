@@ -22,15 +22,17 @@
          (on-found vars vals))
         (else (scan (cdr vars) (cdr vals) var on-found on-not-found))))
 ; TODO: extract env-loop
-(define (env-loop env on-frame)
+(define (env-loop env debug-info on-frame)
   (if (eq? env the-empty-environment)
-    (error "Reached the empty environment")
+    (error "Reached the empty environment. Debug info: " debug-info)
     (let ((frame (first-frame env)))
       (on-frame (first-frame env)
                 (lambda () (env-loop (enclosing-environment env)
+                                     debug-info
                                      on-frame))))))
 (define (lookup-variable-value var env)
   (env-loop env
+            (list var)
             (lambda (frame continue)
               (scan (frame-variables frame)
                     (frame-values frame)
@@ -39,6 +41,7 @@
                     continue))))
 (define (set-variable-value! var val env)
   (env-loop env
+            (list var val)
             (lambda (frame continue)
               (scan (frame-variables frame)
                     (frame-values frame)

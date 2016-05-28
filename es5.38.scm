@@ -17,18 +17,18 @@
                               '())))))
 (define (compile-with-native op exp target linkage)
   (let ((compiled-operation
-        (let ((movement-from-val
-           (if (eq? target 'val)
-               '()
-               `((assign ,target (reg val))))))
-      (end-with-linkage linkage
-                        (make-instruction-sequence '(arg1 arg2)
-                                                   (if (eq? 'val target) '(val) `(val ,target))
-                                                   (append `((assign val (op ,op) (reg arg1) (reg arg2)))
-                                                           movement-from-val))))))
-  (preserving '()
-    (spread-arguments (operands exp))
-    compiled-operation)))
+          (let ((movement-from-val
+                  (if (eq? target 'val)
+                    '()
+                    `((assign ,target (reg val))))))
+            (end-with-linkage linkage
+                              (make-instruction-sequence '(arg1 arg2)
+                                                         (if (eq? 'val target) '(val) `(val ,target))
+                                                         (append `((assign val (op ,op) (reg arg1) (reg arg2)))
+                                                                 movement-from-val))))))
+    (preserving '()
+                (spread-arguments (operands exp))
+                compiled-operation)))
 ; have to rewrite compile to patch it, unfortunately it's not extensible
 (define (compile exp target linkage)
   (cond ((self-evaluating? exp)
@@ -85,3 +85,51 @@
 (dump 
   (caddr (compile factorial 'val 'next)))
 (compile-and-execute factorial)
+; extending for handling arbitrary numbers of operands
+(define (end-movement-and-linkage-decorator target linkage)
+  (lambda (compiled-code)
+    (end-with-linkage linkage 
+                      (append-instruction-sequences compiled-code
+                                                    (make-instruction-sequence '(val)
+                                                                               (list target)
+                 `((assign ,target (reg arg1))))))))
+(define (compile-with-native op exp target linkage)
+  (let ((compiled-first-operation
+         (make-instruction-sequence '(arg1 arg2)
+                                    '(val arg1)
+                                    `((assign val (op ,op) (reg arg1) (reg arg2))
+                                      (assign arg1 (reg val)))))
+        (first-2-operands (list (car (operands exp))
+                                (cadr (operands exp))))
+        (rest-of-operands (caddr (operands exp))))
+    (from-3rd-operand (end-movement-and-linkage-decorator
+                        target
+                        linkage)
+                      op
+                      (preserving '()
+                                  (spread-arguments (operands exp))
+                                  compiled-first-operation)
+                      (cddr (operands exp)))))
+(define (spread-operand operand)
+  (compile operand 'arg2 'next))
+(define (from-3rd-operand end
+                          op
+                          partial-compilation
+                          rest-of-operands)
+  (if (null? rest-of-operands)
+    (end partial-compilation)
+    (from-3rd-operand end
+                      op
+                      (append-instruction-sequences partial-compilation
+                                  (preserving '(arg1)
+                                              (spread-operand (car rest-of-operands))
+                                              (make-instruction-sequence '()
+                                                             '()
+                                                             `((assign arg1 (op ,op) (reg arg1) (reg arg2))))))
+                      (cdr rest-of-operands))))
+(define expression-n-arguments '(debug (* 2 3 4 5)))
+(display "N-ARGUMENT ARITHMETIC")
+(newline)
+(dump 
+  (caddr (compile expression-n-arguments 'val 'next)))
+(compile-and-execute expression-n-arguments)

@@ -27,18 +27,20 @@
       (set-variable! (cdr values)
                      (- variable-distance 1))))
   (navigate-frames lexical-address runtime-environment set-in-frame!))
+(add-operation 'lexical-address-lookup lexical-address-lookup)
+(add-operation 'lexical-address-set! lexical-address-set!)
 ; testing it
-(define sub (extend-environment '(a b) '(42 43) the-empty-environment))
-(define subsub (extend-environment '(a c) '(44 45) sub))
-(define subsubsub (extend-environment '(d e) '(46 47) subsub))
-(display (lexical-address-lookup '(2 0) subsubsub)) ; 42
-(newline)
-(display (lexical-address-lookup '(1 1) subsub)) ; 43
-(newline)
-(display (lexical-address-lookup '(0 0) subsub)) ; 44
-(newline)
-(display (lexical-address-lookup '(0 1) subsub)) ; 45
-(newline)
-(lexical-address-set! '(2 0) subsubsub "answer")
-(display (lexical-address-lookup '(2 0) subsubsub)) ; "answer"
-(newline)
+;(define sub (extend-environment '(a b) '(42 43) the-empty-environment))
+;(define subsub (extend-environment '(a c) '(44 45) sub))
+;(define subsubsub (extend-environment '(d e) '(46 47) subsub))
+;(display (lexical-address-lookup '(2 0) subsubsub)) ; 42
+;(newline)
+;(display (lexical-address-lookup '(1 1) subsub)) ; 43
+;(newline)
+;(display (lexical-address-lookup '(0 0) subsub)) ; 44
+;(newline)
+;(display (lexical-address-lookup '(0 1) subsub)) ; 45
+;(newline)
+;(lexical-address-set! '(2 0) subsubsub "answer")
+;(display (lexical-address-lookup '(2 0) subsubsub)) ; "answer"
+;(newline)

@@ -207,5 +207,17 @@
          ; when you are then immediately returning and losing it?
          (error "return linkage, target not val -- COMPILE"
                 target))))
-(define expression '(begin (define (id x) x) (id 42)))
-(dump (caddr (compile expression 'val 'next the-empty-environment)))
+(define (compile-and-execute expression)
+  (let* ((compiled-program (caddr (compile expression 'val 'next the-empty-environment)))
+         (linked-program (append
+                           '(
+                             (perform (op initialize-stack))
+                             (assign env (op get-global-environment))
+                           )
+                           compiled-program))
+         (machine-of-compiled-program (make-machine general-registers
+                               machine-operations
+                               linked-program)))
+    (start machine-of-compiled-program)))
+;(define expression '(begin (define (id x) x) (id 42)))
+;(dump (caddr (compile expression 'val 'next the-empty-environment)))

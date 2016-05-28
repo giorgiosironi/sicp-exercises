@@ -389,6 +389,7 @@
                         (display arg)
                         (newline)))
 (add-primitive-procedure '> >)
+(add-primitive-procedure '* *)
 
 (define general-registers eceval-registers)
 (define (compile-and-execute expression)

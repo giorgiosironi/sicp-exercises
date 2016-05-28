@@ -1,4 +1,4 @@
-(load "chapter5.5.scm")
+(load "es5.39.scm")
 ; shotgun surgery: including a compile-environment parameter
 ; in all compile* procedures
 (define (compile exp target linkage compile-environment)

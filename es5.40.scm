@@ -122,7 +122,7 @@
   (define (many-unassigned another-list)
     (if (null? another-list)
       '()
-      (cons 'unassigned (many-unassigned (cdr another-list)))))
+      (cons '*unassigned (many-unassigned (cdr another-list)))))
   (let* ((formals (lambda-parameters exp))
          (extended-environment (extend-environment 
                                   formals

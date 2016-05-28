@@ -16,9 +16,9 @@
                       compile-environment
                       0))
 ; testing it
-(define sub (extend-environment '(x y) '(unassigned unassigned) the-empty-environment))
-(define subsub (extend-environment '(a b c d e) '(unassigned unassigned unassigned unassigned unassigned) sub))
-(define subsubsub (extend-environment '(y z) '(unassigned unassigned) subsub))
+(define sub (extend-environment '(x y) '(*unassigned *unassigned) the-empty-environment))
+(define subsub (extend-environment '(a b c d e) '(*unassigned *unassigned *unassigned *unassigned *unassigned) sub))
+(define subsubsub (extend-environment '(y z) '(*unassigned *unassigned) subsub))
 ;(display (find-variable 'c subsubsub))
 ;(newline)
 ;(display (find-variable 'x subsubsub))

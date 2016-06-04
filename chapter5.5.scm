@@ -360,6 +360,9 @@
     (append (statements seq1) (statements seq2))))
 ; missing compiled procedure data structure (from note 38)
 (define (make-compiled-procedure entry env)
+  (display "COMPILED PROCEDURE: ")
+  (dump entry)
+  (newline)
   (list 'compiled-procedure entry env))
 (define (compiled-procedure? proc)
   (tagged-list? proc 'compiled-procedure))
@@ -432,7 +435,7 @@
     ; uncomment to see what gets executed during initial compilation
     ; basically code constructing the compiled procedure
     ; and modifying the global environment to expose it
-    ;(perform (op dump) (reg val))
+    ; (perform (op dump) (reg val))
     (assign continue (label print-result))
     (goto (reg val))
     external-entry-patch-end))
@@ -446,6 +449,7 @@
     start-of-machine-with-compile-code-patch-end))
 (apply-patch start-of-machine-with-compile-code-patch
              'start-of-machine)
+; WE NEED to apply the stack measurements patches too
 ; put the compiled code of the procedure in val, and go executing it
 ; by using the special external-entry label
 ; instead of entering the read-eval-print-loop,

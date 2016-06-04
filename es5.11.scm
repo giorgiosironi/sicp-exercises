@@ -28,8 +28,8 @@
               register-table))
       (set! stack
         (cons (list name (make-stack))
-              stack)))
-  'register-allocated))
+              stack))))
+  'register-allocated)
 ; save and restore look up the stack using reg-name in the association list
 (define (make-save-c inst machine stack pc)
   (let ((reg-name (stack-inst-reg-name inst)))

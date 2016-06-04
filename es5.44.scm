@@ -22,7 +22,7 @@
 						   linkage
                            compile-environment))
 		((cond? exp) (compile (cond->if exp) target linkage compile-environment))
-        ((primitive? exp) (compile-primitive exp target linkage compile-environment))
+        ((primitive? exp compile-environment) (compile-primitive exp target linkage compile-environment))
         ((let? exp) (compile (let->combination exp) target linkage compile-environment))
 		((application? exp)
 		 (compile-application exp target linkage compile-environment))
@@ -87,6 +87,46 @@
                       compile-environment)))
 (set! general-registers (append general-registers
                                 '(arg1 arg2)))
+; names of procedures are just variables pointing to their lambdas in the global environment
+; primitive procedures can be redefined in nested environments however
+; so it's not correct to just open code them basing on their name
+; but we should look them up in the compile-environment first
+; so...
+; let's try to redefine primitive? so that it returns #t (and hence applies
+; open coding) only if the procedure is not in the environment
+(define (primitive? exp compile-environment)
+  (let ((original-primitive? (lambda (exp) (and (pair? exp)
+                                                (memq (car exp)
+                                                      '(= + - *))))))
+    (if (original-primitive? exp)
+      (let ((procedure (car exp)))
+        ; it it's a possible primitive,
+        ; it is really so only if we don't find in nested environments
+        ; (which must mean it is resolved to the one from the global environment)
+        (eq? (find-variable procedure compile-environment) 'not-found))
+      #f)))
+(define (compile-variable exp target linkage compile-environment)
+  (end-with-linkage
+    linkage
+    (let ((lexical-address (find-variable exp
+                                          compile-environment)))
+      (if (eq? lexical-address 'not-found)
+        (make-instruction-sequence '(env)
+                                   (list target)
+                                   `((save env)
+                                     (assign env
+                                             (op get-global-environment))
+                                     (assign ,target
+                                             (op lookup-variable-value)
+                                             (const ,exp)
+                                             (reg env))
+                                     (restore env)))
+        (make-instruction-sequence '(env)
+                                   (list target)
+                                   `((assign ,target
+                                             (op lexical-address-lookup)
+                                             (const ,lexical-address)
+                                             (reg env))))))))
 ; testing it
 (define test-expression '(begin
                              (define broken-+ (lambda (x y) (+ x y 0.001)))

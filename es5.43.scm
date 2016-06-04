@@ -131,8 +131,6 @@
                                (* 2
                                   (id x)))
                              (debug (double 42))))
-; id is being looked up in the global environment, despite being
-; defined in a let, which should be transformed into a lambda
 (dump (caddr 
     (compile test-expression 'val 'next the-empty-environment)
 ))

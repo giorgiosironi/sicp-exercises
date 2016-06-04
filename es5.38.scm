@@ -101,7 +101,7 @@
                                       (assign arg1 (reg val)))))
         (first-2-operands (list (car (operands exp))
                                 (cadr (operands exp))))
-        (rest-of-operands (caddr (operands exp))))
+        (rest-of-operands (cddr (operands exp))))
     (from-3rd-operand (end-movement-and-linkage-decorator
                         target
                         linkage)

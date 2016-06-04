@@ -128,7 +128,15 @@
   (let ((val (assoc label-name labels)))
     (if val
       (cdr val)
-      (error "Undefined label -- ASSEMBLE" label-name))))
+      (begin 
+        (display "LABELS: ")
+        (display 
+          (reduce
+            (lambda (l1 l2) (string-append l1 " " l2))
+            ""
+            (map symbol->string (map car labels))))
+        (newline)
+        (error "Undefined label -- ASSEMBLE" label-name)))))
 ;; builds a list of labels and instructions
 (define (extract-labels text receive)
   (if (null? text)

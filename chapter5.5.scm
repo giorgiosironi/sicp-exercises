@@ -1,6 +1,3 @@
-(load "es4.5.scm")
-(load "es4.13.scm")
-(load "es4.22.scm")
 (load "chapter5.2.scm")
 (load "chapter5.scm")
 (load "chapter5.4.scm")
@@ -372,6 +369,7 @@
 (add-operation 'make-compiled-procedure make-compiled-procedure)
 (add-operation 'compiled-procedure-env compiled-procedure-env)
 (add-operation 'compiled-procedure-entry compiled-procedure-entry)
+(add-operation 'compiled-procedure? compiled-procedure?)
 (add-operation 'list list)
 (add-operation 'cons cons)
 (add-operation '+ +)
@@ -390,8 +388,12 @@
                         (newline)))
 (add-primitive-procedure '> >)
 (add-primitive-procedure '* *)
+(add-primitive-procedure '= =)
+(add-primitive-procedure '+ +)
+(add-primitive-procedure '- -)
 
 (define general-registers eceval-registers)
+; my brutal way to execute a compiled procedure
 (define (compile-and-execute expression)
   (let* ((compiled-program (caddr (compile expression 'val 'next)))
          (linked-program (append
@@ -404,3 +406,56 @@
                                machine-operations
                                linked-program)))
     (start machine-of-compiled-program)))
+; the book's way of executing compiled procedures interfacing them
+; also with primitive and compound ones
+(define compiled-procedures-patch 
+  '(compiled-procedures-patch-start
+    apply-dispatch
+    (test (op primitive-procedure?) (reg proc))
+    (branch (label primitive-apply))
+    (test (op compound-procedure?) (reg proc))
+    (branch (label compound-apply))
+    (test (op compiled-procedure?) (reg proc))
+    (branch (label compiled-apply))
+    (goto (label unknown-procedure-type))
+    compiled-apply
+    (restore continue)
+    (assign val (op compiled-procedure-entry) (reg proc))
+    (goto (reg val))
+    compiled-procedures-patch-end))
+(apply-patch compiled-procedures-patch
+             'apply-dispatch)
+(define external-entry-patch
+  '(external-entry
+    (perform (op initialize-stack))
+    (assign env (op get-global-environment))
+    ; uncomment to see what gets executed during initial compilation
+    ; basically code constructing the compiled procedure
+    ; and modifying the global environment to expose it
+    ;(perform (op dump) (reg val))
+    (assign continue (label print-result))
+    (goto (reg val))
+    external-entry-patch-end))
+(apply-patch external-entry-patch
+             'end-of-machine)
+; the order with which we apply the patches is important:
+; this one refers to the label external-entry so it should come last
+(define start-of-machine-with-compile-code-patch
+  '(start-of-machine-with-compile-code-patch-start
+    (branch (label external-entry))
+    start-of-machine-with-compile-code-patch-end))
+(apply-patch start-of-machine-with-compile-code-patch
+             'start-of-machine)
+; put the compiled code of the procedure in val, and go executing it
+; by using the special external-entry label
+; instead of entering the read-eval-print-loop,
+; where we will go once it's compiled
+(define (compile-and-go expression)
+  (let ((instructions
+          (assemble (statements
+                      (compile expression 'val 'return))
+                    eceval)))
+    (set! the-global-environment (setup-environment))
+    (set-register-contents! eceval 'val instructions)
+    (set-register-contents! eceval 'flag true)
+    (start eceval)))

@@ -4,6 +4,7 @@
 (load "chapter5.scm")
 (load "chapter5.2.scm")
 (define explicit-control-evaluator '(
+    start-of-machine
     read-eval-print-loop
     (perform (op initialize-stack))
     (perform (op prompt-for-input) (const ";;; EC-Eval input:"))
@@ -210,6 +211,7 @@
     signal-error
     (perform (op user-print) (reg val))
     (goto (label read-eval-print-loop))
+    end-of-machine
     ))
 
 ; primitive procedures

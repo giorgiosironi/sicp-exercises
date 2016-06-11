@@ -379,6 +379,9 @@
 (add-operation '- -)
 (add-operation '* *)
 (add-operation 'false? false?)
+(define (interpreted-procedure? proc)
+  (tagged-list? proc 'procedure))
+(add-operation 'interpreted-procedure? interpreted-procedure?)
 ; utility for dumping
 (define (dump machine-instructions)
   (map (lambda (inst) 

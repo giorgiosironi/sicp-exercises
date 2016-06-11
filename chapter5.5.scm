@@ -360,7 +360,7 @@
     (append (statements seq1) (statements seq2))))
 ; missing compiled procedure data structure (from note 38)
 (define (make-compiled-procedure entry env)
-  (display "COMPILED PROCEDURE: ")
+  (display "COMPILED PROCEDURE (without labels): ")
   (dump entry)
   (newline)
   (list 'compiled-procedure entry env))

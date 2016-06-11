@@ -16,6 +16,7 @@
   (let ((primitive-branch (make-label 'primitive-branch))
         (compiled-branch (make-label 'compiled-branch))
         (interpreted-branch (make-label 'interpreted-branch))
+        (after-interpreted-call (make-label 'after-interpreted-call))
         (after-call (make-label 'after-call)))
     (let ((compiled-linkage
             (if (eq? linkage 'next) after-call linkage)))
@@ -41,9 +42,13 @@
                                                                      (reg argl)))))))
           (append-instruction-sequences 
             interpreted-branch
-            (make-instruction-sequence '()
-                                       '()
-                                       '((perform (op dump) (const "INTERPRETED-BRANCH"))))))
+            (end-with-linkage linkage
+                              (make-instruction-sequence '(proc argl)
+                                                         '(continue)
+                                                         `((perform (op dump) (const "INTERPRETED-BRANCH"))
+                                                           (assign continue (label ,after-interpreted-call))
+                                                           (goto (reg compapp))
+                                                           ,after-interpreted-call)))))
           after-call))))
 (compile-and-go
   '(define (f n)

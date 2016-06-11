@@ -390,6 +390,7 @@
                         (display arg)
                         (newline)))
 (add-primitive-procedure '> >)
+(add-primitive-procedure '< <)
 (add-primitive-procedure '* *)
 (add-primitive-procedure '= =)
 (add-primitive-procedure '+ +)

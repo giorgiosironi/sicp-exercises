@@ -22,7 +22,7 @@
       (append-instruction-sequences
         (make-instruction-sequence '(proc) '()`((test (op primitive-procedure?) (reg proc))
                                                 (branch (label ,primitive-branch))
-                                                (test (op interpreted-procedure?) (reg proc))
+                                                (test (op compound-procedure?) (reg proc))
                                                 (branch (label ,interpreted-branch))))
         ; parallel because they won't be executed sequentially
         (parallel-instruction-sequences

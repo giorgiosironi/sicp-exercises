@@ -81,6 +81,9 @@
           (if (null? insts)
             'done
             (begin
+              ;(display "ASSEMBLY: ")
+              ;(display (instruction-text (car insts)))
+              ;(newline)
               ((instruction-execution-proc (car insts)))
               (execute)))))
       (define (dispatch message)

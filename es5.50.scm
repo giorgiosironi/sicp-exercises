@@ -243,7 +243,10 @@
             (list 'cons cons)
             (list 'null? null?)
             ; more primitives if needed, put here everything that should be
-            ; available by the interpreter
+            ; available by the interpreter. Here's the one for factorial
+            (list '* *)
+            (list '- -)
+            (list '= =)
             ))
     (define (primitive-procedure-names)
       (map car
@@ -359,8 +362,15 @@
 (add-primitive-procedure 'apply apply)
 (add-primitive-procedure 'list list)
 (add-primitive-procedure 'cadr cadr)
+(add-primitive-procedure 'cddr cddr)
+(add-primitive-procedure 'cdadr cdadr)
+(add-primitive-procedure 'caadr caadr)
+(add-primitive-procedure 'cadddr cadddr)
+(add-primitive-procedure 'caddr caddr)
+(add-primitive-procedure 'cdddr cdddr)
 (add-primitive-procedure 'length length)
 (add-primitive-procedure 'eq? eq?)
+(add-primitive-procedure 'not not)
 (add-primitive-procedure 'set-car! set-car!)
 (add-primitive-procedure 'set-cdr! set-cdr!)
 (add-primitive-procedure 'display display)

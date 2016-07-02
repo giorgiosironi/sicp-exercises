@@ -131,7 +131,7 @@
                                (* 2
                                   (id x)))
                              (debug (double 42))))
-(dump (caddr 
-    (compile test-expression 'val 'next the-empty-environment)
-))
-(compile-and-execute test-expression)
+;(dump (caddr 
+;    (compile test-expression 'val 'next the-empty-environment)
+;))
+;(compile-and-execute test-expression)

@@ -24,15 +24,23 @@
 ; TODO: extract env-loop
 (define (env-loop env debug-info on-frame)
   (if (eq? env the-empty-environment)
-    (error "Reached the empty environment. Debug info: " debug-info)
+    (begin
+      (display "DEBUG-INFO: ")
+      (display debug-info)
+      (newline)
+      (error "Reached the empty environment."))
     (let ((frame (first-frame env)))
       (on-frame (first-frame env)
                 (lambda () (env-loop (enclosing-environment env)
-                                     debug-info
+                                     (append debug-info
+                                             (list (list 'frame-variables (frame-variables frame))))
                                      on-frame))))))
 (define (lookup-variable-value var env)
+  ;(display "LOOKUP-VARIABLE-VALUE: ")
+  ;(display var)
+  ;(newline)
   (env-loop env
-            (list var)
+            (list (list 'var var))
             (lambda (frame continue)
               (scan (frame-variables frame)
                     (frame-values frame)

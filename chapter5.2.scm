@@ -81,8 +81,12 @@
           (if (null? insts)
             'done
             (begin
+              ;; here you can dump the instructions being executed
               ;(display "ASSEMBLY: ")
               ;(display (instruction-text (car insts)))
+              ;(newline)
+              ;(display "REGISTER proc: ")
+              ;(display (get-contents (lookup-register 'proc)))
               ;(newline)
               ((instruction-execution-proc (car insts)))
               (execute)))))

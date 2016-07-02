@@ -409,6 +409,10 @@
          (machine-of-compiled-program (make-machine general-registers
                                machine-operations
                                linked-program)))
+    (display "Compiled a ")
+    (display (length compiled-program))
+    (display "-instruction program. Now starting it...")
+    (newline)
     (start machine-of-compiled-program)))
 ; the book's way of executing compiled procedures interfacing them
 ; also with primitive and compound ones

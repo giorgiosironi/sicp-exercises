@@ -1,5 +1,5 @@
 (load "chapter5.5.scm")
-(set! explicit-control-evaluator '(
+(define explicit-control-evaluator-that-compiles '(
     start-of-machine
     read-eval-print-loop
     (perform (op initialize-stack))
@@ -39,5 +39,5 @@
                  (assemble statements eceval)))
 (set! eceval (make-machine eceval-registers
                            machine-operations
-                           explicit-control-evaluator))
+                           explicit-control-evaluator-that-compiles))
 (start-machine)

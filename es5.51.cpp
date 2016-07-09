@@ -2,9 +2,6 @@
 #include <iostream>
 using namespace std;
 
-typedef char* Symbol;
-
-
 class Value
 {
     public:
@@ -87,7 +84,42 @@ bool is_pair(Value *exp)
     return false;
 }
 
+/**
+ * Trick: compare the string representations, since we are talking about
+ * simple data structures here. If we get a recurring pointer, this will explode
+ */
+bool is_eq(Value *former, Value *latter)
+{
+    return former->toString() == latter->toString();
+}
+
+bool is_tagged_list(Value *exp)
+{
+    if (is_pair(exp)) {
+        return true;
+    }
+    return false;
+}
+
 #define NIL (new Nil())
+
+class Symbol: public Value {
+    private:
+        std::string name;
+    public:
+        Symbol(std::string name);
+        virtual std::string toString();
+};
+
+Symbol::Symbol(std::string name)
+{
+    this->name = name;
+}
+
+std::string Symbol::toString()
+{
+    return std::string("'") + this->name;
+}
 
 int main() {
     Cons* cell = new Cons(new SchemeInteger(42), new SchemeInteger(43));
@@ -97,5 +129,9 @@ int main() {
     cout << NIL->toString() << endl;
     cout << is_pair(NIL) << endl;
     cout << is_pair(cell) << endl;
+    cout << is_eq(cell, cell) << endl;
+    cout << is_eq(cell, NIL) << endl;
+    Value* s = new Symbol("tag");
+    cout << s->toString() << endl;
     return 0;
 }

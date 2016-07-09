@@ -79,6 +79,13 @@ std::string Nil::toString()
     return std::string("NIL");
 }
 
+bool is_pair(Value *exp)
+{
+    if (Cons *cons = dynamic_cast<Cons *>(exp)) {
+        return true;
+    }
+    return false;
+}
 
 #define NIL (new Nil())
 
@@ -88,5 +95,7 @@ int main() {
     cout << i->toString() << endl;
     cout << cell->toString() << endl;
     cout << NIL->toString() << endl;
+    cout << is_pair(NIL) << endl;
+    cout << is_pair(cell) << endl;
     return 0;
 }

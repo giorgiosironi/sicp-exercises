@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <vector>
 using namespace std;
 
 class Value
@@ -104,6 +105,24 @@ std::string Symbol::toString()
     return std::string("'") + this->name;
 }
 
+class String: public Value {
+    private:
+        std::string name;
+    public:
+        String(std::string name);
+        virtual std::string toString();
+};
+
+String::String(std::string name)
+{
+    this->name = name;
+}
+
+std::string String::toString()
+{
+    return this->name;
+}
+
 
 /**
  * Trick: compare the string representations, since we are talking about
@@ -131,6 +150,70 @@ bool is_tagged_list(Value *exp, Symbol* tag)
     return false;
 }
 
+bool is_begin(Value* exp)
+{
+    return is_tagged_list(exp, new Symbol("begin"));
+}
+
+Value* build_list(std::vector<Value*> elements) {
+    Value *head = NIL;
+    for (int i = elements.size() - 1; i >= 0; i--) {
+        head = new Cons(elements.at(i), head);
+    }
+    return head;
+}
+
+Value* explicit_control_evaluator()
+{
+    return build_list({
+        new Symbol("start-of-machine"),
+        new Symbol("read-eval-print-loop"),
+        build_list({
+            new Symbol("perform"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("initialize-stack"),
+            })
+        }),
+        build_list({
+            new Symbol("perform"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("prompt-for-input"),
+            }),
+            build_list({
+                new Symbol("const"),
+                new String(";;; EC-Eval input:")
+            })
+        })
+    });
+}
+
+Value* machine_operations()
+{
+    return build_list({
+        build_list({
+            new String("is_begin",)
+        })
+    })
+}
+
+Value* eceval()
+{
+    return make-machine(
+        build_list({
+            new Symbol("exp"),
+            new Symbol("env"),
+            new Symbol("val"),
+            new Symbol("proc"),
+            new Symbol("argl"),
+            new Symbol("continue"),
+            new Symbol("unev")
+        }),
+        machine_operations(),
+        explicit_control_evaluator()
+}
+
 int main() {
     Cons* cell = new Cons(new SchemeInteger(42), new SchemeInteger(43));
     Value* i = cell->car();
@@ -145,5 +228,8 @@ int main() {
     cout << s->toString() << endl;
     Cons* taggedList = new Cons(new Symbol("integer"), new SchemeInteger(42));
     cout << is_tagged_list(taggedList, new Symbol("integer")) << endl;
+    std::vector<Value*> elements = {new SchemeInteger(1), new SchemeInteger(2), new SchemeInteger(3)};
+    Value* threeElementList = build_list({new SchemeInteger(1), new SchemeInteger(2), new SchemeInteger(3)});
+    cout << threeElementList->toString() << endl;
     return 0;
 }

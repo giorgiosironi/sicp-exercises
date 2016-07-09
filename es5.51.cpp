@@ -84,23 +84,6 @@ bool is_pair(Value *exp)
     return false;
 }
 
-/**
- * Trick: compare the string representations, since we are talking about
- * simple data structures here. If we get a recurring pointer, this will explode
- */
-bool is_eq(Value *former, Value *latter)
-{
-    return former->toString() == latter->toString();
-}
-
-bool is_tagged_list(Value *exp)
-{
-    if (is_pair(exp)) {
-        return true;
-    }
-    return false;
-}
-
 #define NIL (new Nil())
 
 class Symbol: public Value {
@@ -121,6 +104,33 @@ std::string Symbol::toString()
     return std::string("'") + this->name;
 }
 
+
+/**
+ * Trick: compare the string representations, since we are talking about
+ * simple data structures here. If we get a recurring pointer, this will explode
+ */
+bool is_eq(Value *former, Value *latter)
+{
+    return former->toString() == latter->toString();
+}
+
+bool is_tagged_list(Value *exp)
+{
+    if (is_pair(exp)) {
+        return true;
+    }
+    return false;
+}
+
+bool is_tagged_list(Value *exp, Symbol* tag)
+{
+    if (is_pair(exp)) {
+        Cons *expAsPair = (Cons *) exp;
+        return is_eq(expAsPair->car(), tag);
+    }
+    return false;
+}
+
 int main() {
     Cons* cell = new Cons(new SchemeInteger(42), new SchemeInteger(43));
     Value* i = cell->car();
@@ -133,5 +143,7 @@ int main() {
     cout << is_eq(cell, NIL) << endl;
     Value* s = new Symbol("tag");
     cout << s->toString() << endl;
+    Cons* taggedList = new Cons(new Symbol("integer"), new SchemeInteger(42));
+    cout << is_tagged_list(taggedList, new Symbol("integer")) << endl;
     return 0;
 }

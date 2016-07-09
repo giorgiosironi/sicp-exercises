@@ -189,11 +189,22 @@ Value* explicit_control_evaluator()
     });
 }
 
+/**
+ * Try to define Function : Value
+ * http://stackoverflow.com/questions/20835534/function-pointer-without-arguments-types
+ * that stores a pointer to a function that takes any parameters and then
+ * returns a *Value
+ * Should have a method apply(std::vector<Value*>)
+ * and when we implement apply we can pass the arguments in
+ * It should probably have a case on the number of arguments (from 0 to 3-4)
+ * so that it can then cast the general pointer to the correct one and call
+ * it.
+ */
 Value* machine_operations()
 {
     return build_list({
         build_list({
-            new String("is_begin",)
+            new String("is_begin")
         })
     })
 }

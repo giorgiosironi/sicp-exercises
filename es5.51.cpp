@@ -229,7 +229,7 @@ Value* explicit_control_evaluator()
 {
     return build_list({
         new Symbol("start-of-machine"),
-        new Symbol("read-eval-print-loop"),
+        new Symbol("read-eval-print-loop")/*,
         build_list({
             new Symbol("perform"),
             build_list({
@@ -248,6 +248,7 @@ Value* explicit_control_evaluator()
                 new String(";;; EC-Eval input:")
             })
         })
+        */
     });
 }
 
@@ -274,7 +275,37 @@ std::map<String,Operation*> machine_operations()
     return operations;
 }
 
+class Instruction
+{
+    public:
+        virtual void execute() = 0;
+};
+
+class LabelNoop : public Instruction
+{
+    private:
+        std::string name;
+    public:
+        LabelNoop(std::string name);
+        virtual void execute();
+};
+
+LabelNoop::LabelNoop(std::string name)
+{
+    this->name = name;
+}
+
+void LabelNoop::execute()
+{
+    cout << "Label: " << this->name << endl;
+}
+
 class Machine {
+    private:
+        int pc;
+        std::vector<Instruction*> the_instruction_sequence;
+        std::vector<Instruction*> assemble(Value* controller_text);
+        void execute();
     public:
         Machine(std::vector<Value*> register_names, std::map<String,Operation*> operations, Value* controller_text);
         void start();
@@ -282,10 +313,30 @@ class Machine {
 
 Machine::Machine(std::vector<Value*> register_names, std::map<String,Operation*> operations, Value* controller_text)
 {
+    this->pc = 0;
+    this->the_instruction_sequence = this->assemble(controller_text);
+}
+
+std::vector<Instruction*> Machine::assemble(Value* controller_text)
+{
+    
 }
 
 void Machine::start()
 {
+    this->pc = 0;
+    this->execute();
+}
+
+void Machine::execute()
+{
+    if (this->pc >= this->the_instruction_sequence.size()) {
+        cout << "End of controller" << endl;
+        return;
+    }
+    Instruction* i = this->the_instruction_sequence.at(this->pc);
+    // TODO: return effects like the increment of pc
+    i->execute();
 }
 
 Machine* eceval()

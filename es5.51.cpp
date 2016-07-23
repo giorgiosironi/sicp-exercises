@@ -97,22 +97,48 @@ bool is_pair(Value *exp)
 
 #define NIL (new Nil())
 
+bool is_nil(Value *exp)
+{
+    if (Nil *nil = dynamic_cast<Nil *>(exp)) {
+        return true;
+    }
+    return false;
+}
+
+int length(Value *exp)
+{
+    if (is_pair(exp)) {
+        Cons *cons = (Cons*) exp;
+        return 1 + length(cons->cdr());
+    }
+    if (is_nil(exp)) {
+        return 0;
+    }
+    // TODO: error
+}
+
 class Symbol: public Value {
     private:
-        std::string name;
+        std::string _name;
     public:
         Symbol(std::string name);
         virtual std::string toString();
+        std::string name();
 };
 
 Symbol::Symbol(std::string name)
 {
-    this->name = name;
+    this->_name = name;
 }
 
 std::string Symbol::toString()
 {
-    return std::string("'") + this->name;
+    return std::string("'") + this->_name;
+}
+
+std::string Symbol::name()
+{
+    return this->_name;
 }
 
 class String: public Value {
@@ -319,7 +345,19 @@ Machine::Machine(std::vector<Value*> register_names, std::map<String,Operation*>
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)
 {
-    
+    int instruction_length = length(controller_text); 
+    auto instructions = std::vector<Instruction*>({});
+    Value *head = controller_text;
+    for (int i = 0; i < instruction_length; i++) {
+        Cons *head_as_cons = (Cons*) head;
+        cout << head_as_cons->car()->toString() << endl;
+
+        instructions.push_back(new LabelNoop(
+            ((Symbol*) head_as_cons->car())->name()
+        ));
+        head = head_as_cons->cdr();
+    }
+    return instructions;
 }
 
 void Machine::start()

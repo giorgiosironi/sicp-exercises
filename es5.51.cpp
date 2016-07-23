@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <map>
 using namespace std;
 
 class Value
@@ -27,6 +28,15 @@ std::string SchemeInteger::toString()
 {
     return std::to_string(this->contents);
 }
+
+bool is_number(Value *exp)
+{
+    if (SchemeInteger *schemeInteger = dynamic_cast<SchemeInteger *>(exp)) {
+        return true;
+    }
+    return false;
+}
+
 
 class Cons : public Value
 {
@@ -111,6 +121,10 @@ class String: public Value {
     public:
         String(std::string name);
         virtual std::string toString();
+        bool operator <(const String& right) const
+        {
+            return this->name < right.name;
+        }
 };
 
 String::String(std::string name)
@@ -121,6 +135,54 @@ String::String(std::string name)
 std::string String::toString()
 {
     return this->name;
+}
+
+
+bool is_string(Value *exp)
+{
+    if (String *string = dynamic_cast<String *>(exp)) {
+        return true;
+    }
+    return false;
+}
+
+class Bool: public Value {
+    private:
+        bool value;
+    public:
+        Bool(bool value);
+        virtual std::string toString();
+};
+
+Bool::Bool(bool value)
+{
+    this->value = value;
+}
+
+std::string Bool::toString()
+{
+    return std::string(this->value ? "#t" : "#f");
+}
+
+class Operation: public Value {
+    public:
+        virtual Value* execute(std::vector<Value*> elements) = 0;
+};
+
+class IsSelfEvaluating: public Operation {
+    public:
+        virtual Value* execute(std::vector<Value*> elements);
+        virtual std::string toString();
+};
+
+Value* IsSelfEvaluating::execute(std::vector<Value*> elements)
+{
+    return new Bool(is_number(elements.at(0)) || is_string(elements.at(0)));
+}
+
+std::string IsSelfEvaluating::toString()
+{
+    return std::string("Operation-IsSelfEvaluating");
 }
 
 
@@ -190,7 +252,7 @@ Value* explicit_control_evaluator()
 }
 
 /**
- * Try to define Function : Value
+ * Try to define Operation : Value
  * http://stackoverflow.com/questions/20835534/function-pointer-without-arguments-types
  * that stores a pointer to a function that takes any parameters and then
  * returns a *Value
@@ -199,20 +261,37 @@ Value* explicit_control_evaluator()
  * It should probably have a case on the number of arguments (from 0 to 3-4)
  * so that it can then cast the general pointer to the correct one and call
  * it.
+ * This should become a map from String representing the name to the Operation then.
  */
-Value* machine_operations()
+std::map<String,Operation*> machine_operations()
 {
-    return build_list({
-        build_list({
-            new String("is_begin")
-        })
-    })
+
+    auto operations = std::map<String,Operation*>();
+    operations.insert(std::make_pair(
+        String("is_self_evaluating"),
+        new IsSelfEvaluating()
+    ));
+    return operations;
 }
 
-Value* eceval()
+class Machine {
+    public:
+        Machine(std::vector<Value*> register_names, std::map<String,Operation*> operations, Value* controller_text);
+        void start();
+};
+
+Machine::Machine(std::vector<Value*> register_names, std::map<String,Operation*> operations, Value* controller_text)
 {
-    return make-machine(
-        build_list({
+}
+
+void Machine::start()
+{
+}
+
+Machine* eceval()
+{
+    return new Machine(
+        {
             new Symbol("exp"),
             new Symbol("env"),
             new Symbol("val"),
@@ -220,9 +299,10 @@ Value* eceval()
             new Symbol("argl"),
             new Symbol("continue"),
             new Symbol("unev")
-        }),
+        },
         machine_operations(),
         explicit_control_evaluator()
+    );
 }
 
 int main() {
@@ -242,5 +322,7 @@ int main() {
     std::vector<Value*> elements = {new SchemeInteger(1), new SchemeInteger(2), new SchemeInteger(3)};
     Value* threeElementList = build_list({new SchemeInteger(1), new SchemeInteger(2), new SchemeInteger(3)});
     cout << threeElementList->toString() << endl;
+    Machine* machine = eceval();
+    machine->start();
     return 0;
 }

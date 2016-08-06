@@ -124,6 +124,10 @@ class Symbol: public Value {
         Symbol(std::string name);
         virtual std::string toString();
         std::string name();
+        bool operator <(const Symbol& right) const
+        {
+            return this->_name < right._name;
+        }
 };
 
 Symbol::Symbol(std::string name)
@@ -211,6 +215,22 @@ std::string IsSelfEvaluating::toString()
     return std::string("Operation-IsSelfEvaluating");
 }
 
+class InitializeStack: public Operation {
+    public:
+        virtual Value* execute(std::vector<Value*> elements);
+        virtual std::string toString();
+};
+
+Value* InitializeStack::execute(std::vector<Value*> elements)
+{
+    return new Symbol("ok");
+}
+
+std::string InitializeStack::toString()
+{
+    return std::string("Operation-InitializeStack");
+}
+
 
 /**
  * Trick: compare the string representations, since we are talking about
@@ -255,14 +275,14 @@ Value* explicit_control_evaluator()
 {
     return build_list({
         new Symbol("start-of-machine"),
-        new Symbol("read-eval-print-loop")/*,
+        new Symbol("read-eval-print-loop"),
         build_list({
             new Symbol("perform"),
             build_list({
                 new Symbol("op"),
                 new Symbol("initialize-stack"),
             })
-        }),
+        })/*,
         build_list({
             new Symbol("perform"),
             build_list({
@@ -290,13 +310,16 @@ Value* explicit_control_evaluator()
  * it.
  * This should become a map from String representing the name to the Operation then.
  */
-std::map<String,Operation*> machine_operations()
+std::map<Symbol,Operation*> machine_operations()
 {
-
-    auto operations = std::map<String,Operation*>();
+    auto operations = std::map<Symbol,Operation*>();
     operations.insert(std::make_pair(
-        String("is_self_evaluating"),
+        Symbol("is-self-evaluating"),
         new IsSelfEvaluating()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("initialize-stack"),
+        new InitializeStack()
     ));
     return operations;
 }
@@ -326,21 +349,63 @@ void LabelNoop::execute()
     cout << "Label: " << this->name << endl;
 }
 
+class Perform: public Instruction
+{
+    private:
+        Operation* operation;
+    public:
+        Perform(Operation* operation);
+        virtual void execute();
+};
+
+Perform::Perform(Operation* operation)
+{
+    this->operation = operation;
+}
+
+void Perform::execute()
+{
+    cout << "Perform: " << this->operation->toString() << endl;
+}
+
 class Machine {
     private:
         int pc;
+        std::map<Symbol,Operation*> operations;
         std::vector<Instruction*> the_instruction_sequence;
         std::vector<Instruction*> assemble(Value* controller_text);
+        Instruction* compile(Value* instruction);
         void execute();
     public:
-        Machine(std::vector<Value*> register_names, std::map<String,Operation*> operations, Value* controller_text);
+        Machine(std::vector<Value*> register_names, std::map<Symbol,Operation*> operations, Value* controller_text);
         void start();
 };
 
-Machine::Machine(std::vector<Value*> register_names, std::map<String,Operation*> operations, Value* controller_text)
+Machine::Machine(std::vector<Value*> register_names, std::map<Symbol,Operation*> operations, Value* controller_text)
 {
     this->pc = 0;
+    this->operations = operations;
     this->the_instruction_sequence = this->assemble(controller_text);
+}
+
+
+Instruction* Machine::compile(Value* instruction)
+{
+    if (Symbol *symbol = dynamic_cast<Symbol *>(instruction)) {
+        return new LabelNoop(
+            ((Symbol*) instruction)->name()
+        );
+    }
+    Cons* cons = dynamic_cast<Cons *>(instruction);
+    if (is_tagged_list(cons, new Symbol("perform"))) {
+        Symbol* operation = (Symbol*) (((Cons*) ((Cons*) ((Cons*) cons->cdr())->car())->cdr())->car());
+        cout << operation->toString() << endl;
+        return new Perform(
+            this->operations[*operation]
+        );
+    }
+    cout << "Error compiling: " << instruction->toString() << endl;
+    exit(1);
 }
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)
@@ -352,9 +417,7 @@ std::vector<Instruction*> Machine::assemble(Value* controller_text)
         Cons *head_as_cons = (Cons*) head;
         cout << head_as_cons->car()->toString() << endl;
 
-        instructions.push_back(new LabelNoop(
-            ((Symbol*) head_as_cons->car())->name()
-        ));
+        instructions.push_back(this->compile(head_as_cons->car()));
         head = head_as_cons->cdr();
     }
     return instructions;
@@ -368,13 +431,14 @@ void Machine::start()
 
 void Machine::execute()
 {
-    if (this->pc >= this->the_instruction_sequence.size()) {
-        cout << "End of controller" << endl;
-        return;
+    while (this->pc < this->the_instruction_sequence.size()) {
+        Instruction* i = this->the_instruction_sequence.at(this->pc);
+        // TODO: return effects like the increment of pc
+        // instead of always applying them (will be needed to implement jumps)
+        i->execute();
+        this->pc++;
     }
-    Instruction* i = this->the_instruction_sequence.at(this->pc);
-    // TODO: return effects like the increment of pc
-    i->execute();
+    cout << "End of controller" << endl;
 }
 
 Machine* eceval()
@@ -395,6 +459,7 @@ Machine* eceval()
 }
 
 int main() {
+    /*
     Cons* cell = new Cons(new SchemeInteger(42), new SchemeInteger(43));
     Value* i = cell->car();
     cout << i->toString() << endl;
@@ -411,6 +476,7 @@ int main() {
     std::vector<Value*> elements = {new SchemeInteger(1), new SchemeInteger(2), new SchemeInteger(3)};
     Value* threeElementList = build_list({new SchemeInteger(1), new SchemeInteger(2), new SchemeInteger(3)});
     cout << threeElementList->toString() << endl;
+    */
     Machine* machine = eceval();
     machine->start();
     return 0;

@@ -1,0 +1,3 @@
+- actually port the stack and store it in a variable somewhere
+-- it's an object that may need to be passed to InitializeStack
+- go to next instruction

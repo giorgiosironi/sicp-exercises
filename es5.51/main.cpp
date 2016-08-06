@@ -6,82 +6,12 @@ using namespace std;
 
 #include "value.h"
 #include "scheme_integer.h"
-
-
-bool is_number(Value *exp)
-{
-    if (SchemeInteger *schemeInteger = dynamic_cast<SchemeInteger *>(exp)) {
-        return true;
-    }
-    return false;
-}
-
-class Cons : public Value
-{
-    private:
-        Value *car_ptr;
-        Value *cdr_ptr;
-
-    public:
-        Cons(Value *car_ptr, Value *cdr_ptr);
-        Value* car();
-        Value* cdr();
-        virtual std::string toString();
-};
-
-Cons::Cons(Value *car_ptr, Value *cdr_ptr)
-{
-    this->car_ptr = car_ptr;
-    this->cdr_ptr = cdr_ptr;
-}
-
-Value* Cons::car()
-{
-    return this->car_ptr;
-}
-
-Value* Cons::cdr()
-{
-    return this->cdr_ptr;
-}
-
-std::string Cons::toString()
-{
-    return std::string("(")
-        + this->car_ptr->toString()
-        + std::string(" . ")
-        + this->cdr_ptr->toString() 
-        + std::string(")");
-}
-
-class Nil : public Value 
-{
-    public:
-        virtual std::string toString();
-};
-
-std::string Nil::toString()
-{
-    return std::string("NIL");
-}
-
-bool is_pair(Value *exp)
-{
-    if (Cons *cons = dynamic_cast<Cons *>(exp)) {
-        return true;
-    }
-    return false;
-}
-
-#define NIL (new Nil())
-
-bool is_nil(Value *exp)
-{
-    if (Nil *nil = dynamic_cast<Nil *>(exp)) {
-        return true;
-    }
-    return false;
-}
+#include "cons.h"
+#include "nil.h"
+#include "symbol.h"
+#include "is.h"
+#include "string.h"
+#include "bool.h"
 
 int length(Value *exp)
 {
@@ -93,83 +23,6 @@ int length(Value *exp)
         return 0;
     }
     // TODO: error
-}
-
-class Symbol: public Value {
-    private:
-        std::string _name;
-    public:
-        Symbol(std::string name);
-        virtual std::string toString();
-        std::string name();
-        bool operator <(const Symbol& right) const
-        {
-            return this->_name < right._name;
-        }
-};
-
-Symbol::Symbol(std::string name)
-{
-    this->_name = name;
-}
-
-std::string Symbol::toString()
-{
-    return std::string("'") + this->_name;
-}
-
-std::string Symbol::name()
-{
-    return this->_name;
-}
-
-class String: public Value {
-    private:
-        std::string name;
-    public:
-        String(std::string name);
-        virtual std::string toString();
-        bool operator <(const String& right) const
-        {
-            return this->name < right.name;
-        }
-};
-
-String::String(std::string name)
-{
-    this->name = name;
-}
-
-std::string String::toString()
-{
-    return this->name;
-}
-
-
-bool is_string(Value *exp)
-{
-    if (String *string = dynamic_cast<String *>(exp)) {
-        return true;
-    }
-    return false;
-}
-
-class Bool: public Value {
-    private:
-        bool value;
-    public:
-        Bool(bool value);
-        virtual std::string toString();
-};
-
-Bool::Bool(bool value)
-{
-    this->value = value;
-}
-
-std::string Bool::toString()
-{
-    return std::string(this->value ? "#t" : "#f");
 }
 
 class Operation: public Value {

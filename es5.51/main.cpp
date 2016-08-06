@@ -21,22 +21,6 @@ int length(Value *exp)
 
 #include "operation.h"
 
-class IsSelfEvaluating: public Operation {
-    public:
-        virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string toString();
-};
-
-Value* IsSelfEvaluating::execute(std::vector<Value*> elements)
-{
-    return new Bool(is_number(elements.at(0)) || is_string(elements.at(0)));
-}
-
-std::string IsSelfEvaluating::toString()
-{
-    return std::string("Operation-IsSelfEvaluating");
-}
-
 class InitializeStack: public Operation {
     public:
         virtual Value* execute(std::vector<Value*> elements);

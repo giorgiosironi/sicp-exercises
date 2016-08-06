@@ -4,14 +4,8 @@
 #include <map>
 using namespace std;
 
-#include "value.h"
-#include "scheme_integer.h"
-#include "cons.h"
-#include "nil.h"
-#include "symbol.h"
+#include "data_structures.h"
 #include "is.h"
-#include "string.h"
-#include "bool.h"
 
 int length(Value *exp)
 {
@@ -25,10 +19,7 @@ int length(Value *exp)
     // TODO: error
 }
 
-class Operation: public Value {
-    public:
-        virtual Value* execute(std::vector<Value*> elements) = 0;
-};
+#include "operation.h"
 
 class IsSelfEvaluating: public Operation {
     public:
@@ -62,37 +53,6 @@ std::string InitializeStack::toString()
     return std::string("Operation-InitializeStack");
 }
 
-
-/**
- * Trick: compare the string representations, since we are talking about
- * simple data structures here. If we get a recurring pointer, this will explode
- */
-bool is_eq(Value *former, Value *latter)
-{
-    return former->toString() == latter->toString();
-}
-
-bool is_tagged_list(Value *exp)
-{
-    if (is_pair(exp)) {
-        return true;
-    }
-    return false;
-}
-
-bool is_tagged_list(Value *exp, Symbol* tag)
-{
-    if (is_pair(exp)) {
-        Cons *expAsPair = (Cons *) exp;
-        return is_eq(expAsPair->car(), tag);
-    }
-    return false;
-}
-
-bool is_begin(Value* exp)
-{
-    return is_tagged_list(exp, new Symbol("begin"));
-}
 
 Value* build_list(std::vector<Value*> elements) {
     Value *head = NIL;
@@ -155,11 +115,7 @@ std::map<Symbol,Operation*> machine_operations()
     return operations;
 }
 
-class Instruction
-{
-    public:
-        virtual void execute() = 0;
-};
+#include "instruction.h"
 
 class LabelNoop : public Instruction
 {
@@ -199,18 +155,24 @@ void Perform::execute()
     cout << "Perform: " << this->operation->toString() << endl;
 }
 
-class Machine {
-    private:
-        int pc;
-        std::map<Symbol,Operation*> operations;
-        std::vector<Instruction*> the_instruction_sequence;
-        std::vector<Instruction*> assemble(Value* controller_text);
-        Instruction* compile(Value* instruction);
-        void execute();
-    public:
-        Machine(std::vector<Value*> register_names, std::map<Symbol,Operation*> operations, Value* controller_text);
-        void start();
-};
+#include "machine.h"
+
+Machine* eceval()
+{
+    return new Machine(
+        {
+            new Symbol("exp"),
+            new Symbol("env"),
+            new Symbol("val"),
+            new Symbol("proc"),
+            new Symbol("argl"),
+            new Symbol("continue"),
+            new Symbol("unev")
+        },
+        machine_operations(),
+        explicit_control_evaluator()
+    );
+}
 
 Machine::Machine(std::vector<Value*> register_names, std::map<Symbol,Operation*> operations, Value* controller_text)
 {
@@ -218,7 +180,6 @@ Machine::Machine(std::vector<Value*> register_names, std::map<Symbol,Operation*>
     this->operations = operations;
     this->the_instruction_sequence = this->assemble(controller_text);
 }
-
 
 Instruction* Machine::compile(Value* instruction)
 {
@@ -270,23 +231,6 @@ void Machine::execute()
         this->pc++;
     }
     cout << "End of controller" << endl;
-}
-
-Machine* eceval()
-{
-    return new Machine(
-        {
-            new Symbol("exp"),
-            new Symbol("env"),
-            new Symbol("val"),
-            new Symbol("proc"),
-            new Symbol("argl"),
-            new Symbol("continue"),
-            new Symbol("unev")
-        },
-        machine_operations(),
-        explicit_control_evaluator()
-    );
 }
 
 int main() {

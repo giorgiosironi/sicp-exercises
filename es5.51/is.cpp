@@ -36,3 +36,34 @@ bool is_string(Value *exp)
     }
     return false;
 }
+
+/**
+ * Trick: compare the string representations, since we are talking about
+ * simple data structures here. If we get a recurring pointer, this will explode
+ */
+bool is_eq(Value *former, Value *latter)
+{
+    return former->toString() == latter->toString();
+}
+
+bool is_tagged_list(Value *exp)
+{
+    if (is_pair(exp)) {
+        return true;
+    }
+    return false;
+}
+
+bool is_tagged_list(Value *exp, Symbol* tag)
+{
+    if (is_pair(exp)) {
+        Cons *expAsPair = (Cons *) exp;
+        return is_eq(expAsPair->car(), tag);
+    }
+    return false;
+}
+
+bool is_begin(Value* exp)
+{
+    return is_tagged_list(exp, new Symbol("begin"));
+}

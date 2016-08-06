@@ -20,6 +20,7 @@ int length(Value *exp)
 }
 
 #include "operation.h"
+#include "is_self_evaluating.h"
 
 class InitializeStack: public Operation {
     public:

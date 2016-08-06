@@ -9,10 +9,4 @@ class Operation: public Value {
         virtual Value* execute(std::vector<Value*> elements) = 0;
 };
 
-class IsSelfEvaluating: public Operation {
-    public:
-        virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string toString();
-};
-
 #endif

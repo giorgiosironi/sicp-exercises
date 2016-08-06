@@ -4,30 +4,9 @@
 #include <map>
 using namespace std;
 
-class Value
-{
-    public:
-        virtual std::string toString() = 0;
-};
+#include "value.h"
+#include "scheme_integer.h"
 
-class SchemeInteger : public Value
-{
-    private:
-        int contents;
-    public:
-        SchemeInteger(int contents);
-        virtual std::string toString();
-};
-
-SchemeInteger::SchemeInteger(int contents)
-{
-    this->contents = contents;
-}
-
-std::string SchemeInteger::toString()
-{
-    return std::to_string(this->contents);
-}
 
 bool is_number(Value *exp)
 {
@@ -36,7 +15,6 @@ bool is_number(Value *exp)
     }
     return false;
 }
-
 
 class Cons : public Value
 {

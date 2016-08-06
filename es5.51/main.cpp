@@ -21,22 +21,7 @@ int length(Value *exp)
 
 #include "operation.h"
 #include "is_self_evaluating.h"
-
-class InitializeStack: public Operation {
-    public:
-        virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string toString();
-};
-
-Value* InitializeStack::execute(std::vector<Value*> elements)
-{
-    return new Symbol("ok");
-}
-
-std::string InitializeStack::toString()
-{
-    return std::string("Operation-InitializeStack");
-}
+#include "initialize_stack.h"
 
 
 Value* build_list(std::vector<Value*> elements) {

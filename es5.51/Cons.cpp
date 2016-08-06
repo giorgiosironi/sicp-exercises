@@ -18,6 +18,11 @@ Value* Cons::cdr()
     return this->cdr_ptr;
 }
 
+Value* Cons::cadadr()
+{
+    return ((Cons*) ((Cons*) ((Cons*) this->cdr())->car())->cdr())->car();
+}
+
 std::string Cons::toString()
 {
     return std::string("(")

@@ -11,6 +11,7 @@ class Cons : public Value
         Cons(Value *car_ptr, Value *cdr_ptr);
         Value* car();
         Value* cdr();
+        Value* cadadr();
         virtual std::string toString();
 };
 

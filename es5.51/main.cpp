@@ -160,7 +160,7 @@ Instruction* Machine::compile(Value* instruction)
     }
     Cons* cons = dynamic_cast<Cons *>(instruction);
     if (is_tagged_list(cons, new Symbol("perform"))) {
-        Symbol* operation = (Symbol*) (((Cons*) ((Cons*) ((Cons*) cons->cdr())->car())->cdr())->car());
+        Symbol* operation = (Symbol*) cons->cadadr();
         cout << operation->toString() << endl;
         return new Perform(
             this->operations[*operation]

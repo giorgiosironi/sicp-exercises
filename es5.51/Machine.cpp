@@ -13,6 +13,7 @@ Machine::Machine()
     this->pc = 0;
     this->flag = new Register();
     this->stack = new Stack();
+    this->registers = std::map<std::string,Register*>();
     this->the_instruction_sequence = std::vector<Instruction*>({});
     this->operations = std::map<Symbol,Operation*>();
     this->operations.insert(std::make_pair(
@@ -23,6 +24,10 @@ Machine::Machine()
 
 void Machine::allocate_register(std::string name)
 {
+    this->registers.insert(std::make_pair(
+        name,
+        new Register()
+    ));
 }
 
 void Machine::install_operations(std::map<Symbol,Operation*> operations)

@@ -13,6 +13,7 @@ class Machine {
         int pc;
         Register* flag;
         Stack* stack;
+        std::map<std::string,Register*> registers;
         std::map<Symbol,Operation*> operations;
         std::vector<Instruction*> the_instruction_sequence;
         Instruction* compile(Value* instruction);

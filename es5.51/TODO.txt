@@ -1,3 +1,7 @@
-- actually port the stack and store it in a variable somewhere
--- it's an object that may need to be passed to InitializeStack
+- build Register class
+- then Machine has to be refactored to expose the same operations as make_new_machine
+-- empty constructor
+-- all private fields come from make_new_machine
+
+When the current instruction works:
 - go to next instruction

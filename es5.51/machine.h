@@ -19,6 +19,7 @@ class Machine {
         void execute();
     public:
         Machine();
+        void allocate_register(std::string name);
         /**
          * Appends to the existing operations, does not replace
          */

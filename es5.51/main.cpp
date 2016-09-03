@@ -6,19 +6,6 @@ using namespace std;
 
 #include "data_structures.h"
 #include "is.h"
-
-int length(Value *exp)
-{
-    if (is_pair(exp)) {
-        Cons *cons = (Cons*) exp;
-        return 1 + length(cons->cdr());
-    }
-    if (is_nil(exp)) {
-        return 0;
-    }
-    // TODO: error
-}
-
 #include "operation.h"
 #include "is_self_evaluating.h"
 #include "initialize_stack.h"
@@ -82,76 +69,27 @@ std::map<Symbol,Operation*> machine_operations()
 }
 
 #include "instruction.h"
-#include "label_noop.h"
-#include "perform.h"
 #include "machine.h"
 
+/**
+ * Inline here make_machine, the Facade
+ */
 Machine* eceval()
 {
-    // TODO: make_machine() with same arguments, instead of object
-    // delegates to make_new_machine
     Machine* eceval = new Machine();
+    eceval->allocate_register("exp");
+    eceval->allocate_register("env");
+    eceval->allocate_register("val");
+    eceval->allocate_register("proc");
+    eceval->allocate_register("argl");
+    eceval->allocate_register("continue");
+    eceval->allocate_register("unev");
     eceval->install_operations(machine_operations());
     eceval->install_instruction_sequence(eceval->assemble(explicit_control_evaluator()));
     return eceval;
-        /*
-        {
-            new Symbol("exp"),
-            new Symbol("env"),
-            new Symbol("val"),
-            new Symbol("proc"),
-            new Symbol("argl"),
-            new Symbol("continue"),
-            new Symbol("unev")
-        },
-        */
 }
 
 
-void Machine::install_operations(std::map<Symbol,Operation*> operations)
-{
-    // http://stackoverflow.com/questions/3639741/merge-two-stl-maps
-    this->operations.insert(operations.begin(), operations.end());
-}
-
-void Machine::install_instruction_sequence(std::vector<Instruction*> instruction_sequence)
-{
-    this->the_instruction_sequence = instruction_sequence;
-}
-
-Instruction* Machine::compile(Value* instruction)
-{
-    if (Symbol *symbol = dynamic_cast<Symbol *>(instruction)) {
-        return new LabelNoop(
-            ((Symbol*) instruction)->name()
-        );
-    }
-    Cons* cons = dynamic_cast<Cons *>(instruction);
-    if (is_tagged_list(cons, new Symbol("perform"))) {
-        Symbol* operation = (Symbol*) cons->cadadr();
-        cout << operation->toString() << endl;
-        return new Perform(
-            this->operations[*operation]
-        );
-    }
-    cout << "Error compiling: " << instruction->toString() << endl;
-    exit(1);
-}
-
-std::vector<Instruction*> Machine::assemble(Value* controller_text)
-{
-    int instruction_length = length(controller_text); 
-    auto instructions = std::vector<Instruction*>({});
-    Value *head = controller_text;
-    for (int i = 0; i < instruction_length; i++) {
-        Cons *head_as_cons = (Cons*) head;
-        cout << head_as_cons->car()->toString() << endl;
-
-        instructions.push_back(this->compile(head_as_cons->car()));
-        head = head_as_cons->cdr();
-    }
-    return instructions;
-}
 
 void Machine::start()
 {

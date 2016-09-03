@@ -1,3 +1,4 @@
+- finish allocating registers
 - extract remaining stuff from main.cpp
 
 When the current instruction works:

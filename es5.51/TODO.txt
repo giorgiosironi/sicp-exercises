@@ -1,5 +1,8 @@
-- finish allocating registers
 - extract remaining stuff from main.cpp
+- need to implement class `PromptForInput: public Operation`
+- also a way to pass arguments to operations
+- perform has to have access to:
+    (define (make-perform inst machine labels operations pc)
 
 When the current instruction works:
 - go to next instruction

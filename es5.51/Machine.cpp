@@ -52,6 +52,7 @@ Instruction* Machine::compile(Value* instruction)
     if (is_tagged_list(cons, new Symbol("perform"))) {
         Symbol* operation = (Symbol*) cons->cadadr();
         cout << operation->toString() << endl;
+        // TODO: check this->operations[*operation] is not null
         return new Perform(
             this->operations[*operation]
         );

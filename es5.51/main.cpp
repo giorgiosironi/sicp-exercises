@@ -78,10 +78,6 @@ std::map<Symbol,Operation*> machine_operations()
         Symbol("is-self-evaluating"),
         new IsSelfEvaluating()
     ));
-    operations.insert(std::make_pair(
-        Symbol("initialize-stack"),
-        new InitializeStack()
-    ));
     return operations;
 }
 
@@ -129,7 +125,13 @@ void Perform::execute()
 
 Machine* eceval()
 {
-    return new Machine(
+    // TODO: make_machine() with same arguments, instead of object
+    // delegates to make_new_machine
+    Machine* eceval = new Machine();
+    eceval->install_operations(machine_operations());
+    eceval->install_instruction_sequence(eceval->assemble(explicit_control_evaluator()));
+    return eceval;
+        /*
         {
             new Symbol("exp"),
             new Symbol("env"),
@@ -139,16 +141,31 @@ Machine* eceval()
             new Symbol("continue"),
             new Symbol("unev")
         },
-        machine_operations(),
-        explicit_control_evaluator()
-    );
+        */
 }
 
-Machine::Machine(std::vector<Value*> register_names, std::map<Symbol,Operation*> operations, Value* controller_text)
+Machine::Machine()
 {
     this->pc = 0;
-    this->operations = operations;
-    this->the_instruction_sequence = this->assemble(controller_text);
+    this->flag = new Register();
+    this->stack = new Stack();
+    this->the_instruction_sequence = std::vector<Instruction*>({});
+    this->operations = std::map<Symbol,Operation*>();
+    this->operations.insert(std::make_pair(
+        Symbol("initialize-stack"),
+        new InitializeStack()
+    ));
+}
+
+void Machine::install_operations(std::map<Symbol,Operation*> operations)
+{
+    // http://stackoverflow.com/questions/3639741/merge-two-stl-maps
+    this->operations.insert(operations.begin(), operations.end());
+}
+
+void Machine::install_instruction_sequence(std::vector<Instruction*> instruction_sequence)
+{
+    this->the_instruction_sequence = instruction_sequence;
 }
 
 Instruction* Machine::compile(Value* instruction)

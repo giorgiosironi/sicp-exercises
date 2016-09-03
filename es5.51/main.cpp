@@ -82,25 +82,7 @@ std::map<Symbol,Operation*> machine_operations()
 }
 
 #include "instruction.h"
-
-class LabelNoop : public Instruction
-{
-    private:
-        std::string name;
-    public:
-        LabelNoop(std::string name);
-        virtual void execute();
-};
-
-LabelNoop::LabelNoop(std::string name)
-{
-    this->name = name;
-}
-
-void LabelNoop::execute()
-{
-    cout << "Label: " << this->name << endl;
-}
+#include "label_noop.h"
 
 class Perform: public Instruction
 {

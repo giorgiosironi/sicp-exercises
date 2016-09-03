@@ -1,6 +1,4 @@
-- then Machine has to be refactored to expose the same operations as make_new_machine
--- empty constructor
--- all private fields come from make_new_machine
+- extract remaining stuff from main.cpp
 
 When the current instruction works:
 - go to next instruction

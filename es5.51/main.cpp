@@ -83,26 +83,7 @@ std::map<Symbol,Operation*> machine_operations()
 
 #include "instruction.h"
 #include "label_noop.h"
-
-class Perform: public Instruction
-{
-    private:
-        Operation* operation;
-    public:
-        Perform(Operation* operation);
-        virtual void execute();
-};
-
-Perform::Perform(Operation* operation)
-{
-    this->operation = operation;
-}
-
-void Perform::execute()
-{
-    cout << "Perform: " << this->operation->toString() << endl;
-}
-
+#include "perform.h"
 #include "machine.h"
 
 Machine* eceval()

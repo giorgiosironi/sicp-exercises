@@ -1,4 +1,3 @@
-- build Register class
 - then Machine has to be refactored to expose the same operations as make_new_machine
 -- empty constructor
 -- all private fields come from make_new_machine

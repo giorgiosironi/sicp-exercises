@@ -59,6 +59,10 @@ Instruction* Machine::compile(Value* instruction)
 Instruction* Machine::make_perform(Cons* instruction)
 {
     Symbol* operation = (Symbol*) instruction->cadadr();
+    if (this->operations[*operation] == NULL) {
+        cout << "Error looking up operation: " << operation->toString() << endl;
+        exit(1);
+    }
     cout << "make_perform: " << operation->toString() << endl;
     // TODO: check this->operations[*operation] is not null
     Cons* operands = (Cons*) instruction->cddr();

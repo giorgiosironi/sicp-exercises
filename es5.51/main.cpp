@@ -30,7 +30,7 @@ Value* explicit_control_evaluator()
                 new Symbol("op"),
                 new Symbol("initialize-stack"),
             })
-        })/*,
+        }),
         build_list({
             new Symbol("perform"),
             build_list({
@@ -42,7 +42,6 @@ Value* explicit_control_evaluator()
                 new String(";;; EC-Eval input:")
             })
         })
-        */
     });
 }
 

@@ -45,5 +45,11 @@ std::string Cons::toString()
 
 std::vector<Value*> Cons::toVector()
 {
-    return std::vector<Value*>();
+    std::vector<Value*> result = std::vector<Value*>();
+    result.push_back(this->car_ptr);
+    Cons* rest = (Cons*) this->cdr_ptr;
+    while (rest->toString() != NIL->toString()) {
+        result.push_back(rest->car_ptr);
+    }
+    return result;
 }

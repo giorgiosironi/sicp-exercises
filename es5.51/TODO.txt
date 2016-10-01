@@ -5,8 +5,10 @@
 - make lists display as list instead of (a . (b . NIL))
 
 prompt-for-input
-- need to implement class `PromptForInput: public Operation`
 - also a way to pass arguments to operations
++ arguments arrive to Perform
+- evaluate them (just the `const` type)
+- pass them to the Operation as std:vector<Value*>
 
 read:
 - first implement Read but use a (perform (op read)) and ignore the result

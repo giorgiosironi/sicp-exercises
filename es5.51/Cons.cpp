@@ -1,6 +1,7 @@
 #include <string>
 #include "value.h"
 #include "cons.h"
+#include "nil.h"
 
 Cons::Cons(Value *car_ptr, Value *cdr_ptr)
 {
@@ -25,9 +26,14 @@ Value* Cons::cadadr()
 
 std::string Cons::toString()
 {
+    if (this->cdr_ptr->toString() == NIL->toString()) {
+        return std::string("(")
+            + this->car_ptr->toString()
+            + std::string(")");
+    }
+    std::string rest = this->cdr_ptr->toString();
     return std::string("(")
         + this->car_ptr->toString()
-        + std::string(" . ")
-        + this->cdr_ptr->toString() 
-        + std::string(")");
+        + std::string(" ")
+        + rest.substr(1, rest.size() - 1);
 }

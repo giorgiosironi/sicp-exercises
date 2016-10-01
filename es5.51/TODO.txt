@@ -11,3 +11,4 @@ When the current instruction works:
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine
+- chapter5.4.scm: explicit-control-evaluator, operations

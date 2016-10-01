@@ -2,6 +2,7 @@
 #include "machine.h"
 #include "instruction.h"
 #include "initialize_stack.h"
+#include "prompt_for_input.h"
 #include "label_noop.h"
 #include "perform.h"
 #include "is.h"
@@ -19,6 +20,10 @@ Machine::Machine()
     this->operations.insert(std::make_pair(
         Symbol("initialize-stack"),
         new InitializeStack(this->stack)
+    ));
+    this->operations.insert(std::make_pair(
+        Symbol("prompt-for-input"),
+        new PromptForInput()
     ));
 }
 

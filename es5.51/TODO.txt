@@ -1,8 +1,13 @@
-- extract remaining stuff from main.cpp
-- need to implement class `PromptForInput: public Operation`
-- also a way to pass arguments to operations
 - perform has to have access to:
     (define (make-perform inst machine labels operations pc)
 
+- extract remaining stuff from main.cpp
+- make lists display as list instead of (a . (b . NIL))
+
 When the current instruction works:
 - go to next instruction
+- need to implement class `PromptForInput: public Operation`
+- also a way to pass arguments to operations
+
+References:
+- chapter5.2.scm: make-machine, make-new-machine

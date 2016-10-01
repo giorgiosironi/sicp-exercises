@@ -10,4 +10,7 @@ Perform::Perform(Operation* operation)
 void Perform::execute()
 {
     cout << "Perform: " << this->operation->toString() << endl;
+    // only 0 arguments calls are supported yet
+    auto elements = std::vector<Value*>();
+    this->operation->execute(elements);
 }

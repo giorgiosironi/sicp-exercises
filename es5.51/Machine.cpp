@@ -50,15 +50,20 @@ Instruction* Machine::compile(Value* instruction)
     }
     Cons* cons = dynamic_cast<Cons *>(instruction);
     if (is_tagged_list(cons, new Symbol("perform"))) {
-        Symbol* operation = (Symbol*) cons->cadadr();
-        cout << operation->toString() << endl;
-        // TODO: check this->operations[*operation] is not null
-        return new Perform(
-            this->operations[*operation]
-        );
+        return this->make_perform(cons);
     }
     cout << "Error compiling: " << instruction->toString() << endl;
     exit(1);
+}
+
+Instruction* Machine::make_perform(Cons* instruction)
+{
+    Symbol* operation = (Symbol*) instruction->cadadr();
+    cout << "make_perform: " << operation->toString() << endl;
+    // TODO: check this->operations[*operation] is not null
+    return new Perform(
+        this->operations[*operation]
+    );
 }
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)

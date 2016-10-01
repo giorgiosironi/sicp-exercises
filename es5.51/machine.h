@@ -17,6 +17,7 @@ class Machine {
         std::map<Symbol,Operation*> operations;
         std::vector<Instruction*> the_instruction_sequence;
         Instruction* compile(Value* instruction);
+        Instruction* make_perform(Cons* instruction);
         void execute();
     public:
         Machine();

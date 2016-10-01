@@ -4,7 +4,6 @@
 #include <vector>
 #include "value.h"
 #include "operation.h"
-#include <iostream>
 
 class PromptForInput: public Operation {
     public:

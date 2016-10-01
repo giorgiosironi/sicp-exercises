@@ -70,8 +70,14 @@ Instruction* Machine::make_perform(Cons* instruction)
     }
     cout << "make_perform: " << operation->toString() << endl;
     // TODO: check this->operations[*operation] is not null
-    Cons* operands = (Cons*) instruction->cddr();
-    cout << "operands: " << operands->toString() << endl;
+    Value* maybe_operands = instruction->cddr();
+    if (maybe_operands->toString() != NIL->toString()) {
+        Cons* operands = (Cons*) maybe_operands;
+        cout << "operands: " << operands->toString() << endl;
+        operands->toVector();
+    } else {
+        // operands is an empty vector
+    }
     return new Perform(
         this->operations[*operation]
     );

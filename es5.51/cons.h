@@ -1,5 +1,8 @@
 #ifndef CONS_H
 #define CONS_H
+#include "value.h"
+#include <string>
+#include <vector>
 
 class Cons : public Value
 {
@@ -14,6 +17,7 @@ class Cons : public Value
         Value* cddr();
         Value* cadadr();
         virtual std::string toString();
+        virtual std::vector<Value*> toVector();
 };
 
 #endif

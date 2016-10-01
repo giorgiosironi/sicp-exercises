@@ -4,10 +4,14 @@
 - extract remaining stuff from main.cpp
 - make lists display as list instead of (a . (b . NIL))
 
-When the current instruction works:
-- go to next instruction
+prompt-for-input
 - need to implement class `PromptForInput: public Operation`
 - also a way to pass arguments to operations
+
+read:
+- first implement Read but use a (perform (op read)) and ignore the result
+- then implement assign and use (assign (op read))
+
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

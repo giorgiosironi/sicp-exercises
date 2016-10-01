@@ -11,6 +11,6 @@ Value* PromptForInput::execute(std::vector<Value*> elements)
 
 std::string PromptForInput::toString()
 {
-    return std::string("Operation-InitializeStack");
+    return std::string("Operation-PromptForInput");
 }
 

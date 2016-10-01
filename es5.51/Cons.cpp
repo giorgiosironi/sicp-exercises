@@ -42,3 +42,8 @@ std::string Cons::toString()
         + std::string(" ")
         + rest.substr(1, rest.size() - 1);
 }
+
+std::vector<Value*> Cons::toVector()
+{
+    return std::vector<Value*>();
+}

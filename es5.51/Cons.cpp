@@ -19,6 +19,11 @@ Value* Cons::cdr()
     return this->cdr_ptr;
 }
 
+Value* Cons::cddr()
+{
+    return ((Cons*) this->cdr())->cdr();
+}
+
 Value* Cons::cadadr()
 {
     return ((Cons*) ((Cons*) ((Cons*) this->cdr())->car())->cdr())->car();

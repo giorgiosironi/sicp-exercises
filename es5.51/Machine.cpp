@@ -61,6 +61,8 @@ Instruction* Machine::make_perform(Cons* instruction)
     Symbol* operation = (Symbol*) instruction->cadadr();
     cout << "make_perform: " << operation->toString() << endl;
     // TODO: check this->operations[*operation] is not null
+    Cons* operands = (Cons*) instruction->cddr();
+    cout << "operands: " << operands->toString() << endl;
     return new Perform(
         this->operations[*operation]
     );

@@ -1,10 +1,14 @@
 #include "initialize_stack.h"
 #include "symbol.h"
-#include "stack.h"
+
+InitializeStack::InitializeStack(Stack* stack)
+{
+    this->stack = stack;
+}
 
 Value* InitializeStack::execute(std::vector<Value*> elements)
 {
-    Stack* stack = new Stack();
+    // do something to this->stack if needed
     return new Symbol("ok");
 }
 

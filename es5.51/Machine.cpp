@@ -18,7 +18,7 @@ Machine::Machine()
     this->operations = std::map<Symbol,Operation*>();
     this->operations.insert(std::make_pair(
         Symbol("initialize-stack"),
-        new InitializeStack()
+        new InitializeStack(this->stack)
     ));
 }
 

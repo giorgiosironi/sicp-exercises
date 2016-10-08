@@ -34,6 +34,11 @@ Value* Cons::cadadr()
     return ((Cons*) ((Cons*) ((Cons*) this->cdr())->car())->cdr())->car();
 }
 
+Value* Cons::cadaddr()
+{
+    return ((Cons*) ((Cons*) ((Cons*) ((Cons*) this->cdr())->cdr())->car())->cdr())->car();
+}
+
 std::string Cons::toString()
 {
     if (this->cdr_ptr->toString() == NIL->toString()) {

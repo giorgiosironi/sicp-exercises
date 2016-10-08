@@ -6,6 +6,7 @@
 #include "read.h"
 #include "label_noop.h"
 #include "perform.h"
+#include "assign.h"
 #include "is.h"
 #include "length.h"
 using namespace std;
@@ -62,10 +63,14 @@ Instruction* Machine::compile(Value* instruction)
     if (is_tagged_list(cons, new Symbol("perform"))) {
         return this->make_perform(cons);
     }
+    if (is_tagged_list(cons, new Symbol("assign"))) {
+        return this->make_assign(cons);
+    }
     cout << "Error compiling: " << instruction->toString() << endl;
     exit(1);
 }
 
+// (perform (op prompt-for-input) (const "Input:"))
 Instruction* Machine::make_perform(Cons* instruction)
 {
     Symbol* operation = (Symbol*) instruction->cadadr();
@@ -85,6 +90,28 @@ Instruction* Machine::make_perform(Cons* instruction)
         operands_vector = std::vector<Value*>();
     }
     return new Perform(
+        this->operations[*operation],
+        operands_vector,
+        this
+    );
+}
+
+// (assign exp (op read))
+Instruction* Machine::make_assign(Cons* instruction)
+{
+    Symbol* operation = (Symbol*) instruction->cadaddr();
+    // TODO: this->_lookup_operation()
+    if (this->operations[*operation] == NULL) {
+        cout << "Error looking up operation: " << operation->toString() << endl;
+        exit(1);
+    }
+    cout << "make_assign: " << operation->toString() << endl;
+    std::vector<Value*> operands_vector;
+    // only 0-operands operations are supported for assignment for now
+    operands_vector = std::vector<Value*>();
+    return new Assign(
+            // TODO: this should be read
+        this->registers["exp"],
         this->operations[*operation],
         operands_vector,
         this

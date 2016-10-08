@@ -18,6 +18,7 @@ class Machine {
         std::vector<Instruction*> the_instruction_sequence;
         Instruction* compile(Value* instruction);
         Instruction* make_perform(Cons* instruction);
+        Instruction* make_assign(Cons* instruction);
         void execute();
     public:
         Machine();

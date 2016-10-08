@@ -4,11 +4,13 @@
 #include "frame.h"
 using namespace std;
 
-class Environment {
+class Environment: public Value {
     private:
         vector<Frame*> frames;
     public:
+        Environment();
         Environment(vector<Frame*> frames);
+        virtual std::string toString();
 };
 
 #endif

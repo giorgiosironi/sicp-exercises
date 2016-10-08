@@ -20,8 +20,8 @@ read:
 -- parse it? any kind of s-expression could be passed there
 
 the-global-environment:
-- implement Frame: pair of variable names (symbols?) and values
-- implement Environment: a sequence of Frames where the topmost is the one that wins and if a variable is not found it falls back to other Frames
++ implement Frame: pair of variable names (symbols?) and values
++ implement Environment: a sequence of Frames where the topmost is the one that wins and if a variable is not found it falls back to other Frames
 - implement Environment::extend()
 
 

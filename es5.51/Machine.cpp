@@ -4,6 +4,7 @@
 #include "initialize_stack.h"
 #include "prompt_for_input.h"
 #include "read.h"
+#include "get_global_environment.h"
 #include "label_noop.h"
 #include "perform.h"
 #include "assign.h"
@@ -30,6 +31,10 @@ Machine::Machine()
     this->operations.insert(std::make_pair(
         Symbol("read"),
         new Read()
+    ));
+    this->operations.insert(std::make_pair(
+        Symbol("get-global-environment"),
+        new GetGlobalEnvironment()
     ));
 }
 

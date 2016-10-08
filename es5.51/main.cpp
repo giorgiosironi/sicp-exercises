@@ -43,7 +43,8 @@ Value* explicit_control_evaluator()
             })
         }),
         build_list({
-            new Symbol("perform"), //becomes new Symbol("assign"),
+            new Symbol("assign"),
+            new Symbol("exp"),
             build_list({
                 new Symbol("op"),
                 new Symbol("read"),

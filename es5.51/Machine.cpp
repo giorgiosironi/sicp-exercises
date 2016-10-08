@@ -99,6 +99,7 @@ Instruction* Machine::make_perform(Cons* instruction)
 // (assign exp (op read))
 Instruction* Machine::make_assign(Cons* instruction)
 {
+    Symbol* register_ = (Symbol*) instruction->cadr();
     Symbol* operation = (Symbol*) instruction->cadaddr();
     // TODO: this->_lookup_operation()
     if (this->operations[*operation] == NULL) {
@@ -111,7 +112,7 @@ Instruction* Machine::make_assign(Cons* instruction)
     operands_vector = std::vector<Value*>();
     return new Assign(
             // TODO: this should be read
-        this->registers["exp"],
+        this->registers[register_->name()],
         this->operations[*operation],
         operands_vector,
         this

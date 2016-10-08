@@ -2,13 +2,15 @@
     (define (make-perform inst machine labels operations pc)
 
 - extract remaining stuff from main.cpp
-- make lists display as list instead of (a . (b . NIL))
++ make lists display as list instead of (a . (b . NIL))
 
 prompt-for-input
-- also a way to pass arguments to operations
++ also a way to pass arguments to operations
 + arguments arrive to Perform
 - evaluate them (just the `const` type)
-- pass them to the Operation as std:vector<Value*>
+-- but they need to be evaluated in multiple places, like `assign` and `perform`
+-- we will extract that later, a private method is ok for now
++ pass them to the Operation as std:vector<Value*>
 
 read:
 - first implement Read but use a (perform (op read)) and ignore the result

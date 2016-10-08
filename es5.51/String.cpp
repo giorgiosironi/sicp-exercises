@@ -7,6 +7,6 @@ String::String(std::string name)
 
 std::string String::toString()
 {
-    return this->name;
+    return "\"" + this->name + "\"";
 }
 

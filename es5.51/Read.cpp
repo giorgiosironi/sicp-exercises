@@ -6,10 +6,11 @@ using namespace std;
 
 Value* Read::execute(std::vector<Value*> elements)
 {
-    // just throw away the value for now 
+    // slightly better: consider every input a symbol
+    // because we don't know yet how to parse it
     std::string input;
     getline(cin, input);
-    return new Symbol("ok");
+    return new Symbol(input);
 }
 
 std::string Read::toString()

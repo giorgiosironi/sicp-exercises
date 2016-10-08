@@ -49,7 +49,15 @@ Value* explicit_control_evaluator()
                 new Symbol("op"),
                 new Symbol("read"),
             })
-        })
+        })/*,
+        build_list({
+            new Symbol("assign"),
+            new Symbol("env"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("a-new-empty-environment"), // becomes new Symbol("get-global-environment"),
+            })
+        })*/
     });
 }
 

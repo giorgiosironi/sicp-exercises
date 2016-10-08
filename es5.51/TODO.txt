@@ -3,6 +3,7 @@
 
 - extract remaining stuff from main.cpp
 + make lists display as list instead of (a . (b . NIL))
+- remove referenced to std:: by using `use namespace std`
 
 prompt-for-input
 + also a way to pass arguments to operations
@@ -18,7 +19,13 @@ read:
 - this will read the input as a String (or std::string maybe), but we need to transform it
 -- parse it? any kind of s-expression could be passed there
 
+the-global-environment:
+- implement Frame: pair of variable names (symbols?) and values
+- implement Environment: a sequence of Frames where the topmost is the one that wins and if a variable is not found it falls back to other Frames
+- implement Environment::extend()
+
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine
 - chapter5.4.scm: explicit-control-evaluator, operations
+- es4.13.scm: environments, frames, variables

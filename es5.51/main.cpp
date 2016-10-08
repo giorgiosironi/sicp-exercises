@@ -41,6 +41,13 @@ Value* explicit_control_evaluator()
                 new Symbol("const"),
                 new String(";;; EC-Eval input:")
             })
+        }),
+        build_list({
+            new Symbol("perform"), //becomes new Symbol("assign"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("read"),
+            })
         })
     });
 }

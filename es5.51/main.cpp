@@ -57,7 +57,16 @@ Value* explicit_control_evaluator()
                 new Symbol("op"),
                 new Symbol("get-global-environment")
             })
+        })/*,
+        build_list({
+            new Symbol("assign"),
+            new Symbol("continue"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("print-result")
+            })
         })
+        */
     });
 }
 

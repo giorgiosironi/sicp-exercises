@@ -24,6 +24,20 @@ the-global-environment:
 + implement Environment: a sequence of Frames where the topmost is the one that wins and if a variable is not found it falls back to other Frames
 - implement Environment::extend()
 
+assign to continue:
+- assign will start to support multiple types of stuff, not just operation
+- ...but also (label ...)
+- that will need a Label: public Value
+- assign should work as-is once this returns a Value
+- maybe remove Machine and other not needed stuff from this Instruction?
+
+goto label
+- Goto: public Instruction
+- will need to have access to the Machine, it should
+- needs to modify the correct register, but
+- ...take care that it is not incremented afterwards
+- we need to push the increment down into the Instructions probably, so that Goto will do something else but assign/perform/etc will continue to do ++
+
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

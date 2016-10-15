@@ -25,10 +25,10 @@ the-global-environment:
 - implement Environment::extend()
 
 assign to continue:
-- assign will start to support multiple types of stuff, not just operation
-- ...but also (label ...)
-- that will need a Label: public Value
-- assign should work as-is once this returns a Value
++ assign will start to support multiple types of stuff, not just operation
++ ...but also (label ...)
++ that will need a Label: public Value
++ assign should work as-is once this returns a Value
 - maybe remove Machine and other not needed stuff from this Instruction?
 
 goto label

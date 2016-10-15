@@ -65,6 +65,13 @@ Value* explicit_control_evaluator()
                 new Symbol("label"),
                 new Symbol("print-result")
             })
+        }),
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch")
+            })
         })
     });
 }

@@ -8,6 +8,7 @@
 #include "label_noop.h"
 #include "perform.h"
 #include "assign.h"
+#include "goto.h"
 #include "is.h"
 #include "length.h"
 using namespace std;
@@ -70,6 +71,9 @@ Instruction* Machine::compile(Value* instruction)
     }
     if (is_tagged_list(cons, new Symbol("assign"))) {
         return this->make_assign(cons);
+    }
+    if (is_tagged_list(cons, new Symbol("goto"))) {
+        return this->make_goto(cons);
     }
     cout << "Error compiling: " << instruction->toString() << endl;
     exit(1);
@@ -136,6 +140,13 @@ Instruction* Machine::make_assign(Cons* instruction)
         cout << "Unsupported assignment: " << assignmentType->name();
         exit(1);
     }
+}
+
+// (goto (label eval-dispatch))
+Instruction* Machine::make_goto(Cons* instruction)
+{
+    return new Goto(
+    );
 }
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)

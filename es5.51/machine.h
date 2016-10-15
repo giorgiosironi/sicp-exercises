@@ -7,6 +7,7 @@
 #include "instruction.h"
 #include "register.h"
 #include "stack.h"
+#include "symbol.h"
 
 class Machine {
     private:
@@ -17,6 +18,7 @@ class Machine {
         std::map<Symbol,Operation*> operations;
         std::vector<Instruction*> the_instruction_sequence;
         Instruction* compile(Value* instruction);
+        Instruction* make_label_noop(Symbol* symbol);
         Instruction* make_perform(Cons* instruction);
         Instruction* make_assign(Cons* instruction);
         Instruction* make_goto(Cons* instruction);

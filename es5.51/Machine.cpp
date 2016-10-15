@@ -61,9 +61,7 @@ void Machine::install_instruction_sequence(std::vector<Instruction*> instruction
 Instruction* Machine::compile(Value* instruction)
 {
     if (Symbol *symbol = dynamic_cast<Symbol *>(instruction)) {
-        return new LabelNoop(
-            ((Symbol*) instruction)->name()
-        );
+        return this->make_label_noop(symbol);
     }
     Cons* cons = dynamic_cast<Cons *>(instruction);
     if (is_tagged_list(cons, new Symbol("perform"))) {
@@ -77,6 +75,14 @@ Instruction* Machine::compile(Value* instruction)
     }
     cout << "Error compiling: " << instruction->toString() << endl;
     exit(1);
+}
+
+Instruction* Machine::make_label_noop(Symbol* symbol)
+{
+    return new LabelNoop(
+        symbol->name(),
+        this
+    );
 }
 
 // (perform (op prompt-for-input) (const "Input:"))
@@ -146,6 +152,7 @@ Instruction* Machine::make_assign(Cons* instruction)
 Instruction* Machine::make_goto(Cons* instruction)
 {
     return new Goto(
+        this
     );
 }
 

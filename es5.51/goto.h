@@ -8,7 +8,7 @@ class Goto: public Instruction
     private: 
         Machine* machine;
     public:
-        Goto();
+        Goto(Machine* machine);
         virtual void execute();
 };
 

@@ -15,7 +15,7 @@ using namespace std;
 Machine::Machine()
 {
     this->pc = 0;
-    this->flag = new Register();
+    this->flag = new Register("flag");
     this->stack = new Stack();
     this->registers = std::map<std::string,Register*>();
     this->the_instruction_sequence = std::vector<Instruction*>({});
@@ -42,7 +42,7 @@ void Machine::allocate_register(std::string name)
 {
     this->registers.insert(std::make_pair(
         name,
-        new Register()
+        new Register(name)
     ));
 }
 

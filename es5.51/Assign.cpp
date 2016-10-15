@@ -12,7 +12,7 @@ Assign::Assign(Register* register_, Operation* operation, std::vector<Value*> op
 
 void Assign::execute()
 {
-    cout << "Assign: " << this->operation->toString() << endl;
+    cout << "Assign (" << this->register_->name() << "): " << this->operation->toString() << endl;
     // only 0-argument supported for now
     auto elements = std::vector<Value*>();
     Value* result = this->operation->execute(elements);

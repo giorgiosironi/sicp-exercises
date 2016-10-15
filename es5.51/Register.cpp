@@ -1,4 +1,10 @@
 #include "register.h"
+using namespace std;
+
+Register::Register(string name)
+{
+    this->_name = name;
+}
 
 void Register::set(Value* value)
 {
@@ -8,4 +14,9 @@ void Register::set(Value* value)
 Value* Register::get()
 {
     return this->content;
+}
+
+string Register::name()
+{
+    return this->_name;
 }

@@ -32,7 +32,7 @@ assign to continue:
 - maybe remove Machine and other not needed stuff from this Instruction?
 
 goto label
-- Goto: public Instruction
++ Goto: public Instruction
 - will need to have access to the Machine, it should
 - needs to modify the correct register, but
 - ...take care that it is not incremented afterwards

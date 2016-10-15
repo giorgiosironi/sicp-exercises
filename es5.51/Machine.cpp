@@ -163,3 +163,22 @@ std::vector<Instruction*> Machine::assemble(Value* controller_text)
     }
     return instructions;
 }
+
+void Machine::start()
+{
+    this->pc = 0;
+    this->execute();
+}
+
+void Machine::execute()
+{
+    while (this->pc < this->the_instruction_sequence.size()) {
+        Instruction* i = this->the_instruction_sequence.at(this->pc);
+        // TODO: return effects like the increment of pc
+        // instead of always applying them (will be needed to implement jumps)
+        i->execute();
+        this->pc++;
+    }
+    cout << "End of controller" << endl;
+}
+

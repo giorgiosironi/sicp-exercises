@@ -29,4 +29,5 @@ void Perform::execute()
         }
     }
     this->operation->execute(elements);
+    this->machine->nextInstruction();
 }

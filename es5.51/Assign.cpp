@@ -34,4 +34,5 @@ void Assign::execute()
         cout << "Assign (" << this->register_->name() << "): invalid instruction" << endl;
         exit(1);
     }
+    this->machine->nextInstruction();
 }

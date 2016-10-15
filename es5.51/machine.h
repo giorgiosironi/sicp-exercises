@@ -31,6 +31,7 @@ class Machine {
         void install_instruction_sequence(std::vector<Instruction*> instruction_sequence);
         std::vector<Instruction*> assemble(Value* controller_text);
         void start();
+        void nextInstruction();
 };
 
 #endif

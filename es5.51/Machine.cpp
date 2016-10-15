@@ -177,8 +177,12 @@ void Machine::execute()
         // TODO: return effects like the increment of pc
         // instead of always applying them (will be needed to implement jumps)
         i->execute();
-        this->pc++;
     }
     cout << "End of controller" << endl;
+}
+
+void Machine::nextInstruction()
+{
+    this->pc++;
 }
 

@@ -102,26 +102,40 @@ Instruction* Machine::make_perform(Cons* instruction)
 }
 
 // (assign exp (op read))
+// (assign continue (label something))
 Instruction* Machine::make_assign(Cons* instruction)
 {
     Symbol* register_ = (Symbol*) instruction->cadr();
-    Symbol* operation = (Symbol*) instruction->cadaddr();
-    // TODO: this->_lookup_operation()
-    if (this->operations[*operation] == NULL) {
-        cout << "Error looking up operation: " << operation->toString() << endl;
+    Symbol* assignmentType = (Symbol*) instruction->caaddr();
+    if (assignmentType->name() == "op") {
+        Symbol* operation = (Symbol*) instruction->cadaddr();
+        // TODO: this->_lookup_operation()
+        if (this->operations[*operation] == NULL) {
+            cout << "Error looking up operation: " << operation->toString() << endl;
+            exit(1);
+        }
+        cout << "make_assign: " << operation->toString() << endl;
+        std::vector<Value*> operands_vector;
+        // only 0-operands operations are supported for assignment for now
+        operands_vector = std::vector<Value*>();
+        return new Assign(
+                // TODO: this should be read
+            this->registers[register_->name()],
+            this->operations[*operation],
+            operands_vector,
+            this
+        );
+    } else if (assignmentType->name() == "label") {
+        Symbol* name = (Symbol*) instruction->cadaddr();
+        return new Assign(
+            this->registers[register_->name()],
+            new Label(name),
+            this
+        );
+    } else {
+        cout << "Unsupported assignment: " << assignmentType->name();
         exit(1);
     }
-    cout << "make_assign: " << operation->toString() << endl;
-    std::vector<Value*> operands_vector;
-    // only 0-operands operations are supported for assignment for now
-    operands_vector = std::vector<Value*>();
-    return new Assign(
-            // TODO: this should be read
-        this->registers[register_->name()],
-        this->operations[*operation],
-        operands_vector,
-        this
-    );
 }
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)

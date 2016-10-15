@@ -16,6 +16,8 @@ class Cons : public Value
         Value* cdr();
         Value* cadr();
         Value* cddr();
+        Value* caddr();
+        Value* caaddr();
         Value* cadadr();
         Value* cadaddr();
         virtual std::string toString();

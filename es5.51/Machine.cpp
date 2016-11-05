@@ -93,6 +93,7 @@ Instruction* Machine::make_label_noop(Symbol* symbol)
 Instruction* Machine::make_perform(Cons* instruction)
 {
     auto operation = this->operation(instruction->cadr());
+    cout << "make_perform: " << operation->toString() << endl;
     Value* maybe_operands = instruction->cddr();
     std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
     return new Perform(
@@ -187,15 +188,11 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
 // (test (op self-evaluating?) (reg exp))
 Instruction* Machine::make_test(Cons* instruction)
 {
-    Symbol* operation = (Symbol*) instruction->cadadr();
-    if (this->operations[*operation] == NULL) {
-        cout << "Error looking up operation: " << operation->toString() << endl;
-        exit(1);
-    }
+    auto operation = this->operation(instruction->cadr());
     cout << "make_test: " << operation->toString() << endl;
     Value* maybe_operands = instruction->cddr();
     std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
-    return new Test(flag, operands_vector, this);
+    return new Test(flag, operation, operands_vector, this);
 }
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)

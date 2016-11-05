@@ -34,9 +34,10 @@ assign to continue:
 test:
 + need a Machine::make_test
 + and a Test : Instruction class
-- will look up the Operation and pass it in the Test constructor
++ will look up the Operation and pass it in the Test constructor
 + will look up the Register and pass it in the Test constructor
 + need also to be passed the flag Register to store the result
+- now implement the body of Test::execute()
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

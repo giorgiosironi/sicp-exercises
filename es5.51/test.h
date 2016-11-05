@@ -13,10 +13,11 @@ class Test: public Instruction
 {
     private:
         Register* targetRegister;
+        Operation* operation;
         std::vector<Value*> operands;
         Machine *machine;
     public:
-        Test(Register* targetRegister, std::vector<Value*> operands, Machine* machine);
+        Test(Register* targetRegister, Operation* operation, std::vector<Value*> operands, Machine* machine);
         virtual void execute();
 };
 

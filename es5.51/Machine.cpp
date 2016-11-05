@@ -98,21 +98,29 @@ Instruction* Machine::make_perform(Cons* instruction)
         exit(1);
     }
     cout << "make_perform: " << operation->toString() << endl;
-    // TODO: check this->operations[*operation] is not null
     Value* maybe_operands = instruction->cddr();
-    std::vector<Value*> operands_vector;
-    if (maybe_operands->toString() != NIL->toString()) {
-        Cons* operands = (Cons*) maybe_operands;
-        cout << "operands: " << operands->toString() << endl;
-        operands_vector = operands->toVector();
-    } else {
-        operands_vector = std::vector<Value*>();
-    }
+    std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
     return new Perform(
         this->operations[*operation],
         operands_vector,
         this
     );
+}
+
+/**
+ * tail_of_instruction after instruction name and (op ...) have been removed
+ */
+std::vector<Value*> Machine::operands_vector(Value* tail_of_instruction)
+{
+    std::vector<Value*> operands_vector;
+    if (tail_of_instruction->toString() != NIL->toString()) {
+        Cons* operands = (Cons*) tail_of_instruction;
+        cout << "operands: " << operands->toString() << endl;
+        operands_vector = operands->toVector();
+    } else {
+        operands_vector = std::vector<Value*>();
+    }
+    return operands_vector;
 }
 
 // (assign exp (op read))
@@ -172,6 +180,12 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
 // (test (op self-evaluating?) (reg exp))
 Instruction* Machine::make_test(Cons* instruction)
 {
+    Symbol* operation = (Symbol*) instruction->cadadr();
+    if (this->operations[*operation] == NULL) {
+        cout << "Error looking up operation: " << operation->toString() << endl;
+        exit(1);
+    }
+    cout << "make_test: " << operation->toString() << endl;
     return new Test(flag, this);
 }
 

@@ -186,7 +186,9 @@ Instruction* Machine::make_test(Cons* instruction)
         exit(1);
     }
     cout << "make_test: " << operation->toString() << endl;
-    return new Test(flag, this);
+    Value* maybe_operands = instruction->cddr();
+    std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
+    return new Test(flag, operands_vector, this);
 }
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)

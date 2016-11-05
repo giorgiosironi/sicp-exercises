@@ -2,9 +2,10 @@
 #include <iostream>
 using namespace std;
 
-Test::Test(Register* targetRegister, Machine* machine)
+Test::Test(Register* targetRegister, std::vector<Value*> operands, Machine* machine)
 {
     this->targetRegister = targetRegister;
+    this->operands = operands;
     this->machine = machine;
 }
 

@@ -2,14 +2,14 @@
 #include <iostream>
 using namespace std;
 
-Goto::Goto(Machine* machine)
+Goto::Goto(Machine* machine, int labelIndex)
 {
     this->machine = machine;
+    this->labelIndex = labelIndex;
 }
 
 void Goto::execute()
 {
     cout << "GOTO" << endl;
-    // TODO: shouldn't do this, but go to a label
-    this->machine->nextInstruction();
+    this->machine->forceInstruction(this->labelIndex);
 }

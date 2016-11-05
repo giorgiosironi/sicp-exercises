@@ -35,6 +35,7 @@ class Machine {
         std::vector<Instruction*> assemble(Value* controller_text);
         void start();
         void nextInstruction();
+        void forceInstruction(int instructionIndex);
 };
 
 #endif

@@ -160,7 +160,8 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
     int labelIndex = labels[*labelName];
     cout << "labelIndex: " << labelIndex << endl;
     return new Goto(
-        this
+        this,
+        labelIndex
     );
 }
 
@@ -219,5 +220,10 @@ void Machine::execute()
 void Machine::nextInstruction()
 {
     this->pc++;
+}
+
+void Machine::forceInstruction(int instructionIndex)
+{
+    this->pc = instructionIndex;
 }
 

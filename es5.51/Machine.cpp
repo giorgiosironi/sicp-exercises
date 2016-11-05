@@ -58,7 +58,7 @@ void Machine::install_instruction_sequence(std::vector<Instruction*> instruction
     this->the_instruction_sequence = instruction_sequence;
 }
 
-Instruction* Machine::compile(Value* instruction)
+Instruction* Machine::compile(Value* instruction, std::map<Symbol,int> labels)
 {
     if (Symbol *symbol = dynamic_cast<Symbol *>(instruction)) {
         return this->make_label_noop(symbol);
@@ -71,7 +71,7 @@ Instruction* Machine::compile(Value* instruction)
         return this->make_assign(cons);
     }
     if (is_tagged_list(cons, new Symbol("goto"))) {
-        return this->make_goto(cons);
+        return this->make_goto(cons, labels);
     }
     cout << "Error compiling: " << instruction->toString() << endl;
     exit(1);
@@ -149,8 +149,16 @@ Instruction* Machine::make_assign(Cons* instruction)
 }
 
 // (goto (label eval-dispatch))
-Instruction* Machine::make_goto(Cons* instruction)
+Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
 {
+    Symbol* labelName = (Symbol*) instruction->cadadr();
+    cout << "labelName: " << labelName->toString() << endl;
+    if (!labels.count(*labelName)) {
+        cout << "Unknown label pointed by goto: " << labelName->toString() << endl;
+        exit(1);
+    }
+    int labelIndex = labels[*labelName];
+    cout << "labelIndex: " << labelIndex << endl;
     return new Goto(
         this
     );
@@ -161,14 +169,34 @@ std::vector<Instruction*> Machine::assemble(Value* controller_text)
     int instruction_length = length(controller_text); 
     auto instructions = std::vector<Instruction*>({});
     Value *head = controller_text;
+    auto labels = this->extract_labels(controller_text);
     for (int i = 0; i < instruction_length; i++) {
         Cons *head_as_cons = (Cons*) head;
         cout << head_as_cons->car()->toString() << endl;
 
-        instructions.push_back(this->compile(head_as_cons->car()));
+        instructions.push_back(this->compile(head_as_cons->car(), labels));
         head = head_as_cons->cdr();
     }
     return instructions;
+}
+
+std::map<Symbol,int> Machine::extract_labels(Value* controller_text)
+{
+    auto labels = std::map<Symbol,int>();
+    int instruction_length = length(controller_text); 
+    Value *head = controller_text;
+    for (int index = 0; index < instruction_length; index++) {
+        Cons *head_as_cons = (Cons*) head;
+
+        if (Symbol *symbol = dynamic_cast<Symbol *>(head_as_cons->car())) {
+            labels.insert(std::make_pair(
+                *symbol,
+                index
+            ));
+        }
+        head = head_as_cons->cdr();
+    }
+    return labels;
 }
 
 void Machine::start()

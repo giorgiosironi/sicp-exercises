@@ -72,7 +72,8 @@ Value* explicit_control_evaluator()
                 new Symbol("label"),
                 new Symbol("eval-dispatch")
             })
-        })
+        }),
+        new Symbol("eval-dispatch")
     });
 }
 

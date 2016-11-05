@@ -17,11 +17,12 @@ class Machine {
         std::map<std::string,Register*> registers;
         std::map<Symbol,Operation*> operations;
         std::vector<Instruction*> the_instruction_sequence;
-        Instruction* compile(Value* instruction);
+        std::map<Symbol,int> extract_labels(Value* controller_text);
+        Instruction* compile(Value* instruction, std::map<Symbol,int> labels);
         Instruction* make_label_noop(Symbol* symbol);
         Instruction* make_perform(Cons* instruction);
         Instruction* make_assign(Cons* instruction);
-        Instruction* make_goto(Cons* instruction);
+        Instruction* make_goto(Cons* instruction, std::map<Symbol,int> labels);
         void execute();
     public:
         Machine();

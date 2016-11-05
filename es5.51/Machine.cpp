@@ -9,6 +9,7 @@
 #include "perform.h"
 #include "assign.h"
 #include "goto.h"
+#include "test.h"
 #include "is.h"
 #include "length.h"
 using namespace std;
@@ -72,6 +73,9 @@ Instruction* Machine::compile(Value* instruction, std::map<Symbol,int> labels)
     }
     if (is_tagged_list(cons, new Symbol("goto"))) {
         return this->make_goto(cons, labels);
+    }
+    if (is_tagged_list(cons, new Symbol("test"))) {
+        return this->make_test(cons);
     }
     cout << "Error compiling, unknown instruction: " << instruction->toString() << endl;
     exit(1);
@@ -163,6 +167,12 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
         this,
         labelIndex
     );
+}
+
+// (test (op self-evaluating?) (reg exp))
+Instruction* Machine::make_test(Cons* instruction)
+{
+    return new Test(flag, this);
 }
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)

@@ -23,6 +23,7 @@ class Machine {
         Instruction* make_perform(Cons* instruction);
         Instruction* make_assign(Cons* instruction);
         Instruction* make_goto(Cons* instruction, std::map<Symbol,int> labels);
+        Instruction* make_test(Cons* instruction);
         void execute();
     public:
         Machine();

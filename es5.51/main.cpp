@@ -73,7 +73,19 @@ Value* explicit_control_evaluator()
                 new Symbol("eval-dispatch")
             })
         }),
-        new Symbol("eval-dispatch")
+        new Symbol("eval-dispatch"),
+        //(test (op self-evaluating?) (reg exp))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-self-evaluating")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            }),
+        }),
     });
 }
 

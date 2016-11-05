@@ -73,7 +73,7 @@ Instruction* Machine::compile(Value* instruction, std::map<Symbol,int> labels)
     if (is_tagged_list(cons, new Symbol("goto"))) {
         return this->make_goto(cons, labels);
     }
-    cout << "Error compiling: " << instruction->toString() << endl;
+    cout << "Error compiling, unknown instruction: " << instruction->toString() << endl;
     exit(1);
 }
 

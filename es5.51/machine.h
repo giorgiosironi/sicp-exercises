@@ -25,6 +25,7 @@ class Machine {
         Instruction* make_goto(Cons* instruction, std::map<Symbol,int> labels);
         Instruction* make_test(Cons* instruction);
         std::vector<Value*> operands_vector(Value* tail_of_instruction);
+        Operation* operation(Value* instruction_argument);
         void execute();
     public:
         Machine();

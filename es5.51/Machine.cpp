@@ -92,19 +92,26 @@ Instruction* Machine::make_label_noop(Symbol* symbol)
 // (perform (op prompt-for-input) (const "Input:"))
 Instruction* Machine::make_perform(Cons* instruction)
 {
-    Symbol* operation = (Symbol*) instruction->cadadr();
+    auto operation = this->operation(instruction->cadr());
+    Value* maybe_operands = instruction->cddr();
+    std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
+    return new Perform(
+        operation,
+        operands_vector,
+        this
+    );
+}
+
+// (op prompt-for-input)
+Operation* Machine::operation(Value* instruction_argument)
+{
+    Symbol* operation = (Symbol*) (((Cons*) instruction_argument)->cadr());
+    cout << "operation: " << operation->toString() << endl;
     if (this->operations[*operation] == NULL) {
         cout << "Error looking up operation: " << operation->toString() << endl;
         exit(1);
     }
-    cout << "make_perform: " << operation->toString() << endl;
-    Value* maybe_operands = instruction->cddr();
-    std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
-    return new Perform(
-        this->operations[*operation],
-        operands_vector,
-        this
-    );
+    return this->operations[*operation];
 }
 
 /**

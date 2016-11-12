@@ -86,6 +86,14 @@ Value* explicit_control_evaluator()
                 new Symbol("exp")
             }),
         }),
+        //(branch (label ev-self-eval))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-self-eval")
+            }),
+        }),
     });
 }
 

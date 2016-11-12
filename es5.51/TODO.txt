@@ -40,7 +40,14 @@ test:
 + now implement the body of Test::execute()
 
 branch:
-- implement Operation::toString()
+- need a Branch : Instruction
+- need a Machine::make_branch
+- pass in Register flag
+- pass in label index lookup
+-- you'll need to add the label to main.cpp
+-- add the rest of instructions in between, but commented out 
+   in the original Lisp format 
+- implement Instruction::toString()
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

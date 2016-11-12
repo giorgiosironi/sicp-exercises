@@ -5,7 +5,8 @@ using namespace std;
 
 Value* IsSelfEvaluating::execute(std::vector<Value*> elements)
 {
-    return new Bool(is_number(elements.at(0)) || is_string(elements.at(0)));
+    Value* value = elements.at(0);
+    return new Bool(is_number(value) || is_string(value));
 }
 
 std::string IsSelfEvaluating::toString()

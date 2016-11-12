@@ -9,6 +9,7 @@
 #include "perform.h"
 #include "assign.h"
 #include "goto.h"
+#include "branch.h"
 #include "test.h"
 #include "is.h"
 #include "length.h"
@@ -73,6 +74,9 @@ Instruction* Machine::compile(Value* instruction, std::map<Symbol,int> labels)
     }
     if (is_tagged_list(cons, new Symbol("goto"))) {
         return this->make_goto(cons, labels);
+    }
+    if (is_tagged_list(cons, new Symbol("branch"))) {
+        return this->make_branch(cons, labels);
     }
     if (is_tagged_list(cons, new Symbol("test"))) {
         return this->make_test(cons);
@@ -185,6 +189,24 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
     );
 }
 
+// (branch (label eval-dispatch))
+Instruction* Machine::make_branch(Cons* instruction, std::map<Symbol,int> labels)
+{
+    Symbol* labelName = (Symbol*) instruction->cadadr();
+    cout << "labelName: " << labelName->toString() << endl;
+    if (!labels.count(*labelName)) {
+        cout << "Unknown label pointed by branch: " << labelName->toString() << endl;
+        exit(1);
+    }
+    int labelIndex = labels[*labelName];
+    cout << "labelIndex: " << labelIndex << endl;
+    return new Branch(
+        this->flag,
+        this,
+        labelIndex
+    );
+}
+
 // (test (op self-evaluating?) (reg exp))
 Instruction* Machine::make_test(Cons* instruction)
 {
@@ -192,7 +214,7 @@ Instruction* Machine::make_test(Cons* instruction)
     cout << "make_test: " << operation->toString() << endl;
     Value* maybe_operands = instruction->cddr();
     std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
-    return new Test(flag, operation, operands_vector, this);
+    return new Test(this->flag, operation, operands_vector, this);
 }
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)
@@ -201,6 +223,10 @@ std::vector<Instruction*> Machine::assemble(Value* controller_text)
     auto instructions = std::vector<Instruction*>({});
     Value *head = controller_text;
     auto labels = this->extract_labels(controller_text);
+    // trying to dump labels
+    //for (auto i = labels.begin(); i != labels.end(); i++) {
+    //    cout << (i->first).toString() << endl;// " " << i->second << endl;
+    //}
     for (int i = 0; i < instruction_length; i++) {
         Cons *head_as_cons = (Cons*) head;
         cout << head_as_cons->car()->toString() << endl;

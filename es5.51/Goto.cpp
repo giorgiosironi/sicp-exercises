@@ -10,6 +10,6 @@ Goto::Goto(Machine* machine, int labelIndex)
 
 void Goto::execute()
 {
-    cout << "GOTO" << endl;
+    cout << "Goto(" << this->labelIndex << ")" << endl;
     this->machine->forceInstruction(this->labelIndex);
 }

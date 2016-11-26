@@ -13,7 +13,7 @@ Test::Test(Register* targetRegister, Operation* operation, std::vector<Value*> o
 void Test::execute()
 {
     if (this->operation != NULL) {
-        Value* result = this->operation->execute(this->operands);
+        Value* result = this->operation->execute(this->fetch_operands(this->operands));
         cout << "Test: " << result->toString() << endl;
         this->targetRegister->set(result);
     } else {

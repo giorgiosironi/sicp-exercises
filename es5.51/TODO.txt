@@ -39,11 +39,11 @@ test:
 + need also to be passed the flag Register to store the result
 + now implement the body of Test::execute()
 + extract from Perform code that evaluates operands and extract values from registers
--- it now only supports 'const but it should also support 'reg
--- in that case we need to add getters to Machine to access the registers
--- this code should be a method in Instruction, non-virtual, and be used by:
+++ it now only supports 'const but it should also support 'reg
+++ in that case we need to add getters to MachineFeedback to access the registers
+++ this code should be a method in Instruction, non-virtual, and be used by:
 --- Assign
---- Test
++++ Test
 --- Perform
 - well, maybe when we compile the Instruction we should pass directly the registers, later refactor to do that
 

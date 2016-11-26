@@ -14,7 +14,6 @@ class Machine : public MachineFeedback {
     private:
         Register* flag;
         Stack* stack;
-        std::map<std::string,Register*> registers;
         std::map<Symbol,Operation*> operations;
         std::vector<Instruction*> the_instruction_sequence;
         std::map<Symbol,int> extract_labels(Value* controller_text);

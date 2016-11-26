@@ -159,6 +159,13 @@ Value* explicit_control_evaluator()
         new Symbol("ev-variable"),
         //(assign val (op lookup-variable-value) (reg exp) (reg env))
         //(goto (reg continue))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("continue")
+            })
+        }),
         //ev-quoted
         //(assign val (op text-of-quotation) (reg exp))
         //(goto (reg continue))

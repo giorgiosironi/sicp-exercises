@@ -2,21 +2,21 @@
 #include <iostream>
 using namespace std;
 
-Assign::Assign(Register* register_, Operation* operation, std::vector<Value*> operands, Machine* machine)
+Assign::Assign(Register* register_, Operation* operation, std::vector<Value*> operands, MachineFeedback* machine)
 {
     this->register_ = register_;
     this->operation = operation;
     this->operands = operands;
     this->label = NULL;
-    this->machine = machine;
+    this->machine_feedback = machine;
 }
 
-Assign::Assign(Register* register_, Label* label, Machine *machine)
+Assign::Assign(Register* register_, Label* label, MachineFeedback *machine)
 {
     this->register_ = register_;
     this->operation = NULL;
     this->label = label;
-    this->machine = machine;
+    this->machine_feedback = machine;
 }
 
 void Assign::execute()
@@ -34,5 +34,5 @@ void Assign::execute()
         cout << "Assign (" << this->register_->name() << "): invalid instruction" << endl;
         exit(1);
     }
-    this->machine->nextInstruction();
+    this->machine_feedback->nextInstruction();
 }

@@ -3,7 +3,7 @@
 #include <vector>
 #include "operation.h"
 #include "instruction.h"
-#include "machine.h"
+#include "machine_feedback.h"
 #include "value.h"
 #include "register.h"
 #include "label.h"
@@ -18,10 +18,9 @@ class Assign: public Instruction
         Label* label;
         // only valid if there is an operation 
         std::vector<Value*> operands;
-        Machine* machine;
     public:
-        Assign(Register* register_, Operation* operation, std::vector<Value*> operands, Machine *machine);
-        Assign(Register* register_, Label* label, Machine *machine);
+        Assign(Register* register_, Operation* operation, std::vector<Value*> operands, MachineFeedback *machine);
+        Assign(Register* register_, Label* label, MachineFeedback *machine);
         virtual void execute();
 };
 

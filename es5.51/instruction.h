@@ -10,6 +10,7 @@ class Instruction
     public:
         virtual void execute() = 0;
     protected:
+        MachineFeedback *machine_feedback;
         vector<Value*> fetch_operands(vector<Value*> operands);
 };
 

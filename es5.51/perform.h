@@ -5,12 +5,13 @@
 #include "instruction.h"
 #include "machine.h"
 #include "value.h"
+using namespace std;
 
 class Perform: public Instruction
 {
     private:
         Operation* operation;
-        std::vector<Value*> operands;
+        vector<Value*> operands;
         Machine* machine;
     public:
         Perform(Operation* operation, std::vector<Value*> operands, Machine *machine);

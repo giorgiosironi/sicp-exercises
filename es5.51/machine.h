@@ -8,10 +8,10 @@
 #include "register.h"
 #include "stack.h"
 #include "symbol.h"
+#include "machine_feedback.h"
 
-class Machine {
+class Machine : public MachineFeedback {
     private:
-        int pc;
         Register* flag;
         Stack* stack;
         std::map<std::string,Register*> registers;
@@ -38,8 +38,6 @@ class Machine {
         void install_instruction_sequence(std::vector<Instruction*> instruction_sequence);
         std::vector<Instruction*> assemble(Value* controller_text);
         void start();
-        void nextInstruction();
-        void forceInstruction(int instructionIndex);
 };
 
 #endif

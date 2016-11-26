@@ -2,6 +2,7 @@
 #define INSTRUCTION_H
 #include <vector>
 #include "value.h"
+#include "machine_feedback.h"
 using namespace std;
 
 class Instruction

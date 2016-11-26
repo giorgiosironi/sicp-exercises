@@ -273,13 +273,4 @@ void Machine::execute()
     cout << "End of controller" << endl;
 }
 
-void Machine::nextInstruction()
-{
-    this->pc++;
-}
-
-void Machine::forceInstruction(int instructionIndex)
-{
-    this->pc = instructionIndex;
-}
 

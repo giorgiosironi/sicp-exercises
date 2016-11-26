@@ -4,7 +4,7 @@
 #include <vector>
 #include "operation.h"
 #include "instruction.h"
-#include "machine.h"
+#include "machine_feedback.h"
 #include "value.h"
 #include "register.h"
 #include "label.h"
@@ -15,9 +15,8 @@ class Test: public Instruction
         Register* targetRegister;
         Operation* operation;
         std::vector<Value*> operands;
-        Machine *machine;
     public:
-        Test(Register* targetRegister, Operation* operation, std::vector<Value*> operands, Machine* machine);
+        Test(Register* targetRegister, Operation* operation, std::vector<Value*> operands, MachineFeedback* machine);
         virtual void execute();
 };
 

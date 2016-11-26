@@ -2,12 +2,12 @@
 #include <iostream>
 using namespace std;
 
-Test::Test(Register* targetRegister, Operation* operation, std::vector<Value*> operands, Machine* machine)
+Test::Test(Register* targetRegister, Operation* operation, std::vector<Value*> operands, MachineFeedback* machine)
 {
     this->targetRegister = targetRegister;
     this->operation = operation;
     this->operands = operands;
-    this->machine = machine;
+    this->machine_feedback = machine;
 }
 
 void Test::execute()
@@ -20,5 +20,5 @@ void Test::execute()
         cout << "Operation is null for Test " << endl;
         exit(1);
     }
-    this->machine->nextInstruction();
+    this->machine_feedback->nextInstruction();
 }

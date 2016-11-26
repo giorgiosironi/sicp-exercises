@@ -2,11 +2,11 @@
 #include <iostream>
 using namespace std;
 
-Perform::Perform(Operation* operation, std::vector<Value*> operands, Machine* machine)
+Perform::Perform(Operation* operation, std::vector<Value*> operands, MachineFeedback* machine)
 {
     this->operation = operation;
     this->operands = operands;
-    this->machine = machine;
+    this->machine_feedback = machine;
 }
 
 void Perform::execute()
@@ -15,5 +15,5 @@ void Perform::execute()
     cout << "operands length: " << this->operands.size() << endl;
     auto elements = this->fetch_operands(this->operands);
     this->operation->execute(elements);
-    this->machine->nextInstruction();
+    this->machine_feedback->nextInstruction();
 }

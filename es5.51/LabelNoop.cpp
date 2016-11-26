@@ -2,14 +2,14 @@
 #include <iostream>
 using namespace std;
 
-LabelNoop::LabelNoop(std::string name, Machine* machine)
+LabelNoop::LabelNoop(std::string name, MachineFeedback* machine)
 {
     this->name = name;
-    this->machine = machine;
+    this->machine_feedback = machine;
 }
 
 void LabelNoop::execute()
 {
     cout << "Label: " << this->name << endl;
-    this->machine->nextInstruction();
+    this->machine_feedback->nextInstruction();
 }

@@ -1,15 +1,14 @@
 #ifndef GOTO_H
 #define GOTO_H
 #include "instruction.h"
-#include "machine.h"
+#include "machine_feedback.h"
 
 class Goto: public Instruction
 {
     private: 
-        Machine* machine;
         int labelIndex;
     public:
-        Goto(Machine* machine, int labelIndex);
+        Goto(MachineFeedback* machine, int labelIndex);
         virtual void execute();
 };
 

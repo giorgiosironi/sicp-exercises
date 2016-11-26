@@ -2,14 +2,14 @@
 #include <iostream>
 using namespace std;
 
-Goto::Goto(Machine* machine, int labelIndex)
+Goto::Goto(MachineFeedback* machine, int labelIndex)
 {
-    this->machine = machine;
+    this->machine_feedback = machine;
     this->labelIndex = labelIndex;
 }
 
 void Goto::execute()
 {
     cout << "Goto(" << this->labelIndex << ")" << endl;
-    this->machine->forceInstruction(this->labelIndex);
+    this->machine_feedback->forceInstruction(this->labelIndex);
 }

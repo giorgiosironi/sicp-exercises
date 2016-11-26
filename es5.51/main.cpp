@@ -146,6 +146,14 @@ Value* explicit_control_evaluator()
         //ev-self-eval
         new Symbol("ev-self-eval"),
         //(assign val (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("val"),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(goto (reg continue))
         //ev-variable
         new Symbol("ev-variable"),

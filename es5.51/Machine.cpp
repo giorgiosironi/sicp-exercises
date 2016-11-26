@@ -166,6 +166,13 @@ Instruction* Machine::make_assign(Cons* instruction)
             new Label(name),
             this
         );
+    } else if (assignmentType->name() == "reg") {
+        Symbol* source = (Symbol*) instruction->cadaddr();
+        return new Assign(
+            this->registers[register_->name()],
+            this->registers[source->name()],
+            this
+        );
     } else {
         cout << "Unsupported assignment: " << assignmentType->name();
         exit(1);

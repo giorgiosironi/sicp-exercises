@@ -13,14 +13,16 @@ class Assign: public Instruction
     private:
         // `register` is a reserved keyword
         Register* register_;
-        // these two should be a union type, but that's outside the scope
+        // these three should be a union type, but that's outside the scope
         Operation* operation;
         Label* label;
+        Register* source;
         // only valid if there is an operation 
         std::vector<Value*> operands;
     public:
         Assign(Register* register_, Operation* operation, std::vector<Value*> operands, MachineFeedback *machine);
         Assign(Register* register_, Label* label, MachineFeedback *machine);
+        Assign(Register* register_, Register* source, MachineFeedback *machine);
         virtual void execute();
 };
 

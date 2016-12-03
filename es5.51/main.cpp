@@ -4,12 +4,14 @@
 #include <map>
 using namespace std;
 
-#include "data_structures.h"
-#include "is.h"
-#include "operation.h"
-#include "is_self_evaluating.h"
-#include "is_variable.h"
-#include "initialize_stack.h"
+#include "src/data_structures.h"
+#include "src/is.h"
+#include "src/operation.h"
+#include "src/is_self_evaluating.h"
+#include "src/is_variable.h"
+#include "src/initialize_stack.h"
+#include "src/instruction.h"
+#include "src/machine.h"
 
 
 Value* build_list(std::vector<Value*> elements) {
@@ -364,9 +366,6 @@ std::map<Symbol,Operation*> machine_operations()
     ));
     return operations;
 }
-
-#include "instruction.h"
-#include "machine.h"
 
 /**
  * Inline here make_machine, the Facade

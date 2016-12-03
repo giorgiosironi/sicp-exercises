@@ -1,5 +1,6 @@
 #include "test.h"
 #include <iostream>
+#include <stdlib.h>
 using namespace std;
 
 Test::Test(Register* targetRegister, Operation* operation, std::vector<Value*> operands, MachineFeedback* machine)

@@ -20,7 +20,10 @@ target_link_libraries(main ${GTEST_LIBRARIES} boost_regex pthread)
 
 if (test)
   enable_testing()
-  add_executable(runUnitTests tests/GotoTest.cpp ${all_SRC})
+  file(GLOB all_TEST
+      "tests/*.cpp"
+  )
+  add_executable(runUnitTests ${all_TEST} ${all_SRC})
   target_link_libraries(runUnitTests ${GTEST_LIBRARIES} boost_regex pthread)
   target_link_libraries(runUnitTests gtest gtest_main)
 endif()

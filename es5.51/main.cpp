@@ -355,6 +355,13 @@ Value* explicit_control_evaluator()
             })
         }),
         //(goto (label read-eval-print-loop))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("read-eval-print-loop"),
+            }),
+        }),
         //unknown-expression-type
         //(assign val (const unknown-expression-type-error))
         //(goto (label signal-error))

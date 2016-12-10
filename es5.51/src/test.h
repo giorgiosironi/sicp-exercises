@@ -7,7 +7,6 @@
 #include "machine_feedback.h"
 #include "value.h"
 #include "register.h"
-#include "label.h"
 
 class Test: public Instruction
 {

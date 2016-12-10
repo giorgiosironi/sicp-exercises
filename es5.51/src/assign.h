@@ -15,14 +15,12 @@ class Assign: public Instruction
         Register* register_;
         // these four should be a union type, but that's outside the scope
         Operation* operation;
-        Label* label; // deprecated, remove
         Value* value;
         Register* source;
         // only valid if there is an operation 
         std::vector<Value*> operands;
     public:
         Assign(Register* register_, Operation* operation, std::vector<Value*> operands, MachineFeedback *machine);
-        Assign(Register* register_, Label* label, MachineFeedback *machine);
         Assign(Register* register_, Value* value, MachineFeedback *machine);
         Assign(Register* register_, Register* source, MachineFeedback *machine);
         virtual void execute();

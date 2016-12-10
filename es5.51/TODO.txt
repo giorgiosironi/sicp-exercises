@@ -51,15 +51,15 @@ goto:
 + only supports `int labelIndex`, but it should support also `Register `
 ++ separate constructor, additional field
 ++ look up the value in the Register, but...
--- that means that when (label ...) is assigned to something, it must be assigned as the `int`, not the text
---- only Assign is affected
---- and compile() and make_assign()
---- but integer has to become SchemeInteger
+++ that means that when (label ...) is assigned to something, it must be assigned as the `int`, not the text
++++ only Assign is affected
++++ and compile() and make_assign()
++++ but integer has to become SchemeInteger
 -- look into union types this time
 + any unit test for this?
 + incremental compilation?
 - SchemeInteger should just be Integer
-- remove Label from Assign
++ remove Label from Assign
 
 branch:
 + need a Branch : Instruction

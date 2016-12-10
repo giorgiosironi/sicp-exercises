@@ -6,12 +6,16 @@ using namespace std;
 
 #include "src/data_structures.h"
 #include "src/is.h"
+
+#include "src/instruction.h"
+#include "src/machine.h"
+
+// operations
 #include "src/operation.h"
 #include "src/is_self_evaluating.h"
 #include "src/is_variable.h"
+#include "src/announce_output.h"
 #include "src/initialize_stack.h"
-#include "src/instruction.h"
-#include "src/machine.h"
 
 
 Value* build_list(std::vector<Value*> elements) {
@@ -326,6 +330,17 @@ Value* explicit_control_evaluator()
         //print-result
         new Symbol("print-result"),
         //(perform (op announce-output) (const ";;; EC-Eval value:"))
+        build_list({
+            new Symbol("perform"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("announce-output"),
+            }),
+            build_list({
+                new Symbol("const"),
+                new String(";;; EC-Eval value:"),
+            })
+        }),
         //(perform (op user-print) (reg val))
         //(goto (label read-eval-print-loop))
         //unknown-expression-type
@@ -364,6 +379,10 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("is-variable"),
         new IsVariable()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("announce-output"),
+        new AnnounceOutput()
     ));
     return operations;
 }

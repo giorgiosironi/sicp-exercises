@@ -178,20 +178,33 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
 }
 
 // (goto (label eval-dispatch))
+// (goto (reg continue))
 Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
 {
-    Symbol* labelName = (Symbol*) instruction->cadadr();
-    cout << "labelName: " << labelName->toString() << endl;
-    if (!labels.count(*labelName)) {
-        cout << "Unknown label pointed by goto: " << labelName->toString() << endl;
-        exit(1);
+    Symbol* assignmentType = (Symbol*) instruction->caadr();
+    if (assignmentType->name() == "label") {
+        Symbol* labelName = (Symbol*) instruction->cadadr();
+        cout << "labelName: " << labelName->toString() << endl;
+        if (!labels.count(*labelName)) {
+            cout << "Unknown label pointed by goto: " << labelName->toString() << endl;
+            exit(1);
+        }
+        int labelIndex = labels[*labelName];
+        cout << "labelIndex: " << labelIndex << endl;
+        return new Goto(
+            this,
+            labelIndex
+        );
+    } else if (assignmentType->name() == "reg") {
+        Symbol* register_ = (Symbol*) instruction->cadadr();
+        Register* r = this->registers[register_->name()];
+        return new Goto(
+            this,
+            r
+        );
+    } else {
+        cout << "Unknown assignment type in goto: " << assignmentType->toString() << endl;
     }
-    int labelIndex = labels[*labelName];
-    cout << "labelIndex: " << labelIndex << endl;
-    return new Goto(
-        this,
-        labelIndex
-    );
 }
 
 // (branch (label eval-dispatch))

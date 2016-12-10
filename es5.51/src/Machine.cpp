@@ -62,7 +62,7 @@ Instruction* Machine::compile(Value* instruction, std::map<Symbol,int> labels)
         return this->make_perform(cons);
     }
     if (is_tagged_list(cons, new Symbol("assign"))) {
-        return this->make_assign(cons);
+        return this->make_assign(cons, labels);
     }
     if (is_tagged_list(cons, new Symbol("goto"))) {
         return this->make_goto(cons, labels);
@@ -129,7 +129,7 @@ std::vector<Value*> Machine::operands_vector(Value* tail_of_instruction)
 
 // (assign exp (op read))
 // (assign continue (label something))
-Instruction* Machine::make_assign(Cons* instruction)
+Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels)
 {
     Symbol* register_ = (Symbol*) instruction->cadr();
     Symbol* assignmentType = (Symbol*) instruction->caaddr();

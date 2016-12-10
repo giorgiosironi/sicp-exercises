@@ -59,6 +59,7 @@ goto:
 + any unit test for this?
 + incremental compilation?
 - SchemeInteger should just be Integer
+- remove Label from Assign
 
 branch:
 + need a Branch : Instruction

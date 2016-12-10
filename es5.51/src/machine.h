@@ -20,7 +20,7 @@ class Machine : public MachineFeedback {
         Instruction* compile(Value* instruction, std::map<Symbol,int> labels);
         Instruction* make_label_noop(Symbol* symbol);
         Instruction* make_perform(Cons* instruction);
-        Instruction* make_assign(Cons* instruction);
+        Instruction* make_assign(Cons* instruction, std::map<Symbol,int> labels);
         Instruction* make_goto(Cons* instruction, std::map<Symbol,int> labels);
         Instruction* make_branch(Cons* instruction, std::map<Symbol,int> labels);
         Instruction* make_test(Cons* instruction);

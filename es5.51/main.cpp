@@ -16,6 +16,7 @@ using namespace std;
 #include "src/is_variable.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
+#include "src/user_print.h"
 
 
 Value* build_list(std::vector<Value*> elements) {
@@ -342,6 +343,17 @@ Value* explicit_control_evaluator()
             })
         }),
         //(perform (op user-print) (reg val))
+        build_list({
+            new Symbol("perform"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("user-print"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("val"),
+            })
+        }),
         //(goto (label read-eval-print-loop))
         //unknown-expression-type
         //(assign val (const unknown-expression-type-error))
@@ -383,6 +395,10 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("announce-output"),
         new AnnounceOutput()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("user-print"),
+        new UserPrint()
     ));
     return operations;
 }

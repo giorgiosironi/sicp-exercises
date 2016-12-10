@@ -41,14 +41,6 @@ Machine::Machine()
     ));
 }
 
-void Machine::allocate_register(std::string name)
-{
-    this->registers.insert(std::make_pair(
-        name,
-        new Register(name)
-    ));
-}
-
 void Machine::install_operations(std::map<Symbol,Operation*> operations)
 {
     // http://stackoverflow.com/questions/3639741/merge-two-stl-maps

@@ -12,9 +12,10 @@ using namespace std;
 class MachineFeedback {
 
     public:
-        void nextInstruction();
-        void forceInstruction(int instructionIndex);
-        Register* get_register(string name);
+        virtual void nextInstruction();
+        virtual void forceInstruction(int instructionIndex);
+        virtual Register* get_register(string name);
+        void allocate_register(std::string name);
     protected:
         int pc;
         map<std::string,Register*> registers;

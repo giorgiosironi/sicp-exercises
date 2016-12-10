@@ -1,17 +1,17 @@
 #include <string>
-#include "scheme_integer.h"
+#include "integer.h"
 
-SchemeInteger::SchemeInteger(int contents)
+Integer::Integer(int contents)
 {
     this->contents = contents;
 }
 
-std::string SchemeInteger::toString()
+std::string Integer::toString()
 {
     return std::to_string(this->contents);
 }
 
-int SchemeInteger::asInt()
+int Integer::asInt()
 {
     return this->contents;
 }

@@ -161,7 +161,7 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
         int labelIndex = labels[label->name()];
         return new Assign(
             this->registers[register_->name()],
-            new SchemeInteger(labelIndex),
+            new Integer(labelIndex),
             this
         );
     } else if (assignmentType->name() == "reg") {

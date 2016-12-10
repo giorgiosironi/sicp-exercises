@@ -2,12 +2,12 @@
 #define SCHEME_INTEGER_H
 #include "value.h"
 
-class SchemeInteger : public Value
+class Integer : public Value
 {
     private:
         int contents;
     public:
-        SchemeInteger(int contents);
+        Integer(int contents);
         virtual std::string toString();
         int asInt();
 };

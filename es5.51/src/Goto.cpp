@@ -1,5 +1,5 @@
 #include "goto.h"
-#include "scheme_integer.h"
+#include "integer.h"
 #include <iostream>
 using namespace std;
 
@@ -21,7 +21,7 @@ void Goto::execute()
 {
     if (this->index != NULL) {
         cout << "Goto(reg " << this->index->name() << ")" << endl;
-        SchemeInteger* registerIndex = dynamic_cast<SchemeInteger *>(this->index->get());
+        Integer* registerIndex = dynamic_cast<Integer *>(this->index->get());
         this->machine_feedback->forceInstruction(registerIndex->asInt());
     } else {
         cout << "Goto(" << this->labelIndex << ")" << endl;

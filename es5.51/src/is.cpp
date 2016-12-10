@@ -1,13 +1,13 @@
 #include <string>
 #include "is.h"
-#include "scheme_integer.h"
+#include "integer.h"
 #include "cons.h"
 #include "nil.h"
 #include "string.h"
 
 bool is_number(Value *exp)
 {
-    if (SchemeInteger *schemeInteger = dynamic_cast<SchemeInteger *>(exp)) {
+    if (Integer *schemeInteger = dynamic_cast<Integer *>(exp)) {
         return true;
     }
     return false;

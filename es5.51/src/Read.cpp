@@ -4,7 +4,7 @@
 #include <boost/regex.hpp>
 #include "read.h"
 #include "symbol.h"
-#include "scheme_integer.h"
+#include "integer.h"
 using namespace std;
 
 
@@ -19,7 +19,7 @@ Value* Read::execute(std::vector<Value*> elements)
 
     boost::regex expr("[0-9]+");
     if (boost::regex_match(input, expr)) {
-        return new SchemeInteger(stoi(input));
+        return new Integer(stoi(input));
     }
     return new Symbol(input);
 }

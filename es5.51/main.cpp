@@ -409,7 +409,7 @@ Machine* eceval()
 
 int main() {
     /*
-    Cons* cell = new Cons(new SchemeInteger(42), new SchemeInteger(43));
+    Cons* cell = new Cons(new Integer(42), new Integer(43));
     Value* i = cell->car();
     cout << i->toString() << endl;
     cout << cell->toString() << endl;
@@ -420,10 +420,10 @@ int main() {
     cout << is_eq(cell, NIL) << endl;
     Value* s = new Symbol("tag");
     cout << s->toString() << endl;
-    Cons* taggedList = new Cons(new Symbol("integer"), new SchemeInteger(42));
+    Cons* taggedList = new Cons(new Symbol("integer"), new Integer(42));
     cout << is_tagged_list(taggedList, new Symbol("integer")) << endl;
-    std::vector<Value*> elements = {new SchemeInteger(1), new SchemeInteger(2), new SchemeInteger(3)};
-    Value* threeElementList = build_list({new SchemeInteger(1), new SchemeInteger(2), new SchemeInteger(3)});
+    std::vector<Value*> elements = {new Integer(1), new Integer(2), new Integer(3)};
+    Value* threeElementList = build_list({new Integer(1), new Integer(2), new Integer(3)});
     cout << threeElementList->toString() << endl;
     */
     Machine* machine = eceval();

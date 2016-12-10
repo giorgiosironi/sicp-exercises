@@ -2,7 +2,7 @@
 #define DATA_STRUCTURES_H
 
 #include "value.h"
-#include "scheme_integer.h"
+#include "integer.h"
 #include "cons.h"
 #include "nil.h"
 #include "symbol.h"

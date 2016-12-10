@@ -152,10 +152,16 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
             this
         );
     } else if (assignmentType->name() == "label") {
-        Symbol* name = (Symbol*) instruction->cadaddr();
+        Symbol* label = (Symbol*) instruction->cadaddr();
+
+        if (!labels.count(label->name())) {
+            cout << "Unknown label used by assign: " << label->toString() << endl;
+            exit(1);
+        }
+        int labelIndex = labels[label->name()];
         return new Assign(
             this->registers[register_->name()],
-            new Label(name),
+            new SchemeInteger(labelIndex),
             this
         );
     } else if (assignmentType->name() == "reg") {

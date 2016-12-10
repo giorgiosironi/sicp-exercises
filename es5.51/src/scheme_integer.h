@@ -9,6 +9,7 @@ class SchemeInteger : public Value
     public:
         SchemeInteger(int contents);
         virtual std::string toString();
+        int asInt();
 };
 
 #endif

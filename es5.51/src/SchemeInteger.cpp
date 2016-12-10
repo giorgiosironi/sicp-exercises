@@ -10,3 +10,8 @@ std::string SchemeInteger::toString()
 {
     return std::to_string(this->contents);
 }
+
+int SchemeInteger::asInt()
+{
+    return this->contents;
+}

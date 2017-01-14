@@ -5,7 +5,9 @@
 #include "read.h"
 #include "symbol.h"
 #include "integer.h"
+#include "string.h"
 #include "nil.h"
+#include "cons.h"
 using namespace std;
 
 
@@ -23,16 +25,41 @@ Value* Read::parse(std::string input)
 	auto sexp = vector<Value*>();
 	sexp.push_back(new Nil());
     //word = ''
+	string word = "";
     //in_str = False
+	bool in_str = false;
     //for char in string:
+	for(char& c : input) {
     //    if char == '(' and not in_str:
     //        sexp.append([])
+		if (c == '(' && !in_str) {
+			sexp.push_back(new Nil());
     //    elif char == ')' and not in_str:
+		} else if (c == ')' && !in_str) {
     //        if word:
+			if (!word.empty()) {
     //            sexp[-1].append(word)
     //            word = ''
+                // TODO: Nil.append()
+				int last_element = sexp.size() - 1;
+				if (sexp[last_element]->toString() == "NIL") {
+                    sexp[last_element] = new Cons(new String(word), new Nil());
+				} else {
+                    Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
+                    current_list->append(new String(word));
+                    sexp[last_element] = current_list;
+				}
+				/*
+				if sexp[last_element] is nil:
+					substitute with new cons
+				else:
+					append as last element
+				*/
+				word = "";
     //        temp = sexp.pop()
     //        sexp[-1].append(temp)
+            }
+		}	
     //    elif char in (' ', '\n', '\t') and not in_str:
     //        if word:
     //            sexp[-1].append(word)
@@ -41,6 +68,7 @@ Value* Read::parse(std::string input)
     //        in_str = not in_str
     //    else:
     //        word += char
+	}
     //return sexp[0]
 
     boost::regex expr("[0-9]+");

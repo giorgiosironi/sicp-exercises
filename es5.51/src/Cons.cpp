@@ -54,6 +54,21 @@ Value* Cons::cadaddr()
     return ((Cons*) ((Cons*) ((Cons*) ((Cons*) this->cdr())->cdr())->car())->cdr())->car();
 }
 
+Cons* Cons::append(Value* element)
+{
+    auto contents = vector<Value*>();
+    Value* current_element = this;
+    while (current_element->toString() != "NIL") {
+        contents.push_back(current_element);
+        current_element = ((Cons*) current_element)->cdr();
+    }
+    auto list = new Cons(element, new Nil());
+    for (vector<Value*>::iterator it = contents.end(); it != contents.begin(); --it) {
+        list = new Cons(*it, list);
+    }
+    return list;
+}
+
 std::string Cons::toString()
 {
     if (this->cdr_ptr->toString() == NIL->toString()) {

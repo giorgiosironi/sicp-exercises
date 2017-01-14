@@ -21,6 +21,7 @@ class Cons : public Value
         Value* caaddr();
         Value* cadadr();
         Value* cadaddr();
+        Cons* append(Value *element);
         virtual std::string toString();
         virtual std::vector<Value*> toVector();
 };

@@ -8,6 +8,7 @@
 class Read: public Operation {
     public:
         virtual Value* execute(std::vector<Value*> elements);
+        virtual Value* parse(std::string input);
         virtual std::string toString();
 };
 

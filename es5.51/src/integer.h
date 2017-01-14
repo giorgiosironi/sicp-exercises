@@ -1,5 +1,5 @@
-#ifndef SCHEME_INTEGER_H
-#define SCHEME_INTEGER_H
+#ifndef INTEGER_H
+#define INTEGER_H
 #include "value.h"
 
 class Integer : public Value

@@ -1,6 +1,3 @@
-- perform has to have access to:
-    (define (make-perform inst machine labels operations pc)
-
 - extract remaining stuff from main.cpp
 + make lists display as list instead of (a . (b . NIL))
 - remove referenced to std:: by using `use namespace std`
@@ -14,10 +11,11 @@ prompt-for-input
 + pass them to the Operation as std:vector<Value*>
 
 read:
-- first implement Read but use a (perform (op read)) and ignore the result
-- then implement assign and use (assign (op read))
-- this will read the input as a String (or std::string maybe), but we need to transform it
++ first implement Read but use a (perform (op read)) and ignore the result
++ then implement assign and use (assign (op read))
++ this will read the input as a String (or std::string maybe), but we need to transform it
 -- parse it? any kind of s-expression could be passed there
+-- porting the Python s-expression implementation from Wikipedia
 
 the-global-environment:
 + implement Frame: pair of variable names (symbols?) and values

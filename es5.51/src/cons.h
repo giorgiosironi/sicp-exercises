@@ -24,6 +24,7 @@ class Cons : public Value
         Cons* append(Value *element);
         virtual std::string toString();
         virtual std::vector<Value*> toVector();
+        static Value* fromVector(std::vector<Value*> vector);
 };
 
 #endif

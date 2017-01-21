@@ -78,19 +78,7 @@ Value* Read::parse(std::string input)
     //        if word:
             if (word != "") {
     //            sexp[-1].append(word)
-                int last_element = sexp.size() - 1;
-				Value* value = new String(word);
-				boost::regex expr("[0-9]+");
-				if (boost::regex_match(word, expr)) {
-			  	    value = new Integer(stoi(input));
-				}
-				if (sexp[last_element]->toString() == "NIL") {
-                    sexp[last_element] = new Cons(value, new Nil());
-				} else {
-					Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
-					current_list->append(value);
-                    sexp[last_element] = current_list;
-				}
+				this->appendAsLastElement(sexp, word);
     //            word = ''
                 word = "";
             }
@@ -107,6 +95,23 @@ Value* Read::parse(std::string input)
     Value* result = ((Cons*) sexp[0])->car();
     cout << "Result: " << result->toString() << endl;
 	return result;
+}
+
+void Read::appendAsLastElement(std::vector<Value*> &sexp, std::string word)
+{
+	int last_element = sexp.size() - 1;
+	Value* value = new Symbol(word);
+	boost::regex expr("[0-9]+");
+	if (boost::regex_match(word, expr)) {
+		value = new Integer(stoi(word));
+	}
+	if (sexp[last_element]->toString() == "NIL") {
+		sexp[last_element] = new Cons(value, new Nil());
+	} else {
+		Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
+		current_list->append(value);
+		sexp[last_element] = current_list;
+	}
 }
 
 /*

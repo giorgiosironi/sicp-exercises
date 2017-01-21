@@ -10,6 +10,8 @@ class Read: public Operation {
         virtual Value* execute(std::vector<Value*> elements);
         virtual Value* parse(std::string input);
         virtual std::string toString();
+    private:
+        void appendAsLastElement(std::vector<Value*> &sexp, std::string word);
 };
 
 #endif

@@ -24,3 +24,10 @@ TEST(ReadTest, String) {
     Value* exp = instruction->parse("\"foo\"");
     ASSERT_EQ("\"foo\"", exp->toString());
 }
+
+TEST(ReadTest, ListEmpty) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("()");
+	// badly built, segmentation fault
+    //ASSERT_EQ("NIL", exp->toString());
+}

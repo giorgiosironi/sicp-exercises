@@ -21,6 +21,8 @@ Value* Read::execute(std::vector<Value*> elements)
 
 Value* Read::parse(std::string input)
 {
+	// add a terminator
+	input = input + "\n";
     //sexp = [[]]
 	auto sexp = vector<Value*>();
 	sexp.push_back(new Nil());
@@ -30,6 +32,7 @@ Value* Read::parse(std::string input)
 	bool in_str = false;
     //for char in string:
 	for(char& c : input) {
+		cout << "Read: " << c << endl;
     //    if char == '(' and not in_str:
     //        sexp.append([])
 		if (c == '(' && !in_str) {
@@ -40,42 +43,70 @@ Value* Read::parse(std::string input)
 			if (!word.empty()) {
     //            sexp[-1].append(word)
     //            word = ''
-                // TODO: Nil.append()
 				int last_element = sexp.size() - 1;
+				/*
+				if sexp[last_element] is nil:
+					substitute with new cons
+                */
 				if (sexp[last_element]->toString() == "NIL") {
                     sexp[last_element] = new Cons(new String(word), new Nil());
+                /*
+				else:
+					append as last element
+				*/
 				} else {
                     Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
                     current_list->append(new String(word));
                     sexp[last_element] = current_list;
 				}
-				/*
-				if sexp[last_element] is nil:
-					substitute with new cons
-				else:
-					append as last element
-				*/
 				word = "";
-    //        temp = sexp.pop()
-    //        sexp[-1].append(temp)
             }
-		}	
+        //        temp = sexp.pop()
+            int last_element = sexp.size() - 1;
+            Value* temp = sexp[last_element];
+            sexp.pop_back();
+        //        sexp[-1].append(temp)
+			if (sexp[last_element]->toString() == "NIL") {
+				sexp[last_element] = new Cons(new String(word), new Nil());
+			} else {
+				Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
+				current_list->append(temp);
+				sexp[last_element] = current_list;
+			}
     //    elif char in (' ', '\n', '\t') and not in_str:
+		} else if ((c == ' ' || c == '\n' || c == '\t') && !in_str) {
     //        if word:
+            if (word != "") {
     //            sexp[-1].append(word)
+                int last_element = sexp.size() - 1;
+				Value* value = new String(word);
+				boost::regex expr("[0-9]+");
+				if (boost::regex_match(word, expr)) {
+			  	    value = new Integer(stoi(input));
+				}
+				if (sexp[last_element]->toString() == "NIL") {
+                    sexp[last_element] = new Cons(value, new Nil());
+				} else {
+					Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
+					current_list->append(value);
+                    sexp[last_element] = current_list;
+				}
     //            word = ''
+                word = "";
+            }
     //    elif char == '\"':
+        } else if (c == '\"') {
     //        in_str = not in_str
+            in_str = !in_str;
     //    else:
+        } else {
     //        word += char
+            word.push_back(c);
+        }
 	}
-    //return sexp[0]
-
-    boost::regex expr("[0-9]+");
-    if (boost::regex_match(input, expr)) {
-        return new Integer(stoi(input));
-    }
-    return new Symbol(input);
+    Value* result = ((Cons*) sexp[0])->car();
+    cout << "Result: " << result->toString() << endl;
+	return result;
 }
 
 /*

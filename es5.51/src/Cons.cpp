@@ -2,9 +2,17 @@
 #include "value.h"
 #include "cons.h"
 #include "nil.h"
+#include <iostream>
+#include <typeinfo>
 
 Cons::Cons(Value *car_ptr, Value *cdr_ptr)
 {
+    if (car_ptr == NULL) {
+        throw "cat_ptr cannot be null";
+    }
+    if (cdr_ptr == NULL) {
+        throw "cat_ptr cannot be null";
+    }
     this->car_ptr = car_ptr;
     this->cdr_ptr = cdr_ptr;
 }
@@ -59,12 +67,12 @@ Cons* Cons::append(Value* element)
     auto contents = vector<Value*>();
     Value* current_element = this;
     while (current_element->toString() != "NIL") {
-        contents.push_back(current_element);
+        contents.push_back(((Cons* ) current_element)->car());
         current_element = ((Cons*) current_element)->cdr();
     }
     auto list = new Cons(element, new Nil());
-    for (vector<Value*>::iterator it = contents.end(); it != contents.begin(); --it) {
-        list = new Cons(*it, list);
+    for(std::vector<Value*>::reverse_iterator rit = contents.rbegin(); rit != contents.rend(); ++rit) {
+        list = new Cons(*rit, list);
     }
     return list;
 }
@@ -77,6 +85,7 @@ std::string Cons::toString()
             + std::string(")");
     }
     std::string rest = this->cdr_ptr->toString();
+    this->car_ptr->toString();
     return std::string("(")
         + this->car_ptr->toString()
         + std::string(" ")

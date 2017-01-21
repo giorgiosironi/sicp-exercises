@@ -18,3 +18,9 @@ TEST(ReadTest, Symbol) {
     Value* exp = instruction->parse("foo");
     ASSERT_EQ("'foo", exp->toString());
 }
+
+TEST(ReadTest, String) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("\"foo\"");
+    ASSERT_EQ("\"foo\"", exp->toString());
+}

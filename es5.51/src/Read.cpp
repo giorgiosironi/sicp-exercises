@@ -32,7 +32,6 @@ Value* Read::parse(std::string input)
 	bool in_str = false;
     //for char in string:
 	for(char& c : input) {
-		cout << "Read: " << c << endl;
     //    if char == '(' and not in_str:
     //        sexp.append([])
 		if (c == '(' && !in_str) {
@@ -85,6 +84,7 @@ Value* Read::parse(std::string input)
     //    elif char == '\"':
         } else if (c == '\"') {
     //        in_str = not in_str
+			word.push_back('\"');
             in_str = !in_str;
     //    else:
         } else {
@@ -93,7 +93,6 @@ Value* Read::parse(std::string input)
         }
 	}
     Value* result = ((Cons*) sexp[0])->car();
-    cout << "Result: " << result->toString() << endl;
 	return result;
 }
 
@@ -101,9 +100,14 @@ void Read::appendAsLastElement(std::vector<Value*> &sexp, std::string word)
 {
 	int last_element = sexp.size() - 1;
 	Value* value = new Symbol(word);
-	boost::regex expr("[0-9]+");
-	if (boost::regex_match(word, expr)) {
+	boost::regex int_expr("[0-9]+");
+	if (boost::regex_match(word, int_expr)) {
 		value = new Integer(stoi(word));
+	}
+	boost::regex string_expr("\"(.*)\"");
+	boost::smatch what;
+	if (boost::regex_match(word, what, string_expr)) {
+		value = new String(what[1]);
 	}
 	if (sexp[last_element]->toString() == "NIL") {
 		sexp[last_element] = new Cons(value, new Nil());

@@ -9,6 +9,8 @@ class Bool: public Value {
     public:
         Bool(bool value);
         virtual std::string toString();
+        bool isTrue();
+        bool isFalse();
 };
 
 

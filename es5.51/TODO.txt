@@ -7,7 +7,6 @@ the-global-environment:
 - implement Environment::extend()
 
 branch:
-- add Bool::isTrue and Bool:isFalse
 - implement Instruction::toString()
 
 References:

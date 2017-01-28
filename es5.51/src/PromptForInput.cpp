@@ -5,10 +5,11 @@ using namespace std;
 
 Value* PromptForInput::execute(std::vector<Value*> elements)
 {
-    cout << ">>> ";
     for (std::vector<Value*>::iterator it = elements.begin() ; it != elements.end(); ++it) {
         cout << (*it)->toString();
     }
+    cout << endl;
+    cout << ">>> ";
     cout << endl;
     
     return new Symbol("ok");

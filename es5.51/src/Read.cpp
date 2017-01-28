@@ -79,7 +79,7 @@ Value* Read::parse(std::string input)
     //        if word:
             if (word != "") {
     //            sexp[-1].append(word)
-				this->appendAsLastElement(sexp, word);
+				this->appendToLastElement(sexp, word);
     //            word = ''
                 word = "";
             }
@@ -99,9 +99,8 @@ Value* Read::parse(std::string input)
 	return result;
 }
 
-void Read::appendAsLastElement(std::vector<Value*> &sexp, std::string word)
+void Read::appendToLastElement(std::vector<Value*> &sexp, std::string word)
 {
-	int last_element = sexp.size() - 1;
 	Value* value = new Symbol(word);
 	boost::regex int_expr("[0-9]+");
 	if (boost::regex_match(word, int_expr)) {
@@ -112,6 +111,12 @@ void Read::appendAsLastElement(std::vector<Value*> &sexp, std::string word)
 	if (boost::regex_match(word, what, string_expr)) {
 		value = new String(what[1]);
 	}
+    this->appendToLastElement(sexp, value);
+}
+
+void Read::appendToLastElement(std::vector<Value*> &sexp, Value* value)
+{
+	int last_element = sexp.size() - 1;
 	if (sexp[last_element]->toString() == "NIL") {
 		sexp[last_element] = new Cons(value, new Nil());
 	} else {

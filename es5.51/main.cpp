@@ -183,6 +183,13 @@ Value* explicit_control_evaluator()
             })
         }),
         //(goto (reg continue))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("continue")
+            })
+        }),
         //ev-variable
         new Symbol("ev-variable"),
         //(assign val (op lookup-variable-value) (reg exp) (reg env))

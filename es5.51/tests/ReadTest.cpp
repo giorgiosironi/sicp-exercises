@@ -28,6 +28,5 @@ TEST(ReadTest, String) {
 TEST(ReadTest, ListEmpty) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("()");
-	// badly built, segmentation fault
-    //ASSERT_EQ("NIL", exp->toString());
+    ASSERT_EQ("NIL", exp->toString());
 }

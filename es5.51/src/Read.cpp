@@ -31,7 +31,8 @@ Value* Read::parse(std::string input)
     //in_str = False
 	bool in_str = false;
     //for char in string:
-	for(char& c : input) {
+	for (char& c : input) {
+        //cout << "Read: " << c << endl;
     //    if char == '(' and not in_str:
     //        sexp.append([])
 		if (c == '(' && !in_str) {
@@ -55,7 +56,7 @@ Value* Read::parse(std::string input)
 				*/
 				} else {
                     Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
-                    current_list->append(new String(word));
+                    current_list = current_list->append(new String(word));
                     sexp[last_element] = current_list;
 				}
 				word = "";
@@ -65,11 +66,12 @@ Value* Read::parse(std::string input)
             Value* temp = sexp[last_element];
             sexp.pop_back();
         //        sexp[-1].append(temp)
+            last_element = sexp.size() - 1;
 			if (sexp[last_element]->toString() == "NIL") {
-				sexp[last_element] = new Cons(new String(word), new Nil());
+				sexp[last_element] = new Cons(temp, new Nil());
 			} else {
 				Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
-				current_list->append(temp);
+				current_list = current_list->append(temp);
 				sexp[last_element] = current_list;
 			}
     //    elif char in (' ', '\n', '\t') and not in_str:
@@ -91,6 +93,7 @@ Value* Read::parse(std::string input)
     //        word += char
             word.push_back(c);
         }
+        //cout << sexp.size() << endl;
 	}
     Value* result = ((Cons*) sexp[0])->car();
 	return result;
@@ -113,7 +116,7 @@ void Read::appendAsLastElement(std::vector<Value*> &sexp, std::string word)
 		sexp[last_element] = new Cons(value, new Nil());
 	} else {
 		Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
-		current_list->append(value);
+		current_list = current_list->append(value);
 		sexp[last_element] = current_list;
 	}
 }

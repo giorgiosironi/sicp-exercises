@@ -10,6 +10,8 @@ class Environment: public Value {
     public:
         Environment();
         Environment(vector<Frame*> frames);
+        Environment* extend(Frame* additionalFrame);
+        Value* lookup(Symbol* symbol);
         virtual std::string toString();
 };
 

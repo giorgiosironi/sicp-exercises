@@ -11,6 +11,7 @@ class Frame {
         vector<Value*> values;
     public:
         Frame(vector<Symbol*> names, vector<Value*> values);
+        Value* lookup(Symbol* symbol);
 };
 
 #endif

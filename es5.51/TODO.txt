@@ -1,10 +1,14 @@
 - extract remaining stuff from main.cpp
 - remove referenced to std:: by using `use namespace std`
 
-the-global-environment:
+ev-variable
 + implement Frame: pair of variable names (symbols?) and values
 + implement Environment: a sequence of Frames where the topmost is the one that wins and if a variable is not found it falls back to other Frames
 - implement Environment::extend()
+-- Environment can return a new Environment with one more frame
+-- Environment can lookup a variable in any of its frames
+-- Environment starts looking up from the last frame
+- implement any accessor method necessary on Frame and Environment
 
 branch:
 - implement Instruction::toString()

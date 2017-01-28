@@ -15,7 +15,7 @@ using namespace std;
 #include "src/is_self_evaluating.h"
 #include "src/is_variable.h"
 #include "src/lookup_variable_value.h"
-#include "src/is_quoted.h"
+#include "src/is_tagged_list.h"
 #include "src/text_of_quotation.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
@@ -462,7 +462,7 @@ std::map<Symbol,Operation*> machine_operations()
     ));
     operations.insert(std::make_pair(
         Symbol("is-quoted"),
-        new IsQuoted()
+        new IsTaggedList(new Symbol("quote"))
     ));
     operations.insert(std::make_pair(
         Symbol("text-of-quotation"),

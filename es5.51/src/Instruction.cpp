@@ -27,5 +27,12 @@ vector<Value*> Instruction::fetch_operands(vector<Value*> operands)
             exit(-1);
         }
     }
+
+    for (int i = 0; i < elements.size(); i++) {
+        if (elements.at(i) == NULL) {
+            cout << "Operand " << i << " of instruction is a NULL pointer" << endl;
+            exit(1);
+        }
+    }
     return elements;
 }

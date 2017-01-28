@@ -71,8 +71,9 @@ branch:
 - implement Instruction::toString()
 
 quoted?
-- implement TextOfQuotation
-- insert into main
++ implement TextOfQuotation
++ insert into main
++ improve UserPrint error message
 - switch from Perform to Assign by using fetch_* in the latter
 
 References:

@@ -6,6 +6,7 @@ using namespace std;
 
 Value* UserPrint::execute(std::vector<Value*> elements)
 {
+    cout << elements.at(0) << endl;
     cout << elements.at(0)->toString() << endl;
 }
 

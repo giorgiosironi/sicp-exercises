@@ -101,9 +101,10 @@ std::vector<Value*> Cons::toVector()
 {
     std::vector<Value*> result = std::vector<Value*>();
     result.push_back(this->car_ptr);
-    Cons* rest = (Cons*) this->cdr_ptr;
+    Value* rest = (Cons*) this->cdr_ptr;
     while (rest->toString() != NIL->toString()) {
-        result.push_back(rest->car_ptr);
+        result.push_back(((Cons* ) rest)->car_ptr);
+        rest = ((Cons* ) rest)->cdr_ptr;
     }
     return result;
 }

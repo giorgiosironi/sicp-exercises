@@ -20,6 +20,17 @@ TEST(ConsTest, ToString) {
     ASSERT_EQ("(1 2 3)", three_elements->toString());
 }
 
+TEST(ConsTest, ToVector) {
+    // needs Nil->toVector()? and a common superclass?
+    //auto list0 = (Cons*) Cons::fromVector({});
+    //ASSERT_EQ(0, list0->toVector().size());
+    
+    auto list1 = (Cons*) Cons::fromVector({ new Integer(1) });
+    ASSERT_EQ(1, list1->toVector().size());
+    auto list2 = (Cons*) Cons::fromVector({ new Integer(1), new Integer(2) });
+    ASSERT_EQ(2, list2->toVector().size());
+}
+
 TEST(ConsTest, Append) { 
     auto list = (Cons*) Cons::fromVector({ new Integer(1) });
     auto expanded = list->append(new Integer(2));

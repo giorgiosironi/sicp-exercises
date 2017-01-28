@@ -210,6 +210,13 @@ Value* explicit_control_evaluator()
             })
         }),
         //(goto (reg continue))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("continue")
+            })
+        }),
         //ev-lambda
         //(assign unev (op lambda-parameters) (reg exp))
         //(assign exp (op lambda-body) (reg exp))

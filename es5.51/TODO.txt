@@ -70,7 +70,10 @@ branch:
 - add Bool::isTrue and Bool:isFalse
 - implement Instruction::toString()
 
-
+quoted?
+- implement TextOfQuotation
+- insert into main
+- switch from Perform to Assign by using fetch_* in the latter
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

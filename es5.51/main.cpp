@@ -15,6 +15,7 @@ using namespace std;
 #include "src/is_self_evaluating.h"
 #include "src/is_variable.h"
 #include "src/is_quoted.h"
+#include "src/text_of_quotation.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -146,6 +147,13 @@ Value* explicit_control_evaluator()
             }),
         }),
         //(branch (label ev-quoted))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-quoted")
+            }),
+        }),
         //(test (op assignment?) (reg exp))
         //(branch (label ev-assignment))
         //(test (op definition?) (reg exp))
@@ -186,7 +194,21 @@ Value* explicit_control_evaluator()
             })
         }),
         //ev-quoted
+        new Symbol("ev-quoted"),
         //(assign val (op text-of-quotation) (reg exp))
+        build_list({
+            new Symbol("perform"),
+            //new Symbol("assign"),
+            //new Symbol("val"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("text-of-quotation")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(goto (reg continue))
         //ev-lambda
         //(assign unev (op lambda-parameters) (reg exp))
@@ -414,6 +436,10 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("is-quoted"),
         new IsQuoted()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("text-of-quotation"),
+        new TextOfQuotation()
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

@@ -1,5 +1,6 @@
 - extract remaining stuff from main.cpp
 - remove referenced to std:: by using `use namespace std`
+- Ctrl+D should not crash
 
 ev-variable
 + implement Frame: pair of variable names (symbols?) and values

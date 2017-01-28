@@ -156,7 +156,25 @@ Value* explicit_control_evaluator()
             }),
         }),
         //(test (op assignment?) (reg exp))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-assignment")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            }),
+        }),
         //(branch (label ev-assignment))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-assignment")
+            }),
+        }),
         //(test (op definition?) (reg exp))
         //(branch (label ev-definition))
         //(test (op if?) (reg exp))
@@ -361,7 +379,7 @@ Value* explicit_control_evaluator()
         //(assign exp (op if-consequent) (reg exp))
         //(goto (label eval-dispatch))
         //; assignments puts values in the environment
-        //ev-assignment
+        new Symbol("ev-assignment"),
         //(assign unev (op assignment-variable) (reg exp))
         //(save unev) ; save variable for later
         //(assign exp (op assignment-value) (reg exp))
@@ -376,6 +394,13 @@ Value* explicit_control_evaluator()
         //(perform (op set-variable-value!) (reg unev) (reg val) (reg env))
         //(assign val (const ok))
         //(goto (reg continue))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("continue")
+            })
+        }),
         //; definitions are very similarly put into the current environment
         //ev-definition
         //(assign unev (op definition-variable) (reg exp))
@@ -474,6 +499,10 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("text-of-quotation"),
         new TextOfQuotation()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-assignment"),
+        new IsTaggedList(new Symbol("set!"))
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

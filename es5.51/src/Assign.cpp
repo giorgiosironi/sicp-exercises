@@ -35,9 +35,9 @@ void Assign::execute()
     if (this->operation != NULL) {
         cout << "Assign (" << this->register_->name() << "): " << this->operation->toString() << endl;
         // only 0-argument supported for now
-        auto elements = std::vector<Value*>();
-        Value* result = this->operation->execute(elements);
-        // maybe? Value* result = this->operation->execute(this->fetch_operands(this->operands()));
+        //auto elements = std::vector<Value*>();
+        //Value* result = this->operation->execute(elements);
+        Value* result = this->operation->execute(this->fetch_operands(this->operands));
         this->register_->set(result);
     } else if (this->value != NULL) {
         cout << "Assign (" << this->register_->name() << "): " << this->value->toString() << endl;

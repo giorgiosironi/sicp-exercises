@@ -33,67 +33,29 @@ Value* Read::parse(std::string input)
     //for char in string:
 	for (char& c : input) {
         //cout << "Read: " << c << endl;
-    //    if char == '(' and not in_str:
-    //        sexp.append([])
 		if (c == '(' && !in_str) {
 			sexp.push_back(new Nil());
-    //    elif char == ')' and not in_str:
 		} else if (c == ')' && !in_str) {
-    //        if word:
 			if (!word.empty()) {
-    //            sexp[-1].append(word)
-    //            word = ''
 				int last_element = sexp.size() - 1;
-				/*
-				if sexp[last_element] is nil:
-					substitute with new cons
-                */
-				if (sexp[last_element]->toString() == "NIL") {
-                    sexp[last_element] = new Cons(new String(word), new Nil());
-                /*
-				else:
-					append as last element
-				*/
-				} else {
-                    Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
-                    current_list = current_list->append(new String(word));
-                    sexp[last_element] = current_list;
-				}
+                this->appendToLastElement(sexp, word);
 				word = "";
             }
-        //        temp = sexp.pop()
             int last_element = sexp.size() - 1;
             Value* temp = sexp[last_element];
             sexp.pop_back();
-        //        sexp[-1].append(temp)
-            last_element = sexp.size() - 1;
-			if (sexp[last_element]->toString() == "NIL") {
-				sexp[last_element] = new Cons(temp, new Nil());
-			} else {
-				Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);
-				current_list = current_list->append(temp);
-				sexp[last_element] = current_list;
-			}
-    //    elif char in (' ', '\n', '\t') and not in_str:
+            this->appendToLastElement(sexp, temp);
 		} else if ((c == ' ' || c == '\n' || c == '\t') && !in_str) {
-    //        if word:
             if (word != "") {
-    //            sexp[-1].append(word)
 				this->appendToLastElement(sexp, word);
-    //            word = ''
                 word = "";
             }
-    //    elif char == '\"':
         } else if (c == '\"') {
-    //        in_str = not in_str
 			word.push_back('\"');
             in_str = !in_str;
-    //    else:
         } else {
-    //        word += char
             word.push_back(c);
         }
-        //cout << sexp.size() << endl;
 	}
     Value* result = ((Cons*) sexp[0])->car();
 	return result;

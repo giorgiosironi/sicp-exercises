@@ -14,6 +14,7 @@ using namespace std;
 #include "src/operation.h"
 #include "src/is_self_evaluating.h"
 #include "src/is_variable.h"
+#include "src/lookup_variable_value.h"
 #include "src/is_quoted.h"
 #include "src/text_of_quotation.h"
 #include "src/announce_output.h"
@@ -454,6 +455,10 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("is-variable"),
         new IsVariable()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("lookup-variable-value"),
+        new LookupVariableValue()
     ));
     operations.insert(std::make_pair(
         Symbol("is-quoted"),

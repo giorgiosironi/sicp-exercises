@@ -121,6 +121,7 @@ std::vector<Value*> Machine::operands_vector(Value* tail_of_instruction)
         Cons* operands = (Cons*) tail_of_instruction;
         cout << "operands: " << operands->toString() << endl;
         operands_vector = operands->toVector();
+        cout << "vector: " << operands_vector.size() << endl;
     } else {
         operands_vector = std::vector<Value*>();
     }

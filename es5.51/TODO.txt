@@ -74,7 +74,7 @@ quoted?
 + implement TextOfQuotation
 + insert into main
 + improve UserPrint error message
-- switch from Perform to Assign by using fetch_* in the latter
++ switch from Perform to Assign by using fetch_* in the latter
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

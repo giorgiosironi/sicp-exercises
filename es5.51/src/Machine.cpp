@@ -129,6 +129,7 @@ std::vector<Value*> Machine::operands_vector(Value* tail_of_instruction)
 
 // (assign exp (op read))
 // (assign continue (label something))
+// (assign val (op read) (reg exp))
 Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels)
 {
     Symbol* register_ = (Symbol*) instruction->cadr();
@@ -141,11 +142,9 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
             exit(1);
         }
         cout << "make_assign: " << operation->toString() << endl;
-        std::vector<Value*> operands_vector;
-        // only 0-operands operations are supported for assignment for now
-        operands_vector = std::vector<Value*>();
+        Value* maybe_operands = instruction->cdddr();
+        std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
         return new Assign(
-                // TODO: this should be read
             this->registers[register_->name()],
             this->operations[*operation],
             operands_vector,

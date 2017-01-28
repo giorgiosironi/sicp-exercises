@@ -197,9 +197,9 @@ Value* explicit_control_evaluator()
         new Symbol("ev-quoted"),
         //(assign val (op text-of-quotation) (reg exp))
         build_list({
-            new Symbol("perform"),
-            //new Symbol("assign"),
-            //new Symbol("val"),
+            //new Symbol("perform"),
+            new Symbol("assign"),
+            new Symbol("val"),
             build_list({
                 new Symbol("op"),
                 new Symbol("text-of-quotation")

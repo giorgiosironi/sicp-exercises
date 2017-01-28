@@ -1,80 +1,14 @@
 - extract remaining stuff from main.cpp
-+ make lists display as list instead of (a . (b . NIL))
 - remove referenced to std:: by using `use namespace std`
-
-prompt-for-input
-+ also a way to pass arguments to operations
-+ arguments arrive to Perform
-- evaluate them (just the `const` type)
--- but they need to be evaluated in multiple places, like `assign` and `perform`
--- we will extract that later, a private method is ok for now
-+ pass them to the Operation as std:vector<Value*>
-
-read:
-+ first implement Read but use a (perform (op read)) and ignore the result
-+ then implement assign and use (assign (op read))
-+ this will read the input as a String (or std::string maybe), but we need to transform it
--- parse it? any kind of s-expression could be passed there
--- porting the Python s-expression implementation from Wikipedia
 
 the-global-environment:
 + implement Frame: pair of variable names (symbols?) and values
 + implement Environment: a sequence of Frames where the topmost is the one that wins and if a variable is not found it falls back to other Frames
 - implement Environment::extend()
 
-assign to continue:
-+ assign will start to support multiple types of stuff, not just operation
-+ ...but also (label ...)
-+ that will need a Label: public Value
-+ assign should work as-is once this returns a Value
-- maybe remove Machine and other not needed stuff from this Instruction?
-
-test:
-+ need a Machine::make_test
-+ and a Test : Instruction class
-+ will look up the Operation and pass it in the Test constructor
-+ will look up the Register and pass it in the Test constructor
-+ need also to be passed the flag Register to store the result
-+ now implement the body of Test::execute()
-+ extract from Perform code that evaluates operands and extract values from registers
-++ it now only supports 'const but it should also support 'reg
-++ in that case we need to add getters to MachineFeedback to access the registers
-++ this code should be a method in Instruction, non-virtual, and be used by:
---- Assign
-+++ Test
---- Perform
-- well, maybe when we compile the Instruction we should pass directly the registers, later refactor to do that
-
-goto:
-+ only supports `int labelIndex`, but it should support also `Register `
-++ separate constructor, additional field
-++ look up the value in the Register, but...
-++ that means that when (label ...) is assigned to something, it must be assigned as the `int`, not the text
-+++ only Assign is affected
-+++ and compile() and make_assign()
-+++ but integer has to become SchemeInteger
--- look into union types this time
-+ any unit test for this?
-+ incremental compilation?
-- SchemeInteger should just be Integer
-+ remove Label from Assign
-
 branch:
-+ need a Branch : Instruction
-+ need a Machine::make_branch
-+ pass in Register flag
-+ pass in label index lookup
-++ you'll need to add the label to main.cpp
-++ add the rest of instructions in between, but commented out 
-   in the original Lisp format 
 - add Bool::isTrue and Bool:isFalse
 - implement Instruction::toString()
-
-quoted?
-+ implement TextOfQuotation
-+ insert into main
-+ improve UserPrint error message
-+ switch from Perform to Assign by using fetch_* in the latter
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

@@ -19,7 +19,13 @@ TEST(ReadTest, Symbol) {
     ASSERT_EQ("'foo", exp->toString());
 }
 
-TEST(ReadTest, String) { 
+TEST(ReadTest, StringEmpty) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("\"\"");
+    ASSERT_EQ("\"\"", exp->toString());
+}
+
+TEST(ReadTest, StringLong) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("\"foo\"");
     ASSERT_EQ("\"foo\"", exp->toString());
@@ -29,4 +35,28 @@ TEST(ReadTest, ListEmpty) {
     Read* instruction = new Read();
     Value* exp = instruction->parse("()");
     ASSERT_EQ("NIL", exp->toString());
+}
+
+TEST(ReadTest, ListOneElement) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("(1)");
+    ASSERT_EQ("(1)", exp->toString());
+}
+
+TEST(ReadTest, ListTwoElements) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("(1 2)");
+    ASSERT_EQ("(1 2)", exp->toString());
+}
+
+TEST(ReadTest, ListMixedElements) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("(1 \"foo\")");
+    ASSERT_EQ("(1 \"foo\")", exp->toString());
+}
+
+TEST(ReadTest, ListNested) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("(1 (2 3))");
+    ASSERT_EQ("(1 (2 3))", exp->toString());
 }

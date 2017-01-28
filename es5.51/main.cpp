@@ -14,6 +14,7 @@ using namespace std;
 #include "src/operation.h"
 #include "src/is_self_evaluating.h"
 #include "src/is_variable.h"
+#include "src/is_quoted.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -133,6 +134,17 @@ Value* explicit_control_evaluator()
             }),
         }),
         //(test (op quoted?) (reg exp))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-quoted")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            }),
+        }),
         //(branch (label ev-quoted))
         //(test (op assignment?) (reg exp))
         //(branch (label ev-assignment))
@@ -398,6 +410,10 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("is-variable"),
         new IsVariable()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-quoted"),
+        new IsQuoted()
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

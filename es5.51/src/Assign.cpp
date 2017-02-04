@@ -33,17 +33,17 @@ Assign::Assign(Register* register_, Register* source, MachineFeedback *machine)
 void Assign::execute()
 {
     if (this->operation != NULL) {
-        cout << "Assign (" << this->register_->name() << "): " << this->operation->toString() << endl;
         // only 0-argument supported for now
         //auto elements = std::vector<Value*>();
         //Value* result = this->operation->execute(elements);
         Value* result = this->operation->execute(this->fetch_operands(this->operands));
+        cout << "Assign (" << this->register_->name() << "): " << this->operation->toString() << " == " << result->toString() << endl;
         this->register_->set(result);
     } else if (this->value != NULL) {
         cout << "Assign (" << this->register_->name() << "): " << this->value->toString() << endl;
         this->register_->set(this->value);
     } else if (this->source != NULL) {
-        cout << "Assign (" << this->register_->name() << "): " << this->source->name() << endl;
+        cout << "Assign (" << this->register_->name() << "): " << this->source->name() << " == " << this->source->get()->toString() << endl;
         this->register_->set(this->source->get());
     } else {
         cout << "Assign (" << this->register_->name() << "): invalid instruction" << endl;

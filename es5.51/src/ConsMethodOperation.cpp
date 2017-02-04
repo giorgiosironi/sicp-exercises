@@ -11,7 +11,6 @@ ConsMethodOperation::ConsMethodOperation(Value* (Cons::*method_to_call)())
 
 Value* ConsMethodOperation::execute(std::vector<Value*> elements)
 {
-    cout << "ConsMethodOperation" << endl;
     Cons* list = dynamic_cast<Cons *>(elements[0]);
     if (list == NULL) {
         cout << "Cannot call ConsMethodOperation on non-cons: " << elements[0]->toString() << endl;

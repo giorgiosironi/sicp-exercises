@@ -10,6 +10,7 @@ class Frame {
         vector<Symbol*> names;
         vector<Value*> values;
     public:
+        Frame();
         Frame(vector<Symbol*> names, vector<Value*> values);
         Value* lookup(Symbol* symbol);
         void set(Symbol* symbol, Value* value);

@@ -1,4 +1,11 @@
 #include "frame.h"
+using namespace std;
+
+Frame::Frame()
+{
+    this->names = vector<Symbol*>();
+    this->values = vector<Value*>();
+}
 
 Frame::Frame(vector<Symbol*> names, vector<Value*> values)
 {

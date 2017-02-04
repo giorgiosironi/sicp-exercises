@@ -3,6 +3,8 @@ easy:
 ++ lookup_register or similar in all Machine::make_*() that lookup register names
 -- use cerr instead of cout for all debugging; only official print statements should use cout
 --- maybe a logging function?
+-- improve Environment::toString() to show values
+-- since Environments always have one basic frame (if that's true), EnvironmentTest can be simplified not to create that first empty frame
 -- set of assertions for checking parameters of Operations
 - hard
 -- Ctrl+D should not crash
@@ -27,6 +29,7 @@ ev-variable
 - implement any accessor method necessary on Frame and Environment
 ++ Environment::set(name, value)
 ++ SetVariableValue(Operation)
+-- integration test this branch by running (set! foo 42) and foo
 
 
 branch:

@@ -1,10 +1,12 @@
 #include "environment.h"
+#include "frame.h"
 #include <iostream>
 using namespace std;
 
 Environment::Environment()
 {
     this->frames = vector<Frame*>();
+    this->frames.push_back(new Frame());
 }
 
 Environment::Environment(vector<Frame*> frames)

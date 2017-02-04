@@ -139,6 +139,7 @@ std::vector<Value*> Machine::operands_vector(Value* tail_of_instruction)
 // (assign exp (op read))
 // (assign continue (label something))
 // (assign val (op read) (reg exp))
+// (assign val (const 42))
 Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels)
 {
     Symbol* register_ = (Symbol*) instruction->cadr();
@@ -177,6 +178,13 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
         return new Assign(
             this->get_register(register_->name()),
             this->get_register(source->name()),
+            this
+        );
+    } else if (assignmentType->name() == "const") {
+        Value* constant = instruction->cadaddr();
+        return new Assign(
+            this->get_register(register_->name()),
+            constant,
             this
         );
     } else {

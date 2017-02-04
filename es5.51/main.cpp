@@ -380,7 +380,7 @@ Value* explicit_control_evaluator()
         //ev-if-consequent ; then
         //(assign exp (op if-consequent) (reg exp))
         //(goto (label eval-dispatch))
-        //; assignments puts values in the environment
+        //ev-assignment
         new Symbol("ev-assignment"),
         //(assign unev (op assignment-variable) (reg exp))
         build_list({
@@ -426,7 +426,7 @@ Value* explicit_control_evaluator()
         //(assign continue (label ev-assignment-1))
         build_list({
             new Symbol("assign"),
-            new Symbol("exp"),
+            new Symbol("continue"),
             build_list({
                 new Symbol("label"),
                 new Symbol("ev-assignment-1"),
@@ -478,6 +478,14 @@ Value* explicit_control_evaluator()
             }),
         }),
         //(assign val (const ok))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("val"),
+            build_list({
+                new Symbol("const"),
+                new Symbol("ok"),
+            }),
+        }),
         //(goto (reg continue))
         build_list({
             new Symbol("goto"),

@@ -442,6 +442,10 @@ Value* explicit_control_evaluator()
         //ev-assignment-1
         new Symbol("ev-assignment-1"),
         //(restore continue)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("continue"),
+        }),
         //(restore env)
         //(restore unev)
         //(perform (op set-variable-value!) (reg unev) (reg val) (reg env))

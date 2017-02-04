@@ -25,6 +25,7 @@ class Machine : public MachineFeedback {
         Instruction* make_branch(Cons* instruction, std::map<Symbol,int> labels);
         Instruction* make_test(Cons* instruction);
         Instruction* make_save(Cons* instruction);
+        Instruction* make_restore(Cons* instruction);
         std::vector<Value*> operands_vector(Value* tail_of_instruction);
         Operation* operation(Value* instruction_argument);
         void execute();

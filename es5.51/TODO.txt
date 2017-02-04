@@ -32,7 +32,7 @@ ev-assignment
 
 Restore
 + implement Restore(Instruction)
-- integrate it with make_restore
++ integrate it with make_restore
 - include one refactoring
 
 branch:

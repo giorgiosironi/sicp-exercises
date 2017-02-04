@@ -12,6 +12,7 @@
 #include "branch.h"
 #include "test.h"
 #include "save.h"
+#include "restore.h"
 #include "is.h"
 #include "length.h"
 using namespace std;
@@ -76,6 +77,9 @@ Instruction* Machine::compile(Value* instruction, std::map<Symbol,int> labels)
     }
     if (is_tagged_list(cons, new Symbol("save"))) {
         return this->make_save(cons);
+    }
+    if (is_tagged_list(cons, new Symbol("restore"))) {
+        return this->make_restore(cons);
     }
     cout << "Error compiling, unknown instruction: " << instruction->toString() << endl;
     exit(1);
@@ -254,6 +258,23 @@ Instruction* Machine::make_save(Cons* instruction)
         exit(1);
     }
     return new Save(this->stack, r, this);
+}
+
+// (restore continue)
+Instruction* Machine::make_restore(Cons* instruction)
+{
+    Symbol* register_ = dynamic_cast<Symbol*>(instruction->cadr());
+    if (register_ == NULL) {
+        cout << "(restore ...) needs a symbol" << endl;
+        exit(1);
+    }
+    cout << "make_restore: register " << register_->toString() << endl;
+    Register* r = this->registers[register_->name()];
+    if (r == NULL) {
+        cout << "Unknown register: " << register_->name() << endl;
+        exit(1);
+    }
+    return new Restore(this->stack, r, this);
 }
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)

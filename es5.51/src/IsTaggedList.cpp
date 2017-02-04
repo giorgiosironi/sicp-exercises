@@ -11,9 +11,9 @@ IsTaggedList::IsTaggedList(Symbol* tag)
 
 Value* IsTaggedList::execute(std::vector<Value*> elements)
 {
-    cout << "IsTaggedList" << endl;
+    cout << "IsTaggedList(" << this->tag->toString() << ")" << endl;
     cout << elements.at(0)->toString() << endl;
-    if (is_tagged_list(elements.at(0), new Symbol("quote"))) {
+    if (is_tagged_list(elements.at(0), this->tag)) {
         return new Bool(true);
     }
     return new Bool(false);

@@ -1,5 +1,6 @@
 - extract remaining stuff from main.cpp
 - remove referenced to std:: by using `use namespace std`
+- use cerr instead of cout for all debugging; only official print statements should use cout
 - Ctrl+D should not crash
 
 ev-variable
@@ -12,10 +13,10 @@ ev-variable
 - implement any accessor method necessary on Frame and Environment
 
 ev-assignment
-- implement ConsMethodOperation
-- test it as car
-- test it as cadr with a Factory Method
-- use it for assignment-variable
++ implement ConsMethodOperation
++ test it as car
++ test it as cadr with a Factory Method
++ use it for assignment-variable
 
 branch:
 - implement Instruction::toString()

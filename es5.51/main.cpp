@@ -17,6 +17,7 @@ using namespace std;
 #include "src/lookup_variable_value.h"
 #include "src/is_tagged_list.h"
 #include "src/text_of_quotation.h"
+#include "src/cons_method_operation.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -381,6 +382,18 @@ Value* explicit_control_evaluator()
         //; assignments puts values in the environment
         new Symbol("ev-assignment"),
         //(assign unev (op assignment-variable) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("unev"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("assignment-variable")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(save unev) ; save variable for later
         //(assign exp (op assignment-value) (reg exp))
         //(save env)
@@ -504,10 +517,10 @@ std::map<Symbol,Operation*> machine_operations()
         Symbol("is-assignment"),
         new IsTaggedList(new Symbol("set!"))
     ));
-    //operations.insert(std::make_pair(
-    //    Symbol("assignment-variable"),
-    //    ConsMethodOperation::cadr()
-    //));
+    operations.insert(std::make_pair(
+        Symbol("assignment-variable"),
+        ConsMethodOperation::cadr()
+    ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),
         new AnnounceOutput()

@@ -11,6 +11,7 @@ class ConsMethodOperation: public Operation {
         virtual Value* execute(std::vector<Value*> elements);
         virtual std::string toString();
         static ConsMethodOperation* car();
+        static ConsMethodOperation* cadr();
 };
 
 #endif

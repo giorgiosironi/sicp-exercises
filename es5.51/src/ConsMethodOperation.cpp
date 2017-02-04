@@ -30,3 +30,8 @@ ConsMethodOperation* ConsMethodOperation::car()
     return new ConsMethodOperation(&Cons::car);
 }
 
+ConsMethodOperation* ConsMethodOperation::cadr()
+{
+    return new ConsMethodOperation(&Cons::cadr);
+}
+

@@ -24,17 +24,9 @@ ev-variable
 ++ Environment can lookup a variable in any of its frames
 ++ Environment starts looking up from the last frame
 - implement any accessor method necessary on Frame and Environment
+-- Environment::set(name, value)
+-- SetVariableValue(Operation)
 
-ev-assignment
-+ implement ConsMethodOperation
-+ test it as car
-+ test it as cadr with a Factory Method
-+ use it for assignment-variable
-
-Restore
-+ implement Restore(Instruction)
-+ integrate it with make_restore
-- include one refactoring
 
 branch:
 - implement Instruction::toString()

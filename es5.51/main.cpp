@@ -457,6 +457,25 @@ Value* explicit_control_evaluator()
             new Symbol("unev"),
         }),
         //(perform (op set-variable-value!) (reg unev) (reg val) (reg env))
+        build_list({
+            new Symbol("perform"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("set-variable-value!"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("val"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("env"),
+            }),
+        }),
         //(assign val (const ok))
         //(goto (reg continue))
         build_list({

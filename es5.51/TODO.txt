@@ -1,7 +1,13 @@
 - extract remaining stuff from main.cpp
 - remove referenced to std:: by using `use namespace std`
 - use cerr instead of cout for all debugging; only official print statements should use cout
+-- maybe a logging function?
 - Ctrl+D should not crash
+- ask someone why idiomatic C++ is `Stack *stack` instead of `Stack* stack`
+- implement == for Value
+- all methods should be camel case
+- assertions should use raise (or even some assert construct)
+- lookup_register or similar in all Machine::make_*() that lookup register names
 
 ev-variable
 + implement Frame: pair of variable names (symbols?) and values
@@ -17,6 +23,12 @@ ev-assignment
 + test it as car
 + test it as cadr with a Factory Method
 + use it for assignment-variable
+
+save:
++ implement a Stack object
++ implement Save(Instruction)
++ make_save()
++ instantiate Save in Machine 
 
 branch:
 - implement Instruction::toString()

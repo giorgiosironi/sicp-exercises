@@ -395,6 +395,10 @@ Value* explicit_control_evaluator()
             })
         }),
         //(save unev) ; save variable for later
+        build_list({
+            new Symbol("save"),
+            new Symbol("unev"),
+        }),
         //(assign exp (op assignment-value) (reg exp))
         //(save env)
         //(save continue)

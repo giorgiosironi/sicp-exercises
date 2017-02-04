@@ -11,6 +11,7 @@
 #include "goto.h"
 #include "branch.h"
 #include "test.h"
+#include "save.h"
 #include "is.h"
 #include "length.h"
 using namespace std;
@@ -72,6 +73,9 @@ Instruction* Machine::compile(Value* instruction, std::map<Symbol,int> labels)
     }
     if (is_tagged_list(cons, new Symbol("test"))) {
         return this->make_test(cons);
+    }
+    if (is_tagged_list(cons, new Symbol("save"))) {
+        return this->make_save(cons);
     }
     cout << "Error compiling, unknown instruction: " << instruction->toString() << endl;
     exit(1);
@@ -233,6 +237,23 @@ Instruction* Machine::make_test(Cons* instruction)
     Value* maybe_operands = instruction->cddr();
     std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
     return new Test(this->flag, operation, operands_vector, this);
+}
+
+// (save unev)
+Instruction* Machine::make_save(Cons* instruction)
+{
+    Symbol* register_ = dynamic_cast<Symbol*>(instruction->cadr());
+    if (register_ == NULL) {
+        cout << "(save ...) needs a symbol" << endl;
+        exit(1);
+    }
+    cout << "make_save: register " << register_->toString() << endl;
+    Register* r = this->registers[register_->name()];
+    if (r == NULL) {
+        cout << "Unknown register: " << register_->name() << endl;
+        exit(1);
+    }
+    return new Save(this->stack, r, this);
 }
 
 std::vector<Instruction*> Machine::assemble(Value* controller_text)

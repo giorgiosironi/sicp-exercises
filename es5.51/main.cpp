@@ -413,10 +413,34 @@ Value* explicit_control_evaluator()
             })
         }),
         //(save env)
+        build_list({
+            new Symbol("save"),
+            new Symbol("env"),
+        }),
         //(save continue)
+        build_list({
+            new Symbol("save"),
+            new Symbol("continue"),
+        }),
         //(assign continue (label ev-assignment-1))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-assignment-1"),
+            }),
+        }),
         //(goto (label eval-dispatch)) ; evaluate the assignment value
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch"),
+            }),
+        }),
         //ev-assignment-1
+        new Symbol("ev-assignment-1"),
         //(restore continue)
         //(restore env)
         //(restore unev)

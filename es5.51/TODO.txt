@@ -30,11 +30,10 @@ ev-assignment
 + test it as cadr with a Factory Method
 + use it for assignment-variable
 
-save:
-+ implement a Stack object
-+ implement Save(Instruction)
-+ make_save()
-+ instantiate Save in Machine 
+Restore
++ implement Restore(Instruction)
+- integrate it with make_restore
+- include one refactoring
 
 branch:
 - implement Instruction::toString()

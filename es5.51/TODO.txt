@@ -3,6 +3,7 @@ easy:
 ++ lookup_register or similar in all Machine::make_*() that lookup register names
 -- use cerr instead of cout for all debugging; only official print statements should use cout
 --- maybe a logging function?
+-- set of assertions for checking parameters of Operations
 - hard
 -- Ctrl+D should not crash
 -- implement == for Value
@@ -25,7 +26,7 @@ ev-variable
 ++ Environment starts looking up from the last frame
 - implement any accessor method necessary on Frame and Environment
 ++ Environment::set(name, value)
--- SetVariableValue(Operation)
+++ SetVariableValue(Operation)
 
 
 branch:

@@ -8,7 +8,6 @@ using namespace std;
 Value* TextOfQuotation::execute(std::vector<Value*> elements)
 {
     cout << "TextOfQuotation" << endl;
-    cout << elements.size() << endl;
     Cons *operand = dynamic_cast<Cons *>(elements.at(0));
     return operand->cadr();
 }

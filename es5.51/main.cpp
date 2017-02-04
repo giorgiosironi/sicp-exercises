@@ -400,6 +400,18 @@ Value* explicit_control_evaluator()
             new Symbol("unev"),
         }),
         //(assign exp (op assignment-value) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("assignment-value")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(save env)
         //(save continue)
         //(assign continue (label ev-assignment-1))
@@ -524,6 +536,10 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("assignment-variable"),
         ConsMethodOperation::cadr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("assignment-value"),
+        ConsMethodOperation::caddr()
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

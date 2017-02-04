@@ -1,13 +1,19 @@
-- extract remaining stuff from main.cpp
-- remove referenced to std:: by using `use namespace std`
-- use cerr instead of cout for all debugging; only official print statements should use cout
--- maybe a logging function?
-- Ctrl+D should not crash
-- ask someone why idiomatic C++ is `Stack *stack` instead of `Stack* stack`
-- implement == for Value
-- all methods should be camel case
-- assertions should use raise (or even some assert construct)
-- lookup_register or similar in all Machine::make_*() that lookup register names
+General refactoring:
+easy:
+-- lookup_register or similar in all Machine::make_*() that lookup register names
+-- use cerr instead of cout for all debugging; only official print statements should use cout
+--- maybe a logging function?
+- hard
+-- Ctrl+D should not crash
+-- implement == for Value
+-- macros for creating ConsMethodOperation::car() and similar?
+-- assertions should use raise (or even some assert construct)
+- boring:
+-- extract remaining stuff from main.cpp
+-- remove referenced to std:: by using `use namespace std`
+-- all methods should be camel case
+- anything else
+-- ask someone why idiomatic C++ is `Stack *stack` instead of `Stack* stack`
 
 ev-variable
 + implement Frame: pair of variable names (symbols?) and values

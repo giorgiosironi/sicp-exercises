@@ -35,3 +35,8 @@ ConsMethodOperation* ConsMethodOperation::cadr()
     return new ConsMethodOperation(&Cons::cadr);
 }
 
+ConsMethodOperation* ConsMethodOperation::caddr()
+{
+    return new ConsMethodOperation(&Cons::caddr);
+}
+

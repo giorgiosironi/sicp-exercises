@@ -28,6 +28,7 @@ class Machine : public MachineFeedback {
         Instruction* make_restore(Cons* instruction);
         std::vector<Value*> operands_vector(Value* tail_of_instruction);
         Operation* operation(Value* instruction_argument);
+        Register* get_register(std::string name);
         void execute();
     public:
         Machine();

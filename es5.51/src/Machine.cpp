@@ -154,7 +154,7 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
         Value* maybe_operands = instruction->cdddr();
         std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
         return new Assign(
-            this->registers[register_->name()],
+            this->get_register(register_->name()),
             this->operations[*operation],
             operands_vector,
             this
@@ -168,15 +168,15 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
         }
         int labelIndex = labels[label->name()];
         return new Assign(
-            this->registers[register_->name()],
+            this->get_register(register_->name()),
             new Integer(labelIndex),
             this
         );
     } else if (assignmentType->name() == "reg") {
         Symbol* source = (Symbol*) instruction->cadaddr();
         return new Assign(
-            this->registers[register_->name()],
-            this->registers[source->name()],
+            this->get_register(register_->name()),
+            this->get_register(source->name()),
             this
         );
     } else {
@@ -205,10 +205,9 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
         );
     } else if (assignmentType->name() == "reg") {
         Symbol* register_ = (Symbol*) instruction->cadadr();
-        Register* r = this->registers[register_->name()];
         return new Goto(
             this,
-            r
+            this->get_register(register_->name())
         );
     } else {
         cout << "Unknown assignment type in goto: " << assignmentType->toString() << endl;
@@ -252,11 +251,7 @@ Instruction* Machine::make_save(Cons* instruction)
         exit(1);
     }
     cout << "make_save: register " << register_->toString() << endl;
-    Register* r = this->registers[register_->name()];
-    if (r == NULL) {
-        cout << "Unknown register: " << register_->name() << endl;
-        exit(1);
-    }
+    Register* r = this->get_register(register_->name());
     return new Save(this->stack, r, this);
 }
 
@@ -269,11 +264,7 @@ Instruction* Machine::make_restore(Cons* instruction)
         exit(1);
     }
     cout << "make_restore: register " << register_->toString() << endl;
-    Register* r = this->registers[register_->name()];
-    if (r == NULL) {
-        cout << "Unknown register: " << register_->name() << endl;
-        exit(1);
-    }
+    Register* r = this->get_register(register_->name());
     return new Restore(this->stack, r, this);
 }
 
@@ -314,6 +305,16 @@ std::map<Symbol,int> Machine::extract_labels(Value* controller_text)
         head = head_as_cons->cdr();
     }
     return labels;
+}
+
+Register* Machine::get_register(std::string name)
+{
+    Register* r = this->registers[name];
+    if (r == NULL) {
+        cout << "Unknown register: " << name << endl;
+        exit(1);
+    }
+    return r;
 }
 
 void Machine::start()

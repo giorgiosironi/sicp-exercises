@@ -1,6 +1,6 @@
 General refactoring:
 easy:
--- lookup_register or similar in all Machine::make_*() that lookup register names
+++ lookup_register or similar in all Machine::make_*() that lookup register names
 -- use cerr instead of cout for all debugging; only official print statements should use cout
 --- maybe a logging function?
 - hard

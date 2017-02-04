@@ -8,6 +8,7 @@ easy:
 -- implement == for Value
 -- macros for creating ConsMethodOperation::car() and similar?
 -- assertions should use raise (or even some assert construct)
+-- functional tests? execute a whole program
 - boring:
 -- extract remaining stuff from main.cpp
 -- remove referenced to std:: by using `use namespace std`

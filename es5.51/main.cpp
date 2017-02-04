@@ -447,7 +447,15 @@ Value* explicit_control_evaluator()
             new Symbol("continue"),
         }),
         //(restore env)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("env"),
+        }),
         //(restore unev)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("unev"),
+        }),
         //(perform (op set-variable-value!) (reg unev) (reg val) (reg env))
         //(assign val (const ok))
         //(goto (reg continue))

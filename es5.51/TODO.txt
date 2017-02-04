@@ -24,7 +24,7 @@ ev-variable
 ++ Environment can lookup a variable in any of its frames
 ++ Environment starts looking up from the last frame
 - implement any accessor method necessary on Frame and Environment
--- Environment::set(name, value)
+++ Environment::set(name, value)
 -- SetVariableValue(Operation)
 
 

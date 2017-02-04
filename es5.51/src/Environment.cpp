@@ -30,6 +30,19 @@ Environment* Environment::extend(Frame* additionalFrame)
     return new Environment(frames);
 }
 
+void Environment::set(Symbol* symbol, Value* value)
+{
+    for (int i = this->frames.size() - 1; i >= 0; i--) {
+        auto frameResult = this->frames.at(i)->lookup(symbol);
+        if (frameResult != NULL) {
+            this->frames.at(i)->set(symbol, value);
+            return;
+        }
+    }
+    this->frames[this->frames.size() - 1]->set(symbol, value);
+    return;
+}
+
 string Environment::toString()
 {
     return "Environment";

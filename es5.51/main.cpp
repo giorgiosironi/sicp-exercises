@@ -504,6 +504,10 @@ std::map<Symbol,Operation*> machine_operations()
         Symbol("is-assignment"),
         new IsTaggedList(new Symbol("set!"))
     ));
+    //operations.insert(std::make_pair(
+    //    Symbol("assignment-variable"),
+    //    ConsMethodOperation::cadr()
+    //));
     operations.insert(std::make_pair(
         Symbol("announce-output"),
         new AnnounceOutput()

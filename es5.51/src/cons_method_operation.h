@@ -4,10 +4,13 @@
 #include "cons.h"
 
 class ConsMethodOperation: public Operation {
+    private:
+        Value* (Cons::*method_to_call)();
     public:
-        ConsMethodOperation();
+        ConsMethodOperation(Value* (Cons::*method_to_call)());
         virtual Value* execute(std::vector<Value*> elements);
         virtual std::string toString();
+        static ConsMethodOperation* car();
 };
 
 #endif

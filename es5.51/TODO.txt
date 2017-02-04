@@ -5,11 +5,17 @@
 ev-variable
 + implement Frame: pair of variable names (symbols?) and values
 + implement Environment: a sequence of Frames where the topmost is the one that wins and if a variable is not found it falls back to other Frames
-- implement Environment::extend()
--- Environment can return a new Environment with one more frame
--- Environment can lookup a variable in any of its frames
--- Environment starts looking up from the last frame
++ implement Environment::extend()
+++ Environment can return a new Environment with one more frame
+++ Environment can lookup a variable in any of its frames
+++ Environment starts looking up from the last frame
 - implement any accessor method necessary on Frame and Environment
+
+ev-assignment
+- implement ConsMethodOperation
+- test it as car
+- test it as cadr with a Factory Method
+- use it for assignment-variable
 
 branch:
 - implement Instruction::toString()
@@ -17,4 +23,5 @@ branch:
 References:
 - chapter5.2.scm: make-machine, make-new-machine
 - chapter5.4.scm: explicit-control-evaluator, operations
+- chapter5.scm: assignment-variable and many basic operations
 - es4.13.scm: environments, frames, variables

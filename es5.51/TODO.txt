@@ -16,11 +16,18 @@ easy:
 -- extract remaining stuff from main.cpp
 -- remove referenced to std:: by using `use namespace std`
 -- all methods should be camel case
+-- is-operation can be operation? since it's just a string in the lookup table
 - anything else
 -- ask someone why idiomatic C++ is `Stack *stack` instead of `Stack* stack`
 
 branch:
 - implement Instruction::toString()
+
+ev-lambda:
++ op lambda?
++ op lambda-parameters 
++ op lambda-body 
++ op make-procedure
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

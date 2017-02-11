@@ -12,6 +12,7 @@ class ConsMethodOperation: public Operation {
         virtual std::string toString();
         static ConsMethodOperation* car();
         static ConsMethodOperation* cadr();
+        static ConsMethodOperation* cddr();
         static ConsMethodOperation* caddr();
         static ConsMethodOperation* cadddr();
 };

@@ -20,6 +20,7 @@ using namespace std;
 #include "src/text_of_quotation.h"
 #include "src/cons_method_operation.h"
 #include "src/is_not_equal_to.h"
+#include "src/make_procedure.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -201,7 +202,25 @@ Value* explicit_control_evaluator()
             }),
         }),
         //(test (op lambda?) (reg exp))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-lambda")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            }),
+        }),
         //(branch (label ev-lambda))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-lambda")
+            })
+        }),
         //(test (op begin?) (reg exp))
         //(branch (label ev-begin))
         //; label to target for patching in derived expressions
@@ -280,10 +299,62 @@ Value* explicit_control_evaluator()
             })
         }),
         //ev-lambda
+        new Symbol("ev-lambda"),
         //(assign unev (op lambda-parameters) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("unev"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("lambda-parameters")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(assign exp (op lambda-body) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("lambda-body")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(assign val (op make-procedure) (reg unev) (reg exp) (reg env))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("val"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("make-procedure")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("env")
+            })
+        }),
         //(goto (reg continue))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("continue")
+            })
+        }),
         //; evaluating procedure applications
         //;; evaluating operator
         //ev-application
@@ -759,6 +830,22 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("if-alternative"),
         ConsMethodOperation::cadddr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-lambda"),
+        new IsTaggedList(new Symbol("lambda"))
+    ));
+    operations.insert(std::make_pair(
+        Symbol("lambda-parameters"),
+        ConsMethodOperation::cadr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("lambda-body"),
+        ConsMethodOperation::cddr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("make-procedure"),
+        new MakeProcedure()
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

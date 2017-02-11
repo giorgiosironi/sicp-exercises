@@ -6,6 +6,7 @@
 #include "symbol.h"
 #include "integer.h"
 #include "string.h"
+#include "bool.h"
 #include "nil.h"
 #include "cons.h"
 using namespace std;
@@ -63,16 +64,28 @@ Value* Read::parse(std::string input)
 
 void Read::appendToLastElement(std::vector<Value*> &sexp, std::string word)
 {
+    // by default, a symbol
 	Value* value = new Symbol(word);
+
+    if (word == "#t") {
+        value = new Bool(true);
+    } else if (word == "#f") {
+        value = new Bool(false);
+    }
+
+    // an integer
 	boost::regex int_expr("[0-9]+");
 	if (boost::regex_match(word, int_expr)) {
 		value = new Integer(stoi(word));
 	}
+
+    // a string
 	boost::regex string_expr("\"(.*)\"");
 	boost::smatch what;
 	if (boost::regex_match(word, what, string_expr)) {
 		value = new String(what[1]);
 	}
+
     this->appendToLastElement(sexp, value);
 }
 

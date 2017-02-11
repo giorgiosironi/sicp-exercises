@@ -19,6 +19,7 @@ using namespace std;
 #include "src/is_tagged_list.h"
 #include "src/text_of_quotation.h"
 #include "src/cons_method_operation.h"
+#include "src/is_not_equal_to.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -180,7 +181,25 @@ Value* explicit_control_evaluator()
         //(test (op definition?) (reg exp))
         //(branch (label ev-definition))
         //(test (op if?) (reg exp))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-if")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            }),
+        }),
         //(branch (label ev-if))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-if")
+            }),
+        }),
         //(test (op lambda?) (reg exp))
         //(branch (label ev-lambda))
         //(test (op begin?) (reg exp))
@@ -362,24 +381,135 @@ Value* explicit_control_evaluator()
         //(goto (label eval-dispatch))
         //; evaluating conditionals
         //ev-if
+        new Symbol("ev-if"),
         //(save exp) ; save expression for later
+        build_list({
+            new Symbol("save"),
+            new Symbol("exp"),
+        }),
         //(save env)
+        build_list({
+            new Symbol("save"),
+            new Symbol("env"),
+        }),
         //(save continue)
+        build_list({
+            new Symbol("save"),
+            new Symbol("continue"),
+        }),
         //(assign continue (label ev-if-decide))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("continue"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-if-decide")
+            })
+        }),
         //(assign exp (op if-predicate) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("if-predicate")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(goto (label eval-dispatch)) ; evaluate the predicate
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch")
+            })
+        }),
         //ev-if-decide
+        new Symbol("ev-if-decide"),
         //(restore continue)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("continue"),
+        }),
         //(restore env)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("env"),
+        }),
         //(restore exp)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("exp"),
+        }),
         //(test (op true?) (reg val))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-true")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("val")
+            })
+        }),
         //(branch (label ev-if-consequent))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-if-consequent")
+            })
+        }),
         //ev-if-alternative ; else
+        new Symbol("ev-if-alternative"),
         //(assign exp (op if-alternative) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("if-alternative")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(goto (label eval-dispatch))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch")
+            })
+        }),
         //ev-if-consequent ; then
+        new Symbol("ev-if-consequent"),
         //(assign exp (op if-consequent) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("if-consequent")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(goto (label eval-dispatch))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch")
+            }),
+        }),
         //ev-assignment
         new Symbol("ev-assignment"),
         //(assign unev (op assignment-variable) (reg exp))
@@ -608,6 +738,27 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("assignment-value"),
         ConsMethodOperation::caddr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-if"),
+        new IsTaggedList(new Symbol("if"))
+    ));
+    operations.insert(std::make_pair(
+        Symbol("if-predicate"),
+        ConsMethodOperation::cadr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-true"),
+        // whatever is not #f is true in an (if ... ... ...)
+        new IsNotEqualTo(new Bool(false))
+    ));
+    operations.insert(std::make_pair(
+        Symbol("if-consequent"),
+        ConsMethodOperation::caddr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("if-alternative"),
+        ConsMethodOperation::cadddr()
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

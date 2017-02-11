@@ -31,6 +31,18 @@ TEST(ReadTest, StringLong) {
     ASSERT_EQ("\"foo\"", exp->toString());
 }
 
+TEST(ReadTest, BoolTrue) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("#t");
+    ASSERT_EQ("#t", exp->toString());
+}
+
+TEST(ReadTest, BoolFalse) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("#f");
+    ASSERT_EQ("#f", exp->toString());
+}
+
 TEST(ReadTest, ListEmpty) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("()");

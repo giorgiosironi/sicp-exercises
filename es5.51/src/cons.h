@@ -19,6 +19,7 @@ class Cons : public Value
         Value* cddr();
         Value* cdddr();
         Value* caddr();
+        Value* cadddr();
         Value* caaddr();
         Value* cadadr();
         Value* cadaddr();

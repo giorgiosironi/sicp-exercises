@@ -13,6 +13,7 @@ class ConsMethodOperation: public Operation {
         static ConsMethodOperation* car();
         static ConsMethodOperation* cadr();
         static ConsMethodOperation* caddr();
+        static ConsMethodOperation* cadddr();
 };
 
 #endif

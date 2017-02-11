@@ -39,3 +39,8 @@ ConsMethodOperation* ConsMethodOperation::caddr()
     return new ConsMethodOperation(&Cons::caddr);
 }
 
+ConsMethodOperation* ConsMethodOperation::cadddr()
+{
+    return new ConsMethodOperation(&Cons::cadddr);
+}
+

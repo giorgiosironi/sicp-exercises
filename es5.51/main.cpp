@@ -21,6 +21,7 @@ using namespace std;
 #include "src/cons_method_operation.h"
 #include "src/is_not_equal_to.h"
 #include "src/make_procedure.h"
+#include "src/is_last_exp.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -222,7 +223,25 @@ Value* explicit_control_evaluator()
             })
         }),
         //(test (op begin?) (reg exp))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-begin")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            }),
+        }),
         //(branch (label ev-begin))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-begin")
+            })
+        }),
         //; label to target for patching in derived expressions
         //extensions
         //(test (op application?) (reg exp))
@@ -425,31 +444,149 @@ Value* explicit_control_evaluator()
         //(goto (label ev-sequence))
         //; evaluates a sequence of expressions
         //ev-begin
+        new Symbol("ev-begin"),
         //(assign unev (op begin-actions) (reg exp)) ; list of unevaluated expressions
+        build_list({
+            new Symbol("assign"),
+            new Symbol("unev"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("begin-actions")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(save continue)
+        build_list({
+            new Symbol("save"),
+            new Symbol("continue")
+        }),
         //(goto (label ev-sequence))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-sequence")
+            })
+        }),
         //;; let's go evaluate each element of the sequence
         //ev-sequence
+        new Symbol("ev-sequence"),
         //(assign exp (op first-exp) (reg unev))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("first-exp")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev")
+            })
+        }),
         //(test (op last-exp?) (reg unev))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-last-exp")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev")
+            })
+        }),
         //(branch (label ev-sequence-last-exp))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-sequence-last-exp")
+            })
+        }),
         //(save unev)
+        build_list({
+            new Symbol("save"),
+            new Symbol("unev")
+        }),
         //(save env)
+        build_list({
+            new Symbol("save"),
+            new Symbol("env")
+        }),
         //(assign continue (label ev-sequence-continue))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("continue"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-sequence-continue")
+            })
+        }),
         //(goto (label eval-dispatch))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch")
+            })
+        }),
         //;; we return after having evaluated the element
         //;; there is no return value
         //ev-sequence-continue
+        new Symbol("ev-sequence-continue"),
         //(restore env)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("env")
+        }),
         //(restore unev)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("unev")
+        }),
         //(assign unev (op rest-exps) (reg unev))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("unev"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("rest-exps"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev"),
+            })
+        }),
         //(goto (label ev-sequence))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-sequence"),
+            })
+        }),
         //;; the last element of the sequence is handled differently
         //;; basically it substitutes the previous expression without
         //;; saving values on the stack: it's tail-recursive
         //ev-sequence-last-exp
+        new Symbol("ev-sequence-last-exp"),
         //(restore continue)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("continue")
+        }),
         //(goto (label eval-dispatch))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch")
+            })
+        }),
         //; evaluating conditionals
         //ev-if
         new Symbol("ev-if"),
@@ -846,6 +983,26 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("make-procedure"),
         new MakeProcedure()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-begin"),
+        new IsTaggedList(new Symbol("begin"))
+    ));
+    operations.insert(std::make_pair(
+        Symbol("begin-actions"),
+        ConsMethodOperation::cdr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-last-exp"),
+        new IsLastExp()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("first-exp"),
+        ConsMethodOperation::car()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("rest-exps"),
+        ConsMethodOperation::cdr()
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

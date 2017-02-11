@@ -23,11 +23,12 @@ easy:
 branch:
 - implement Instruction::toString()
 
-ev-lambda:
-+ op lambda?
-+ op lambda-parameters 
-+ op lambda-body 
-+ op make-procedure
+ev-begin:
++ op is-begin
++ op begin-actions
++ op first-exp
++ op is-last-exp
++ op rest-exps
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

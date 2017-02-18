@@ -26,12 +26,13 @@ branch:
 ==, !=:
 + implement for Value (stub) and Integer
 - float
-- symbol
++ symbol
 + string
 - bool
 - cons
 - nil
 ? environment
+- use equality in lieu of toString wherever possible
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

@@ -1,13 +1,15 @@
 #include "string"
 #include "../src/value.h"
-#include "../src/string.h"
 #include "../src/integer.h"
+#include "../src/string.h"
+#include "../src/symbol.h"
 #include <gtest/gtest.h>
 using namespace std;
  
 TEST(ValueTest, Equality) { 
     ASSERT_EQ(Integer(42), Integer(42));
     ASSERT_EQ(String("hello"), String("hello"));
+    ASSERT_EQ(Symbol("exp"), Symbol("exp"));
 }
 
 TEST(ValueTest, Inequality) { 
@@ -17,5 +19,6 @@ TEST(ValueTest, Inequality) {
     Value* integer41 = new Integer(41);
     ASSERT_NE(*integer41, *integer42);
     ASSERT_NE(String("hello"), String("world"));
+    ASSERT_NE(Symbol("exp"), Symbol("val"));
 }
 

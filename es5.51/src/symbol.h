@@ -14,6 +14,7 @@ class Symbol: public Value {
         {
             return this->_name < right._name;
         }
+        virtual bool equals(const Value& other) const;
 };
 
 #endif

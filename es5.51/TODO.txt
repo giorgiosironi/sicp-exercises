@@ -23,12 +23,15 @@ easy:
 branch:
 - implement Instruction::toString()
 
-ev-begin:
-+ op is-begin
-+ op begin-actions
-+ op first-exp
-+ op is-last-exp
-+ op rest-exps
+==, !=:
++ implement for Value (stub) and Integer
+- float
+- symbol
+- string
+- bool
+- cons
+- nil
+? environment
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

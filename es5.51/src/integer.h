@@ -10,6 +10,7 @@ class Integer : public Value
         Integer(int contents);
         virtual std::string toString();
         int asInt();
+        virtual bool equals(const Value& other) const;
 };
 
 #endif

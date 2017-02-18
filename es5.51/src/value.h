@@ -7,6 +7,11 @@ class Value
 {
     public:
         virtual string toString() = 0;
+        virtual bool equals(const Value& other) const;
 };
+
+bool operator==(const Value& lhs, const Value& rhs);
+bool operator!=(const Value& lhs, const Value& rhs);
+
 
 #endif

@@ -34,9 +34,15 @@ TEST(ConsTest, ToVector) {
 TEST(ConsTest, Append) { 
     auto list = (Cons*) Cons::fromVector({ new Integer(1) });
     auto expanded = list->append(new Integer(2));
-    ASSERT_EQ("(1 2)", expanded->toString());
+    ASSERT_EQ(
+        *Cons::fromVector({ new Integer(1), new Integer(2) }),
+        *expanded
+    );
 
     list = (Cons*) Cons::fromVector({ new Integer(1), new Integer(2) });
     expanded = list->append(new Integer(3));
-    ASSERT_EQ("(1 2 3)", expanded->toString());
+    ASSERT_EQ(
+        *Cons::fromVector({ new Integer(1), new Integer(2), new Integer(3) }),
+        *expanded
+    );
 }

@@ -7,6 +7,7 @@ using namespace std;
  
 TEST(ValueTest, Equality) { 
     ASSERT_EQ(Integer(42), Integer(42));
+    ASSERT_EQ(String("hello"), String("hello"));
 }
 
 TEST(ValueTest, Inequality) { 
@@ -15,5 +16,6 @@ TEST(ValueTest, Inequality) {
     ASSERT_NE(*integer42, *string42);
     Value* integer41 = new Integer(41);
     ASSERT_NE(*integer41, *integer42);
+    ASSERT_NE(String("hello"), String("world"));
 }
 

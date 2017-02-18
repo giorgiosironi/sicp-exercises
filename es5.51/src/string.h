@@ -5,14 +5,15 @@
 
 class String: public Value {
     private:
-        std::string name;
+        std::string contents;
     public:
-        String(std::string name);
+        String(std::string contents);
         virtual std::string toString();
         bool operator <(const String& right) const
         {
-            return this->name < right.name;
+            return this->contents < right.contents;
         }
+        virtual bool equals(const Value& other) const;
 };
 
 #endif

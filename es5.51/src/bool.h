@@ -11,6 +11,7 @@ class Bool: public Value {
         virtual std::string toString();
         bool isTrue();
         bool isFalse();
+        virtual bool equals(const Value& other) const;
 };
 
 

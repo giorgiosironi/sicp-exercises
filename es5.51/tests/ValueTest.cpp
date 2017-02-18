@@ -1,5 +1,6 @@
 #include "string"
 #include "../src/value.h"
+#include "../src/bool.h"
 #include "../src/integer.h"
 #include "../src/string.h"
 #include "../src/symbol.h"
@@ -10,6 +11,7 @@ TEST(ValueTest, Equality) {
     ASSERT_EQ(Integer(42), Integer(42));
     ASSERT_EQ(String("hello"), String("hello"));
     ASSERT_EQ(Symbol("exp"), Symbol("exp"));
+    ASSERT_EQ(Bool(true), Bool(true));
 }
 
 TEST(ValueTest, Inequality) { 
@@ -20,5 +22,6 @@ TEST(ValueTest, Inequality) {
     ASSERT_NE(*integer41, *integer42);
     ASSERT_NE(String("hello"), String("world"));
     ASSERT_NE(Symbol("exp"), Symbol("val"));
+    ASSERT_NE(Bool(true), Bool(false));
 }
 

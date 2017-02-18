@@ -25,10 +25,9 @@ branch:
 
 ==, !=:
 + implement for Value (stub) and Integer
-- float
 + symbol
 + string
-- bool
++ bool
 - cons
 - nil
 ? environment

@@ -29,7 +29,7 @@ branch:
 + string
 + bool
 - cons
-- nil
++ nil
 ? environment
 - use equality in lieu of toString wherever possible
 

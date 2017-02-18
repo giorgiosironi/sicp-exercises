@@ -2,6 +2,7 @@
 #include "../src/value.h"
 #include "../src/bool.h"
 #include "../src/integer.h"
+#include "../src/nil.h"
 #include "../src/string.h"
 #include "../src/symbol.h"
 #include <gtest/gtest.h>
@@ -12,6 +13,7 @@ TEST(ValueTest, Equality) {
     ASSERT_EQ(String("hello"), String("hello"));
     ASSERT_EQ(Symbol("exp"), Symbol("exp"));
     ASSERT_EQ(Bool(true), Bool(true));
+    ASSERT_EQ(Nil(), Nil());
 }
 
 TEST(ValueTest, Inequality) { 

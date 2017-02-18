@@ -8,6 +8,7 @@ class Nil : public Value
 {
     public:
         virtual std::string toString();
+        virtual bool equals(const Value& other) const;
 };
 
 #endif

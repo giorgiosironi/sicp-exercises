@@ -23,15 +23,22 @@ easy:
 branch:
 - implement Instruction::toString()
 
-==, !=:
-+ implement for Value (stub) and Integer
-+ symbol
-+ string
-+ bool
-+ cons
-+ nil
-? environment
-+ use equality in lieu of toString wherever possible
+ev-application:
+- translate assembly code
+- operations
+-- application?
+-- operands
+-- operator
+-- empty-arglist
+-- no-operands?
+-- first-operand
+-- last-operand?
+-- adjoin-arg
+-- rest-operands
+-- primitive-procedure?
+-- compound-procedure?
+-- ...
+
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

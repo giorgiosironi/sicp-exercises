@@ -244,6 +244,7 @@ Value* explicit_control_evaluator()
         }),
         //; label to target for patching in derived expressions
         //extensions
+        new Symbol("extensions"),
         //(test (op application?) (reg exp))
         //(branch (label ev-application))
         //(goto (label unknown-expression-type))

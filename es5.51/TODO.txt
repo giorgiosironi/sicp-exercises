@@ -28,7 +28,7 @@ branch:
 + symbol
 + string
 + bool
-- cons
++ cons
 + nil
 ? environment
 - use equality in lieu of toString wherever possible

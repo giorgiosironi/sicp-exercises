@@ -87,6 +87,16 @@ Cons* Cons::append(Value* element)
     return list;
 }
 
+bool Cons::equals(const Value& other) const
+{
+    const Cons* other_cons = dynamic_cast<const Cons*>(&other);
+    if (other_cons == NULL) {
+        return false;
+    }
+    return *this->car_ptr == *other_cons->car_ptr
+        && *this->cdr_ptr == *other_cons->cdr_ptr;
+}
+
 std::string Cons::toString()
 {
     if (this->cdr_ptr->toString() == NIL->toString()) {

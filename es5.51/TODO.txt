@@ -31,7 +31,7 @@ branch:
 + cons
 + nil
 ? environment
-- use equality in lieu of toString wherever possible
++ use equality in lieu of toString wherever possible
 
 References:
 - chapter5.2.scm: make-machine, make-new-machine

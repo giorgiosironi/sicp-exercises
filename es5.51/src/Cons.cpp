@@ -76,7 +76,7 @@ Cons* Cons::append(Value* element)
 {
     auto contents = vector<Value*>();
     Value* current_element = this;
-    while (current_element->toString() != "NIL") {
+    while (*current_element != *NIL) {
         contents.push_back(((Cons* ) current_element)->car());
         current_element = ((Cons*) current_element)->cdr();
     }
@@ -99,7 +99,7 @@ bool Cons::equals(const Value& other) const
 
 std::string Cons::toString()
 {
-    if (this->cdr_ptr->toString() == NIL->toString()) {
+    if (*this->cdr_ptr == *NIL) {
         return std::string("(")
             + this->car_ptr->toString()
             + std::string(")");

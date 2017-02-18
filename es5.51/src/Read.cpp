@@ -92,7 +92,7 @@ void Read::appendToLastElement(std::vector<Value*> &sexp, std::string word)
 void Read::appendToLastElement(std::vector<Value*> &sexp, Value* value)
 {
 	int last_element = sexp.size() - 1;
-	if (sexp[last_element]->toString() == "NIL") {
+	if (*sexp[last_element] == *NIL) {
 		sexp[last_element] = new Cons(value, new Nil());
 	} else {
 		Cons* current_list = dynamic_cast<Cons *>(sexp[last_element]);

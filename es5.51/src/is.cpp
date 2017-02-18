@@ -37,13 +37,9 @@ bool is_string(Value *exp)
     return false;
 }
 
-/**
- * Trick: compare the string representations, since we are talking about
- * simple data structures here. If we get a recurring pointer, this will explode
- */
 bool is_eq(Value *former, Value *latter)
 {
-    return former->toString() == latter->toString();
+    return *former == *latter;
 }
 
 bool is_tagged_list(Value *exp)

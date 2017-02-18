@@ -14,9 +14,9 @@ vector<Value*> Instruction::fetch_operands(vector<Value*> operands)
             exit(-1);
         }
         auto expressionType = operand->car();
-        if (expressionType->toString() == "'const") {
+        if (*expressionType == Symbol("const")) {
             elements.push_back(operand->cadr());
-        } else if (expressionType->toString() == "'reg") {
+        } else if (*expressionType == Symbol("reg")) {
             Symbol* registerName = dynamic_cast<Symbol *>(operand->cadr());
             //elements.push_back(operand->cadr());
             Register* register_ = this->machine_feedback->get_register(registerName->name());

@@ -23,6 +23,8 @@ using namespace std;
 #include "src/make_procedure.h"
 #include "src/is_last_exp.h"
 #include "src/is_instance_of.h"
+#include "src/constant.h"
+#include "src/is_last_operand.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -422,24 +424,137 @@ Value* explicit_control_evaluator()
             })
         }),
         //(save unev)
+        build_list({
+            new Symbol("save"),
+            new Symbol("unev")
+        }),
         //(assign exp (op operator) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("operator")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(assign continue (label ev-appl-did-operator))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("continue"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-appl-did-operator")
+            })
+        }),
         //(goto (label eval-dispatch))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch")
+            })
+        }),
         //;; evaluating operands
         //ev-appl-did-operator
+        new Symbol("ev-appl-did-operator"),
         //(restore unev) ; the operands
+        build_list({
+            new Symbol("restore"),
+            new Symbol("unev")
+        }),
         //(restore env)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("env")
+        }),
         //(assign argl (op empty-arglist))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("argl"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("empty-arglist"),
+            }),
+        }),
         //(assign proc (reg val)) ; the operator
+        build_list({
+            new Symbol("assign"),
+            new Symbol("proc"),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("val"),
+            }),
+        }),
         //(test (op no-operands?) (reg unev))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-no-operands"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev"),
+            }),
+        }),
         //(branch (label apply-dispatch))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("apply-dispatch"),
+            }),
+        }),
         //(save proc)
+        build_list({
+            new Symbol("save"),
+            new Symbol("proc"),
+        }),
         //; cycle of the argument-evaluation loop
         //ev-appl-operand-loop
+        new Symbol("ev-appl-operand-loop"),
         //(save argl)
+        build_list({
+            new Symbol("save"),
+            new Symbol("argl"),
+        }),
         //(assign exp (op first-operand) (reg unev))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("first-operand"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev"),
+            })
+        }),
         //(test (op last-operand?) (reg unev))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-last-operand"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev"),
+            })
+        }),
         //(branch (label ev-appl-last-arg))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-appl-last-arg"),
+            }),
+        }),
         //(save env)
         //(save unev)
         //(assign continue (label ev-appl-accumulate-arg))
@@ -456,16 +571,47 @@ Value* explicit_control_evaluator()
         //; the last argument evaluation is different:
         //; we need to dispatch on proc
         //ev-appl-last-arg
+        new Symbol("ev-appl-last-arg"),
         //(assign continue (label ev-appl-accum-last-arg))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("continue"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-appl-accum-last-arg"),
+            }),
+        }),
         //(goto (label eval-dispatch))
         //ev-appl-accum-last-arg
+        new Symbol("ev-appl-accum-last-arg"),
         //(restore argl)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("argl"),
+        }),
         //(assign argl (op adjoin-arg) (reg val) (reg argl))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("argl"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("adjoin-arg"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("val"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("argl"),
+            }),
+        }),
         //(restore proc)
         //(goto (label apply-dispatch))
         //; apply procedure of the metacircular evaluator:
         //; choose between primitive or user-defined procedure
         //apply-dispatch
+        new Symbol("apply-dispatch"),
         //(test (op primitive-procedure?) (reg proc))
         //(branch (label primitive-apply))
         //(test (op compound-procedure?) (reg proc))
@@ -1048,6 +1194,30 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("is-application"),
         new IsInstanceOf<Cons>()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("operands"),
+        ConsMethodOperation::cdr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("operator"),
+        ConsMethodOperation::car()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("empty-arglist"),
+        new Constant(NIL)
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-no-operands"),
+        new IsInstanceOf<Nil>()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("first-operand"),
+        ConsMethodOperation::car()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-last-operand"),
+        new IsLastOperand()
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

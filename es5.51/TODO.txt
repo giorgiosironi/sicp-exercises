@@ -24,16 +24,17 @@ branch:
 - implement Instruction::toString()
 
 ev-application:
-+ translate assembly code
+- translate assembly code
 - operations
 ++ application?
 +++ IsInstanceOf<Cons> : Operation
--- operands
--- operator
--- empty-arglist
--- no-operands?
--- first-operand
--- last-operand?
+++ operands
+++ operator
+++ empty-arglist
++++ new Constant(Value*)
+++ no-operands?
+++ first-operand
+++ last-operand?
 -- adjoin-arg
 -- rest-operands
 -- primitive-procedure?
@@ -46,6 +47,7 @@ ev-application:
 
 
 References:
+- chapter4.1.scm: application?
 - chapter5.2.scm: make-machine, make-new-machine
 - chapter5.4.scm: explicit-control-evaluator, operations
 - chapter5.scm: assignment-variable and many basic operations

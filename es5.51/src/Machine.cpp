@@ -142,7 +142,11 @@ std::vector<Value*> Machine::operands_vector(Value* tail_of_instruction)
 // (assign val (const 42))
 Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels)
 {
-    Symbol* register_ = (Symbol*) instruction->cadr();
+    Symbol* register_ = dynamic_cast<Symbol*>(instruction->cadr());
+    if (register_ == NULL) {
+        cout << "First argument to assign is not a register name" << endl;
+        exit(1);
+    }
     Symbol* assignmentType = (Symbol*) instruction->caaddr();
     if (assignmentType->name() == "op") {
         Symbol* operation = (Symbol*) instruction->cadaddr();

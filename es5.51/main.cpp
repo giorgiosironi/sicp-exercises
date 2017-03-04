@@ -397,9 +397,30 @@ Value* explicit_control_evaluator()
         //; evaluating procedure applications
         //;; evaluating operator
         //ev-application
+        new Symbol("ev-application"),
         //(save continue)
+        build_list({
+            new Symbol("save"),
+            new Symbol("continue")
+        }),
         //(save env)
+        build_list({
+            new Symbol("save"),
+            new Symbol("env")
+        }),
         //(assign unev (op operands) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("unev"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("operands")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(save unev)
         //(assign exp (op operator) (reg exp))
         //(assign continue (label ev-appl-did-operator))

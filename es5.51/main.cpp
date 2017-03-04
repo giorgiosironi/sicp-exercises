@@ -22,6 +22,7 @@ using namespace std;
 #include "src/is_not_equal_to.h"
 #include "src/make_procedure.h"
 #include "src/is_last_exp.h"
+#include "src/is_instance_of.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -246,7 +247,25 @@ Value* explicit_control_evaluator()
         //extensions
         new Symbol("extensions"),
         //(test (op application?) (reg exp))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-application")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(branch (label ev-application))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-application")
+            })
+        }),
         //(goto (label unknown-expression-type))
         //; evaluating simple expressions
         //ev-self-eval
@@ -1004,6 +1023,10 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("rest-exps"),
         ConsMethodOperation::cdr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-application"),
+        new IsInstanceOf<Cons>()
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

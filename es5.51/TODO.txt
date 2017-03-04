@@ -24,10 +24,10 @@ branch:
 - implement Instruction::toString()
 
 ev-application:
-- translate assembly code
++ translate assembly code
 - operations
--- application?
---- IsInstanceOf<Cons> : Operation
+++ application?
++++ IsInstanceOf<Cons> : Operation
 -- operands
 -- operator
 -- empty-arglist

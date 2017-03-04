@@ -27,6 +27,7 @@ ev-application:
 - translate assembly code
 - operations
 -- application?
+--- IsInstanceOf<Cons> : Operation
 -- operands
 -- operator
 -- empty-arglist
@@ -37,7 +38,11 @@ ev-application:
 -- rest-operands
 -- primitive-procedure?
 -- compound-procedure?
--- ...
+-- apply-primitive-procedure
+-- procedure-parameters
+-- procedure-environment
+-- extend-environment
+-- procedure-body
 
 
 References:

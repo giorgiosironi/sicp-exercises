@@ -36,6 +36,9 @@ ev-application:
 ++ first-operand
 ++ last-operand?
 -- adjoin-arg
+--- AdjoinArg Operation
+--- which uses List::append on second argument
+--- which implies common interface List between Cons and Nil
 -- rest-operands
 -- primitive-procedure?
 -- compound-procedure?

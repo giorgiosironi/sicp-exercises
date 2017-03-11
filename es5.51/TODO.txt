@@ -45,9 +45,11 @@ ev-application:
 -- compound-procedure?
 -- apply-primitive-procedure
 --- assertions for number of elements, or their type: assert.h
---- virtual PrimitiveProcedure
---- implement PrimitivePlus
---- implement ApplyPrimitiveProcedure
++++ virtual PrimitiveProcedure
++++ implement PrimitivePlus
++++ implement ApplyPrimitiveProcedure
+--- add + as a primitive procedure
+--- move other Operations outside of Machine.cpp
 -- procedure-parameters
 -- procedure-environment
 -- extend-environment

@@ -12,6 +12,7 @@ using namespace std;
 
 // operations
 #include "src/operation.h"
+#include "src/get_global_environment.h"
 #include "src/is_self_evaluating.h"
 #include "src/is_variable.h"
 #include "src/lookup_variable_value.h"
@@ -26,6 +27,7 @@ using namespace std;
 #include "src/constant.h"
 #include "src/is_last_operand.h"
 #include "src/adjoin_arg.h"
+#include "src/apply_primitive_procedure.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -1141,21 +1143,13 @@ Value* explicit_control_evaluator()
     });
 }
 
-/**
- * Try to define Operation : Value
- * http://stackoverflow.com/questions/20835534/function-pointer-without-arguments-types
- * that stores a pointer to a function that takes any parameters and then
- * returns a *Value
- * Should have a method apply(std::vector<Value*>)
- * and when we implement apply we can pass the arguments in
- * It should probably have a case on the number of arguments (from 0 to 3-4)
- * so that it can then cast the general pointer to the correct one and call
- * it.
- * This should become a map from String representing the name to the Operation then.
- */
-std::map<Symbol,Operation*> machine_operations()
+std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
 {
     auto operations = std::map<Symbol,Operation*>();
+    operations.insert(std::make_pair(
+        Symbol("get-global-environment"),
+        new GetGlobalEnvironment(global_environment)
+    ));
     operations.insert(std::make_pair(
         Symbol("is-self-evaluating"),
         new IsSelfEvaluating()
@@ -1286,6 +1280,10 @@ std::map<Symbol,Operation*> machine_operations()
         new IsTaggedList(new Symbol("primitive"))
     ));
     operations.insert(std::make_pair(
+        Symbol("apply-primitive-procedure"),
+        new ApplyPrimitiveProcedure()
+    ));
+    operations.insert(std::make_pair(
         Symbol("announce-output"),
         new AnnounceOutput()
     ));
@@ -1309,7 +1307,8 @@ Machine* eceval()
     eceval->allocate_register("argl");
     eceval->allocate_register("continue");
     eceval->allocate_register("unev");
-    eceval->install_operations(machine_operations());
+    Environment* global_environment = new Environment();
+    eceval->install_operations(machine_operations(global_environment));
     eceval->install_instruction_sequence(eceval->assemble(explicit_control_evaluator()));
     return eceval;
 }

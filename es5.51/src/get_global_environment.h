@@ -10,7 +10,7 @@ class GetGlobalEnvironment: public Operation {
     private:
         Environment* global_environment;
     public:
-        GetGlobalEnvironment();
+        GetGlobalEnvironment(Environment* environment);
         virtual Value* execute(std::vector<Value*> elements);
         virtual std::string toString();
 };

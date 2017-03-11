@@ -4,9 +4,9 @@
 #include <iostream>
 using namespace std;
 
-GetGlobalEnvironment::GetGlobalEnvironment()
+GetGlobalEnvironment::GetGlobalEnvironment(Environment* environment)
 {
-    this->global_environment = new Environment();
+    this->global_environment = environment;
 }
 
 Value* GetGlobalEnvironment::execute(std::vector<Value*> elements)

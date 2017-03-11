@@ -218,6 +218,7 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
         );
     } else {
         cout << "Unknown assignment type in goto: " << assignmentType->toString() << endl;
+        exit(1);
     }
 }
 

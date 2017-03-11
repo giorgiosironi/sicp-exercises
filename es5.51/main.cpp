@@ -667,6 +667,7 @@ Value* explicit_control_evaluator()
                 new Symbol("reg"),
                 new Symbol("proc"),
             }),
+            // argl is wrong
             build_list({
                 new Symbol("reg"),
                 new Symbol("argl"),
@@ -681,7 +682,7 @@ Value* explicit_control_evaluator()
         build_list({
             new Symbol("goto"),
             build_list({
-                new Symbol("restore"),
+                new Symbol("reg"),
                 new Symbol("continue"),
             }),
         }),

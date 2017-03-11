@@ -125,10 +125,10 @@ std::vector<Value*> Cons::toVector()
 }
 
 
-Value* Cons::fromVector(std::vector<Value*> vector) {
+List* Cons::fromVector(std::vector<Value*> vector) {
     Value* result = new Nil();
     for(std::vector<Value*>::reverse_iterator rit = vector.rbegin(); rit != vector.rend(); ++rit) {
         result = new Cons(*rit, result);
     }
-    return result;
+    return (List*) result;
 }

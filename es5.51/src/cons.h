@@ -1,10 +1,10 @@
 #ifndef CONS_H
 #define CONS_H
-#include "value.h"
+#include "list.h"
 #include <string>
 #include <vector>
 
-class Cons : public Value
+class Cons : public List
 {
     private:
         Value *car_ptr;
@@ -23,11 +23,11 @@ class Cons : public Value
         Value* caaddr();
         Value* cadadr();
         Value* cadaddr();
-        Cons* append(Value *element);
+        virtual Cons* append(Value *element);
         virtual std::string toString();
         virtual bool equals(const Value& other) const;
         virtual std::vector<Value*> toVector();
-        static Value* fromVector(std::vector<Value*> vector);
+        static List* fromVector(std::vector<Value*> vector);
 };
 
 #endif

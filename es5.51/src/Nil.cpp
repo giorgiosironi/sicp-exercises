@@ -1,4 +1,5 @@
 #include "nil.h"
+#include "cons.h"
 
 std::string Nil::toString()
 {
@@ -12,4 +13,9 @@ bool Nil::equals(const Value& other) const
         return false;
     }
     return true;
+}
+
+List* Nil::append(Value* element)
+{
+    return Cons::fromVector({ element });
 }

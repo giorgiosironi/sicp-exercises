@@ -38,7 +38,8 @@ ev-application:
 -- adjoin-arg
 --- AdjoinArg Operation
 --- which uses List::append on second argument
---- which implies common interface List between Cons and Nil
++++ which implies common interface List between Cons and Nil
+--- many (static methods) in Cons can be ported onto List
 -- rest-operands
 -- primitive-procedure?
 -- compound-procedure?

@@ -41,9 +41,13 @@ ev-application:
 +++ which implies common interface List between Cons and Nil
 --- many (static methods) in Cons can be ported onto List
 -- rest-operands
--- primitive-procedure?
+++ primitive-procedure?
 -- compound-procedure?
 -- apply-primitive-procedure
+--- assertions for number of elements, or their type: assert.h
+--- virtual PrimitiveProcedure
+--- implement PrimitivePlus
+--- implement ApplyPrimitiveProcedure
 -- procedure-parameters
 -- procedure-environment
 -- extend-environment

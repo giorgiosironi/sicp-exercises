@@ -25,6 +25,7 @@ using namespace std;
 #include "src/is_instance_of.h"
 #include "src/constant.h"
 #include "src/is_last_operand.h"
+#include "src/adjoin_arg.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -607,21 +608,78 @@ Value* explicit_control_evaluator()
             }),
         }),
         //(restore proc)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("proc"),
+        }),
         //(goto (label apply-dispatch))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("apply-dispatch"),
+            }),
+        }),
         //; apply procedure of the metacircular evaluator:
         //; choose between primitive or user-defined procedure
         //apply-dispatch
         new Symbol("apply-dispatch"),
         //(test (op primitive-procedure?) (reg proc))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-primitive-procedure"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("proc"),
+            }),
+        }),
         //(branch (label primitive-apply))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("primitive-apply"),
+            }),
+        }),
         //(test (op compound-procedure?) (reg proc))
         //(branch (label compound-apply))
         //(goto (label unknown-procedure-type))
         //; let's apply a primitive operator such as +
         //primitive-apply
+        new Symbol("primitive-apply"),
         //(assign val (op apply-primitive-procedure) (reg proc) (reg argl))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("val"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("apply-primitive-procedure"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("proc"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("argl"),
+            }),
+        }),
         //(restore continue)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("continue"),
+        }),
         //(goto (reg continue))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("restore"),
+                new Symbol("continue"),
+            }),
+        }),
         //; let's apply a compound procedure like a user-defined one
         //compound-apply
         //(assign unev (op procedure-parameters) (reg proc))
@@ -1218,6 +1276,14 @@ std::map<Symbol,Operation*> machine_operations()
     operations.insert(std::make_pair(
         Symbol("is-last-operand"),
         new IsLastOperand()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("adjoin-arg"),
+        new AdjoinArg()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-primitive-procedure"),
+        new IsTaggedList(new Symbol("primitive"))
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

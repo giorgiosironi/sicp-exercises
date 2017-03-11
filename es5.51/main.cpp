@@ -32,6 +32,9 @@ using namespace std;
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
 
+// primitive procedures
+#include "src/primitive_plus.h"
+
 
 Value* build_list(std::vector<Value*> elements) {
     Value *head = NIL;
@@ -1294,6 +1297,18 @@ std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
     return operations;
 }
 
+Environment* add_primitive_procedures(Environment* initial_environment)
+{
+    return initial_environment->extend(new Frame(
+        { 
+            new Symbol("+") 
+        },
+        {
+            Cons::fromVector({ new Symbol("primitive"), new PrimitivePlus() })
+        }
+    ));
+}
+
 /**
  * Inline here make_machine, the Facade
  */
@@ -1307,7 +1322,7 @@ Machine* eceval()
     eceval->allocate_register("argl");
     eceval->allocate_register("continue");
     eceval->allocate_register("unev");
-    Environment* global_environment = new Environment();
+    Environment* global_environment = add_primitive_procedures(new Environment());
     eceval->install_operations(machine_operations(global_environment));
     eceval->install_instruction_sequence(eceval->assemble(explicit_control_evaluator()));
     return eceval;

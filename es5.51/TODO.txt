@@ -48,8 +48,9 @@ ev-application:
 +++ virtual PrimitiveProcedure
 +++ implement PrimitivePlus
 +++ implement ApplyPrimitiveProcedure
---- add + as a primitive procedure
++++ add + as a primitive procedure
 --- move other Operations outside of Machine.cpp
+--- acceptance test: (+ 1 2)
 -- procedure-parameters
 -- procedure-environment
 -- extend-environment

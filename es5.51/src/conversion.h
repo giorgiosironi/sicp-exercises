@@ -3,12 +3,14 @@
 #include "value.h"
 #include "cons.h"
 #include <iostream>
+#include <typeinfo>
 
-Cons* convert_to(Value* input)
+template <typename T> T* convert_to(Value* input)
 {
-    Cons* result = dynamic_cast<Cons*>(input);
+    T* result = dynamic_cast<T*>(input);
     if (result == NULL) {
-        cout << "Value is not a Cons: " << input->toString() << endl;
+        auto type_name = typeid(T).name();
+        cout << "Value is not the correct type (" << type_name << "): " << input->toString() << endl;
         exit(1);
     }
     return result;

@@ -10,8 +10,8 @@ Value* ApplyPrimitiveProcedure::execute(vector<Value*> elements)
 {
     assert_elements<Value*>(elements, 2);
     Cons* taggedProcedure = convert_to<Cons>(elements.at(0));
-    auto procedure = dynamic_cast<PrimitiveProcedure*>(taggedProcedure->cadr());
-    auto arguments = dynamic_cast<List*>(elements.at(1));
+    PrimitiveProcedure* procedure = convert_to<PrimitiveProcedure>(taggedProcedure->cadr());
+    List* arguments = convert_to<List>(elements.at(1));
     return procedure->apply(arguments);
 }
 

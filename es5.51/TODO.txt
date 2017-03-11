@@ -43,8 +43,8 @@ ev-application:
 -- rest-operands
 ++ primitive-procedure?
 -- compound-procedure?
--- apply-primitive-procedure
---- assertions for number of elements, or their type: assert.h
+++ apply-primitive-procedure
++++ assertions for number of elements, or their type: assert.h
 +++ virtual PrimitiveProcedure
 +++ implement PrimitivePlus
 +++ implement ApplyPrimitiveProcedure

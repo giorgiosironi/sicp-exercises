@@ -9,11 +9,12 @@ Value* AdjoinArg::execute(vector<Value*> elements)
         cout << "Need 2 elements" << endl;
         exit(1);
     }
-    auto list = dynamic_cast<Cons*>(elements.at(1));
+    auto list = dynamic_cast<List*>(elements.at(1));
     if (list == NULL) {
         cout << "Second element must be a list" << endl;
         exit(1);
     }
+    return list->append(elements.at(0));
 }
 
 string AdjoinArg::toString()

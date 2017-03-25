@@ -14,3 +14,7 @@ TEST(NilTest, Append) {
         *expanded
     );
 }
+
+TEST(NilTest, Car) {  
+    ASSERT_ANY_THROW(NIL->car());
+}

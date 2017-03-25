@@ -1,5 +1,6 @@
 #include "nil.h"
 #include "cons.h"
+#define INVALID_OPERATION()  throw "Cannot access list elements of Nil"
 
 std::string Nil::toString()
 {
@@ -22,55 +23,55 @@ List* Nil::append(Value* element)
 
 Value* Nil::car()
 {
-    return NULL;
+    INVALID_OPERATION();
 }
 
 Value* Nil::cdr()
 {
-    return NULL;
+    INVALID_OPERATION();
 }
 
 Value* Nil::cadr()
 {
-    return NULL;
+    INVALID_OPERATION();
 }
 
 Value* Nil::caadr()
 {
-    return NULL;
+    INVALID_OPERATION();
 }
 
 Value* Nil::cddr()
 {
-    return NULL;
+    INVALID_OPERATION();
 }
 
 Value* Nil::cdddr()
 {
-    return NULL;
+    INVALID_OPERATION();
 }
 
 Value* Nil::caddr()
 {
-    return NULL;
+    INVALID_OPERATION();
 }
 
 Value* Nil::cadddr()
 {
-    return NULL;
+    INVALID_OPERATION();
 }
 
 Value* Nil::caaddr()
 {
-    return NULL;
+    INVALID_OPERATION();
 }
 
 Value* Nil::cadadr()
 {
-    return NULL;
+    INVALID_OPERATION();
 }
 
 Value* Nil::cadaddr()
 {
-    return NULL;
+    INVALID_OPERATION();
 }

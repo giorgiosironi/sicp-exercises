@@ -61,7 +61,7 @@ ev-application:
 ev-definition:
 - translate assembly code
 - required operations
--- DefinitionVariable should use List, not Cons => List::cadr()
+++ DefinitionVariable should use List, not Cons => List::cadr()
 
 
 References:

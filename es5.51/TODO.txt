@@ -62,6 +62,10 @@ ev-definition:
 - translate assembly code
 - required operations
 ++ DefinitionVariable should use List, not Cons => List::cadr()
+++ define-variable!, slightly different from SetVariableValue as
++++ it does not require the variable to exist (doesn't care)
++++ only acts on the current frame (first-frame)
++++ integration test it, does the REPL work with it?
 
 
 References:

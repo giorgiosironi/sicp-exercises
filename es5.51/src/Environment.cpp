@@ -45,6 +45,11 @@ void Environment::set(Symbol* symbol, Value* value)
     return;
 }
 
+Frame* Environment::firstFrame()
+{
+    return this->frames[this->frames.size() - 1];
+}
+
 string Environment::toString()
 {
     return "Environment";

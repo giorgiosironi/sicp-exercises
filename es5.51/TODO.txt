@@ -25,6 +25,7 @@ branch:
 
 ev-application:
 - translate assembly code
+- DEPENDENCY: ev-definition
 - operations
 ++ application?
 +++ IsInstanceOf<Cons> : Operation
@@ -55,6 +56,11 @@ ev-application:
 -- procedure-environment
 -- extend-environment
 -- procedure-body
+
+ev-definition:
+- translate assembly code
+- required operations
+-- DefinitionVariable should use List, not Cons => List::cadr()
 
 
 References:

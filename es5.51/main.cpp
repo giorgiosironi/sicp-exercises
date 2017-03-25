@@ -190,7 +190,25 @@ Value* explicit_control_evaluator()
             }),
         }),
         //(test (op definition?) (reg exp))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-definition"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp"),
+            }),
+        }),
         //(branch (label ev-definition))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-definition"),
+            }),
+        }),
         //(test (op if?) (reg exp))
         build_list({
             new Symbol("test"),
@@ -1162,20 +1180,119 @@ Value* explicit_control_evaluator()
         }),
         //; definitions are very similarly put into the current environment
         //ev-definition
+        new Symbol("ev-definition"),
         //(assign unev (op definition-variable) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("unev"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("definition-variable")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(save unev) ; save variable for later
+        build_list({
+            new Symbol("save"),
+            new Symbol("unev")
+        }),
         //(assign exp (op definition-value) (reg exp))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("definition-value")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("exp")
+            })
+        }),
         //(save env)
+        build_list({
+            new Symbol("save"),
+            new Symbol("env")
+        }),
         //(save continue)
+        build_list({
+            new Symbol("save"),
+            new Symbol("continue")
+        }),
         //(assign continue (label ev-definition-1))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("continue"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-definition-1")
+            }),
+        }),
         //(goto (label eval-dispatch)) ; evaluate the definition value
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch")
+            }),
+        }),
         //ev-definition-1
+        new Symbol("ev-definition-1"),
         //(restore continue)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("continue")
+        }),
         //(restore env)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("env")
+        }),
         //(restore unev)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("unev")
+        }),
         //(perform (op define-variable!) (reg unev) (reg val) (reg env))
+        build_list({
+            new Symbol("perform"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("define-variable!")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("val")
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("env")
+            }),
+        }),
         //(assign val (const ok))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("val"),
+            build_list({
+                new Symbol("const"),
+                new Symbol("ok"),
+            }),
+        }),
         //(goto (reg continue))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("continue"),
+            }),
+        }),
         //print-result
         new Symbol("print-result"),
         //(perform (op announce-output) (const ";;; EC-Eval value:"))

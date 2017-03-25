@@ -12,17 +12,17 @@ class Cons : public List
 
     public:
         Cons(Value *car_ptr, Value *cdr_ptr);
-        Value* car();
-        Value* cdr();
-        Value* caadr();
-        Value* cadr();
-        Value* cddr();
-        Value* cdddr();
-        Value* caddr();
-        Value* cadddr();
-        Value* caaddr();
-        Value* cadadr();
-        Value* cadaddr();
+        virtual Value* car();
+        virtual Value* cdr();
+        virtual Value* caadr();
+        virtual Value* cadr();
+        virtual Value* cddr();
+        virtual Value* cdddr();
+        virtual Value* caddr();
+        virtual Value* cadddr();
+        virtual Value* caaddr();
+        virtual Value* cadadr();
+        virtual Value* cadaddr();
         virtual Cons* append(Value *element);
         virtual std::string toString();
         virtual bool equals(const Value& other) const;

@@ -19,3 +19,58 @@ List* Nil::append(Value* element)
 {
     return Cons::fromVector({ element });
 }
+
+Value* Nil::car()
+{
+    return NULL;
+}
+
+Value* Nil::cdr()
+{
+    return NULL;
+}
+
+Value* Nil::cadr()
+{
+    return NULL;
+}
+
+Value* Nil::caadr()
+{
+    return NULL;
+}
+
+Value* Nil::cddr()
+{
+    return NULL;
+}
+
+Value* Nil::cdddr()
+{
+    return NULL;
+}
+
+Value* Nil::caddr()
+{
+    return NULL;
+}
+
+Value* Nil::cadddr()
+{
+    return NULL;
+}
+
+Value* Nil::caaddr()
+{
+    return NULL;
+}
+
+Value* Nil::cadadr()
+{
+    return NULL;
+}
+
+Value* Nil::cadaddr()
+{
+    return NULL;
+}

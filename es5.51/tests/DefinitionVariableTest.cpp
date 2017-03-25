@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 using namespace std;
  
-TEST(DefinitionVariable, Symbol) { 
+TEST(DefinitionVariable, SimpleAssignment) { 
     DefinitionVariable* operation = new DefinitionVariable();
     Value* exp = operation->execute({
         Cons::fromVector({
@@ -16,5 +16,20 @@ TEST(DefinitionVariable, Symbol) {
         })
     });
     ASSERT_EQ(Symbol("x"), *exp);
+}
+
+TEST(DefinitionVariable, NamedProcedure) { 
+    DefinitionVariable* operation = new DefinitionVariable();
+    Value* exp = operation->execute({
+        Cons::fromVector({
+            new Symbol("define"),
+            Cons::fromVector({
+                new Symbol("identity"),
+                new Symbol("x"),
+            }),
+            new Symbol("x"),
+        })
+    });
+    ASSERT_EQ(Symbol("identity"), *exp);
 }
 

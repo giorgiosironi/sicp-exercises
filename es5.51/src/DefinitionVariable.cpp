@@ -10,7 +10,10 @@ Value* DefinitionVariable::execute(std::vector<Value*> elements)
     assert_elements<Value*>(elements, 1);
     // substitute with List
     Cons* definition = convert_to<Cons>(elements.at(0));
-    return definition->cadr();
+    if (is<Symbol>(definition->cadr())) {
+        return definition->cadr();
+    }
+    return definition->caadr();
 }
 
 std::string DefinitionVariable::toString()

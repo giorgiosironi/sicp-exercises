@@ -16,5 +16,12 @@ template <typename T> T* convert_to(Value* input)
     return result;
 }
 
+template <typename T> bool is(Value* input)
+{
+    T* result = dynamic_cast<T*>(input);
+    return result != NULL;
+}
+
+
 #endif
 

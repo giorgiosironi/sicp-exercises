@@ -46,6 +46,11 @@ Value* Nil::cddr()
     INVALID_OPERATION();
 }
 
+Value* Nil::cdadr()
+{
+    INVALID_OPERATION();
+}
+
 Value* Nil::cdddr()
 {
     INVALID_OPERATION();

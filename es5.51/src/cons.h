@@ -17,6 +17,7 @@ class Cons : public List
         virtual Value* caadr();
         virtual Value* cadr();
         virtual Value* cddr();
+        virtual Value* cdadr();
         virtual Value* cdddr();
         virtual Value* caddr();
         virtual Value* cadddr();

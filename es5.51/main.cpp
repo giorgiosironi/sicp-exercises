@@ -28,6 +28,8 @@ using namespace std;
 #include "src/is_last_operand.h"
 #include "src/adjoin_arg.h"
 #include "src/apply_primitive_procedure.h"
+#include "src/definition_variable.h"
+#include "src/definition_value.h"
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
@@ -1484,6 +1486,18 @@ std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
     operations.insert(std::make_pair(
         Symbol("apply-primitive-procedure"),
         new ApplyPrimitiveProcedure()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-definition"),
+        new IsTaggedList(new Symbol("define"))
+    ));
+    operations.insert(std::make_pair(
+        Symbol("definition-variable"),
+        new DefinitionVariable()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("definition-value"),
+        new DefinitionValue()
     ));
     operations.insert(std::make_pair(
         Symbol("announce-output"),

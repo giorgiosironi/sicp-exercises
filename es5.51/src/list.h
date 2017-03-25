@@ -10,6 +10,7 @@ class List : public Value
         virtual Value* caadr() = 0;
         virtual Value* cadr() = 0;
         virtual Value* cddr() = 0;
+        virtual Value* cdadr() = 0;
         virtual Value* cdddr() = 0;
         virtual Value* caddr() = 0;
         virtual Value* cadddr() = 0;

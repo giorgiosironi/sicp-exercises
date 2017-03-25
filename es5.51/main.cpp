@@ -748,6 +748,7 @@ Value* explicit_control_evaluator()
                 new Symbol("primitive-apply"),
             }),
         }),
+        // translate this check and implement the compound-apply branch
         //(test (op compound-procedure?) (reg proc))
         //(branch (label compound-apply))
         //(goto (label unknown-procedure-type))

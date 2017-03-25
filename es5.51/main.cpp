@@ -562,18 +562,89 @@ Value* explicit_control_evaluator()
             }),
         }),
         //(save env)
+        build_list({
+            new Symbol("save"),
+            new Symbol("env"),
+        }),
         //(save unev)
+        build_list({
+            new Symbol("save"),
+            new Symbol("unev"),
+        }),
         //(assign continue (label ev-appl-accumulate-arg))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("continue"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-appl-accumulate-arg"),
+            }),
+        }),
         //(goto (label eval-dispatch))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch"),
+            }),
+        }),
         //; when an operand has been evaluated, we put in in argl
         //; and continue to evaluate the others from unev
         //ev-appl-accumulate-arg
+        new Symbol("ev-appl-accumulate-arg"),
         //(restore unev)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("unev"),
+        }),
         //(restore env)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("env"),
+        }),
         //(restore argl)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("argl"),
+        }),
         //(assign argl (op adjoin-arg) (reg val) (reg argl))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("argl"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("adjoin-arg"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("val"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("argl"),
+            }),
+        }),
         //(assign unev (op rest-operands) (reg unev))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("unev"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("rest-operands"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev"),
+            }),
+        }),
         //(goto (label ev-appl-operand-loop))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-appl-operand-loop"),
+            }),
+        }),
         //; the last argument evaluation is different:
         //; we need to dispatch on proc
         //ev-appl-last-arg
@@ -588,6 +659,13 @@ Value* explicit_control_evaluator()
             }),
         }),
         //(goto (label eval-dispatch))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("eval-dispatch"),
+            }),
+        }),
         //ev-appl-accum-last-arg
         new Symbol("ev-appl-accum-last-arg"),
         //(restore argl)
@@ -667,7 +745,6 @@ Value* explicit_control_evaluator()
                 new Symbol("reg"),
                 new Symbol("proc"),
             }),
-            // argl is wrong
             build_list({
                 new Symbol("reg"),
                 new Symbol("argl"),
@@ -1270,6 +1347,10 @@ std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
     operations.insert(std::make_pair(
         Symbol("first-operand"),
         ConsMethodOperation::car()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("rest-operands"),
+        ConsMethodOperation::cdr()
     ));
     operations.insert(std::make_pair(
         Symbol("is-last-operand"),

@@ -13,7 +13,6 @@ Value* ApplyPrimitiveProcedure::execute(vector<Value*> elements)
     cout << "elements: " << elements.at(0)->toString() << " " << elements.at(1)->toString() << endl;
     PrimitiveProcedure* procedure = convert_to<PrimitiveProcedure>(taggedProcedure->cadr());
     List* arguments = convert_to<List>(elements.at(1));
-    // arguments is wrong
     auto result = procedure->apply(arguments);
     return result;
 }

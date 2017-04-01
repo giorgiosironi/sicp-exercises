@@ -1,5 +1,6 @@
 #ifndef LIST_H
 #define LIST_H
+#include <vector>
 #include "value.h"
 
 class List : public Value
@@ -18,6 +19,7 @@ class List : public Value
         virtual Value* cadadr() = 0;
         virtual Value* cadaddr() = 0;
         virtual List* append(Value *element) = 0;
+        virtual std::vector<Value*> toVector() = 0;
 };
 
 #endif

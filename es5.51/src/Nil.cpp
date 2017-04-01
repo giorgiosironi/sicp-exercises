@@ -80,3 +80,8 @@ Value* Nil::cadaddr()
 {
     INVALID_OPERATION();
 }
+
+std::vector<Value*> Nil::toVector()
+{
+    return std::vector<Value*>();
+}

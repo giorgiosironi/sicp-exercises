@@ -2,7 +2,6 @@
 #include "../src/symbol.h"
 #include "../src/integer.h"
 #include "../src/cons.h"
-#include "mock_machine_feedback.h"
 #include <gtest/gtest.h>
 using namespace std;
  

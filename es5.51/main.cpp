@@ -29,6 +29,7 @@ using namespace std;
 #include "src/is_last_operand.h"
 #include "src/adjoin_arg.h"
 #include "src/apply_primitive_procedure.h"
+#include "src/extend_environment.h"
 #include "src/definition_variable.h"
 #include "src/definition_value.h"
 #include "src/announce_output.h"
@@ -750,8 +751,33 @@ Value* explicit_control_evaluator()
         }),
         // translate this check and implement the compound-apply branch
         //(test (op compound-procedure?) (reg proc))
+        build_list({
+            new Symbol("test"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("is-compound-procedure"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("proc"),
+            }),
+        }),
         //(branch (label compound-apply))
+        build_list({
+            new Symbol("branch"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("compound-apply"),
+            }),
+        }),
         //(goto (label unknown-procedure-type))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("unknown-procedure-type"),
+            }),
+        }),
         //; let's apply a primitive operator such as +
         //primitive-apply
         new Symbol("primitive-apply"),
@@ -787,11 +813,75 @@ Value* explicit_control_evaluator()
         }),
         //; let's apply a compound procedure like a user-defined one
         //compound-apply
+        new Symbol("compound-apply"),
         //(assign unev (op procedure-parameters) (reg proc))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("unev"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("procedure-parameters"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("proc"),
+            }),
+        }),
         //(assign env (op procedure-environment) (reg proc))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("env"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("procedure-environment"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("proc"),
+            }),
+        }),
         //(assign env (op extend-environment) (reg unev) (reg argl) (reg env))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("env"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("extend-environment"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("unev"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("argl"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("env"),
+            }),
+        }),
         //(assign unev (op procedure-body) (reg proc))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("unev"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("procedure-body"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("proc"),
+            }),
+        }),
         //(goto (label ev-sequence))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("ev-sequence"),
+            }),
+        }),
         //; evaluates a sequence of expressions
         //ev-begin
         new Symbol("ev-begin"),
@@ -1335,13 +1425,53 @@ Value* explicit_control_evaluator()
         //(assign val (const unknown-expression-type-error))
         //(goto (label signal-error))
         //unknown-procedure-type
+        new Symbol("unknown-procedure-type"),
         //(restore continue) ; clean up stack (from apply-dispatch)
+        build_list({
+            new Symbol("restore"),
+            new Symbol("continue"),
+        }),
         //(assign val (const unknown-procedure-type-error))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("val"),
+            build_list({
+                new Symbol("const"),
+                new Symbol("unknown-procedure-type-error"),
+            }),
+        }),
         //(goto (label signal-error))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("signal-error"),
+            }),
+        }),
         //signal-error
+        new Symbol("signal-error"),
         //(perform (op user-print) (reg val))
+        build_list({
+            new Symbol("perform"),
+            build_list({
+                new Symbol("op"),
+                new Symbol("user-print"),
+            }),
+            build_list({
+                new Symbol("reg"),
+                new Symbol("val"),
+            }),
+        }),
         //(goto (label read-eval-print-loop))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("read-eval-print-loop"),
+            }),
+        }),
         //end-of-machine
+        new Symbol("end-of-machine"),
     });
 }
 
@@ -1492,6 +1622,26 @@ std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
     operations.insert(std::make_pair(
         Symbol("apply-primitive-procedure"),
         new ApplyPrimitiveProcedure()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-compound-procedure"),
+        new IsTaggedList(new Symbol("procedure"))
+    ));
+    operations.insert(std::make_pair(
+        Symbol("procedure-parameters"),
+        ConsMethodOperation::cadr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("procedure-environment"),
+        ConsMethodOperation::cadddr()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("extend-environment"),
+        new ExtendEnvironment()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("procedure-body"),
+        ConsMethodOperation::caddr()
     ));
     operations.insert(std::make_pair(
         Symbol("is-definition"),

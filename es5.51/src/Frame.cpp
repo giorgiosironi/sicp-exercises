@@ -1,4 +1,5 @@
 #include "frame.h"
+#include "assertion.h"
 using namespace std;
 
 Frame::Frame()
@@ -9,6 +10,7 @@ Frame::Frame()
 
 Frame::Frame(vector<Symbol*> names, vector<Value*> values)
 {
+    assert_elements(values, names.size());
     this->names = names;
     this->values = values;
 }

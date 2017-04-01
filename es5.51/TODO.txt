@@ -18,6 +18,7 @@ easy:
 -- all methods should be camel case
 -- rename all tests inside TEST() macros to ConsTest and similar
 -- is-operation can be operation? since it's just a string in the lookup table
+-- convert cout/exit(1) into exceptions
 - anything else
 -- ask someone why idiomatic C++ is `Stack *stack` instead of `Stack* stack`
 
@@ -53,14 +54,15 @@ ev-application:
 +++ add + as a primitive procedure
 --- move other Operations outside of Machine.cpp
 +++ acceptance test: (+ 1 2)
--- procedure-parameters
--- procedure-environment
+++ procedure-parameters
+++ procedure-environment
 -- extend-environment
+--- needs List::toVector(), maybe it's in Cons?
 -- procedure-body
 
 ev-definition:
-- translate assembly code
-- required operations
++ translate assembly code
++ required operations
 ++ DefinitionVariable should use List, not Cons => List::cadr()
 ++ define-variable!, slightly different from SetVariableValue as
 +++ it does not require the variable to exist (doesn't care)

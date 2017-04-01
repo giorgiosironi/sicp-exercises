@@ -297,6 +297,13 @@ Value* explicit_control_evaluator()
             })
         }),
         //(goto (label unknown-expression-type))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("unknown-expression-type")
+            })
+        }),
         //; evaluating simple expressions
         //ev-self-eval
         new Symbol("ev-self-eval"),
@@ -1422,8 +1429,24 @@ Value* explicit_control_evaluator()
             }),
         }),
         //unknown-expression-type
+        new Symbol("unknown-expression-type"),
         //(assign val (const unknown-expression-type-error))
+        build_list({
+            new Symbol("assign"),
+            new Symbol("val"),
+            build_list({
+                new Symbol("const"),
+                new Symbol("unknown-expression-type-error"),
+            }),
+        }),
         //(goto (label signal-error))
+        build_list({
+            new Symbol("goto"),
+            build_list({
+                new Symbol("label"),
+                new Symbol("signal-error"),
+            }),
+        }),
         //unknown-procedure-type
         new Symbol("unknown-procedure-type"),
         //(restore continue) ; clean up stack (from apply-dispatch)

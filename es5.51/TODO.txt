@@ -12,6 +12,9 @@ easy:
 -- macros for creating ConsMethodOperation::car() and similar?
 -- assertions should use raise (or even some assert construct)
 -- functional tests? execute a whole program
+--- use Python to run a process, feed some input, capture stdout (but not stderr which should contain the debugging), assert on it
+-- shared_ptr, make_shared
+-- unique_ptr: slightly better, if it's possible; make_unique
 - boring:
 -- extract remaining stuff from main.cpp
 -- remove referenced to std:: by using `use namespace std`
@@ -56,9 +59,9 @@ ev-application:
 +++ acceptance test: (+ 1 2)
 ++ procedure-parameters
 ++ procedure-environment
--- extend-environment
---- needs List::toVector(), maybe it's in Cons?
--- procedure-body
+++ extend-environment
++++ needs List::toVector(), maybe it's in Cons?
+++ procedure-body
 
 ev-definition:
 + translate assembly code

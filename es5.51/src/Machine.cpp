@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include "machine.h"
 #include "instruction.h"
 #include "initialize_stack.h"
@@ -14,6 +15,7 @@
 #include "restore.h"
 #include "is.h"
 #include "length.h"
+#include "conversion.h"
 using namespace std;
 
 Machine::Machine()
@@ -76,8 +78,7 @@ Instruction* Machine::compile(Value* instruction, std::map<Symbol,int> labels)
     if (is_tagged_list(cons, new Symbol("restore"))) {
         return this->make_restore(cons);
     }
-    cout << "Error compiling, unknown instruction: " << instruction->toString() << endl;
-    exit(1);
+    throw std::logic_error("Error compiling, unknown instruction: " + instruction->toString());
 }
 
 Instruction* Machine::make_label_noop(Symbol* symbol)
@@ -102,16 +103,20 @@ Instruction* Machine::make_perform(Cons* instruction)
     );
 }
 
+Operation* Machine::lookupOperation(Symbol* name)
+{
+    if (this->operations[*name] == NULL) {
+        throw std::invalid_argument("Error looking up operation: " + name->toString());
+    }
+    return this->operations[*name];
+}
+
 // (op prompt-for-input)
 Operation* Machine::operation(Value* instruction_argument)
 {
     Symbol* operation = (Symbol*) (((Cons*) instruction_argument)->cadr());
     cerr << "operation: " << operation->toString() << endl;
-    if (this->operations[*operation] == NULL) {
-        cout << "Error looking up operation: " << operation->toString() << endl;
-        exit(1);
-    }
-    return this->operations[*operation];
+    return this->lookupOperation(operation);
 }
 
 /**
@@ -137,25 +142,16 @@ std::vector<Value*> Machine::operands_vector(Value* tail_of_instruction)
 // (assign val (const 42))
 Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels)
 {
-    Symbol* register_ = dynamic_cast<Symbol*>(instruction->cadr());
-    if (register_ == NULL) {
-        cout << "First argument to assign is not a register name" << endl;
-        exit(1);
-    }
+    Symbol* register_ = convert_to<Symbol>(instruction->cadr());
     Symbol* assignmentType = (Symbol*) instruction->caaddr();
     if (assignmentType->name() == "op") {
         Symbol* operation = (Symbol*) instruction->cadaddr();
-        // TODO: this->_lookup_operation()
-        if (this->operations[*operation] == NULL) {
-            cout << "Error looking up operation: " << operation->toString() << endl;
-            exit(1);
-        }
         cerr << "make_assign: " << operation->toString() << endl;
         Value* maybe_operands = instruction->cdddr();
         std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
         return new Assign(
             this->get_register(register_->name()),
-            this->operations[*operation],
+            this->lookupOperation(operation),
             operands_vector,
             this
         );

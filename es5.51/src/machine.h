@@ -16,6 +16,7 @@ class Machine : public MachineFeedback {
         Stack* stack;
         std::map<Symbol,Operation*> operations;
         std::vector<Instruction*> the_instruction_sequence;
+        Operation* lookupOperation(Symbol* name);
         std::map<Symbol,int> extract_labels(Value* controller_text);
         Instruction* compile(Value* instruction, std::map<Symbol,int> labels);
         Instruction* make_label_noop(Symbol* symbol);

@@ -1723,24 +1723,6 @@ Machine* eceval()
 
 
 int main() {
-    /*
-    Cons* cell = new Cons(new Integer(42), new Integer(43));
-    Value* i = cell->car();
-    cout << i->toString() << endl;
-    cout << cell->toString() << endl;
-    cout << NIL->toString() << endl;
-    cout << is_pair(NIL) << endl;
-    cout << is_pair(cell) << endl;
-    cout << is_eq(cell, cell) << endl;
-    cout << is_eq(cell, NIL) << endl;
-    Value* s = new Symbol("tag");
-    cout << s->toString() << endl;
-    Cons* taggedList = new Cons(new Symbol("integer"), new Integer(42));
-    cout << is_tagged_list(taggedList, new Symbol("integer")) << endl;
-    std::vector<Value*> elements = {new Integer(1), new Integer(2), new Integer(3)};
-    Value* threeElementList = build_list({new Integer(1), new Integer(2), new Integer(3)});
-    cout << threeElementList->toString() << endl;
-    */
     Machine* machine = eceval();
     machine->start();
     return 0;

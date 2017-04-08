@@ -92,7 +92,7 @@ Instruction* Machine::make_label_noop(Symbol* symbol)
 Instruction* Machine::make_perform(Cons* instruction)
 {
     auto operation = this->operation(instruction->cadr());
-    cout << "make_perform: " << operation->toString() << endl;
+    cerr << "make_perform: " << operation->toString() << endl;
     Value* maybe_operands = instruction->cddr();
     std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
     return new Perform(
@@ -106,7 +106,7 @@ Instruction* Machine::make_perform(Cons* instruction)
 Operation* Machine::operation(Value* instruction_argument)
 {
     Symbol* operation = (Symbol*) (((Cons*) instruction_argument)->cadr());
-    cout << "operation: " << operation->toString() << endl;
+    cerr << "operation: " << operation->toString() << endl;
     if (this->operations[*operation] == NULL) {
         cout << "Error looking up operation: " << operation->toString() << endl;
         exit(1);
@@ -122,9 +122,9 @@ std::vector<Value*> Machine::operands_vector(Value* tail_of_instruction)
     std::vector<Value*> operands_vector;
     if (tail_of_instruction->toString() != NIL->toString()) {
         Cons* operands = (Cons*) tail_of_instruction;
-        cout << "operands: " << operands->toString() << endl;
+        cerr << "operands: " << operands->toString() << endl;
         operands_vector = operands->toVector();
-        cout << "vector: " << operands_vector.size() << endl;
+        cerr << "vector: " << operands_vector.size() << endl;
     } else {
         operands_vector = std::vector<Value*>();
     }
@@ -150,7 +150,7 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
             cout << "Error looking up operation: " << operation->toString() << endl;
             exit(1);
         }
-        cout << "make_assign: " << operation->toString() << endl;
+        cerr << "make_assign: " << operation->toString() << endl;
         Value* maybe_operands = instruction->cdddr();
         std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
         return new Assign(
@@ -199,13 +199,13 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
     Symbol* assignmentType = (Symbol*) instruction->caadr();
     if (assignmentType->name() == "label") {
         Symbol* labelName = (Symbol*) instruction->cadadr();
-        cout << "labelName: " << labelName->toString() << endl;
+        cerr << "labelName: " << labelName->toString() << endl;
         if (!labels.count(*labelName)) {
             cout << "Unknown label pointed by goto: " << labelName->toString() << endl;
             exit(1);
         }
         int labelIndex = labels[*labelName];
-        cout << "labelIndex: " << labelIndex << endl;
+        cerr << "labelIndex: " << labelIndex << endl;
         return new Goto(
             this,
             labelIndex
@@ -226,13 +226,13 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
 Instruction* Machine::make_branch(Cons* instruction, std::map<Symbol,int> labels)
 {
     Symbol* labelName = (Symbol*) instruction->cadadr();
-    cout << "labelName: " << labelName->toString() << endl;
+    cerr << "labelName: " << labelName->toString() << endl;
     if (!labels.count(*labelName)) {
         cout << "Unknown label pointed by branch: " << labelName->toString() << endl;
         exit(1);
     }
     int labelIndex = labels[*labelName];
-    cout << "labelIndex: " << labelIndex << endl;
+    cerr << "labelIndex: " << labelIndex << endl;
     return new Branch(
         this->flag,
         this,
@@ -244,7 +244,7 @@ Instruction* Machine::make_branch(Cons* instruction, std::map<Symbol,int> labels
 Instruction* Machine::make_test(Cons* instruction)
 {
     auto operation = this->operation(instruction->cadr());
-    cout << "make_test: " << operation->toString() << endl;
+    cerr << "make_test: " << operation->toString() << endl;
     Value* maybe_operands = instruction->cddr();
     std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
     return new Test(this->flag, operation, operands_vector, this);
@@ -258,7 +258,7 @@ Instruction* Machine::make_save(Cons* instruction)
         cout << "(save ...) needs a symbol" << endl;
         exit(1);
     }
-    cout << "make_save: register " << register_->toString() << endl;
+    cerr << "make_save: register " << register_->toString() << endl;
     Register* r = this->get_register(register_->name());
     return new Save(this->stack, r, this);
 }
@@ -271,7 +271,7 @@ Instruction* Machine::make_restore(Cons* instruction)
         cout << "(restore ...) needs a symbol" << endl;
         exit(1);
     }
-    cout << "make_restore: register " << register_->toString() << endl;
+    cerr << "make_restore: register " << register_->toString() << endl;
     Register* r = this->get_register(register_->name());
     return new Restore(this->stack, r, this);
 }
@@ -282,13 +282,9 @@ std::vector<Instruction*> Machine::assemble(Value* controller_text)
     auto instructions = std::vector<Instruction*>({});
     Value *head = controller_text;
     auto labels = this->extract_labels(controller_text);
-    // trying to dump labels
-    //for (auto i = labels.begin(); i != labels.end(); i++) {
-    //    cout << (i->first).toString() << endl;// " " << i->second << endl;
-    //}
     for (int i = 0; i < instruction_length; i++) {
         Cons *head_as_cons = (Cons*) head;
-        cout << head_as_cons->car()->toString() << endl;
+        cerr << head_as_cons->car()->toString() << endl;
 
         instructions.push_back(this->compile(head_as_cons->car(), labels));
         head = head_as_cons->cdr();
@@ -339,7 +335,7 @@ void Machine::execute()
         // instead of always applying them (will be needed to implement jumps)
         i->execute();
     }
-    cout << "End of controller" << endl;
+    cerr << "End of controller" << endl;
 }
 
 

@@ -19,6 +19,16 @@ class End2endTest(unittest.TestCase):
             ]
         )
 
+    def test_compound_procedures(self):
+        self._input("(define (sum x y) (+ x y))", "(sum 20 22)")
+        self.assertEqual(
+            self._output(),
+            [
+                "'ok",
+                "42",
+            ]
+        )
+
     def _input(self, *lines):
         # not very clear how long this waits
         (self._stdout_data, self._stderr_data) = self._p.communicate(input="\n".join(lines))

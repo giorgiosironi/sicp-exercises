@@ -1,5 +1,6 @@
 #include "register.h"
 #include <iostream>
+#include <stdexcept>
 using namespace std;
 
 Register::Register(string name)
@@ -16,8 +17,7 @@ void Register::set(Value* value)
 Value* Register::get()
 {
     if (this->content == NULL) {
-        cout << "Attempting to get a value from Register " << this->_name << ", which has not been initialized" << endl;
-        exit(1);
+        throw runtime_error("Attempting to get a value from Register " + this->_name + ", which has not been initialized");
     }
     return this->content;
 }

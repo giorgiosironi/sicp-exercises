@@ -13,6 +13,7 @@ Value* LookupVariableValue::execute(std::vector<Value*> elements)
         cout << "Undefined variable: " << exp->name() << endl;
         exit(1);
     }
+    // return result?
 }
 
 std::string LookupVariableValue::toString()

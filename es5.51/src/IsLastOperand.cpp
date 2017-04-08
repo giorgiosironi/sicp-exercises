@@ -2,23 +2,18 @@
 #include "bool.h"
 #include "nil.h"
 #include "cons.h"
+#include "assertion.h"
+#include "conversion.h"
 #include <iostream>
 using namespace std;
 
 Value* IsLastOperand::execute(vector<Value*> elements)
 {
-    if (elements.size() != 1) {
-        cout << "Only 1 element can be passed" << endl;
-        exit(1);
-    }
+    assert_elements(elements, 1);
     if (*elements.at(0) == Nil()) {
         return new Bool(false);
     }
-    auto list = dynamic_cast<Cons*>(elements.at(0));
-    if (list == NULL) {
-        cout << "Element must be a list" << endl;
-        exit(1);
-    }
+    auto list = convert_to<Cons>(elements.at(0));
     if (*list->cdr() == Nil()) {
         return new Bool(true);
     } else {

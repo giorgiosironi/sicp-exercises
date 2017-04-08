@@ -159,8 +159,7 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
         Symbol* label = (Symbol*) instruction->cadaddr();
 
         if (!labels.count(label->name())) {
-            cout << "Unknown label used by assign: " << label->toString() << endl;
-            exit(1);
+            throw std::logic_error("Unknown label used by assign: " + label->toString());
         }
         int labelIndex = labels[label->name()];
         return new Assign(
@@ -183,8 +182,7 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
             this
         );
     } else {
-        cout << "Unsupported assignment: " << assignmentType->name();
-        exit(1);
+        throw std::logic_error("Unsupported assignment: " + assignmentType->name());
     }
 }
 
@@ -197,8 +195,7 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
         Symbol* labelName = (Symbol*) instruction->cadadr();
         cerr << "labelName: " << labelName->toString() << endl;
         if (!labels.count(*labelName)) {
-            cout << "Unknown label pointed by goto: " << labelName->toString() << endl;
-            exit(1);
+            throw std::logic_error("Unknown label pointed by goto: " + labelName->toString());
         }
         int labelIndex = labels[*labelName];
         cerr << "labelIndex: " << labelIndex << endl;
@@ -213,8 +210,7 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
             this->get_register(register_->name())
         );
     } else {
-        cout << "Unknown assignment type in goto: " << assignmentType->toString() << endl;
-        exit(1);
+        throw std::logic_error("Unknown assignment type in goto: " + assignmentType->toString());
     }
 }
 
@@ -224,8 +220,7 @@ Instruction* Machine::make_branch(Cons* instruction, std::map<Symbol,int> labels
     Symbol* labelName = (Symbol*) instruction->cadadr();
     cerr << "labelName: " << labelName->toString() << endl;
     if (!labels.count(*labelName)) {
-        cout << "Unknown label pointed by branch: " << labelName->toString() << endl;
-        exit(1);
+        throw std::logic_error("Unknown label pointed by branch: " + labelName->toString());
     }
     int labelIndex = labels[*labelName];
     cerr << "labelIndex: " << labelIndex << endl;
@@ -251,8 +246,7 @@ Instruction* Machine::make_save(Cons* instruction)
 {
     Symbol* register_ = dynamic_cast<Symbol*>(instruction->cadr());
     if (register_ == NULL) {
-        cout << "(save ...) needs a symbol" << endl;
-        exit(1);
+        throw std::logic_error("(save ...) needs a symbol");
     }
     cerr << "make_save: register " << register_->toString() << endl;
     Register* r = this->get_register(register_->name());
@@ -264,8 +258,7 @@ Instruction* Machine::make_restore(Cons* instruction)
 {
     Symbol* register_ = dynamic_cast<Symbol*>(instruction->cadr());
     if (register_ == NULL) {
-        cout << "(restore ...) needs a symbol" << endl;
-        exit(1);
+        throw std::logic_error("(restore ...) needs a symbol");
     }
     cerr << "make_restore: register " << register_->toString() << endl;
     Register* r = this->get_register(register_->name());
@@ -311,8 +304,7 @@ Register* Machine::get_register(std::string name)
 {
     Register* r = this->registers[name];
     if (r == NULL) {
-        cout << "Unknown register: " << name << endl;
-        exit(1);
+        throw std::logic_error("Unknown register: ");
     }
     return r;
 }

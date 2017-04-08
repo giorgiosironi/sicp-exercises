@@ -1,18 +1,18 @@
 General refactoring:
 easy:
 ++ lookup_register or similar in all Machine::make_*() that lookup register names
--- use cerr instead of cout for all debugging; only official print statements should use cout
---- maybe a logging function?
+++ use cerr instead of cout for all debugging; only official print statements should use cout
 -- improve Environment::toString() to show values
 -- since Environments always have one basic frame (if that's true), EnvironmentTest can be simplified not to create that first empty frame
 -- set of assertions for checking parameters of Operations
 - hard
 -- Ctrl+D should not crash
--- implement == for Value
+++ implement == for Value
 -- macros for creating ConsMethodOperation::car() and similar?
--- assertions should use raise (or even some assert construct)
--- functional tests? execute a whole program
---- use Python to run a process, feed some input, capture stdout (but not stderr which should contain the debugging), assert on it
+++ assertions should use raise (or even some assert construct)
+++ functional tests? execute a whole program
++++ use Python to run a process, feed some input, capture stdout (but not stderr which should contain the debugging), assert on it
+--- however, we should be able to input multiple times as it's an interactive interpreter
 -- shared_ptr, make_shared
 -- unique_ptr: slightly better, if it's possible; make_unique
 - boring:
@@ -20,8 +20,7 @@ easy:
 -- remove referenced to std:: by using `use namespace std`
 -- all methods should be camel case
 -- rename all tests inside TEST() macros to ConsTest and similar
--- is-operation can be operation? since it's just a string in the lookup table
--- convert cout/exit(1) into exceptions
+++ convert cout/exit(1) into exceptions
 - anything else
 -- ask someone why idiomatic C++ is `Stack *stack` instead of `Stack* stack`
 

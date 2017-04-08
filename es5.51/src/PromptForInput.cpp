@@ -10,7 +10,6 @@ Value* PromptForInput::execute(std::vector<Value*> elements)
     }
     cout << endl;
     cout << ">>> ";
-    cout << endl;
     
     return new Symbol("ok");
 }

@@ -7,27 +7,29 @@ class End2endTest(unittest.TestCase):
 
     def test_sum(self):
         self._input('(+ 42 43)')
-        self.assertEqual(self._output(), '85')
+        self.assertEqual(self._output(), ['85'])
 
     def test_assignment(self):
-        self._input('(define answer 42)')
-        self.assertEqual(self._output(), "'ok")
-        # ValueError: I/O operation on closed file
-        #self._input('answer')
-        #self.assertEqual(self._output(), "'ok")
+        self._input("(define answer 42)", "answer")
+        self.assertEqual(
+            self._output(),
+            [
+                "'ok",
+                "42",
+            ]
+        )
 
-    def _input(self, line):
+    def _input(self, *lines):
         # not very clear how long this waits
-        (self._stdout_data, self._stderr_data) = self._p.communicate(input=line)
+        (self._stdout_data, self._stderr_data) = self._p.communicate(input="\n".join(lines))
 
     def _output(self):
         output_lines = self._stdout_data.split("\n")
-        output_index = None
+        output_indexes = []
         for index, line in enumerate(output_lines):
             if '>>> ";;; EC-Eval value:"' == line:
-                output_index = index + 1
-                break
-        self.assertIsNotNone(output_index)
-        return output_lines[output_index]
+                output_indexes.append(index + 1)
+        #self.assertNotEmpty(output_indexes)
+        return [l for i, l in enumerate(output_lines) if i in output_indexes]
 
 

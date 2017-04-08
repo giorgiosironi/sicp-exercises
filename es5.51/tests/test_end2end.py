@@ -29,6 +29,16 @@ class End2endTest(unittest.TestCase):
             ]
         )
 
+    def test_factorial(self):
+        self._input("(define (factorial n) (if (= n 0) 1 (* (factorial (- n 1)) n)))", "(factorial 6)")
+        self.assertEqual(
+            self._output(),
+            [
+                "'ok",
+                "720",
+            ]
+        )
+
     def _input(self, *lines):
         # not very clear how long this waits
         (self._stdout_data, self._stderr_data) = self._p.communicate(input="\n".join(lines))

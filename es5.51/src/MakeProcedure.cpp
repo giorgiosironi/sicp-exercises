@@ -6,7 +6,6 @@ using namespace std;
 
 Value* MakeProcedure::execute(std::vector<Value*> elements)
 {
-    cout << "MakeProcedure()" << endl;
     if (elements.size() != 3) {
         cout << "Must pass parameters, body and env";
         exit(1);

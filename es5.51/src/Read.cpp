@@ -33,7 +33,6 @@ Value* Read::parse(std::string input)
 	bool in_str = false;
     //for char in string:
 	for (char& c : input) {
-        //cout << "Read: " << c << endl;
 		if (c == '(' && !in_str) {
 			sexp.push_back(new Nil());
 		} else if (c == ')' && !in_str) {

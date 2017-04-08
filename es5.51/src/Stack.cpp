@@ -1,4 +1,5 @@
 #include "stack.h"
+#include "assertion.h"
 #include <iostream>
 
 Stack::Stack()
@@ -26,10 +27,7 @@ int Stack::size()
 
 Value* Stack::pop()
 {
-    if (this->contents->size() == 0) {
-        cout << "Cannot pop from an empty stack" << endl;
-        exit(1);
-    }
+    assert_not_empty(*this->contents);
     Value* element = this->contents->top();
     this->contents->pop();
     return element;

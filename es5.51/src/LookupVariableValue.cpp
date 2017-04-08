@@ -6,7 +6,6 @@ using namespace std;
 
 Value* LookupVariableValue::execute(std::vector<Value*> elements)
 {
-    cout << "LookupVariableValue" << endl;
     Symbol* exp = dynamic_cast<Symbol*>(elements.at(0));
     Environment* env = dynamic_cast<Environment*>(elements.at(1));
     Value* result = env->lookup(exp);

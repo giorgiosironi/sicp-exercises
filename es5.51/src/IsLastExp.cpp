@@ -8,7 +8,6 @@ using namespace std;
 
 Value* IsLastExp::execute(vector<Value*> elements)
 {
-    cout << "IsLastExp()" << endl;
     if (elements.size() != 1) {
         cout << "Only 1 element can be passed" << endl;
         exit(1);

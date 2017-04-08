@@ -7,7 +7,6 @@ using namespace std;
 
 Value* IsLastOperand::execute(vector<Value*> elements)
 {
-    cout << "IsLastOperand()" << endl;
     if (elements.size() != 1) {
         cout << "Only 1 element can be passed" << endl;
         exit(1);

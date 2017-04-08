@@ -12,7 +12,7 @@ Restore::Restore(Stack* stack, Register* register_, MachineFeedback* machine)
 void Restore::execute()
 {
     auto value = this->stack->pop();
-    cout << "Restore (" << this->register_->name() << "): " << value->toString() << endl;
+    cerr << "Restore (" << this->register_->name() << "): " << value->toString() << endl;
     this->register_->set(value);
     this->machine_feedback->nextInstruction();
 }

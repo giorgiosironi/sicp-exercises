@@ -2,6 +2,7 @@
 #include "environment.h"
 #include "symbol.h"
 #include <iostream>
+#include <stdexcept>
 using namespace std;
 
 Value* LookupVariableValue::execute(std::vector<Value*> elements)
@@ -10,8 +11,7 @@ Value* LookupVariableValue::execute(std::vector<Value*> elements)
     Environment* env = dynamic_cast<Environment*>(elements.at(1));
     Value* result = env->lookup(exp);
     if (result == NULL) {
-        cout << "Undefined variable: " << exp->name() << endl;
-        exit(1);
+        throw runtime_error("Undefined variable: " + exp->name());
     }
     return result;
 }

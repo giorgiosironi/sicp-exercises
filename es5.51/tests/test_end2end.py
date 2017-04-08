@@ -12,6 +12,9 @@ class End2endTest(unittest.TestCase):
     def test_assignment(self):
         self._input('(define answer 42)')
         self.assertEqual(self._output(), "'ok")
+        # ValueError: I/O operation on closed file
+        #self._input('answer')
+        #self.assertEqual(self._output(), "'ok")
 
     def _input(self, line):
         # not very clear how long this waits

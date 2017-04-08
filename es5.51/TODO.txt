@@ -24,9 +24,6 @@ easy:
 - anything else
 -- ask someone why idiomatic C++ is `Stack *stack` instead of `Stack* stack`
 
-branch:
-- implement Instruction::toString()
-
 References:
 - chapter4.1.scm: application?
 - chapter5.2.scm: make-machine, make-new-machine

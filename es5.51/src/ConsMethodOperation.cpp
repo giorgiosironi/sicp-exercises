@@ -1,7 +1,9 @@
 #include "cons_method_operation.h"
 #include "bool.h"
 #include "is.h"
+#include "conversion.h"
 #include <iostream>
+#include <stdexcept>
 using namespace std;
 
 ConsMethodOperation::ConsMethodOperation(Value* (Cons::*method_to_call)())
@@ -11,11 +13,7 @@ ConsMethodOperation::ConsMethodOperation(Value* (Cons::*method_to_call)())
 
 Value* ConsMethodOperation::execute(std::vector<Value*> elements)
 {
-    Cons* list = dynamic_cast<Cons *>(elements[0]);
-    if (list == NULL) {
-        cout << "Cannot call ConsMethodOperation on non-cons: " << elements[0]->toString() << endl;
-        exit(1);
-    }
+    Cons* list = convert_to<Cons>(elements[0]);
     return (*list.*(this->method_to_call))();
 }
 

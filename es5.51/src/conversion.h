@@ -4,14 +4,15 @@
 #include "cons.h"
 #include <iostream>
 #include <typeinfo>
+#include <stdexcept>
 
 template <typename T> T* convert_to(Value* input)
 {
     T* result = dynamic_cast<T*>(input);
     if (result == NULL) {
         auto type_name = typeid(T).name();
-        cout << "Value is not the correct type (" << type_name << "): " << input->toString() << endl;
-        exit(1);
+
+        throw std::invalid_argument("Value is not the correct type (" + std::string(type_name) + "): " + input->toString());
     }
     return result;
 }

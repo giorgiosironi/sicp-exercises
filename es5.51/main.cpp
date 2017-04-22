@@ -39,6 +39,7 @@ using namespace std;
 // primitive procedures
 #include "src/primitive_plus.h"
 #include "src/primitive_equal.h"
+#include "src/primitive_times.h"
 
 
 Value* build_list(std::vector<Value*> elements) {
@@ -1696,10 +1697,12 @@ Environment* add_primitive_procedures(Environment* initial_environment)
         { 
             new Symbol("+"),
             new Symbol("="),
+            new Symbol("*"),
         },
         {
             Cons::fromVector({ new Symbol("primitive"), new PrimitivePlus() }),
             Cons::fromVector({ new Symbol("primitive"), new PrimitiveEqual() }),
+            Cons::fromVector({ new Symbol("primitive"), new PrimitiveTimes() }),
         }
     ));
 }

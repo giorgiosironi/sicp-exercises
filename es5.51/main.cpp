@@ -41,6 +41,7 @@ using namespace std;
 #include "src/primitive_minus.h"
 #include "src/primitive_equal.h"
 #include "src/primitive_times.h"
+#include "src/primitive_list.h"
 
 
 Value* build_list(std::vector<Value*> elements) {
@@ -1700,12 +1701,14 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             new Symbol("-"),
             new Symbol("="),
             new Symbol("*"),
+            new Symbol("list"),
         },
         {
             Cons::from_vector({ new Symbol("primitive"), new PrimitivePlus() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveMinus() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveEqual() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveTimes() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveList() }),
         }
     ));
 }

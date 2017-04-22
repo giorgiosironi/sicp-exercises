@@ -5,6 +5,10 @@ class End2endTest(unittest.TestCase):
     def setUp(self):
         self._p = Popen(['./main'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
 
+    def test_list(self):
+        self._input('(list 42 43)')
+        self._assertOutput(['(42 43)'])
+
     def test_sum_as_primitive_procedure(self):
         self._input('(+ 42 43)')
         self._assertOutput(['85'])

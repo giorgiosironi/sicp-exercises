@@ -19,11 +19,11 @@ class End2endTest(unittest.TestCase):
 
     def test_boolean(self):
         self._input('#f')
-        self._assertOutput(['false'])
+        self._assertOutput(['#f'])
 
-    #def test_symbol(self):
-    #    self._input('\'foo')
-    #    self._assertOutput(['\'foo'])
+    def test_symbol(self):
+        self._input('\'foo')
+        self._assertOutput(['\'foo'])
 
     def test_list(self):
         self._input('(list 42 43)')

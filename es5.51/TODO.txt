@@ -19,7 +19,7 @@ easy:
 - boring:
 -- extract remaining stuff from main.cpp
 -- remove referenced to std:: by using `use namespace std`
--- all methods should be camel case
+++ all methods should be camel case
 ++ rename all tests inside TEST() macros to ConsTest and similar
 ++ convert cout/exit(1) into exceptions
 - anything else

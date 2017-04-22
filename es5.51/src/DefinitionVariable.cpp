@@ -16,7 +16,7 @@ Value* DefinitionVariable::execute(std::vector<Value*> elements)
     return definition->caadr();
 }
 
-std::string DefinitionVariable::toString()
+std::string DefinitionVariable::to_string()
 {
     return std::string("Operation-DefinitionVariable");
 }

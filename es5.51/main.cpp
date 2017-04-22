@@ -1702,10 +1702,10 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             new Symbol("*"),
         },
         {
-            Cons::fromVector({ new Symbol("primitive"), new PrimitivePlus() }),
-            Cons::fromVector({ new Symbol("primitive"), new PrimitiveMinus() }),
-            Cons::fromVector({ new Symbol("primitive"), new PrimitiveEqual() }),
-            Cons::fromVector({ new Symbol("primitive"), new PrimitiveTimes() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitivePlus() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveMinus() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveEqual() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveTimes() }),
         }
     ));
 }

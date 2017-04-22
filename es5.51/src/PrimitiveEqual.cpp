@@ -8,12 +8,12 @@ using namespace std;
 Value* PrimitiveEqual::apply(List* arguments)
 {
     Cons* argumentsCons = (Cons*) arguments;
-    bool result = ((Integer*) argumentsCons->car())->asInt()
-             == ((Integer*) argumentsCons->cadr())->asInt();
+    bool result = ((Integer*) argumentsCons->car())->as_int()
+             == ((Integer*) argumentsCons->cadr())->as_int();
     return new Bool(result);
 }
 
-string PrimitiveEqual::toString()
+string PrimitiveEqual::to_string()
 {
     return string("PrimitiveProcedure:=");
 }

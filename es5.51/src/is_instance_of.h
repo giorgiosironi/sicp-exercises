@@ -9,7 +9,7 @@ template<class T>
 class IsInstanceOf: public Operation {
     public:
         virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string toString();
+        virtual std::string to_string();
 };
 
 template <class T>
@@ -24,7 +24,7 @@ Value* IsInstanceOf<T>::execute(std::vector<Value*> elements)
 }
 
 template <class T>
-std::string IsInstanceOf<T>::toString()
+std::string IsInstanceOf<T>::to_string()
 {
     // TODO: output type "name"
     return "IsInstanceOf<T>";

@@ -20,8 +20,8 @@ class Nil : public List
         virtual Value* caaddr();
         virtual Value* cadadr();
         virtual Value* cadaddr();
-        virtual std::vector<Value*> toVector();
-        virtual std::string toString();
+        virtual std::vector<Value*> to_vector();
+        virtual std::string to_string();
         virtual bool equals(const Value& other) const;
 };
 

@@ -5,7 +5,7 @@ Bool::Bool(bool value)
     this->value = value;
 }
 
-std::string Bool::toString()
+std::string Bool::to_string()
 {
     return std::string(this->value ? "#t" : "#f");
 }

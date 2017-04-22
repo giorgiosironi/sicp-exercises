@@ -9,7 +9,7 @@ class IsTaggedList: public Operation {
     public:
         IsTaggedList(Symbol* tag);
         virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string toString();
+        virtual std::string to_string();
 };
 
 #endif

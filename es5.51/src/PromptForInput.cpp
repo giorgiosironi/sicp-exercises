@@ -6,7 +6,7 @@ using namespace std;
 Value* PromptForInput::execute(std::vector<Value*> elements)
 {
     for (std::vector<Value*>::iterator it = elements.begin() ; it != elements.end(); ++it) {
-        cout << (*it)->toString();
+        cout << (*it)->to_string();
     }
     cout << endl;
     cout << ">>> ";
@@ -14,7 +14,7 @@ Value* PromptForInput::execute(std::vector<Value*> elements)
     return new Symbol("ok");
 }
 
-std::string PromptForInput::toString()
+std::string PromptForInput::to_string()
 {
     return std::string("Operation-PromptForInput");
 }

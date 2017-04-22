@@ -12,8 +12,8 @@ using namespace std;
 class MachineFeedback {
 
     public:
-        virtual void nextInstruction();
-        virtual void forceInstruction(int instructionIndex);
+        virtual void next_instruction();
+        virtual void force_instruction(int instructionIndex);
         virtual Register* get_register(string name);
         void allocate_register(std::string name);
     protected:

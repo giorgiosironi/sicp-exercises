@@ -8,7 +8,7 @@ class String: public Value {
         std::string contents;
     public:
         String(std::string contents);
-        virtual std::string toString();
+        virtual std::string to_string();
         bool operator <(const String& right) const
         {
             return this->contents < right.contents;

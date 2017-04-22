@@ -6,10 +6,10 @@ using namespace std;
 
 Value* UserPrint::execute(std::vector<Value*> elements)
 {
-    cout << elements.at(0)->toString() << endl;
+    cout << elements.at(0)->to_string() << endl;
 }
 
-std::string UserPrint::toString()
+std::string UserPrint::to_string()
 {
     return std::string("Operation-UserPrint");
 }

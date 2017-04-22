@@ -12,7 +12,7 @@ class GetGlobalEnvironment: public Operation {
     public:
         GetGlobalEnvironment(Environment* environment);
         virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string toString();
+        virtual std::string to_string();
 };
 
 #endif

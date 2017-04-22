@@ -8,18 +8,18 @@ using namespace std;
 TEST(IsNotEqualToTest, EqualToReference) { 
     IsNotEqualTo* op = new IsNotEqualTo(new Bool(false));
     Value* result = op->execute({ new Bool(false) });
-    ASSERT_EQ("#f", result->toString());
+    ASSERT_EQ("#f", result->to_string());
 }
 
 TEST(IsNotEqualToTest, AnotherValue) { 
     IsNotEqualTo* op = new IsNotEqualTo(new Bool(false));
     Value* result = op->execute({ new Bool(true) });
-    ASSERT_EQ("#t", result->toString());
+    ASSERT_EQ("#t", result->to_string());
 }
 
 TEST(IsNotEqualToTest, AnotherValueOfDifferentType) { 
     IsNotEqualTo* op = new IsNotEqualTo(new Bool(false));
     Value* result = op->execute({ new Integer(42) });
-    ASSERT_EQ("#t", result->toString());
+    ASSERT_EQ("#t", result->to_string());
 }
 

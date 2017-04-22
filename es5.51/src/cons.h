@@ -25,10 +25,10 @@ class Cons : public List
         virtual Value* cadadr();
         virtual Value* cadaddr();
         virtual Cons* append(Value *element);
-        virtual std::string toString();
+        virtual std::string to_string();
         virtual bool equals(const Value& other) const;
-        virtual std::vector<Value*> toVector();
-        static List* fromVector(std::vector<Value*> vector);
+        virtual std::vector<Value*> to_vector();
+        static List* from_vector(std::vector<Value*> vector);
 };
 
 #endif

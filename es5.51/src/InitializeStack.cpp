@@ -12,7 +12,7 @@ Value* InitializeStack::execute(std::vector<Value*> elements)
     return new Symbol("ok");
 }
 
-std::string InitializeStack::toString()
+std::string InitializeStack::to_string()
 {
     return std::string("Operation-InitializeStack");
 }

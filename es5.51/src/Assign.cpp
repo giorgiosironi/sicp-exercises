@@ -37,16 +37,16 @@ void Assign::execute()
         //auto elements = std::vector<Value*>();
         //Value* result = this->operation->execute(elements);
         Value* result = this->operation->execute(this->fetch_operands(this->operands));
-        cerr << "Assign (" << this->register_->name() << "): " << this->operation->toString() << " == " << result->toString() << endl;
+        cerr << "Assign (" << this->register_->name() << "): " << this->operation->to_string() << " == " << result->to_string() << endl;
         this->register_->set(result);
     } else if (this->value != NULL) {
-        cerr << "Assign (" << this->register_->name() << "): " << this->value->toString() << endl;
+        cerr << "Assign (" << this->register_->name() << "): " << this->value->to_string() << endl;
         this->register_->set(this->value);
     } else if (this->source != NULL) {
-        cerr << "Assign (" << this->register_->name() << "): " << this->source->name() << " == " << this->source->get()->toString() << endl;
+        cerr << "Assign (" << this->register_->name() << "): " << this->source->name() << " == " << this->source->get()->to_string() << endl;
         this->register_->set(this->source->get());
     } else {
         throw logic_error("Assign (" + this->register_->name() + "): invalid instruction");
     }
-    this->machine_feedback->nextInstruction();
+    this->machine_feedback->next_instruction();
 }

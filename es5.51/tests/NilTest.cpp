@@ -10,7 +10,7 @@ using namespace std;
 TEST(NilTest, Append) { 
     auto expanded = NIL->append(new Integer(2));
     ASSERT_EQ(
-        *Cons::fromVector({ new Integer(2) }),
+        *Cons::from_vector({ new Integer(2) }),
         *expanded
     );
 }

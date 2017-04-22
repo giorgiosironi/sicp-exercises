@@ -5,7 +5,7 @@
 class PrimitiveEqual: public PrimitiveProcedure {
     public:
         virtual Value* apply(List* arguments);
-        virtual std::string toString();
+        virtual std::string to_string();
 };
 
 #endif

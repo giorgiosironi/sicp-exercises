@@ -102,27 +102,27 @@ bool Cons::equals(const Value& other) const
         && *this->cdr_ptr == *other_cons->cdr_ptr;
 }
 
-std::string Cons::toString()
+std::string Cons::to_string()
 {
     if (*this->cdr_ptr == *NIL) {
         return std::string("(")
-            + this->car_ptr->toString()
+            + this->car_ptr->to_string()
             + std::string(")");
     }
-    std::string rest = this->cdr_ptr->toString();
-    this->car_ptr->toString();
+    std::string rest = this->cdr_ptr->to_string();
+    this->car_ptr->to_string();
     return std::string("(")
-        + this->car_ptr->toString()
+        + this->car_ptr->to_string()
         + std::string(" ")
         + rest.substr(1, rest.size() - 1);
 }
 
-std::vector<Value*> Cons::toVector()
+std::vector<Value*> Cons::to_vector()
 {
     std::vector<Value*> result = std::vector<Value*>();
     result.push_back(this->car_ptr);
     Value* rest = (Cons*) this->cdr_ptr;
-    while (rest->toString() != NIL->toString()) {
+    while (rest->to_string() != NIL->to_string()) {
         result.push_back(((Cons* ) rest)->car_ptr);
         rest = ((Cons* ) rest)->cdr_ptr;
     }
@@ -130,7 +130,7 @@ std::vector<Value*> Cons::toVector()
 }
 
 
-List* Cons::fromVector(std::vector<Value*> vector) {
+List* Cons::from_vector(std::vector<Value*> vector) {
     Value* result = new Nil();
     for(std::vector<Value*>::reverse_iterator rit = vector.rbegin(); rit != vector.rend(); ++rit) {
         result = new Cons(*rit, result);

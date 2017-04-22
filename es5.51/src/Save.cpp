@@ -12,7 +12,7 @@ Save::Save(Stack* stack, Register* register_, MachineFeedback* machine)
 void Save::execute()
 {
     auto value = this->register_->get();
-    cerr << "Save (" << this->register_->name() << "): " << value->toString() << endl;
+    cerr << "Save (" << this->register_->name() << "): " << value->to_string() << endl;
     this->stack->push(value);
-    this->machine_feedback->nextInstruction();
+    this->machine_feedback->next_instruction();
 }

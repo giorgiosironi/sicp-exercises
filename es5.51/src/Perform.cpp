@@ -12,12 +12,12 @@ Perform::Perform(Operation* operation, std::vector<Value*> operands, MachineFeed
 void Perform::execute()
 {
     auto elements = this->fetch_operands(this->operands);
-    cerr << "Perform: " << this->operation->toString() << " [";
+    cerr << "Perform: " << this->operation->to_string() << " [";
     for (int i = 0; i < elements.size(); i++) {
-        cerr << elements[i]->toString();
+        cerr << elements[i]->to_string();
         cerr << ", ";
     }
     cerr << "]" << endl;
     this->operation->execute(elements);
-    this->machine_feedback->nextInstruction();
+    this->machine_feedback->next_instruction();
 }

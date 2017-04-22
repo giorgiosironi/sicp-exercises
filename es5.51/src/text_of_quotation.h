@@ -5,7 +5,7 @@
 class TextOfQuotation: public Operation {
     public:
         virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string toString();
+        virtual std::string to_string();
 };
 
 #endif

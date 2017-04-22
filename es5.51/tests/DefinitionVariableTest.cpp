@@ -8,7 +8,7 @@ using namespace std;
 TEST(DefinitionVariable, SimpleAssignment) { 
     DefinitionVariable* operation = new DefinitionVariable();
     Value* exp = operation->execute({
-        Cons::fromVector({
+        Cons::from_vector({
             new Symbol("define"),
             new Symbol("x"),
             new Integer(42),
@@ -20,9 +20,9 @@ TEST(DefinitionVariable, SimpleAssignment) {
 TEST(DefinitionVariable, NamedProcedure) { 
     DefinitionVariable* operation = new DefinitionVariable();
     Value* exp = operation->execute({
-        Cons::fromVector({
+        Cons::from_vector({
             new Symbol("define"),
-            Cons::fromVector({
+            Cons::from_vector({
                 new Symbol("identity"),
                 new Symbol("x"),
             }),

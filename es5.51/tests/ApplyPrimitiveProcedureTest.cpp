@@ -11,8 +11,8 @@ TEST(ApplyPrimitiveProcedureTest, Plus) {
     ASSERT_EQ(
         Integer(3),
         *operation->execute({
-            Cons::fromVector({ new String("+"), new PrimitivePlus() }),
-            Cons::fromVector({ new Integer(1), new Integer(2) })
+            Cons::from_vector({ new String("+"), new PrimitivePlus() }),
+            Cons::from_vector({ new Integer(1), new Integer(2) })
         })
     );
 }

@@ -7,12 +7,12 @@ using namespace std;
 Value* PrimitiveMinus::apply(List* arguments)
 {
     Cons* argumentsCons = (Cons*) arguments;
-    int result = ((Integer*) argumentsCons->car())->asInt()
-             - ((Integer*) argumentsCons->cadr())->asInt();
+    int result = ((Integer*) argumentsCons->car())->as_int()
+             - ((Integer*) argumentsCons->cadr())->as_int();
     return new Integer(result);
 }
 
-string PrimitiveMinus::toString()
+string PrimitiveMinus::to_string()
 {
     return string("PrimitiveProcedure:-");
 }

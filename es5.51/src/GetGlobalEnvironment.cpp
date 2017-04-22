@@ -14,7 +14,7 @@ Value* GetGlobalEnvironment::execute(std::vector<Value*> elements)
     return this->global_environment;
 }
 
-std::string GetGlobalEnvironment::toString()
+std::string GetGlobalEnvironment::to_string()
 {
     return std::string("Operation-GetGlobalEnvironment");
 }

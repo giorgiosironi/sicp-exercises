@@ -6,12 +6,12 @@ Integer::Integer(int contents)
     this->contents = contents;
 }
 
-std::string Integer::toString()
+std::string Integer::to_string()
 {
     return std::to_string(this->contents);
 }
 
-int Integer::asInt()
+int Integer::as_int()
 {
     return this->contents;
 }

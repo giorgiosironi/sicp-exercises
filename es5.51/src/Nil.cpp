@@ -2,7 +2,7 @@
 #include "cons.h"
 #define INVALID_OPERATION()  throw "Cannot access list elements of Nil"
 
-std::string Nil::toString()
+std::string Nil::to_string()
 {
     return std::string("NIL");
 }
@@ -18,7 +18,7 @@ bool Nil::equals(const Value& other) const
 
 List* Nil::append(Value* element)
 {
-    return Cons::fromVector({ element });
+    return Cons::from_vector({ element });
 }
 
 Value* Nil::car()
@@ -81,7 +81,7 @@ Value* Nil::cadaddr()
     INVALID_OPERATION();
 }
 
-std::vector<Value*> Nil::toVector()
+std::vector<Value*> Nil::to_vector()
 {
     return std::vector<Value*>();
 }

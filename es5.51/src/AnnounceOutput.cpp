@@ -6,10 +6,10 @@ using namespace std;
 
 Value* AnnounceOutput::execute(std::vector<Value*> elements)
 {
-    cout << elements.at(0)->toString() << endl;
+    cout << elements.at(0)->to_string() << endl;
 }
 
-std::string AnnounceOutput::toString()
+std::string AnnounceOutput::to_string()
 {
     return std::string("Operation-AnnounceOutput");
 }

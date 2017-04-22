@@ -50,7 +50,7 @@ Frame* Environment::firstFrame()
     return this->frames[this->frames.size() - 1];
 }
 
-string Environment::toString()
+string Environment::to_string()
 {
     return "Environment";
 }

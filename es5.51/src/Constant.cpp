@@ -10,7 +10,7 @@ Value* Constant::execute(std::vector<Value*> elements)
     return this->constant;
 }
 
-std::string Constant::toString()
+std::string Constant::to_string()
 {
-    return "Constant: " + this->constant->toString();
+    return "Constant: " + this->constant->to_string();
 }

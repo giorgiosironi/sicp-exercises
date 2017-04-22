@@ -1,12 +1,12 @@
 #include "machine_feedback.h"
 using namespace std;
 
-void MachineFeedback::nextInstruction()
+void MachineFeedback::next_instruction()
 {
     this->pc++;
 }
 
-void MachineFeedback::forceInstruction(int instructionIndex)
+void MachineFeedback::force_instruction(int instructionIndex)
 {
     this->pc = instructionIndex;
 }

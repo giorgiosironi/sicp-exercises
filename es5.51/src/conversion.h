@@ -12,7 +12,7 @@ template <typename T> T* convert_to(Value* input)
     if (result == NULL) {
         auto type_name = typeid(T).name();
 
-        throw std::invalid_argument("Value is not the correct type (" + std::string(type_name) + "): " + input->toString());
+        throw std::invalid_argument("Value is not the correct type (" + std::string(type_name) + "): " + input->to_string());
     }
     return result;
 }

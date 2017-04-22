@@ -38,16 +38,16 @@ Value* Read::parse(std::string input)
 		} else if (c == ')' && !in_str) {
 			if (!word.empty()) {
 				int last_element = sexp.size() - 1;
-                this->appendToLastElement(sexp, word);
+                this->append_to_last_element(sexp, word);
 				word = "";
             }
             int last_element = sexp.size() - 1;
             Value* temp = sexp[last_element];
             sexp.pop_back();
-            this->appendToLastElement(sexp, temp);
+            this->append_to_last_element(sexp, temp);
 		} else if ((c == ' ' || c == '\n' || c == '\t') && !in_str) {
             if (word != "") {
-				this->appendToLastElement(sexp, word);
+				this->append_to_last_element(sexp, word);
                 word = "";
             }
         } else if (c == '\"') {
@@ -61,7 +61,7 @@ Value* Read::parse(std::string input)
 	return result;
 }
 
-void Read::appendToLastElement(std::vector<Value*> &sexp, std::string word)
+void Read::append_to_last_element(std::vector<Value*> &sexp, std::string word)
 {
     // by default, a symbol
 	Value* value = new Symbol(word);
@@ -85,10 +85,10 @@ void Read::appendToLastElement(std::vector<Value*> &sexp, std::string word)
 		value = new String(what[1]);
 	}
 
-    this->appendToLastElement(sexp, value);
+    this->append_to_last_element(sexp, value);
 }
 
-void Read::appendToLastElement(std::vector<Value*> &sexp, Value* value)
+void Read::append_to_last_element(std::vector<Value*> &sexp, Value* value)
 {
 	int last_element = sexp.size() - 1;
 	if (*sexp[last_element] == *NIL) {
@@ -132,7 +132,7 @@ def parse_sexp(string):
     return sexp[0]
 */
 
-std::string Read::toString()
+std::string Read::to_string()
 {
     return std::string("Operation-Read");
 }

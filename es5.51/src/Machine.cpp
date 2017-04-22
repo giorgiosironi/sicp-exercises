@@ -78,7 +78,7 @@ Instruction* Machine::compile(Value* instruction, std::map<Symbol,int> labels)
     if (is_tagged_list(cons, new Symbol("restore"))) {
         return this->make_restore(cons);
     }
-    throw std::logic_error("Error compiling, unknown instruction: " + instruction->toString());
+    throw std::logic_error("Error compiling, unknown instruction: " + instruction->to_string());
 }
 
 Instruction* Machine::make_label_noop(Symbol* symbol)
@@ -93,7 +93,7 @@ Instruction* Machine::make_label_noop(Symbol* symbol)
 Instruction* Machine::make_perform(Cons* instruction)
 {
     auto operation = this->operation(instruction->cadr());
-    cerr << "make_perform: " << operation->toString() << endl;
+    cerr << "make_perform: " << operation->to_string() << endl;
     Value* maybe_operands = instruction->cddr();
     std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
     return new Perform(
@@ -103,10 +103,10 @@ Instruction* Machine::make_perform(Cons* instruction)
     );
 }
 
-Operation* Machine::lookupOperation(Symbol* name)
+Operation* Machine::lookup_operation(Symbol* name)
 {
     if (this->operations[*name] == NULL) {
-        throw std::invalid_argument("Error looking up operation: " + name->toString());
+        throw std::invalid_argument("Error looking up operation: " + name->to_string());
     }
     return this->operations[*name];
 }
@@ -115,8 +115,8 @@ Operation* Machine::lookupOperation(Symbol* name)
 Operation* Machine::operation(Value* instruction_argument)
 {
     Symbol* operation = (Symbol*) (((Cons*) instruction_argument)->cadr());
-    cerr << "operation: " << operation->toString() << endl;
-    return this->lookupOperation(operation);
+    cerr << "operation: " << operation->to_string() << endl;
+    return this->lookup_operation(operation);
 }
 
 /**
@@ -125,10 +125,10 @@ Operation* Machine::operation(Value* instruction_argument)
 std::vector<Value*> Machine::operands_vector(Value* tail_of_instruction)
 {
     std::vector<Value*> operands_vector;
-    if (tail_of_instruction->toString() != NIL->toString()) {
+    if (tail_of_instruction->to_string() != NIL->to_string()) {
         Cons* operands = (Cons*) tail_of_instruction;
-        cerr << "operands: " << operands->toString() << endl;
-        operands_vector = operands->toVector();
+        cerr << "operands: " << operands->to_string() << endl;
+        operands_vector = operands->to_vector();
         cerr << "vector: " << operands_vector.size() << endl;
     } else {
         operands_vector = std::vector<Value*>();
@@ -146,12 +146,12 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
     Symbol* assignmentType = (Symbol*) instruction->caaddr();
     if (assignmentType->name() == "op") {
         Symbol* operation = (Symbol*) instruction->cadaddr();
-        cerr << "make_assign: " << operation->toString() << endl;
+        cerr << "make_assign: " << operation->to_string() << endl;
         Value* maybe_operands = instruction->cdddr();
         std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
         return new Assign(
             this->get_register(register_->name()),
-            this->lookupOperation(operation),
+            this->lookup_operation(operation),
             operands_vector,
             this
         );
@@ -159,7 +159,7 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
         Symbol* label = (Symbol*) instruction->cadaddr();
 
         if (!labels.count(label->name())) {
-            throw std::logic_error("Unknown label used by assign: " + label->toString());
+            throw std::logic_error("Unknown label used by assign: " + label->to_string());
         }
         int labelIndex = labels[label->name()];
         return new Assign(
@@ -193,9 +193,9 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
     Symbol* assignmentType = (Symbol*) instruction->caadr();
     if (assignmentType->name() == "label") {
         Symbol* labelName = (Symbol*) instruction->cadadr();
-        cerr << "labelName: " << labelName->toString() << endl;
+        cerr << "labelName: " << labelName->to_string() << endl;
         if (!labels.count(*labelName)) {
-            throw std::logic_error("Unknown label pointed by goto: " + labelName->toString());
+            throw std::logic_error("Unknown label pointed by goto: " + labelName->to_string());
         }
         int labelIndex = labels[*labelName];
         cerr << "labelIndex: " << labelIndex << endl;
@@ -210,7 +210,7 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
             this->get_register(register_->name())
         );
     } else {
-        throw std::logic_error("Unknown assignment type in goto: " + assignmentType->toString());
+        throw std::logic_error("Unknown assignment type in goto: " + assignmentType->to_string());
     }
 }
 
@@ -218,9 +218,9 @@ Instruction* Machine::make_goto(Cons* instruction, std::map<Symbol,int> labels)
 Instruction* Machine::make_branch(Cons* instruction, std::map<Symbol,int> labels)
 {
     Symbol* labelName = (Symbol*) instruction->cadadr();
-    cerr << "labelName: " << labelName->toString() << endl;
+    cerr << "labelName: " << labelName->to_string() << endl;
     if (!labels.count(*labelName)) {
-        throw std::logic_error("Unknown label pointed by branch: " + labelName->toString());
+        throw std::logic_error("Unknown label pointed by branch: " + labelName->to_string());
     }
     int labelIndex = labels[*labelName];
     cerr << "labelIndex: " << labelIndex << endl;
@@ -235,7 +235,7 @@ Instruction* Machine::make_branch(Cons* instruction, std::map<Symbol,int> labels
 Instruction* Machine::make_test(Cons* instruction)
 {
     auto operation = this->operation(instruction->cadr());
-    cerr << "make_test: " << operation->toString() << endl;
+    cerr << "make_test: " << operation->to_string() << endl;
     Value* maybe_operands = instruction->cddr();
     std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
     return new Test(this->flag, operation, operands_vector, this);
@@ -248,7 +248,7 @@ Instruction* Machine::make_save(Cons* instruction)
     if (register_ == NULL) {
         throw std::logic_error("(save ...) needs a symbol");
     }
-    cerr << "make_save: register " << register_->toString() << endl;
+    cerr << "make_save: register " << register_->to_string() << endl;
     Register* r = this->get_register(register_->name());
     return new Save(this->stack, r, this);
 }
@@ -260,7 +260,7 @@ Instruction* Machine::make_restore(Cons* instruction)
     if (register_ == NULL) {
         throw std::logic_error("(restore ...) needs a symbol");
     }
-    cerr << "make_restore: register " << register_->toString() << endl;
+    cerr << "make_restore: register " << register_->to_string() << endl;
     Register* r = this->get_register(register_->name());
     return new Restore(this->stack, r, this);
 }
@@ -273,7 +273,7 @@ std::vector<Instruction*> Machine::assemble(Value* controller_text)
     auto labels = this->extract_labels(controller_text);
     for (int i = 0; i < instruction_length; i++) {
         Cons *head_as_cons = (Cons*) head;
-        cerr << head_as_cons->car()->toString() << endl;
+        cerr << head_as_cons->car()->to_string() << endl;
 
         instructions.push_back(this->compile(head_as_cons->car(), labels));
         head = head_as_cons->cdr();

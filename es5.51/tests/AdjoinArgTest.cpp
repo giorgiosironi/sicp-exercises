@@ -7,14 +7,14 @@ TEST(AdjoinArgTest, ScalarValue) {
     AdjoinArg* operation = new AdjoinArg();
 
     ASSERT_EQ(
-        *Cons::fromVector({
+        *Cons::from_vector({
             new Integer(1),
             new Integer(2),
             new Integer(3),
         }), 
         *operation->execute({
             new Integer(3),
-            Cons::fromVector({ new Integer(1), new Integer(2) })
+            Cons::from_vector({ new Integer(1), new Integer(2) })
         })
     );
 }

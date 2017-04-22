@@ -11,10 +11,10 @@ IsNotEqualTo::IsNotEqualTo(Value* reference)
 Value* IsNotEqualTo::execute(std::vector<Value*> elements)
 {
     Value* value = elements.at(0);
-    return new Bool(this->reference->toString() != value->toString());
+    return new Bool(this->reference->to_string() != value->to_string());
 }
 
-std::string IsNotEqualTo::toString()
+std::string IsNotEqualTo::to_string()
 {
     return std::string("Operation-IsNotEqualTo");
 }

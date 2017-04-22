@@ -14,7 +14,7 @@ Value* SetVariableValue::execute(std::vector<Value*> elements)
     return new Symbol("ok");
 }
 
-std::string SetVariableValue::toString()
+std::string SetVariableValue::to_string()
 {
     return std::string("Operation-SetVariableValue");
 }

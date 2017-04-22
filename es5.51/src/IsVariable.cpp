@@ -12,7 +12,7 @@ Value* IsVariable::execute(std::vector<Value*> elements)
     return new Bool(false);
 }
 
-std::string IsVariable::toString()
+std::string IsVariable::to_string()
 {
     return std::string("Operation-IsVariable");
 }

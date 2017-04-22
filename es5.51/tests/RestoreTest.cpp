@@ -13,6 +13,6 @@ TEST(RestoreTest, ValueFromRegister) {
     instruction->execute();
 
     ASSERT_EQ(0, s->size());
-    ASSERT_EQ("'ev-dispatch", r->get()->toString());
+    ASSERT_EQ("'ev-dispatch", r->get()->to_string());
     ASSERT_EQ(1, m->get_pc());
 }

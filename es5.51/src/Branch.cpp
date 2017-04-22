@@ -16,8 +16,8 @@ void Branch::execute()
     bool do_we_branch = (dynamic_cast<Bool *>(result))->is_true();
     cerr << "Branch(" << this->labelIndex << "): " << (do_we_branch ? "#t" : "#f") << endl;
     if (do_we_branch) {
-        this->machine_feedback->forceInstruction(this->labelIndex);
+        this->machine_feedback->force_instruction(this->labelIndex);
     } else {
-        this->machine_feedback->nextInstruction();
+        this->machine_feedback->next_instruction();
     }
 }

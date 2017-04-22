@@ -8,8 +8,8 @@ class Integer : public Value
         int contents;
     public:
         Integer(int contents);
-        virtual std::string toString();
-        int asInt();
+        virtual std::string to_string();
+        int as_int();
         virtual bool equals(const Value& other) const;
 };
 

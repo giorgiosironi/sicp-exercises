@@ -7,12 +7,12 @@ using namespace std;
 Value* PrimitiveTimes::apply(List* arguments)
 {
     Cons* argumentsCons = (Cons*) arguments;
-    int result = ((Integer*) argumentsCons->car())->asInt()
-             * ((Integer*) argumentsCons->cadr())->asInt();
+    int result = ((Integer*) argumentsCons->car())->as_int()
+             * ((Integer*) argumentsCons->cadr())->as_int();
     return new Integer(result);
 }
 
-string PrimitiveTimes::toString()
+string PrimitiveTimes::to_string()
 {
     return string("PrimitiveProcedure:*");
 }

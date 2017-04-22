@@ -12,7 +12,7 @@ Value* ExtendEnvironment::execute(std::vector<Value*> elements)
     List* names = convert_to<List>(elements.at(0));
     List* values = convert_to<List>(elements.at(1));
     Environment* env = convert_to<Environment>(elements.at(2));
-    std::vector<Value*> namesVector = names->toVector();
+    std::vector<Value*> namesVector = names->to_vector();
     std::vector<Symbol*> symbolsVector = std::vector<Symbol*>();
     for (int i = 0; i < namesVector.size(); i++) {
         symbolsVector.push_back(convert_to<Symbol>(
@@ -21,11 +21,11 @@ Value* ExtendEnvironment::execute(std::vector<Value*> elements)
     }
     return env->extend(new Frame(
         symbolsVector,
-        values->toVector()
+        values->to_vector()
     ));
 }
 
-std::string ExtendEnvironment::toString()
+std::string ExtendEnvironment::to_string()
 {
     return std::string("Operation-ExtendEnvironment");
 }

@@ -10,7 +10,7 @@ using namespace std;
 TEST(DefinitionValueTest, SimpleAssignment) { 
     DefinitionValue* operation = new DefinitionValue();
     Value* exp = operation->execute({
-        Cons::fromVector({
+        Cons::from_vector({
             new Symbol("define"),
             new Symbol("x"),
             new Integer(42),
@@ -21,13 +21,13 @@ TEST(DefinitionValueTest, SimpleAssignment) {
 
 TEST(DefinitionValueTest, NamedProcedure) { 
     DefinitionValue* operation = new DefinitionValue();
-    auto define = Cons::fromVector({
+    auto define = Cons::from_vector({
         new Symbol("define"),
-        Cons::fromVector({
+        Cons::from_vector({
             new Symbol("inc"),
             new Symbol("x"),
         }),
-        Cons::fromVector({
+        Cons::from_vector({
             new Symbol("+"),
             new Symbol("x"),
             new Integer(1),
@@ -40,9 +40,9 @@ TEST(DefinitionValueTest, NamedProcedure) {
         Cons(
             new Symbol("lambda"),
             new Cons(
-                Cons::fromVector({ new Symbol("x") }),
-                Cons::fromVector({
-                    Cons::fromVector({
+                Cons::from_vector({ new Symbol("x") }),
+                Cons::from_vector({
+                    Cons::from_vector({
                         new Symbol("+"),
                         new Symbol("x"),
                         new Integer(1),

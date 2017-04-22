@@ -14,7 +14,7 @@ class Environment: public Value {
         Value* lookup(Symbol* symbol);
         Frame* firstFrame();
         void set(Symbol* symbol, Value* value);
-        virtual std::string toString();
+        virtual std::string to_string();
 };
 
 #endif

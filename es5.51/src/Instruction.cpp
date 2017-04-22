@@ -21,7 +21,7 @@ vector<Value*> Instruction::fetch_operands(vector<Value*> operands)
             Value* value = register_->get();
             elements.push_back(value);
         } else {
-            throw std::runtime_error("expressionType should be one in ['const, 'reg], but it is " + expressionType->toString());
+            throw std::runtime_error("expressionType should be one in ['const, 'reg], but it is " + expressionType->to_string());
         }
     }
 

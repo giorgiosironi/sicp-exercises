@@ -7,7 +7,7 @@
 class PrimitiveProcedure: public Value {
     public:
         virtual Value* apply(List* arguments) = 0;
-        virtual std::string toString() = 0;
+        virtual std::string to_string() = 0;
 };
 
 #endif

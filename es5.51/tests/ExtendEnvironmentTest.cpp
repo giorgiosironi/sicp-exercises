@@ -9,11 +9,11 @@ using namespace std;
 TEST(ExtendEnvironmentTest, CoupleOfParameters) { 
     ExtendEnvironment* operation = new ExtendEnvironment();
     Environment* extended = dynamic_cast<Environment*>(operation->execute({
-        Cons::fromVector({
+        Cons::from_vector({
             new Symbol("x"),
             new Symbol("y"),
         }),
-        Cons::fromVector({
+        Cons::from_vector({
             new Integer(40),
             new Integer(2),
         }),

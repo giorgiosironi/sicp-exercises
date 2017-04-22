@@ -6,7 +6,7 @@
 TEST(IsLastOperandTest, ListOfOperands) { 
     IsLastOperand* operation = new IsLastOperand();
 
-    ASSERT_EQ(Bool(true), *operation->execute({ Cons::fromVector({ new Integer(1) }) }));
-    ASSERT_EQ(Bool(false), *operation->execute({ Cons::fromVector({}) }));
-    ASSERT_EQ(Bool(false), *operation->execute({ Cons::fromVector({ new Integer(2), new Integer(1), })}));
+    ASSERT_EQ(Bool(true), *operation->execute({ Cons::from_vector({ new Integer(1) }) }));
+    ASSERT_EQ(Bool(false), *operation->execute({ Cons::from_vector({}) }));
+    ASSERT_EQ(Bool(false), *operation->execute({ Cons::from_vector({ new Integer(2), new Integer(1), })}));
 }

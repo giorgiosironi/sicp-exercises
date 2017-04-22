@@ -13,6 +13,6 @@ TEST(SaveTest, ValueFromRegister) {
     instruction->execute();
 
     ASSERT_EQ(1, s->size());
-    ASSERT_EQ("42", s->pop()->toString());
+    ASSERT_EQ("42", s->pop()->to_string());
     ASSERT_EQ(1, m->get_pc());
 }

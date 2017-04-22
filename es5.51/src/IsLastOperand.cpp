@@ -21,7 +21,7 @@ Value* IsLastOperand::execute(vector<Value*> elements)
     }
 }
 
-string IsLastOperand::toString()
+string IsLastOperand::to_string()
 {
     return string("Operation-IsLastOperand");
 }

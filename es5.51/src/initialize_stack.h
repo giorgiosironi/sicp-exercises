@@ -12,7 +12,7 @@ class InitializeStack: public Operation {
     public:
         InitializeStack(Stack* stack);
         virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string toString();
+        virtual std::string to_string();
 };
 
 #endif

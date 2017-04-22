@@ -6,7 +6,7 @@ Symbol::Symbol(std::string name)
     this->_name = name;
 }
 
-std::string Symbol::toString()
+std::string Symbol::to_string()
 {
     return std::string("'") + this->_name;
 }

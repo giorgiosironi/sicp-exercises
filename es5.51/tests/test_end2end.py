@@ -5,26 +5,52 @@ class End2endTest(unittest.TestCase):
     def setUp(self):
         self._p = Popen(['./main'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
 
-    def test_sum(self):
+    def test_sum_as_primitive_procedure(self):
         self._input('(+ 42 43)')
         self._assertOutput(['85'])
 
     def test_assignment(self):
-        self._input("(define answer 42)", "answer")
+        self._input(
+            "(define answer 42)",
+            "answer"
+        )
         self._assertOutput([
             "'ok",
             "42",
         ])
 
-    def test_compound_procedures(self):
-        self._input("(define (sum x y) (+ x y))", "(sum 20 22)")
+    def test_sum_as_compound_procedure(self):
+        self._input(
+            "(define (sum x y) (+ x y))",
+            "(sum 20 22)"
+        )
         self._assertOutput([
             "'ok",
             "42",
+        ])
+
+    # TODO: depends on Symbol parsing
+    #def test_if(self):
+    #    self._input(
+    #        "(if (= 42 42) 'equal 'wrong)",
+    #    )
+    #    self._assertOutput([
+    #        "'equal",
+    #    ])
+
+    def test_lambda(self):
+        self._input(
+            "((lambda (n) (* 2 n)) 5)",
+        )
+        self._assertOutput([
+            "10",
         ])
 
     def test_factorial(self):
-        self._input("(define (factorial n) (if (= n 0) 1 (* (factorial (- n 1)) n)))", "(factorial 6)")
+        self._input(
+            "(define (factorial n) (if (= n 0) 1 (* (factorial (- n 1)) n)))",
+            "(factorial 6)"
+        )
         self._assertOutput([
             "'ok",
             "720",

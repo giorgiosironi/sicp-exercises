@@ -17,9 +17,9 @@ class End2endTest(unittest.TestCase):
     #    self._input('1.2')
     #    self._assertOutput(['1.2'])
 
-    #def test_boolean(self):
-    #    self._input('#f')
-    #    self._assertOutput(['false'])
+    def test_boolean(self):
+        self._input('#f')
+        self._assertOutput(['false'])
 
     #def test_symbol(self):
     #    self._input('\'foo')

@@ -4,6 +4,7 @@
 #include "symbol.h"
 
 bool is_number(Value *exp);
+bool is_bool(Value *exp);
 bool is_pair(Value *exp);
 bool is_nil(Value *exp);
 bool is_string(Value *exp);

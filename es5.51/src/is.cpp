@@ -1,6 +1,7 @@
 #include <string>
 #include "is.h"
 #include "integer.h"
+#include "bool.h"
 #include "cons.h"
 #include "nil.h"
 #include "string.h"
@@ -8,6 +9,14 @@
 bool is_number(Value *exp)
 {
     if (Integer *schemeInteger = dynamic_cast<Integer *>(exp)) {
+        return true;
+    }
+    return false;
+}
+
+bool is_bool(Value *exp)
+{
+    if (Bool *boolean = dynamic_cast<Bool *>(exp)) {
         return true;
     }
     return false;

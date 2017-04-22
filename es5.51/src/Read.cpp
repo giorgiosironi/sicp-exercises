@@ -78,6 +78,12 @@ void Read::append_to_last_element(std::vector<Value*> &sexp, std::string word)
 		value = new Integer(stoi(word));
 	}
 
+    // a float
+	//boost::regex float_expr("[0-9]+\.[0-9]+");
+	//if (boost::regex_match(word, float_expr)) {
+	//	value = new Integer(stoi(word));
+	//}
+
     // a string
 	boost::regex string_expr("\"(.*)\"");
 	boost::smatch what;

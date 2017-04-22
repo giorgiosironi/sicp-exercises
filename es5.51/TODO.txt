@@ -1,16 +1,21 @@
+Support:
+- floats: no particular arithmetic operations but parse and print them?
+- read in symbol and quoted stuff
+
 General refactoring:
 easy:
--- improve Environment::toString() to show values
+-- improve Environment::toString() to show some values?
 -- since Environments always have one basic frame (if that's true), EnvironmentTest can be simplified not to create that first empty frame
 - hard
 -- Ctrl+D should not crash
--- macros for creating ConsMethodOperation::car() and similar?
--- shared_ptr, make_shared
--- unique_ptr: slightly better, if it's possible; make_unique
 - boring:
 -- extract remaining stuff from main.cpp
 -- remove referenced to std:: by using `use namespace std`
-- anything else
+
+- postponed
+-- macros for creating ConsMethodOperation::car() and similar?
+-- shared_ptr, make_shared
+-- unique_ptr: slightly better, if it's possible; make_unique
 -- ask someone why idiomatic C++ is `Stack *stack` instead of `Stack* stack`
 
 References:

@@ -5,6 +5,26 @@ class End2endTest(unittest.TestCase):
     def setUp(self):
         self._p = Popen(['./main'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
 
+    def test_integer(self):
+        self._input('42')
+        self._assertOutput(['42'])
+
+    def test_string(self):
+        self._input('"ab"')
+        self._assertOutput(['"ab"'])
+
+    #def test_float(self):
+    #    self._input('1.2')
+    #    self._assertOutput(['1.2'])
+
+    #def test_boolean(self):
+    #    self._input('#f')
+    #    self._assertOutput(['false'])
+
+    #def test_symbol(self):
+    #    self._input('\'foo')
+    #    self._assertOutput(['\'foo'])
+
     def test_list(self):
         self._input('(list 42 43)')
         self._assertOutput(['(42 43)'])

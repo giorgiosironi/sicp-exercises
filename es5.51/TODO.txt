@@ -13,14 +13,14 @@ easy:
 ++ functional tests? execute a whole program
 +++ use Python to run a process, feed some input, capture stdout (but not stderr which should contain the debugging), assert on it
 +++ however, we should be able to input multiple times as it's an interactive interpreter
---- many more tests on executing compound procedures for example
++++ many more tests on executing compound procedures for example
 -- shared_ptr, make_shared
 -- unique_ptr: slightly better, if it's possible; make_unique
 - boring:
 -- extract remaining stuff from main.cpp
 -- remove referenced to std:: by using `use namespace std`
 -- all methods should be camel case
--- rename all tests inside TEST() macros to ConsTest and similar
+++ rename all tests inside TEST() macros to ConsTest and similar
 ++ convert cout/exit(1) into exceptions
 - anything else
 -- ask someone why idiomatic C++ is `Stack *stack` instead of `Stack* stack`

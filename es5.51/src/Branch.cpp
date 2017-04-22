@@ -13,7 +13,7 @@ Branch::Branch(Register* test, MachineFeedback* machine, int labelIndex)
 void Branch::execute()
 {
     Value* result = this->test->get();
-    bool do_we_branch = (dynamic_cast<Bool *>(result))->isTrue();
+    bool do_we_branch = (dynamic_cast<Bool *>(result))->is_true();
     cerr << "Branch(" << this->labelIndex << "): " << (do_we_branch ? "#t" : "#f") << endl;
     if (do_we_branch) {
         this->machine_feedback->forceInstruction(this->labelIndex);

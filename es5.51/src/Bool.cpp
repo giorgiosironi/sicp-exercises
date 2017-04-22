@@ -10,12 +10,12 @@ std::string Bool::toString()
     return std::string(this->value ? "#t" : "#f");
 }
 
-bool Bool::isTrue()
+bool Bool::is_true()
 {
     return this->value;
 }
 
-bool Bool::isFalse()
+bool Bool::is_false()
 {
     return !this->value;
 }

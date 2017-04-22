@@ -63,8 +63,14 @@ Value* Read::parse(std::string input)
 
 void Read::append_to_last_element(std::vector<Value*> &sexp, std::string word)
 {
+    this->append_to_last_element(sexp, this->to_value(word));
+}
+
+Value* Read::to_value(std::string word)
+{
     // by default, a symbol
 	Value* value = new Symbol(word);
+	boost::smatch what;
 
     if (word == "#t") {
         value = new Bool(true);
@@ -86,12 +92,20 @@ void Read::append_to_last_element(std::vector<Value*> &sexp, std::string word)
 
     // a string
 	boost::regex string_expr("\"(.*)\"");
-	boost::smatch what;
 	if (boost::regex_match(word, what, string_expr)) {
 		value = new String(what[1]);
 	}
 
-    this->append_to_last_element(sexp, value);
+    // quoted expression
+	boost::regex quoted_expr("'(.*)");
+	if (boost::regex_match(word, what, quoted_expr)) {
+		value = Cons::from_vector({
+            new Symbol("quote"),
+            this->to_value(what[1])
+        });
+	}
+
+    return value;
 }
 
 void Read::append_to_last_element(std::vector<Value*> &sexp, Value* value)

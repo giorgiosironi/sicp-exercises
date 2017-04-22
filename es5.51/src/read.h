@@ -13,6 +13,7 @@ class Read: public Operation {
     private:
         void append_to_last_element(std::vector<Value*> &sexp, std::string word);
         void append_to_last_element(std::vector<Value*> &sexp, Value* word);
+        Value* to_value(std::string word);
 };
 
 #endif

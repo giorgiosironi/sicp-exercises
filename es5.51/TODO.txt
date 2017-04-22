@@ -8,6 +8,7 @@ easy:
 -- since Environments always have one basic frame (if that's true), EnvironmentTest can be simplified not to create that first empty frame
 - hard
 -- Ctrl+D should not crash
+-- change Symbol::to_string to not print '?
 - boring:
 -- extract remaining stuff from main.cpp
 -- remove referenced to std:: by using `use namespace std`

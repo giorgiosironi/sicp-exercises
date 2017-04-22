@@ -37,11 +37,11 @@ TEST(ReadTest, Symbol) {
     ASSERT_EQ("'foo", exp->to_string());
 }
 
-//TEST(ReadTest, Quoted) { 
-//    Read* instruction = new Read();
-//    Value* exp = instruction->parse("'foo");
-//    ASSERT_EQ("(quote foo)", exp->to_string());
-//}
+TEST(ReadTest, Quoted) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("'foo");
+    ASSERT_EQ("('quote 'foo)", exp->to_string());
+}
 
 TEST(ReadTest, StringEmpty) { 
     Read* instruction = new Read();

@@ -53,14 +53,13 @@ class End2endTest(unittest.TestCase):
             "42",
         ])
 
-    # TODO: depends on Symbol parsing
-    #def test_if(self):
-    #    self._input(
-    #        "(if (= 42 42) 'equal 'wrong)",
-    #    )
-    #    self._assertOutput([
-    #        "'equal",
-    #    ])
+    def test_if(self):
+        self._input(
+            "(if (= 42 42) 'equal 'wrong)",
+        )
+        self._assertOutput([
+            "'equal",
+        ])
 
     def test_lambda(self):
         self._input(

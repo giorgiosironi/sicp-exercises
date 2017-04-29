@@ -55,6 +55,22 @@ TEST(ReadTest, Quoted) {
     );
 }
 
+//TEST(ReadTest, QuotedList) { 
+//    Read* instruction = new Read();
+//    Value* exp = instruction->parse("'(1 2)");
+//    cout << exp->to_string() << endl;
+//    ASSERT_EQ(
+//        *(Cons::from_vector({
+//            new Symbol("quote"), 
+//            Cons::from_vector({
+//                new Integer(1),
+//                new Integer(2),
+//            }),
+//        })),
+//        *exp
+//    );
+//}
+
 TEST(ReadTest, StringEmpty) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("\"\"");

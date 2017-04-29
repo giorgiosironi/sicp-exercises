@@ -1736,6 +1736,11 @@ Machine* eceval()
 
 int main() {
     Machine* machine = eceval();
-    machine->start();
+    try {
+        machine->start();
+    } catch (char const* e) {
+        cerr << e << endl;
+        return 2;
+    }
     return 0;
 }

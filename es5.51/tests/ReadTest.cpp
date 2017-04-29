@@ -3,6 +3,10 @@
 #include "../src/read.h"
 #include "../src/value.h"
 #include "../src/integer.h"
+#include "../src/cons.h"
+#include "../src/bool.h"
+#include "../src/symbol.h"
+#include "../src/string.h"
 #include "mock_machine_feedback.h"
 #include <gtest/gtest.h>
 using namespace std;
@@ -22,7 +26,7 @@ TEST(ReadTest, Integer) {
 TEST(ReadTest, BoolTrue) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("#t");
-    ASSERT_EQ("#t", exp->to_string());
+    ASSERT_EQ(Bool(true), *exp);
 }
 
 TEST(ReadTest, BoolFalse) { 
@@ -34,13 +38,19 @@ TEST(ReadTest, BoolFalse) {
 TEST(ReadTest, Symbol) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("foo");
-    ASSERT_EQ("'foo", exp->to_string());
+    ASSERT_EQ(Symbol("foo"), *exp);
 }
 
 TEST(ReadTest, Quoted) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("'foo");
-    ASSERT_EQ("('quote 'foo)", exp->to_string());
+    ASSERT_EQ(
+        *(Cons::from_vector({
+            new Symbol("quote"), 
+            new Symbol("foo"),
+        })),
+        *exp
+    );
 }
 
 TEST(ReadTest, StringEmpty) { 

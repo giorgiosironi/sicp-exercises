@@ -23,7 +23,7 @@ class End2endTest(unittest.TestCase):
 
     def test_symbol(self):
         self._input('\'foo')
-        self._assertOutput(['\'foo'])
+        self._assertOutput(['foo'])
 
     def test_list(self):
         self._input('(list 42 43)')
@@ -39,7 +39,7 @@ class End2endTest(unittest.TestCase):
             "answer"
         )
         self._assertOutput([
-            "'ok",
+            "ok",
             "42",
         ])
 
@@ -49,7 +49,7 @@ class End2endTest(unittest.TestCase):
             "(sum 20 22)"
         )
         self._assertOutput([
-            "'ok",
+            "ok",
             "42",
         ])
 
@@ -58,7 +58,7 @@ class End2endTest(unittest.TestCase):
             "(if (= 42 42) 'equal 'wrong)",
         )
         self._assertOutput([
-            "'equal",
+            "equal",
         ])
 
     def test_lambda(self):
@@ -75,7 +75,7 @@ class End2endTest(unittest.TestCase):
             "(factorial 6)"
         )
         self._assertOutput([
-            "'ok",
+            "ok",
             "720",
         ])
 

@@ -1,11 +1,13 @@
 Support:
 - floats: no particular arithmetic operations but parse and print them?
-- read in symbol and quoted stuff
++ read in symbol and quoted stuff
 
 General refactoring:
 easy:
 -- improve Environment::toString() to show some values?
 -- since Environments always have one basic frame (if that's true), EnvironmentTest can be simplified not to create that first empty frame
+-- List::from_vector()
+-- ReadTest not to use to_string()
 - hard
 -- Ctrl+D should not crash
 -- change Symbol::to_string to not print '?

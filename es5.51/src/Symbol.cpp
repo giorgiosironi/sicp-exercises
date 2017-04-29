@@ -8,7 +8,7 @@ Symbol::Symbol(std::string name)
 
 std::string Symbol::to_string()
 {
-    return std::string("'") + this->_name;
+    return this->_name;
 }
 
 std::string Symbol::name()

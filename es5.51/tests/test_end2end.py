@@ -89,7 +89,6 @@ class End2endTest(unittest.TestCase):
         for index, line in enumerate(output_lines):
             if '>>> ";;; EC-Eval value:"' == line:
                 output_indexes.append(index + 1)
-        #self.assertNotEmpty(output_indexes)
         return [l for i, l in enumerate(output_lines) if i in output_indexes]
 
     def _assertOutput(self, output):

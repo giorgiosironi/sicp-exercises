@@ -4,6 +4,7 @@
 #include "../src/value.h"
 #include "../src/integer.h"
 #include "../src/cons.h"
+#include "../src/nil.h"
 #include "../src/bool.h"
 #include "../src/symbol.h"
 #include "../src/string.h"
@@ -14,13 +15,13 @@ using namespace std;
 TEST(ReadTest, Integer) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("3");
-    ASSERT_EQ("3", exp->to_string());
+    ASSERT_EQ(Integer(3), *exp);
 }
 
 //TEST(ReadTest, Float) { 
 //    Read* instruction = new Read();
 //    Value* exp = instruction->parse("3.14");
-//    ASSERT_EQ("3.14", exp->to_string());
+//    ASSERT_EQ(Float(3.14), *exp);
 //}
 
 TEST(ReadTest, BoolTrue) { 
@@ -32,7 +33,7 @@ TEST(ReadTest, BoolTrue) {
 TEST(ReadTest, BoolFalse) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("#f");
-    ASSERT_EQ("#f", exp->to_string());
+    ASSERT_EQ(Bool(false), *exp);
 }
 
 TEST(ReadTest, Symbol) { 
@@ -56,41 +57,59 @@ TEST(ReadTest, Quoted) {
 TEST(ReadTest, StringEmpty) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("\"\"");
-    ASSERT_EQ("\"\"", exp->to_string());
+    ASSERT_EQ(String(""), *exp);
 }
 
 TEST(ReadTest, StringLong) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("\"foo\"");
-    ASSERT_EQ("\"foo\"", exp->to_string());
+    ASSERT_EQ(String("foo"), *exp);
 }
 
 TEST(ReadTest, ListEmpty) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("()");
-    ASSERT_EQ("NIL", exp->to_string());
+    ASSERT_EQ(*NIL, *exp);
 }
 
 TEST(ReadTest, ListOneElement) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("(1)");
-    ASSERT_EQ("(1)", exp->to_string());
+    ASSERT_EQ(
+        *Cons::from_vector({ new Integer(1) }),
+        *exp
+    );
 }
 
 TEST(ReadTest, ListTwoElements) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("(1 2)");
-    ASSERT_EQ("(1 2)", exp->to_string());
+    ASSERT_EQ(
+        *Cons::from_vector({ new Integer(1), new Integer(2) }),
+        *exp
+    );
 }
 
 TEST(ReadTest, ListMixedElements) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("(1 \"foo\")");
-    ASSERT_EQ("(1 \"foo\")", exp->to_string());
+    ASSERT_EQ(
+        *Cons::from_vector({ new Integer(1), new String("foo") }),
+        *exp
+    );
 }
 
 TEST(ReadTest, ListNested) { 
     Read* instruction = new Read();
     Value* exp = instruction->parse("(1 (2 3))");
-    ASSERT_EQ("(1 (2 3))", exp->to_string());
+    ASSERT_EQ(
+        *Cons::from_vector({
+            new Integer(1),
+            Cons::from_vector({
+                new Integer(2),
+                new Integer(3),
+            }),
+        }),
+        *exp
+    );
 }

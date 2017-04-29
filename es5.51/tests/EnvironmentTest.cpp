@@ -19,7 +19,7 @@ TEST(EnvironmentTest, GetInFrameWithAVariable) {
         { new Integer(42) }
     ));
     Value* exp = env->lookup(new Symbol("foo"));
-    ASSERT_EQ("42", exp->to_string());
+    ASSERT_EQ(Integer(42), *exp);
 }
 
 TEST(EnvironmentTest, GetInFrameWithManyVariables) { 
@@ -28,9 +28,9 @@ TEST(EnvironmentTest, GetInFrameWithManyVariables) {
         { new Symbol("foo"), new Symbol("bar"), new Symbol("baz") },
         { new Integer(42), new Integer(43), new Integer(44) }
     ));
-    ASSERT_EQ("42", env->lookup(new Symbol("foo"))->to_string());
-    ASSERT_EQ("43", env->lookup(new Symbol("bar"))->to_string());
-    ASSERT_EQ("44", env->lookup(new Symbol("baz"))->to_string());
+    ASSERT_EQ(Integer(42), *env->lookup(new Symbol("foo")));
+    ASSERT_EQ(Integer(43), *env->lookup(new Symbol("bar")));
+    ASSERT_EQ(Integer(44), *env->lookup(new Symbol("baz")));
 }
 
 TEST(EnvironmentTest, GetWithMultipleFrames) { 
@@ -43,9 +43,9 @@ TEST(EnvironmentTest, GetWithMultipleFrames) {
         { new Symbol("bar"), new Symbol("baz") },
         { new Integer(43), new Integer(44) }
     ));
-    ASSERT_EQ("42", env->lookup(new Symbol("foo"))->to_string());
-    ASSERT_EQ("43", env->lookup(new Symbol("bar"))->to_string());
-    ASSERT_EQ("44", env->lookup(new Symbol("baz"))->to_string());
+    ASSERT_EQ(Integer(42), *env->lookup(new Symbol("foo")));
+    ASSERT_EQ(Integer(43), *env->lookup(new Symbol("bar")));
+    ASSERT_EQ(Integer(44), *env->lookup(new Symbol("baz")));
 }
 
 TEST(EnvironmentTest, GetWithMultipleFramesShadowing) { 
@@ -58,7 +58,7 @@ TEST(EnvironmentTest, GetWithMultipleFramesShadowing) {
         { new Symbol("foo") },
         { new Integer(43) }
     ));
-    ASSERT_EQ("43", env->lookup(new Symbol("foo"))->to_string());
+    ASSERT_EQ(Integer(43), *env->lookup(new Symbol("foo")));
 }
 
 TEST(EnvironmentTest, SetInFrameWithAVariable) { 
@@ -68,7 +68,7 @@ TEST(EnvironmentTest, SetInFrameWithAVariable) {
         { new Integer(42) }
     ));
     env->set(new Symbol("foo"), new Integer(43));
-    ASSERT_EQ("43", env->lookup(new Symbol("foo"))->to_string());
+    ASSERT_EQ(Integer(43), *env->lookup(new Symbol("foo")));
 }
 
 TEST(EnvironmentTest, SetInFrameWithoutAVariable) { 
@@ -78,7 +78,7 @@ TEST(EnvironmentTest, SetInFrameWithoutAVariable) {
         { new Integer(42) }
     ));
     env->set(new Symbol("bar"), new Integer(43));
-    ASSERT_EQ("43", env->lookup(new Symbol("bar"))->to_string());
+    ASSERT_EQ(Integer(43), *env->lookup(new Symbol("bar")));
 }
 
 TEST(EnvironmentTest, SetInMultipleFramesActsOnTheFrameThatContainsTheVariable) { 
@@ -94,6 +94,6 @@ TEST(EnvironmentTest, SetInMultipleFramesActsOnTheFrameThatContainsTheVariable) 
     );
     Environment* child = parent->extend(upper);
     child->set(new Symbol("foo"), new Integer(44));
-    ASSERT_EQ("44", child->lookup(new Symbol("foo"))->to_string());
-    ASSERT_EQ("44", lower->lookup(new Symbol("foo"))->to_string());
+    ASSERT_EQ(Integer(44), *child->lookup(new Symbol("foo")));
+    ASSERT_EQ(Integer(44), *lower->lookup(new Symbol("foo")));
 }

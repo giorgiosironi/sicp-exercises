@@ -8,9 +8,9 @@ TEST(ConsMethodOperationTest, CarOnTwoElementsList) {
     method_to_call = &Cons::car;
     Cons* list = (Cons*) Cons::from_vector({ new Integer(1), new Integer(2) });
 
-    ASSERT_EQ("1", list->car()->to_string());
+    ASSERT_EQ(Integer(1), *list->car());
     auto operation = ConsMethodOperation::car();
-    ASSERT_EQ("1", operation->execute({ list })->to_string());
+    ASSERT_EQ(Integer(1), *operation->execute({ list }));
 }
 
 TEST(ConsMethodOperationTest, CarEmptyList) { 
@@ -20,7 +20,7 @@ TEST(ConsMethodOperationTest, CarEmptyList) {
 
     auto operation = ConsMethodOperation::car();
     ASSERT_THROW(
-        operation->execute({ list })->to_string(),
+        operation->execute({ list }),
         std::invalid_argument
     );
 }

@@ -3,17 +3,18 @@
 #include "../src/symbol.h"
 #include "../src/integer.h"
 #include "../src/cons.h"
+#include "../src/bool.h"
 #include <gtest/gtest.h>
 using namespace std;
  
-TEST(IsTaggedList, RelevantTag) { 
+TEST(IsTaggedListTest, RelevantTag) { 
     IsTaggedList* operation = new IsTaggedList(new Symbol("set!"));
     Value* exp = operation->execute({ new Cons(new Symbol("set!"), new Integer(42)) });
-    ASSERT_EQ("#t", exp->to_string());
+    ASSERT_EQ(Bool(true), *exp);
 }
 
-TEST(IsTaggedList, AnotherTag) { 
+TEST(IsTaggedListTest, AnotherTag) { 
     IsTaggedList* operation = new IsTaggedList(new Symbol("set!"));
     Value* exp = operation->execute({ new Cons(new Symbol("quote"), new Integer(42)) });
-    ASSERT_EQ("#f", exp->to_string());
+    ASSERT_EQ(Bool(false), *exp);
 }

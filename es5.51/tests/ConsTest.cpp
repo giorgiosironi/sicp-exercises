@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 using namespace std;
  
-TEST(ConsTest, ToString) { 
+TEST(ConsTest, FromStringAndToString) { 
     auto zero_elements = new Nil();
     ASSERT_EQ("NIL", zero_elements->to_string());
 

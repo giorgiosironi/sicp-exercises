@@ -7,6 +7,7 @@
 
 class Read: public Operation {
     public:
+        // TODO: virtual not necessary for many of these
         virtual Value* execute(std::vector<Value*> elements);
         virtual Value* parse(std::string input);
         virtual std::string to_string();

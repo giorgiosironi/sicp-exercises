@@ -1,6 +1,6 @@
 Support:
 - '(1 2) should be a quoted list
-- (+) should be 0, (*) should be 1 and so on (arbitrary number of elements)
++ (+) should be 0, (*) should be 1 and so on (arbitrary number of elements)
 
 General refactoring:
 easy:

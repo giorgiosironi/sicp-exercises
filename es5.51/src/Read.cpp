@@ -74,6 +74,7 @@ void Read::append_to_last_element(std::vector<Value*> &sexp, std::string word)
 
 Value* Read::to_value(std::string word)
 {
+    cerr << "Read::to_value " << word << endl;
     // by default, a symbol
 	Value* value = new Symbol(word);
 	boost::smatch what;

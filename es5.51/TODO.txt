@@ -1,4 +1,6 @@
 Support:
+- '(1 2) should be a quoted list
+- (+) should be 0, (*) should be 1 and so on (arbitrary number of elements)
 
 General refactoring:
 easy:
@@ -6,6 +8,7 @@ easy:
 -- since Environments always have one basic frame (if that's true), EnvironmentTest can be simplified not to create that first empty frame
 -- List::from_vector()
 - hard
+-- Read's parser is fairly limited as it fails on many quoted expressions
 - boring:
 -- extract remaining stuff from main.cpp
 -- remove referenced to std:: by using `use namespace std`

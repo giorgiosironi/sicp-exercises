@@ -13,9 +13,9 @@ class End2endTest(unittest.TestCase):
         self._input('"ab"')
         self._assertOutput(['"ab"'])
 
-    #def test_float(self):
-    #    self._input('1.2')
-    #    self._assertOutput(['1.2'])
+    def test_float(self):
+        self._input('1.2')
+        self._assertOutput(['1.200000'])
 
     def test_boolean(self):
         self._input('#f')

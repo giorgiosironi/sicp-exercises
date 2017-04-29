@@ -3,6 +3,7 @@
 #include "../src/read.h"
 #include "../src/value.h"
 #include "../src/integer.h"
+#include "../src/float.h"
 #include "../src/cons.h"
 #include "../src/nil.h"
 #include "../src/bool.h"
@@ -18,11 +19,11 @@ TEST(ReadTest, Integer) {
     ASSERT_EQ(Integer(3), *exp);
 }
 
-//TEST(ReadTest, Float) { 
-//    Read* instruction = new Read();
-//    Value* exp = instruction->parse("3.14");
-//    ASSERT_EQ(Float(3.14), *exp);
-//}
+TEST(ReadTest, Float) { 
+    Read* instruction = new Read();
+    Value* exp = instruction->parse("3.14");
+    ASSERT_EQ(Float(3.14), *exp);
+}
 
 TEST(ReadTest, BoolTrue) { 
     Read* instruction = new Read();

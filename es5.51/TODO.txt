@@ -1,5 +1,5 @@
 Support:
-- floats: no particular arithmetic operations but parse and print them?
++ floats: no particular arithmetic operations but parse and print them?
 + read in symbol and quoted stuff
 
 General refactoring:

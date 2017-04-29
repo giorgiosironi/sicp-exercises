@@ -5,6 +5,7 @@
 #include "read.h"
 #include "symbol.h"
 #include "integer.h"
+#include "float.h"
 #include "string.h"
 #include "bool.h"
 #include "nil.h"
@@ -90,10 +91,10 @@ Value* Read::to_value(std::string word)
 	}
 
     // a float
-	//boost::regex float_expr("[0-9]+\.[0-9]+");
-	//if (boost::regex_match(word, float_expr)) {
-	//	value = new Integer(stoi(word));
-	//}
+	boost::regex float_expr("[0-9]+\\.[0-9]+");
+	if (boost::regex_match(word, float_expr)) {
+		value = new Float(stof(word));
+    }
 
     // a string
 	boost::regex string_expr("\"(.*)\"");

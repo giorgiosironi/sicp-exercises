@@ -14,8 +14,13 @@ using namespace std;
 
 Value* Read::execute(std::vector<Value*> elements)
 {
-    std::string input;
-    getline(cin, input);
+    std::string input = "";
+    while (input == "") {
+        getline(cin, input);
+        if (cin.eof() && input == "") {
+            throw "CTRL+D pressed";
+        }
+    }
 
     return this->parse(input);
 }

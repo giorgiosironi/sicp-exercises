@@ -1740,6 +1740,9 @@ int main() {
         machine->start();
     } catch (char const* e) {
         cerr << e << endl;
+        if (std::string(e) == "CTRL+D pressed") {
+            return 0;
+        }
         return 2;
     }
     return 0;

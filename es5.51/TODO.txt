@@ -9,8 +9,8 @@ easy:
 -- List::from_vector()
 ++ ReadTest and other test not to use to_string() unnecessarily
 - hard
--- Ctrl+D should not crash
--- change Symbol::to_string to not print '?
+++ Ctrl+D should not crash
+++ change Symbol::to_string to not print '?
 - boring:
 -- extract remaining stuff from main.cpp
 -- remove referenced to std:: by using `use namespace std`

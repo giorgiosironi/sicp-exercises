@@ -92,9 +92,10 @@ class End2endTest(unittest.TestCase):
         return [l for i, l in enumerate(output_lines) if i in output_indexes]
 
     def _assertOutput(self, output):
+        actual_output = self._output()
         self.assertEqual(
-            self._output(),
+            actual_output,
             output,
-            self._stderr_data
+            "STDOUT: %s\nSTDERR: %s" % (self._stdout_data, self._stderr_data)
         )
 

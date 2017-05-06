@@ -1,5 +1,6 @@
-#include "vector"
-#include "string"
+#include <vector>
+#include <string>
+#include <tuple>
 #include "../src/lexer.h"
 #include <gtest/gtest.h>
 using namespace std;
@@ -7,34 +8,26 @@ using ::testing::TestWithParam;
 using ::testing::Values;
  
 // https://github.com/google/googletest/blob/master/googletest/samples/sample7_unittest.cc
-class FooTest : public ::testing::TestWithParam<const char*> {
-//       You can implement all the usual fixture class members here.
-         // To access the test parameter, call GetParam() from class
-           // TestWithParam<T>.
+class LexerTest : public ::testing::TestWithParam<tuple<string,vector<string>>> {
     public:
-        //virtual ~FooTest() { delete input; }
-        virtual void SetUp() { input = GetParam(); }
-        //virtual void TearDown() {
-        //    delete input;
-        //    input = NULL;
-        //}
+        virtual void SetUp() { sample = GetParam(); }
 
     protected:
-        std::string input;
+        tuple<string,vector<string>> sample;
 };
 
-TEST_P(FooTest, Something) {
-    ASSERT_EQ(input, input);
+TEST_P(LexerTest, Something) {
+    ASSERT_EQ(sample, sample);
     Lexer* lexer = new Lexer();
     ASSERT_EQ(
-        vector<string>({ input }),
-        lexer->tokenize(input)
+        get<1>(sample),
+        lexer->tokenize(get<0>(sample))
     );
 }
 
 INSTANTIATE_TEST_CASE_P(
     LexerTest,
-    FooTest,
-    Values("3", "5")
+    LexerTest,
+    Values(make_tuple(string("3"), vector<string>({ string("3") })))
 );
 

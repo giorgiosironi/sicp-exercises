@@ -16,7 +16,7 @@ class LexerTest : public ::testing::TestWithParam<tuple<string,vector<string>>> 
         tuple<string,vector<string>> sample;
 };
 
-TEST_P(LexerTest, Something) {
+TEST_P(LexerTest, Tokenizing) {
     ASSERT_EQ(sample, sample);
     Lexer* lexer = new Lexer();
     ASSERT_EQ(
@@ -35,4 +35,20 @@ INSTANTIATE_TEST_CASE_P(
         make_tuple(string("an-atom"), vector<string>({ string("an-atom") }))
     )
 );
+
+INSTANTIATE_TEST_CASE_P(
+    EmptyList,
+    LexerTest,
+    Values(
+        make_tuple(string("()"), vector<string>({ string("("), string(")") }))
+    )
+);
+
+/*
+ * | (foo)         | ["(", "foo", ")"]                                  |
+ * | (foo bar)     | ["(", "foo", "bar", ")"]                           |
+ * | (foo bar baz) | ["(", "foo", "bar", "baz", ")"]                    |
+ * | (+ 1 2)       | ["(", "+", "1", "2", ")"]                          |
+ * | ((a 1) (b 2)) | ["(", "(", "a", "1", ")", "(", "b", "2", ")", ")"] |
+ */
 

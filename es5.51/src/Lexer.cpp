@@ -24,6 +24,11 @@ vector<string> Lexer::tokenize(string input)
             continue;
         }
 
+        if (c == '\'') {
+            tokens.push_back(string(1, c));
+            continue;
+        }
+
         string atom = "";
         char next = c;
         do {

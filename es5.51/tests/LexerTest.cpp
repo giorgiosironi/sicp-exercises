@@ -82,3 +82,18 @@ INSTANTIATE_TEST_CASE_P(
     )
 );
 
+INSTANTIATE_TEST_CASE_P(
+    Quoting,
+    LexerTest,
+    Values(
+        make_tuple(
+            string("'foo"),
+            vector<string>({ string("'"), string("foo") })
+        ),
+        make_tuple(
+            string("'(foo)"),
+            vector<string>({ string("'"), string("("), string("foo"), string(")") })
+        )
+    )
+);
+

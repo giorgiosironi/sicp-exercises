@@ -40,22 +40,45 @@ INSTANTIATE_TEST_CASE_P(
     EmptyList,
     LexerTest,
     Values(
-        make_tuple(string("()"), vector<string>({ string("("), string(")") }))
+        make_tuple(
+            string("()"),
+            vector<string>({ string("("), string(")") })
+        )
     )
 );
 
 INSTANTIATE_TEST_CASE_P(
-    Lists,
+    SimpleLists,
     LexerTest,
     Values(
-        make_tuple(string("(foo)"), vector<string>({ string("("), string("foo"), string(")") })),
-        make_tuple(string("(foo bar)"), vector<string>({ string("("), string("foo"), string("bar"), string(")") })),
-        make_tuple(string("(foo bar baz)"), vector<string>({ string("("), string("foo"), string("bar"), string("baz"), string(")") })),
-        make_tuple(string("(+ 1 2)"), vector<string>({ string("("), string("+"), string("1"), string("2"), string(")") }))
+        make_tuple(
+            string("(foo)"),
+            vector<string>({ string("("), string("foo"), string(")") })
+        ),
+        make_tuple(
+            string("(foo bar)"),
+            vector<string>({ string("("), string("foo"), string("bar"), string(")") })
+        ),
+        make_tuple(
+            string("(foo bar baz)"),
+            vector<string>({ string("("), string("foo"), string("bar"), string("baz"), string(")") })
+        ),
+        make_tuple(
+            string("(+ 1 2)"),
+            vector<string>({ string("("), string("+"), string("1"), string("2"), string(")") })
+        )
     )
 );
 
-/*
- * | ((a 1) (b 2)) | ["(", "(", "a", "1", ")", "(", "b", "2", ")", ")"] |
- */
+
+INSTANTIATE_TEST_CASE_P(
+    NestedLists,
+    LexerTest,
+    Values(
+        make_tuple(
+            string("((a 1) (b 2))"),
+            vector<string>({ string("("), string("("), string("a"), string("1"), string(")"), string("("), string("b"), string("2"), string(")"), string(")") })
+        )
+    )
+);
 

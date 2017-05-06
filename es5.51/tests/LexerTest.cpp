@@ -49,14 +49,13 @@ INSTANTIATE_TEST_CASE_P(
     LexerTest,
     Values(
         make_tuple(string("(foo)"), vector<string>({ string("("), string("foo"), string(")") })),
-        make_tuple(string("(foo bar)"), vector<string>({ string("("), string("foo"), string("bar"), string(")") }))
+        make_tuple(string("(foo bar)"), vector<string>({ string("("), string("foo"), string("bar"), string(")") })),
+        make_tuple(string("(foo bar baz)"), vector<string>({ string("("), string("foo"), string("bar"), string("baz"), string(")") })),
+        make_tuple(string("(+ 1 2)"), vector<string>({ string("("), string("+"), string("1"), string("2"), string(")") }))
     )
 );
 
 /*
- * | (foo bar)     | ["(", "foo", "bar", ")"]                           |
- * | (foo bar baz) | ["(", "foo", "bar", "baz", ")"]                    |
- * | (+ 1 2)       | ["(", "+", "1", "2", ")"]                          |
  * | ((a 1) (b 2)) | ["(", "(", "a", "1", ")", "(", "b", "2", ")", ")"] |
  */
 

@@ -48,12 +48,12 @@ INSTANTIATE_TEST_CASE_P(
     Lists,
     LexerTest,
     Values(
-        make_tuple(string("(foo)"), vector<string>({ string("("), string("foo"), string(")") }))
+        make_tuple(string("(foo)"), vector<string>({ string("("), string("foo"), string(")") })),
+        make_tuple(string("(foo bar)"), vector<string>({ string("("), string("foo"), string("bar"), string(")") }))
     )
 );
 
 /*
- * | (foo)         | ["(", "foo", ")"]                                  |
  * | (foo bar)     | ["(", "foo", "bar", ")"]                           |
  * | (foo bar baz) | ["(", "foo", "bar", "baz", ")"]                    |
  * | (+ 1 2)       | ["(", "+", "1", "2", ")"]                          |

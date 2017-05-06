@@ -7,12 +7,18 @@ using namespace std;
 // https://igor.io/2012/12/07/sexpr-lexer.html
 vector<string> Lexer::tokenize(string input)
 {
+    auto whitespace = set<char>({ ' ', });
     auto nonAtom = set<char>({ '(', ')', ' ', });
+
     auto tokens = vector<string>({});
     int length = input.size();
     for (int i = 0; i < length; i++) {
         char c = input.at(i);
-        cout << "Character: " << c << endl;
+
+        if (whitespace.find(c) != whitespace.end()) {
+            continue;
+        }
+
         if (c == '(' || c == ')') {
             tokens.push_back(string(1, c));
             continue;

@@ -10,10 +10,10 @@ vector<string> Lexer::tokenize(string input)
     auto nonAtom = set<char>({ '(', ')', ' ', });
     auto tokens = vector<string>({});
     int length = input.size();
-    int i = 0;
-    for (string::iterator it = input.begin(); it != input.end(); ++it) {
-        char c = *it;
-        if (*it == '(' || *it == ')') {
+    for (int i = 0; i < length; i++) {
+        char c = input.at(i);
+        cout << "Character: " << c << endl;
+        if (c == '(' || c == ')') {
             tokens.push_back(string(1, c));
             continue;
         }
@@ -24,12 +24,10 @@ vector<string> Lexer::tokenize(string input)
             atom += next;
             if (length > i + 1) {
                 next = input.at(i+1);
-                ++it;
-                ++i;
             } else {
                 next = 0;
             }
-        } while (0 != next && nonAtom.find(next) == nonAtom.end());
+        } while (0 != next && nonAtom.find(next) == nonAtom.end() && ++i);
         tokens.push_back(atom);
     }
     return tokens;

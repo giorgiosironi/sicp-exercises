@@ -17,7 +17,6 @@ class LexerTest : public ::testing::TestWithParam<tuple<string,vector<string>>> 
 };
 
 TEST_P(LexerTest, Tokenizing) {
-    ASSERT_EQ(sample, sample);
     Lexer* lexer = new Lexer();
     ASSERT_EQ(
         get<1>(sample),

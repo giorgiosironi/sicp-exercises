@@ -1,6 +1,4 @@
 #include "lexer.h"
-#include <iostream>
-#include <typeinfo>
 #include <set>
 using namespace std;
 

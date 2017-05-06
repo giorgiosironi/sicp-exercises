@@ -26,8 +26,13 @@ TEST_P(LexerTest, Something) {
 }
 
 INSTANTIATE_TEST_CASE_P(
+    Atoms,
     LexerTest,
-    LexerTest,
-    Values(make_tuple(string("3"), vector<string>({ string("3") })))
+    Values(
+        make_tuple(string("3"), vector<string>({ string("3") })),
+        make_tuple(string("foo"), vector<string>({ string("foo") })),
+        make_tuple(string("bar"), vector<string>({ string("bar") })),
+        make_tuple(string("an-atom"), vector<string>({ string("an-atom") }))
+    )
 );
 

@@ -77,3 +77,11 @@ INSTANTIATE_TEST_CASE_P(
     ))
 );
 
+INSTANTIATE_TEST_CASE_P(
+    FunctionApplication,
+    ReaderTest,
+    Values(make_tuple(
+        vector<string>({ "(", "+", "1", "2", ")" }),
+        (Value*) Cons::from_vector({ Cons::from_vector({ new Symbol("+"), new Integer(1), new Integer(2) }) })
+    ))
+);

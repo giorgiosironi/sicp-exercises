@@ -2,7 +2,11 @@
 #include "symbol.h"
 #include "cons.h"
 #include "nil.h"
+#include "integer.h"
+#include "string.h"
+#include "float.h"
 #include <iostream>
+#include <boost/regex.hpp>
 using namespace std;
 
 // https://igor.io/2012/12/08/sexpr-reader.html
@@ -15,8 +19,7 @@ Value* Reader::parse(vector<string> input)
 
         if ("(" != token && ")" != token) {
             // extract atoms
-            ast.push_back(new Symbol(token));
-			//$ast[] = $this->normalizeAtom($token);
+            ast.push_back(this->normalize_atom(token));
             continue;
         }
 
@@ -31,6 +34,31 @@ Value* Reader::parse(vector<string> input)
     }
 
     return Cons::from_vector(ast);
+}
+
+Value* Reader::normalize_atom(string token)
+{
+	boost::smatch what;
+
+    // an integer
+	boost::regex int_expr("[0-9]+");
+	if (boost::regex_match(token, int_expr)) {
+		return new Integer(stoi(token));
+	}
+
+    // a float
+	boost::regex float_expr("[0-9]+\\.[0-9]+");
+	if (boost::regex_match(token, float_expr)) {
+		return new Float(stof(token));
+    }
+
+    // a string
+	boost::regex string_expr("\"(.*)\"");
+	if (boost::regex_match(token, what, string_expr)) {
+		return new String(what[1]);
+	}
+
+    return new Symbol(token);
 }
 
 tuple<vector<string>,int> Reader::extract_list_tokens(vector<string> tokens, int i)

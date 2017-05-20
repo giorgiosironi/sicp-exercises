@@ -18,6 +18,15 @@ Value* Reader::parse(vector<string> input)
     for (int i = 0; i < input.size(); ++i) {
 		auto token = input.at(i);
 
+		if ("'" == token) {
+			// wrap quoted value
+			auto temp = this->parse_quoted_token(input, i);
+			auto parsed_token = get<0>(temp);
+			i = get<1>(temp);
+			ast.push_back(parsed_token);
+		    continue;
+		}
+
         if ("(" != token && ")" != token) {
             // extract atoms
             ast.push_back(this->normalize_atom(token));
@@ -36,6 +45,28 @@ Value* Reader::parse(vector<string> input)
 
     return Cons::from_vector(ast);
 }
+
+tuple<Value*,int> Reader::parse_quoted_token(vector<string> tokens, int i)
+{
+    // skip past quote char
+	i++;
+    // quoted atom
+	if ("(" != tokens.at(i)) {
+		auto atom = this->normalize_atom(tokens.at(i));
+		return make_tuple(
+			Cons::from_vector({ new Symbol("quote"), atom }),
+			i
+		);
+	}
+//        // quoted list
+//        list($listTokens, $i) = $this->extractListTokens($tokens, $i);
+//        $list = $this->parse($listTokens);
+//        return [
+//            new Ast\QuotedValue($list),
+//            $i,
+//        ];
+}
+
 
 Value* Reader::normalize_atom(string token)
 {

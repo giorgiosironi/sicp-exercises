@@ -97,3 +97,12 @@ INSTANTIATE_TEST_CASE_P(
         (Value*) Cons::from_vector({ Cons::from_vector({ new String("foo"), new Float(1.0), new Bool(false) }) })
     ))
 );
+
+INSTANTIATE_TEST_CASE_P(
+    QuotedAtom,
+    ReaderTest,
+    Values(make_tuple(
+        vector<string>({ "'", "foo" }),
+        (Value*) Cons::from_vector({ Cons::from_vector({ new Symbol("quote"), new Symbol("foo") }) })
+    ))
+);

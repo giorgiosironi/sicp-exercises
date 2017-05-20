@@ -23,10 +23,12 @@ class ReaderTest : public ::testing::TestWithParam<tuple<vector<string>,Value*>>
 
 TEST_P(ReaderTest, Tokenizing) {
     Reader* reader = new Reader();
+    auto expected = get<1>(sample);
+    auto actual = reader->parse(get<0>(sample));
     ASSERT_EQ(
-        *get<1>(sample),
-        *reader->parse(get<0>(sample))
-    );
+        *expected,
+        *actual
+    ) << "Expected: " << expected->to_string() << endl << "Actual: " << actual->to_string() << endl;
 }
 
 INSTANTIATE_TEST_CASE_P(

@@ -58,13 +58,14 @@ tuple<Value*,int> Reader::parse_quoted_token(vector<string> tokens, int i)
 			i
 		);
 	}
-//        // quoted list
-//        list($listTokens, $i) = $this->extractListTokens($tokens, $i);
-//        $list = $this->parse($listTokens);
-//        return [
-//            new Ast\QuotedValue($list),
-//            $i,
-//        ];
+    // quoted list
+	auto temp = this->extract_list_tokens(tokens, i);
+	auto list_tokens = get<0>(temp);
+	i = get<1>(temp);
+	return make_tuple(
+		Cons::from_vector({ new Symbol("quote"), this->parse(list_tokens) }),
+		i
+	);
 }
 
 

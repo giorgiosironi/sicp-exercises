@@ -106,3 +106,13 @@ INSTANTIATE_TEST_CASE_P(
         (Value*) Cons::from_vector({ Cons::from_vector({ new Symbol("quote"), new Symbol("foo") }) })
     ))
 );
+
+INSTANTIATE_TEST_CASE_P(
+    QuotedList,
+    ReaderTest,
+    Values(make_tuple(
+        vector<string>({ "'", "(", "foo", ")" }),
+		// TODO: reformat
+        (Value*) Cons::from_vector({ Cons::from_vector({ new Symbol("quote"), Cons::from_vector({ new Symbol("foo") }) }) })
+    ))
+);

@@ -5,6 +5,8 @@
 #include "../src/value.h"
 #include "../src/symbol.h"
 #include "../src/cons.h"
+#include "../src/nil.h"
+#include <iostream>
 #include <gtest/gtest.h>
 using namespace std;
 using ::testing::TestWithParam;
@@ -33,5 +35,14 @@ INSTANTIATE_TEST_CASE_P(
     Values(make_tuple(
         vector<string>({ "foo" }),
         (Value*) Cons::from_vector({ new Symbol("foo") })
+    ))
+);
+
+INSTANTIATE_TEST_CASE_P(
+    EmptyList,
+    ReaderTest,
+    Values(make_tuple(
+        vector<string>({ "(", ")" }),
+        (Value*) Cons::from_vector({ NIL })
     ))
 );

@@ -4,6 +4,7 @@
 #include "../src/reader.h"
 #include "../src/value.h"
 #include "../src/symbol.h"
+#include "../src/cons.h"
 #include <gtest/gtest.h>
 using namespace std;
 using ::testing::TestWithParam;
@@ -29,7 +30,8 @@ TEST_P(ReaderTest, Tokenizing) {
 INSTANTIATE_TEST_CASE_P(
     Atoms,
     ReaderTest,
-    Values(
-        make_tuple(vector<string>({ "foo" }), (Value*) new Symbol("foo"))
-    )
+    Values(make_tuple(
+        vector<string>({ "foo" }),
+        (Value*) Cons::from_vector({ new Symbol("foo") })
+    ))
 );

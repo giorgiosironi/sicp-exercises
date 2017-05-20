@@ -6,6 +6,7 @@
 #include "../src/symbol.h"
 #include "../src/cons.h"
 #include "../src/nil.h"
+#include "../src/integer.h"
 #include <iostream>
 #include <gtest/gtest.h>
 using namespace std;
@@ -48,3 +49,31 @@ INSTANTIATE_TEST_CASE_P(
         (Value*) Cons::from_vector({ NIL })
     ))
 );
+
+INSTANTIATE_TEST_CASE_P(
+    ListWithOneAtom,
+    ReaderTest,
+    Values(make_tuple(
+        vector<string>({ "(", "foo", ")" }),
+        (Value*) Cons::from_vector({ Cons::from_vector({ new Symbol("foo") }) })
+    ))
+);
+
+INSTANTIATE_TEST_CASE_P(
+    ListWithTwoAtoms,
+    ReaderTest,
+    Values(make_tuple(
+        vector<string>({ "(", "foo", "bar", ")" }),
+        (Value*) Cons::from_vector({ Cons::from_vector({ new Symbol("foo"), new Symbol("bar") }) })
+    ))
+);
+
+INSTANTIATE_TEST_CASE_P(
+    ListWithThreeAtoms,
+    ReaderTest,
+    Values(make_tuple(
+        vector<string>({ "(", "foo", "bar", "baz", ")" }),
+        (Value*) Cons::from_vector({ Cons::from_vector({ new Symbol("foo"), new Symbol("bar"), new Symbol("baz") }) })
+    ))
+);
+

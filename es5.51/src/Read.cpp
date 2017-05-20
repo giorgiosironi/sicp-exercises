@@ -2,6 +2,7 @@
 #include <string>
 #include <ctype.h>
 #include <boost/regex.hpp>
+#include <stdexcept>
 #include "read.h"
 #include "symbol.h"
 #include "integer.h"
@@ -12,6 +13,7 @@
 #include "cons.h"
 #include "lexer.h"
 #include "reader.h"
+#include "length.h"
 using namespace std;
 
 
@@ -28,6 +30,9 @@ Value* Read::execute(std::vector<Value*> elements)
 	Reader reader;
 
     List* parsed = reader.parse(lexer.tokenize(input));
+    if (length(parsed) != 1) {
+        throw std::length_error("Only one expression should be typed in at the repl. Got the list " + parsed->to_string() + " instead");
+    }
 	return parsed->car();
 }
 

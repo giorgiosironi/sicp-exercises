@@ -10,6 +10,8 @@
 #include "bool.h"
 #include "nil.h"
 #include "cons.h"
+#include "lexer.h"
+#include "reader.h"
 using namespace std;
 
 
@@ -22,8 +24,11 @@ Value* Read::execute(std::vector<Value*> elements)
             throw "CTRL+D pressed";
         }
     }
+	Lexer lexer;
+	Reader reader;
 
-    return this->parse(input);
+    List* parsed = reader.parse(lexer.tokenize(input));
+	return parsed->car();
 }
 
 Value* Read::parse(std::string input)

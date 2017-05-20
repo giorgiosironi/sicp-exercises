@@ -11,7 +11,7 @@
 using namespace std;
 
 // https://igor.io/2012/12/08/sexpr-reader.html
-Value* Reader::parse(vector<string> input)
+List* Reader::parse(vector<string> input)
 {
 	auto ast = vector<Value*>();
 

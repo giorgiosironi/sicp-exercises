@@ -7,6 +7,9 @@
 #include "../src/cons.h"
 #include "../src/nil.h"
 #include "../src/integer.h"
+#include "../src/bool.h"
+#include "../src/string.h"
+#include "../src/float.h"
 #include <iostream>
 #include <gtest/gtest.h>
 using namespace std;
@@ -83,5 +86,14 @@ INSTANTIATE_TEST_CASE_P(
     Values(make_tuple(
         vector<string>({ "(", "+", "1", "2", ")" }),
         (Value*) Cons::from_vector({ Cons::from_vector({ new Symbol("+"), new Integer(1), new Integer(2) }) })
+    ))
+);
+
+INSTANTIATE_TEST_CASE_P(
+    MixedTypeList,
+    ReaderTest,
+    Values(make_tuple(
+        vector<string>({ "(", "\"foo\"", "1.0", "#f", ")" }),
+        (Value*) Cons::from_vector({ Cons::from_vector({ new String("foo"), new Float(1.0), new Bool(false) }) })
     ))
 );

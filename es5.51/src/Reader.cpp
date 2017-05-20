@@ -5,6 +5,7 @@
 #include "integer.h"
 #include "string.h"
 #include "float.h"
+#include "bool.h"
 #include <iostream>
 #include <boost/regex.hpp>
 using namespace std;
@@ -57,6 +58,13 @@ Value* Reader::normalize_atom(string token)
 	if (boost::regex_match(token, what, string_expr)) {
 		return new String(what[1]);
 	}
+
+    // a boolean
+    if (token == "#t") {
+        return new Bool(true);
+    } else if (token == "#f") {
+        return new Bool(false);
+    }
 
     return new Symbol(token);
 }

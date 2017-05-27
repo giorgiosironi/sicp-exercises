@@ -115,15 +115,15 @@
   (make-polynomial variable
                    (list (make-term 0 p))))
 ; samples
-(define sample-only-x-polynomial
+(define sample-only-x-polynomial ; x^2 + x
   (make-polynomial 'x
                    (list (make-term 2 (attach-tag 'number 1))
                          (make-term 1 (attach-tag 'number 1)))))
-(define sample-only-y-polynomial
+(define sample-only-y-polynomial ; y^3 + 4
   (make-polynomial 'y
                    (list (make-term 3 (attach-tag 'number 1))
                          (make-term 0 (attach-tag 'number 4)))))
-(define sample-y-with-x-polynomial
+(define sample-y-with-x-polynomial ; xy^3
   (make-polynomial 'y
                    (list (make-term 3 (make-polynomial 'x (list (make-term 1 1)))))))
 ; TODO: automated conversion from x to y polynomial
@@ -143,6 +143,13 @@
                                                 (0 (number 4)))))))
               (add sample-only-x-polynomial (convert 'x sample-only-y-polynomial)))
               "Addition of two polynomials with different vars but integer coefficients")
-     (check (= 2147483648 (+ 2147483647 1)) "Addition shouldn't overflow.")))
+
+     (check (equal? 
+              '(polynomial (x (2 (number 1))
+                              (1 (polynomial (y (3 (number 1))
+                                                (0 (number 1)))))))
+              (add sample-only-x-polynomial (convert 'x sample-y-with-x-polynomial)))
+              "Addition where one polynomial has a polynomial coefficient")
+     ))
 ; TODO: multiplication
 (run-registered-tests)

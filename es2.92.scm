@@ -123,7 +123,26 @@
   (make-polynomial 'y
                    (list (make-term 3 (attach-tag 'number 1))
                          (make-term 0 (attach-tag 'number 4)))))
+(define sample-y-with-x-polynomial
+  (make-polynomial 'y
+                   (list (make-term 3 (make-polynomial 'x (list (make-term 1 1)))))))
 ; TODO: automated conversion from x to y polynomial
 (display (add sample-only-x-polynomial (convert 'x sample-only-y-polynomial)))
-; TODO: more sample
+(newline)
+; TODO: more samples
+(display (add sample-only-x-polynomial (convert 'x sample-y-with-x-polynomial)))
+(newline)
+(load "/code/test-manager/load.scm")
+(in-test-group
+   addition
+   (define-each-test
+     (check (equal? 
+              '(polynomial (x (2 (number 1))
+                              (1 (number 1))
+                              (0 (polynomial (y (3 (number 1))
+                                                (0 (number 4)))))))
+              (add sample-only-x-polynomial (convert 'x sample-only-y-polynomial)))
+              "Addition of two polynomials with different vars but integer coefficients")
+     (check (= 2147483648 (+ 2147483647 1)) "Addition shouldn't overflow.")))
 ; TODO: multiplication
+(run-registered-tests)

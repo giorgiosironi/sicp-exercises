@@ -138,7 +138,7 @@
 (define (convert variable p)
   ((apply-generic 'convert p) variable))
 ; samples
-(define sample-only-x-polynomial ; x^2 + x
+(define x^2+x
   (make-polynomial 'x
                    (list (make-term 2 (make-number 1))
                          (make-term 1 (make-number 1)))))
@@ -146,18 +146,18 @@
   (make-polynomial 'y
                    (list (make-term 3 (make-number 1))
                          (make-term 0 (make-number 4)))))
-(define sample-y-with-x-monomial ; xy^3
+(define xy^3
   (make-polynomial 'y
                    (list (make-term 3 (make-polynomial 'x (list (make-term 1 (make-number 1))))))))
-(define sample-x-with-y-monomial ; y^3*x
+(define y^3x 
   (make-polynomial 'x
                    (list (make-term 1 (make-polynomial 'y (list (make-term 3 (make-number 1))))))))
-(define sample-y-with-x-monomial-and-coefficient ; 3xy^3
+(define 4xy^3
   (make-polynomial 'y
-                   (list (make-term 3 (make-polynomial 'x (list (make-term 1 (make-number 3))))))))
-(define sample-x-with-y-monomial-and-coefficient ; 3y^3*x
+                   (list (make-term 3 (make-polynomial 'x (list (make-term 1 (make-number 4))))))))
+(define 4y^3x
   (make-polynomial 'x
-                   (list (make-term 1 (make-polynomial 'y (list (make-term 3 (make-number 3))))))))
+                   (list (make-term 1 (make-polynomial 'y (list (make-term 3 (make-number 4))))))))
 ; TODO: automated conversion from x to y polynomial
 (load "/code/test-manager/load.scm")
 (in-test-group
@@ -170,14 +170,14 @@
               "Conversion of polynomial with constant y terms")
 
      (check (equal? 
-              sample-x-with-y-monomial
-              (convert 'x sample-y-with-x-monomial))
+              y^3x
+              (convert 'x xy^3))
               "Conversion of polynomial with y terms multiplied by some x, one term")
      
 
      (check (equal? 
-              sample-x-with-y-monomial-and-coefficient
-              (convert 'x sample-y-with-x-monomial-and-coefficient))
+              4y^3x
+              (convert 'x 4xy^3))
               "Conversion of polynomial with y terms multiplied by some x, one term that has a coefficient")
      ))
 (in-test-group
@@ -188,14 +188,14 @@
                               (1 (number 1))
                               (0 (polynomial (y (3 (number 1))
                                                 (0 (number 4)))))))
-              (add sample-only-x-polynomial (convert 'x sample-only-y-polynomial)))
+              (add x^2+x (convert 'x sample-only-y-polynomial)))
               "Addition of two polynomials with different vars but integer coefficients")
 
      ;(check (equal? 
      ;         '(polynomial (x (2 (number 1))
      ;                         (1 (polynomial (y (3 (number 1))
      ;                                           (0 (number 1)))))))
-     ;         (add sample-only-x-polynomial (convert 'x sample-y-with-x-monomial)))
+     ;         (add x^2+x (convert 'x xy^3)))
      ;         "Addition where one polynomial has a polynomial coefficient")
      ))
 ; TODO: multiplication

@@ -152,6 +152,12 @@
 (define sample-x-with-y-monomial ; y^3*x
   (make-polynomial 'x
                    (list (make-term 1 (make-polynomial 'y (list (make-term 3 (make-number 1))))))))
+(define sample-y-with-x-monomial-and-coefficient ; 3xy^3
+  (make-polynomial 'y
+                   (list (make-term 3 (make-polynomial 'x (list (make-term 1 (make-number 3))))))))
+(define sample-x-with-y-monomial-and-coefficient ; 3y^3*x
+  (make-polynomial 'x
+                   (list (make-term 1 (make-polynomial 'y (list (make-term 3 (make-number 3))))))))
 ; TODO: automated conversion from x to y polynomial
 (load "/code/test-manager/load.scm")
 (in-test-group
@@ -167,6 +173,12 @@
               sample-x-with-y-monomial
               (convert 'x sample-y-with-x-monomial))
               "Conversion of polynomial with y terms multiplied by some x, one term")
+     
+
+     (check (equal? 
+              sample-x-with-y-monomial-and-coefficient
+              (convert 'x sample-y-with-x-monomial-and-coefficient))
+              "Conversion of polynomial with y terms multiplied by some x, one term that has a coefficient")
      ))
 (in-test-group
    addition

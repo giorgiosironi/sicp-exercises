@@ -84,26 +84,22 @@
              (list p1 p2))))
   (define (tag p) (attach-tag 'polynomial p))
   (define (convert p)
-    (lambda (v)
-        (let ((term-c (coeff (first-term (term-list p))))
-              (term-o (order (first-term (term-list p))))) 
-          (if (eq? (type-tag term-c) 'polynomial)
-            (begin
-              (display term-c)
-              (newline)
-              (display (variable (contents term-c)))
-              (newline)
-              (make-polynomial 'x (list (make-term 1
-                                                   (make-polynomial 'y 
-                                                                    (list (make-term 3 (attach-tag 'number 1)))))))
-              )
+    (let ((original-var (variable p)))
+      (lambda (v)
+        (let ((original-c (coeff (first-term (term-list p))))
+              (original-o (order (first-term (term-list p))))) 
+          (if (and (eq? (type-tag original-c) 'polynomial)
+                   (same-variable? (variable (contents original-c))
+                                   v))
+            (let ((new-o (order (first-term (term-list (contents original-c)))))
+                  (new-c (coeff (first-term (term-list (contents original-c))))))
+              (make-polynomial v (list (make-term new-o
+                                                  (make-polynomial original-var
+                                                                   (list (make-term original-o new-c)))))))
             (make-polynomial v
                              (list (make-term 0 (tag p))))
-          ))
-          ;(if (and (poly? c) (
-          ;                    ))))
-        ; simple assumption: no presence of variable in terms TODO: extend
-        ))
+            ))
+        )))
   (put 'add '(polynomial polynomial)
        (lambda (p1 p2) (tag (add-poly p1 p2))))
   (put 'mul '(polynomial polynomial)

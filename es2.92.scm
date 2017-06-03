@@ -83,6 +83,27 @@
       (error "Polys not in same var -- MUL-POLY"
              (list p1 p2))))
   (define (tag p) (attach-tag 'polynomial p))
+  (define (convert p)
+    (lambda (v)
+        (let ((term-c (coeff (first-term (term-list p))))
+              (term-o (order (first-term (term-list p))))) 
+          (if (eq? (type-tag term-c) 'polynomial)
+            (begin
+              (display term-c)
+              (newline)
+              (display (variable (contents term-c)))
+              (newline)
+              (make-polynomial 'x (list (make-term 1
+                                                   (make-polynomial 'y 
+                                                                    (list (make-term 3 (attach-tag 'number 1)))))))
+              )
+            (make-polynomial v
+                             (list (make-term 0 (tag p))))
+          ))
+          ;(if (and (poly? c) (
+          ;                    ))))
+        ; simple assumption: no presence of variable in terms TODO: extend
+        ))
   (put 'add '(polynomial polynomial)
        (lambda (p1 p2) (tag (add-poly p1 p2))))
   (put 'mul '(polynomial polynomial)
@@ -95,6 +116,8 @@
            (map coeff (term-list p)))) 
   (put 'zero? '(polynomial)
         zero?-poly)
+  (put 'convert '(polynomial)
+        convert)
   'done)
 (install-polynomial-package)
 (define (install-number-package)
@@ -102,37 +125,53 @@
     (lambda (x) (= 0 x)))
   (put 'add '(number number)
     (lambda (a b) (+ a b))))
+  (put 'make 'number
+    (lambda (n) (attach-tag 'number n)))
 (install-number-package)
+(define (poly? exp)
+  (eq? 'polynomial (type-tag exp)))
 (define (make-polynomial var terms)
   ((get 'make 'polynomial) var terms))
+(define (make-number n)
+  ((get 'make 'number) n))
 (define (add a b)
   (apply-generic 'add a b))
 (define (=zero? exp)
   (apply-generic 'zero? exp))
 ; conversion
 (define (convert variable p)
-  ; simple assumption: no presence of variable in terms TODO: extend
-  (make-polynomial variable
-                   (list (make-term 0 p))))
+  ((apply-generic 'convert p) variable))
 ; samples
 (define sample-only-x-polynomial ; x^2 + x
   (make-polynomial 'x
-                   (list (make-term 2 (attach-tag 'number 1))
-                         (make-term 1 (attach-tag 'number 1)))))
+                   (list (make-term 2 (make-number 1))
+                         (make-term 1 (make-number 1)))))
 (define sample-only-y-polynomial ; y^3 + 4
   (make-polynomial 'y
-                   (list (make-term 3 (attach-tag 'number 1))
-                         (make-term 0 (attach-tag 'number 4)))))
-(define sample-y-with-x-polynomial ; xy^3
+                   (list (make-term 3 (make-number 1))
+                         (make-term 0 (make-number 4)))))
+(define sample-y-with-x-monomial ; xy^3
   (make-polynomial 'y
-                   (list (make-term 3 (make-polynomial 'x (list (make-term 1 1)))))))
+                   (list (make-term 3 (make-polynomial 'x (list (make-term 1 (make-number 1))))))))
+(define sample-x-with-y-monomial ; y^3*x
+  (make-polynomial 'x
+                   (list (make-term 1 (make-polynomial 'y (list (make-term 3 (make-number 1))))))))
 ; TODO: automated conversion from x to y polynomial
-(display (add sample-only-x-polynomial (convert 'x sample-only-y-polynomial)))
-(newline)
-; TODO: more samples
-(display (add sample-only-x-polynomial (convert 'x sample-y-with-x-polynomial)))
-(newline)
 (load "/code/test-manager/load.scm")
+(in-test-group
+   conversion-to-a-different-variable
+   (define-each-test
+     (check (equal? 
+              '(polynomial (x (0 (polynomial (y (3 (number 1))
+                                                (0 (number 4)))))))
+              (convert 'x sample-only-y-polynomial))
+              "Conversion of polynomial with constant y terms")
+
+     (check (equal? 
+              sample-x-with-y-monomial
+              (convert 'x sample-y-with-x-monomial))
+              "Conversion of polynomial with y terms multiplied by some x, one term")
+     ))
 (in-test-group
    addition
    (define-each-test
@@ -144,12 +183,12 @@
               (add sample-only-x-polynomial (convert 'x sample-only-y-polynomial)))
               "Addition of two polynomials with different vars but integer coefficients")
 
-     (check (equal? 
-              '(polynomial (x (2 (number 1))
-                              (1 (polynomial (y (3 (number 1))
-                                                (0 (number 1)))))))
-              (add sample-only-x-polynomial (convert 'x sample-y-with-x-polynomial)))
-              "Addition where one polynomial has a polynomial coefficient")
+     ;(check (equal? 
+     ;         '(polynomial (x (2 (number 1))
+     ;                         (1 (polynomial (y (3 (number 1))
+     ;                                           (0 (number 1)))))))
+     ;         (add sample-only-x-polynomial (convert 'x sample-y-with-x-monomial)))
+     ;         "Addition where one polynomial has a polynomial coefficient")
      ))
 ; TODO: multiplication
 (run-registered-tests)

@@ -142,7 +142,7 @@
   (make-polynomial 'x
                    (list (make-term 2 (make-number 1))
                          (make-term 1 (make-number 1)))))
-(define sample-only-y-polynomial ; y^3 + 4
+(define y^3+4 ; y^3 + 4
   (make-polynomial 'y
                    (list (make-term 3 (make-number 1))
                          (make-term 0 (make-number 4)))))
@@ -158,6 +158,14 @@
 (define 4y^3x
   (make-polynomial 'x
                    (list (make-term 1 (make-polynomial 'y (list (make-term 3 (make-number 4))))))))
+(define xy^2+1
+  (make-polynomial 'y
+                   (list (make-term 2 (make-polynomial 'x (list (make-term 1 (make-number 1)))))
+                         (make-term 0 (make-number 1)))))
+(define y^2x+1
+  (make-polynomial 'x
+                   (list (make-term 1 (make-polynomial 'y (list (make-term 2 (make-number 1)))))
+                         (make-term 0 (make-number 1)))))
 ; TODO: automated conversion from x to y polynomial
 (load "/code/test-manager/load.scm")
 (in-test-group
@@ -166,7 +174,7 @@
      (check (equal? 
               '(polynomial (x (0 (polynomial (y (3 (number 1))
                                                 (0 (number 4)))))))
-              (convert 'x sample-only-y-polynomial))
+              (convert 'x y^3+4))
               "Conversion of polynomial with constant y terms")
 
      (check (equal? 
@@ -179,6 +187,11 @@
               4y^3x
               (convert 'x 4xy^3))
               "Conversion of polynomial with y terms multiplied by some x, one term that has a coefficient")
+
+     (check (equal? 
+              y^2x+1
+              (convert 'x xy^2+1))
+              "Conversion of polynomial with y terms multiplied by some x, one term that has a coefficient")
      ))
 (in-test-group
    addition
@@ -188,7 +201,7 @@
                               (1 (number 1))
                               (0 (polynomial (y (3 (number 1))
                                                 (0 (number 4)))))))
-              (add x^2+x (convert 'x sample-only-y-polynomial)))
+              (add x^2+x (convert 'x y^3+4)))
               "Addition of two polynomials with different vars but integer coefficients")
 
      ;(check (equal? 

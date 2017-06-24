@@ -63,7 +63,11 @@
   ;; internal procedures
   ;; representation of poly
   (define (make-poly variable term-list)
-    (cons variable term-list))
+    ; simplifications
+    (if (and (eq? (length term-list) 1)
+             (eq? (order (first-term term-list)) 0))
+      (coeff (first-term term-list))
+      (cons variable term-list)))
   (define (variable p) (car p))
   (define (term-list p) (cdr p))
   (define (variable? x) (symbol? x))
@@ -86,32 +90,38 @@
   (define (convert p)
     (let ((original-var (variable p)))
       (lambda (v)
-        (if (eq? (the-empty-termlist) (term-list p))
-          (make-polynomial v (the-empty-termlist))
-          (let ((original-c (coeff (first-term (term-list p))))
-                (original-o (order (first-term (term-list p))))
-                (rest-of-p (make-poly original-var (rest-terms (term-list p))))) 
-            (let ((converted-first-term
-                    (if (and (eq? (type-tag original-c) 'polynomial)
-                             (same-variable? (variable (contents original-c))
-                                             v))
-                      (let ((new-o (order (first-term (term-list (contents original-c)))))
-                            (new-c (coeff (first-term (term-list (contents original-c))))))
-                        (make-polynomial v (list (make-term new-o
-                                                            (make-polynomial original-var
-                                                                             (list (make-term original-o new-c)))))))
-                      (make-polynomial v
-                                       (list (make-term 0 (make-polynomial original-var (list (first-term (term-list p))))))))))
-              (display "converted-first-term: ")
-              (display converted-first-term)
-              (newline)
-              (display "rest-of-p: ")
-              (display rest-of-p)
-              (newline)
+        (if (eq? (type-tag p) 'number)
+          ; no need to convert a number, it's pure
+          p
+          (if (eq? (the-empty-termlist) (term-list p))
+            (make-polynomial v (the-empty-termlist))
+            (let ((original-c (coeff (first-term (term-list p))))
+                  (original-o (order (first-term (term-list p))))
+                  (rest-of-p (make-poly original-var (rest-terms (term-list p))))) 
+              (let ((converted-first-term
+                      (if (and (eq? (type-tag original-c) 'polynomial)
+                               (same-variable? (variable (contents original-c))
+                                               v))
+                        (let ((new-o (order (first-term (term-list (contents original-c)))))
+                              (new-c (coeff (first-term (term-list (contents original-c))))))
+                          (make-polynomial v (list (make-term new-o
+                                                              (make-polynomial original-var
+                                                                               (list (make-term original-o new-c)))))))
+                        (make-polynomial v
+                                         (list (make-term 0 (make-polynomial original-var (list (first-term (term-list p))))))))))
 
-              (add converted-first-term ((convert rest-of-p) v))))))))
+                (add converted-first-term ((convert rest-of-p) v)))))))))
+  (define (add-poly-number p n)
+    (make-poly (variable p)
+               (map (lambda (term)
+                      (if (eq? (order term) 0)
+                        (make-term (order term) (add (coeff term) (attach-tag 'number n)))
+                        term))
+                    (term-list p))))
   (put 'add '(polynomial polynomial)
        (lambda (p1 p2) (tag (add-poly p1 p2))))
+  (put 'add '(polynomial number)
+       (lambda (p1 p2) (tag (add-poly-number p1 p2))))
   (put 'mul '(polynomial polynomial)
        (lambda (p1 p2) (tag (mul-poly p1 p2))))
   (put 'make 'polynomial
@@ -131,9 +141,9 @@
   (put 'zero? '(number)
     (lambda (x) (= 0 x)))
   (put 'add '(number number)
-    (lambda (a b) (+ a b))))
+    (lambda (a b) (attach-tag 'number (+ a b))))
   (put 'make 'number
-    (lambda (n) (attach-tag 'number n)))
+    (lambda (n) (attach-tag 'number n))))
 (install-number-package)
 (define (poly? exp)
   (eq? 'polynomial (type-tag exp)))
@@ -155,6 +165,14 @@
 (define zero-y
   (make-polynomial 'y
                    (list)))
+(define x+1
+  (make-polynomial 'x
+                   (list (make-term 1 (make-number 1))
+                         (make-term 0 (make-number 1)))))
+(define x+3
+  (make-polynomial 'x
+                   (list (make-term 1 (make-number 1))
+                         (make-term 0 (make-number 3)))))
 (define x^2+x
   (make-polynomial 'x
                    (list (make-term 2 (make-number 1))
@@ -208,21 +226,25 @@
               (convert 'x y^3+4))
               "Conversion of polynomial with constant y terms")
 
-     ;(check (equal? 
-     ;         y^2x+1
-     ;         (convert 'x xy^2+1))
-     ;         "Conversion of polynomial with y terms multiplied by some x, one term that has a coefficient")
+     (check (equal? 
+              y^2x+1
+              (convert 'x xy^2+1))
+              "Conversion of polynomial with y terms multiplied by some x, one term that has a coefficient")
      ))
 (in-test-group
    addition
    (define-each-test
      (check (equal? 
-              '(polynomial (x (2 (number 1))
-                              (1 (number 1))
-                              (0 (polynomial (y (3 (number 1))
-                                                (0 (number 4)))))))
-              (add x^2+x (convert 'x y^3+4)))
-              "Addition of two polynomials with different vars but integer coefficients")
+              x+3
+              (add x+1 '(number 2)))
+              "Addition of a polynomial with a number")
+     ;(check (equal? 
+     ;         '(polynomial (x (2 (number 1))
+     ;                         (1 (number 1))
+     ;                         (0 (polynomial (y (3 (number 1))
+     ;                                           (0 (number 4)))))))
+     ;         (add x^2+x (convert 'x y^3+4)))
+     ;         "Addition of two polynomials with different vars but integer coefficients")
 
      ;(check (equal? 
      ;         '(polynomial (x (2 (number 1))

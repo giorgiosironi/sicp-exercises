@@ -89,19 +89,27 @@
         (if (eq? (the-empty-termlist) (term-list p))
           (make-polynomial v (the-empty-termlist))
           (let ((original-c (coeff (first-term (term-list p))))
-                (original-o (order (first-term (term-list p))))) 
-            (if (and (eq? (type-tag original-c) 'polynomial)
-                     (same-variable? (variable (contents original-c))
-                                     v))
-              (let ((new-o (order (first-term (term-list (contents original-c)))))
-                    (new-c (coeff (first-term (term-list (contents original-c))))))
-                (make-polynomial v (list (make-term new-o
-                                                    (make-polynomial original-var
-                                                                     (list (make-term original-o new-c)))))))
-              (make-polynomial v
-                               (list (make-term 0 (tag p))))
-              ))
-          ))))
+                (original-o (order (first-term (term-list p))))
+                (rest-of-p (make-poly original-var (rest-terms (term-list p))))) 
+            (let ((converted-first-term
+                    (if (and (eq? (type-tag original-c) 'polynomial)
+                             (same-variable? (variable (contents original-c))
+                                             v))
+                      (let ((new-o (order (first-term (term-list (contents original-c)))))
+                            (new-c (coeff (first-term (term-list (contents original-c))))))
+                        (make-polynomial v (list (make-term new-o
+                                                            (make-polynomial original-var
+                                                                             (list (make-term original-o new-c)))))))
+                      (make-polynomial v
+                                       (list (make-term 0 (make-polynomial original-var (list (first-term (term-list p))))))))))
+              (display "converted-first-term: ")
+              (display converted-first-term)
+              (newline)
+              (display "rest-of-p: ")
+              (display rest-of-p)
+              (newline)
+
+              (add converted-first-term ((convert rest-of-p) v))))))))
   (put 'add '(polynomial polynomial)
        (lambda (p1 p2) (tag (add-poly p1 p2))))
   (put 'mul '(polynomial polynomial)
@@ -110,7 +118,8 @@
        (lambda (var terms) (tag (make-poly var terms))))
   ; ok, now we can begin...
   (define (zero?-poly p)
-    (every (lambda (c) (= 0 c))
+    ; TODO: this should be made generic too
+    (every (lambda (c) (or (eq? 0 c) (eq? '(number 0) c)))
            (map coeff (term-list p)))) 
   (put 'zero? '(polynomial)
         zero?-poly)

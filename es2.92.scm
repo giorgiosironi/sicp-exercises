@@ -86,20 +86,22 @@
   (define (convert p)
     (let ((original-var (variable p)))
       (lambda (v)
-        (let ((original-c (coeff (first-term (term-list p))))
-              (original-o (order (first-term (term-list p))))) 
-          (if (and (eq? (type-tag original-c) 'polynomial)
-                   (same-variable? (variable (contents original-c))
-                                   v))
-            (let ((new-o (order (first-term (term-list (contents original-c)))))
-                  (new-c (coeff (first-term (term-list (contents original-c))))))
-              (make-polynomial v (list (make-term new-o
-                                                  (make-polynomial original-var
-                                                                   (list (make-term original-o new-c)))))))
-            (make-polynomial v
-                             (list (make-term 0 (tag p))))
-            ))
-        )))
+        (if (eq? (the-empty-termlist) (term-list p))
+          (make-polynomial v (the-empty-termlist))
+          (let ((original-c (coeff (first-term (term-list p))))
+                (original-o (order (first-term (term-list p))))) 
+            (if (and (eq? (type-tag original-c) 'polynomial)
+                     (same-variable? (variable (contents original-c))
+                                     v))
+              (let ((new-o (order (first-term (term-list (contents original-c)))))
+                    (new-c (coeff (first-term (term-list (contents original-c))))))
+                (make-polynomial v (list (make-term new-o
+                                                    (make-polynomial original-var
+                                                                     (list (make-term original-o new-c)))))))
+              (make-polynomial v
+                               (list (make-term 0 (tag p))))
+              ))
+          ))))
   (put 'add '(polynomial polynomial)
        (lambda (p1 p2) (tag (add-poly p1 p2))))
   (put 'mul '(polynomial polynomial)
@@ -138,6 +140,12 @@
 (define (convert variable p)
   ((apply-generic 'convert p) variable))
 ; samples
+(define zero-x
+  (make-polynomial 'x
+                   (list)))
+(define zero-y
+  (make-polynomial 'y
+                   (list)))
 (define x^2+x
   (make-polynomial 'x
                    (list (make-term 2 (make-number 1))
@@ -172,16 +180,14 @@
    conversion-to-a-different-variable
    (define-each-test
      (check (equal? 
-              '(polynomial (x (0 (polynomial (y (3 (number 1))
-                                                (0 (number 4)))))))
-              (convert 'x y^3+4))
-              "Conversion of polynomial with constant y terms")
+              zero-x
+              (convert 'x zero-y))
+              "Conversion of empty polynomial")
 
      (check (equal? 
               y^3x
               (convert 'x xy^3))
               "Conversion of polynomial with y terms multiplied by some x, one term")
-     
 
      (check (equal? 
               4y^3x
@@ -189,9 +195,14 @@
               "Conversion of polynomial with y terms multiplied by some x, one term that has a coefficient")
 
      (check (equal? 
-              y^2x+1
-              (convert 'x xy^2+1))
-              "Conversion of polynomial with y terms multiplied by some x, one term that has a coefficient")
+              (list 'polynomial (list 'x (list 0 y^3+4)))
+              (convert 'x y^3+4))
+              "Conversion of polynomial with constant y terms")
+
+     ;(check (equal? 
+     ;         y^2x+1
+     ;         (convert 'x xy^2+1))
+     ;         "Conversion of polynomial with y terms multiplied by some x, one term that has a coefficient")
      ))
 (in-test-group
    addition

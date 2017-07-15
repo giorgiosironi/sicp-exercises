@@ -70,6 +70,12 @@
   (define (same-variable? v1 v2)
     (and (variable? v1) (variable? v2) (eq? v1 v2)))
   (define (add-poly p1 p2)
+    (display "add-poly ")
+    (newline)
+    (display p1)
+    (newline)
+    (display p2)
+    (newline)
     (if (same-variable? (variable p1) (variable p2))
       (make-poly (variable p1)
                  (add-terms (term-list p1)
@@ -83,6 +89,15 @@
       (error "Polys not in same var -- MUL-POLY"
              (list p1 p2))))
   (define (tag p) (attach-tag 'polynomial p))
+  (define (simplify var terms)
+    ; simplifications: if it's coeff*x^0, it's just coeff
+    (cond
+      ((and (eq? (length terms) 1)
+            (eq? (order (first-term terms)) 0))
+       (coeff (first-term terms)))
+      ((eq? (length terms) 0)
+       (make-number 0))
+      (else (make-polynomial var terms))))
   (define (convert p)
     (let ((original-var (variable p)))
       (lambda (v)
@@ -101,10 +116,10 @@
                         (let ((new-o (order (first-term (term-list (contents original-c)))))
                               (new-c (coeff (first-term (term-list (contents original-c))))))
                           (make-polynomial v (list (make-term new-o
-                                                              (make-polynomial original-var
-                                                                               (list (make-term original-o new-c)))))))
+                                                       (simplify original-var
+                                                                        (list (make-term original-o new-c)))))))
                         (make-polynomial v
-                                         (list (make-term 0 (make-polynomial original-var (list (first-term (term-list p))))))))))
+                                  (list (make-term 0 (simplify original-var (list (first-term (term-list p))))))))))
                 (add converted-first-term ((convert rest-of-p) v)))))))))
   (define (add-poly-number p n)
     (make-poly (variable p)
@@ -123,11 +138,8 @@
        (lambda (p1 p2) (tag (mul-poly p1 p2))))
   (put 'make 'polynomial
        (lambda (var terms) 
-          ; simplifications: if it's coeff*x^0, it's just coeff
-          (if (and (eq? (length terms) 1)
-                   (eq? (order (first-term terms)) 0))
-            (coeff (first-term terms))
-            (tag (make-poly var terms)))))
+          (cond
+            (else (tag (make-poly var terms))))))
   ; ok, now we can begin...
   (define (zero?-poly p)
     ; TODO: this should be made generic too

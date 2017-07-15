@@ -70,12 +70,6 @@
   (define (same-variable? v1 v2)
     (and (variable? v1) (variable? v2) (eq? v1 v2)))
   (define (add-poly p1 p2)
-    (display "add-poly ")
-    (newline)
-    (display p1)
-    (newline)
-    (display p2)
-    (newline)
     (if (same-variable? (variable p1) (variable p2))
       (make-poly (variable p1)
                  (add-terms (term-list p1)
@@ -119,8 +113,18 @@
                                                        (simplify original-var
                                                                         (list (make-term original-o new-c)))))))
                         (make-polynomial v
-                                  (list (make-term 0 (simplify original-var (list (first-term (term-list p))))))))))
-                (add converted-first-term ((convert rest-of-p) v)))))))))
+                                  (list (make-term 0 (simplify original-var (list (first-term (term-list p)))))))))
+                    (converted-rest-of-p ((convert rest-of-p) v)))
+                ;(display "converted-first-term ")
+                ;(display converted-first-term)
+                ;(newline)
+                ;(display "rest-of-p ")
+                ;(display rest-of-p)
+                ;(newline)
+                ;(display "convert rest-of-p ")
+                ;(display converted-rest-of-p)
+                ;(newline)
+                (add converted-first-term converted-rest-of-p))))))))
   (define (add-poly-number p n)
     (make-poly (variable p)
                (map (lambda (term)
@@ -166,7 +170,18 @@
 (define (make-number n)
   ((get 'make 'number) n))
 (define (add a b)
-  (apply-generic 'add a b))
+  (let ((result (apply-generic 'add a b)))
+    (display "add: ")
+    (newline)
+    (display a)
+    (newline)
+    (display b)
+    (newline)
+    (display "result: ")
+    (newline)
+    (display result)
+    (newline)
+    result))
 (define (=zero? exp)
   (apply-generic 'zero? exp))
 ; conversion
@@ -179,6 +194,9 @@
 (define zero-y
   (make-polynomial 'y
                    (list)))
+(define x
+  (make-polynomial 'x
+                   (list (make-term 1 (make-number 1)))))
 (define x+1
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1))
@@ -251,7 +269,11 @@
      (check (equal? 
               x+3
               (add x+1 '(number 2)))
-              "Addition of a polynomial with a number")
+              "Addition of a polynomial with a 0th term and a number")
+     (check (equal? 
+              x+3
+              (add x '(number 3)))
+              "Addition of a polynomial without a 0th term and a number")
      ;(check (equal? 
      ;         '(polynomial (x (2 (number 1))
      ;                         (1 (number 1))
@@ -268,5 +290,6 @@
      ;         "Addition where one polynomial has a polynomial coefficient")
      ))
 ; TODO: multiplication
-(run-registered-tests)
+;(run-registered-tests)
 ;(run-test '(conversion anonymous-test-4))
+(run-test '(addition anonymous-test-7))

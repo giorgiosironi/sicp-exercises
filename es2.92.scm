@@ -18,7 +18,7 @@
     (let ((proc (get op type-tags)))
       (if proc
         (apply proc (map contents args))
-        (error "Cannot find procedure for these types -- APPLY-GENERIC" list (op type-tags))))))
+        (error "Cannot find procedure for these types -- APPLY-GENERIC" (list op type-tags))))))
 (define (adjoin-term term term-list)
   (if (=zero? (coeff term))
     term-list
@@ -63,11 +63,7 @@
   ;; internal procedures
   ;; representation of poly
   (define (make-poly variable term-list)
-    ; simplifications
-    (if (and (eq? (length term-list) 1)
-             (eq? (order (first-term term-list)) 0))
-      (coeff (first-term term-list))
-      (cons variable term-list)))
+    (cons variable term-list))
   (define (variable p) (car p))
   (define (term-list p) (cdr p))
   (define (variable? x) (symbol? x))
@@ -109,7 +105,6 @@
                                                                                (list (make-term original-o new-c)))))))
                         (make-polynomial v
                                          (list (make-term 0 (make-polynomial original-var (list (first-term (term-list p))))))))))
-
                 (add converted-first-term ((convert rest-of-p) v)))))))))
   (define (add-poly-number p n)
     (make-poly (variable p)
@@ -122,10 +117,17 @@
        (lambda (p1 p2) (tag (add-poly p1 p2))))
   (put 'add '(polynomial number)
        (lambda (p1 p2) (tag (add-poly-number p1 p2))))
+  (put 'add '(number polynomial)
+       (lambda (p1 p2) (tag (add-poly-number p2 p1))))
   (put 'mul '(polynomial polynomial)
        (lambda (p1 p2) (tag (mul-poly p1 p2))))
   (put 'make 'polynomial
-       (lambda (var terms) (tag (make-poly var terms))))
+       (lambda (var terms) 
+          ; simplifications: if it's coeff*x^0, it's just coeff
+          (if (and (eq? (length terms) 1)
+                   (eq? (order (first-term terms)) 0))
+            (coeff (first-term terms))
+            (tag (make-poly var terms)))))
   ; ok, now we can begin...
   (define (zero?-poly p)
     ; TODO: this should be made generic too
@@ -204,7 +206,7 @@
 ; TODO: automated conversion from x to y polynomial
 (load "/code/test-manager/load.scm")
 (in-test-group
-   conversion-to-a-different-variable
+   conversion ;-to-a-different-variable
    (define-each-test
      (check (equal? 
               zero-x
@@ -255,3 +257,4 @@
      ))
 ; TODO: multiplication
 (run-registered-tests)
+;(run-test '(conversion anonymous-test-4))

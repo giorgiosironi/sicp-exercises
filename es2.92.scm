@@ -236,6 +236,7 @@
 (define (convert variable p)
   ((apply-generic 'convert p) variable))
 ; samples
+; some of the samples are prefixed with poly-* because they start with a number
 (define zero-x
   (make-polynomial 'x
                    (list)))
@@ -252,6 +253,10 @@
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1))
                          (make-term 0 (make-number 1)))))
+(define x+2
+  (make-polynomial 'x
+                   (list (make-term 1 (make-number 1))
+                         (make-term 0 (make-number 2)))))
 (define x+3
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1))
@@ -271,6 +276,11 @@
   (make-polynomial 'x
                    (list (make-term 1 (make-number 2))
                          (make-term 0 (make-number 3)))))
+(define x^2+3x+2
+  (make-polynomial 'x
+                   (list (make-term 2 (make-number 1))
+                         (make-term 1 (make-number 3))
+                         (make-term 0 (make-number 2)))))
 (define poly-2x+y+3
   (make-polynomial 'x
                    (list (make-term 1 (make-number 2))
@@ -401,9 +411,13 @@
      (check (equal? 
               poly-2x+2
               (mul x+1 '(number 2)))
-              "Addition of a polynomial with a 0th term and a number")
+              "Multiplication of a polynomial with a 0th term and a number")
+     (check (equal? 
+              x^2+3x+2
+              (mul x+1 x+2))
+              "Multiplication of two polynomials in the same variable")
      ))
 ; TODO: multiplication
-;(run-registered-tests)
+(run-registered-tests)
 ;(run-test '(conversion anonymous-test-4))
-(run-test '(multiplication anonymous-test-14))
+;(run-test '(multiplication anonymous-test-14))

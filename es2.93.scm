@@ -1,4 +1,4 @@
-; all the stuff from previous exercises...
+; library from previous exercises (2.91)
 (define *operation-table* (make-hash-table))
 (define (put op types proc)
     (hash-table/put! 
@@ -185,6 +185,27 @@
   (make-polynomial 'x
                    (list (make-term 2 1)
                          (make-term 0 -1))))
+(load "/code/test-manager/load.scm")
+(display sample-numerator)
 (newline)
+(display sample-denominator)
+(newline)
+; TODO: introduce make-rational 
+; TODO: introduce add generic operation for 'rational type (put 'add 'rational rational)
+; TODO: implement gcd for 'polynomial
+; TODO: use gcd to reduce 'rational to lowest terms in the result of div
 (display (div sample-numerator sample-denominator))
 (newline)
+(in-test-group
+   division
+   (define-each-test
+     (check (equal? 
+              (list (make-polynomial 'x
+                                     '((3 1) (1 1)))
+                    (make-polynomial 'x
+                                     '((1 1) (0 -1))))
+              (div sample-numerator sample-denominator))
+              "Conversion of empty polynomial")
+    ))
+(run-registered-tests)
+;(run-test '(addition anonymous-test-9))

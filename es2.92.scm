@@ -219,6 +219,10 @@
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1))
                          (make-term 0 (make-number 3)))))
+(define y+3
+  (make-polynomial 'y
+                   (list (make-term 1 (make-number 1))
+                         (make-term 0 (make-number 3)))))
 (define poly-2x
   (make-polynomial 'x
                    (list (make-term 1 (make-number 2)))))
@@ -226,14 +230,18 @@
   (make-polynomial 'x
                    (list (make-term 1 (make-number 2))
                          (make-term 0 (make-number 3)))))
+(define poly-2x+y+3
+  (make-polynomial 'x
+                   (list (make-term 1 (make-number 2))
+                         (make-term 0 y+3))))
 (define x+y
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1))
                          (make-term 0 y))))
-(define y+3
+(define y+x
   (make-polynomial 'y
                    (list (make-term 1 (make-number 1))
-                         (make-term 0 (make-number 3)))))
+                         (make-term 0 x))))
 (define x+y+3
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1))
@@ -319,6 +327,10 @@
               x+y+3
               (add x+3 (convert 'x y)))
               "Addition of two polynomials with 0th terms")
+     (check (equal? 
+              poly-2x+y+3
+              (add x+3 (convert 'x y+x)))
+              "Addition of a poly in x with another poly not in x that has x in its 0-th term")
      ;(check (equal? 
      ;         '(polynomial (x (2 (number 1))
      ;                         (1 (number 1))

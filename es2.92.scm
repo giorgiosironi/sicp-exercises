@@ -230,6 +230,14 @@
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1))
                          (make-term 0 y))))
+(define y+3
+  (make-polynomial 'y
+                   (list (make-term 1 (make-number 1))
+                         (make-term 0 (make-number 3)))))
+(define x+y+3
+  (make-polynomial 'x
+                   (list (make-term 1 (make-number 1))
+                         (make-term 0 y+3))))
 (define x^2+x
   (make-polynomial 'x
                    (list (make-term 2 (make-number 1))
@@ -307,6 +315,10 @@
               x+y
               (add x (convert 'x y)))
               "Addition of a polynomial without a 0th term but with a coefficient and a number")
+     (check (equal? 
+              x+y+3
+              (add x+3 (convert 'x y)))
+              "Addition of two polynomials with 0th terms")
      ;(check (equal? 
      ;         '(polynomial (x (2 (number 1))
      ;                         (1 (number 1))

@@ -268,6 +268,9 @@
 (define poly-2x
   (make-polynomial 'x
                    (list (make-term 1 (make-number 2)))))
+(define poly-2y
+  (make-polynomial 'y
+                   (list (make-term 1 (make-number 2)))))
 (define poly-2x+2
   (make-polynomial 'x
                    (list (make-term 1 (make-number 2))
@@ -342,6 +345,10 @@
   (make-polynomial 'x
                    (list (make-term 2 (make-number 1))
                          (make-term 1 y))))
+(define poly-2x^2+2yx
+  (make-polynomial 'x
+                   (list (make-term 2 (make-number 2))
+                         (make-term 1 poly-2y))))
 (define yx
   (make-polynomial 'x
                    (list (make-term 1 y))))
@@ -430,6 +437,10 @@
      (check (equal? 
               x^2+yx
               (mul x (convert 'x y+x)))
+              "Multiplication of two polynomials in two different variables containing spurious terms")
+     (check (equal? 
+              poly-2x^2+2yx
+              (mul poly-2x (convert 'x y+x)))
               "Multiplication of two polynomials in two different variables containing spurious terms")
      ))
 ; BEWARE: there may be uncovered cases we didn't test for

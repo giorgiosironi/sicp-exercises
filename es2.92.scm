@@ -79,12 +79,6 @@
                             (term-list p2)))
       (error "Polys not in same var -- ADD-POLY"
              (list p1 p2))))
-  (define (mul-poly p1 p2)
-    (if (same-variable? (variable p1) (variable p2))(make-poly (variable p1)
-                                                               (mul-terms (term-list p1)
-                                                                          (term-list p2)))
-      (error "Polys not in same var -- MUL-POLY"
-             (list p1 p2))))
   (define (tag p) (attach-tag 'polynomial p))
   (define (simplify var terms)
     ; simplifications: if it's coeff*x^0, it's just coeff
@@ -143,6 +137,40 @@
                           (make-term (order term) (add (coeff term) (attach-tag 'number n)))
                           term))
                       (term-list p-with-coalesced-0th-term)))))
+    ; multiplication borrowed from es2.91
+    (define (mul-terms L1 L2)
+      (if (empty-termlist? L1)
+        (the-empty-termlist)
+        (add-terms (mul-term-by-all-terms (first-term L1) L2)
+                   (mul-terms (rest-terms L1) L2))))
+    (define (mul-term-by-all-terms t1 L)
+      (if (empty-termlist? L)
+        (the-empty-termlist)
+        (let ((t2 (first-term L)))
+          (adjoin-term
+            (make-term (+ (order t1) (order t2))
+                       (mul (coeff t1) (coeff t2)))(mul-term-by-all-terms t1 (rest-terms L))))))
+  (define (mul-poly p1 p2)
+    (if (same-variable? (variable p1) (variable p2))(make-poly (variable p1)
+                                                               (mul-terms (term-list p1)
+                                                                          (term-list p2)))
+      (error "Polys not in same var -- MUL-POLY"
+             (list p1 p2))))
+  (define (mul-poly-number p n)
+    (let ((p-with-coalesced-0th-term
+            (if (any (lambda (term) (eq? (order term) 0))
+                     (term-list p))
+              p
+              (make-poly (variable p)
+                         (append (term-list p) 
+                                 (list (make-term 0 (list 'number 0))))))))
+
+      (make-poly (variable p-with-coalesced-0th-term)
+                 (map (lambda (term)
+                        (if (eq? (order term) 0)
+                          (make-term (order term) (mul (coeff term) (attach-tag 'number n)))
+                          term))
+                      (term-list p-with-coalesced-0th-term)))))
   (put 'add '(polynomial polynomial)
        (lambda (p1 p2) (tag (add-poly p1 p2))))
   (put 'add '(polynomial number)
@@ -151,6 +179,10 @@
        (lambda (p1 p2) (tag (add-poly-number p2 p1))))
   (put 'mul '(polynomial polynomial)
        (lambda (p1 p2) (tag (mul-poly p1 p2))))
+  (put 'mul '(polynomial number)
+       (lambda (p1 p2) (tag (mul-poly-number p1 p2))))
+  (put 'mul '(number polynomial)
+       (lambda (p1 p2) (tag (mul-poly-number p2 p1))))
   (put 'make 'polynomial
        (lambda (var terms) 
           (cond
@@ -171,6 +203,8 @@
     (lambda (x) (= 0 x)))
   (put 'add '(number number)
     (lambda (a b) (attach-tag 'number (+ a b))))
+  (put 'mul '(number number)
+    (lambda (a b) (attach-tag 'number (* a b))))
   (put 'make 'number
     (lambda (n) (attach-tag 'number n))))
 (install-number-package)
@@ -183,6 +217,19 @@
 (define (add a b)
   (let ((result (apply-generic 'add a b)))
     (display "add: ")
+    (newline)
+    (display a)
+    (newline)
+    (display b)
+    (newline)
+    (display "result: ")
+    (newline)
+    (display result)
+    (newline)
+    result))
+(define (mul a b)
+  (let ((result (apply-generic 'mul a b)))
+    (display "mul: ")
     (newline)
     (display a)
     (newline)
@@ -226,6 +273,10 @@
 (define poly-2x
   (make-polynomial 'x
                    (list (make-term 1 (make-number 2)))))
+(define poly-2x+2
+  (make-polynomial 'x
+                   (list (make-term 1 (make-number 2))
+                         (make-term 0 (make-number 2)))))
 (define poly-2x+3
   (make-polynomial 'x
                    (list (make-term 1 (make-number 2))
@@ -354,7 +405,15 @@
               (add x^2+x (convert 'x xy^3)))
               "Addition where one polynomial has a polynomial coefficient")
      ))
+(in-test-group
+   multiplication
+   (define-each-test
+     (check (equal? 
+              poly-2x+2
+              (mul x+1 '(number 2)))
+              "Addition of a polynomial with a 0th term and a number")
+     ))
 ; TODO: multiplication
-(run-registered-tests)
+;(run-registered-tests)
 ;(run-test '(conversion anonymous-test-4))
-;(run-test '(addition anonymous-test-8))
+(run-test '(multiplication anonymous-test-14))

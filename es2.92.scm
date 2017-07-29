@@ -10,7 +10,10 @@
           *operation-table* 
               (list op types) 
                   #f))
-(define (type-tag pair) (car pair))
+(define (type-tag pair) 
+  (if (pair? pair)
+    (car pair)
+    (error "Not a pair -- TYPE-TAG" pair)))
 (define (contents pair) (cadr pair))
 (define (attach-tag tag contents) (list tag contents))
 (define (apply-generic op . args)
@@ -130,7 +133,9 @@
             (if (any (lambda (term) (eq? (order term) 0))
                      (term-list p))
               p
-              (make-poly (variable p) (append (term-list p) (list (make-term 0 0)))))))
+              (make-poly (variable p)
+                         (append (term-list p) 
+                                 (list (make-term 0 (list 'number 0))))))))
 
       (make-poly (variable p-with-coalesced-0th-term)
                  (map (lambda (term)

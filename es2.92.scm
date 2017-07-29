@@ -208,6 +208,9 @@
 (define x
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1)))))
+(define y
+  (make-polynomial 'y
+                   (list (make-term 1 (make-number 1)))))
 (define x+1
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1))
@@ -216,6 +219,17 @@
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1))
                          (make-term 0 (make-number 3)))))
+(define poly-2x
+  (make-polynomial 'x
+                   (list (make-term 1 (make-number 2)))))
+(define poly-2x+3
+  (make-polynomial 'x
+                   (list (make-term 1 (make-number 2))
+                         (make-term 0 (make-number 3)))))
+(define x+y
+  (make-polynomial 'x
+                   (list (make-term 1 (make-number 1))
+                         (make-term 0 y))))
 (define x^2+x
   (make-polynomial 'x
                    (list (make-term 2 (make-number 1))
@@ -285,6 +299,14 @@
               x+3
               (add x '(number 3)))
               "Addition of a polynomial without a 0th term and a number")
+     (check (equal? 
+              poly-2x+3
+              (add poly-2x '(number 3)))
+              "Addition of a polynomial without a 0th term but with a coefficient and a number")
+     (check (equal? 
+              x+y
+              (add x (convert 'x y)))
+              "Addition of a polynomial without a 0th term but with a coefficient and a number")
      ;(check (equal? 
      ;         '(polynomial (x (2 (number 1))
      ;                         (1 (number 1))
@@ -301,6 +323,6 @@
      ;         "Addition where one polynomial has a polynomial coefficient")
      ))
 ; TODO: multiplication
-;(run-registered-tests)
+(run-registered-tests)
 ;(run-test '(conversion anonymous-test-4))
-(run-test '(addition anonymous-test-7))
+;(run-test '(addition anonymous-test-8))

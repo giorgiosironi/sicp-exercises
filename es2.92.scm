@@ -151,11 +151,12 @@
             (make-term (+ (order t1) (order t2))
                        (mul (coeff t1) (coeff t2)))(mul-term-by-all-terms t1 (rest-terms L))))))
   (define (mul-poly p1 p2)
-    (if (same-variable? (variable p1) (variable p2))(make-poly (variable p1)
-                                                               (mul-terms (term-list p1)
-                                                                          (term-list p2)))
-      (error "Polys not in same var -- MUL-POLY"
-             (list p1 p2))))
+    (if (same-variable? (variable p1) (variable p2))
+      (make-poly (variable p1)
+                 (mul-terms (term-list p1)
+                            (term-list p2)))
+      (mul-poly p1
+                (contents ((convert-poly p2) (variable p1))))))
   (define (mul-poly-number p n)
     (make-poly (variable p)
                (map (lambda (term)
@@ -432,15 +433,15 @@
               "Multiplication of two polynomials in the same variable")
      (check (equal? 
               yx
-              (mul x (convert 'x y)))
+              (mul x y))
               "Multiplication of two monomials in two different variables")
      (check (equal? 
               x^2+yx
-              (mul x (convert 'x y+x)))
+              (mul x y+x))
               "Multiplication of two polynomials in two different variables containing spurious terms")
      (check (equal? 
               poly-2x^2+2yx
-              (mul poly-2x (convert 'x y+x)))
+              (mul poly-2x y+x))
               "Multiplication of two polynomials in two different variables containing spurious terms")
      ))
 ; BEWARE: there may be uncovered cases we didn't test for

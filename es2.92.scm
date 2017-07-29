@@ -234,6 +234,15 @@
   (make-polynomial 'x
                    (list (make-term 1 (make-number 2))
                          (make-term 0 y+3))))
+(define y^3+4 ; y^3 + 4
+  (make-polynomial 'y
+                   (list (make-term 3 (make-number 1))
+                         (make-term 0 (make-number 4)))))
+(define poly-x^2+x+y^3+4
+  (make-polynomial 'x
+                   (list (make-term 2 (make-number 1))
+                         (make-term 1 (make-number 1))
+                         (make-term 0 y^3+4))))
 (define x+y
   (make-polynomial 'x
                    (list (make-term 1 (make-number 1))
@@ -250,10 +259,6 @@
   (make-polynomial 'x
                    (list (make-term 2 (make-number 1))
                          (make-term 1 (make-number 1)))))
-(define y^3+4 ; y^3 + 4
-  (make-polynomial 'y
-                   (list (make-term 3 (make-number 1))
-                         (make-term 0 (make-number 4)))))
 (define xy^3
   (make-polynomial 'y
                    (list (make-term 3 (make-polynomial 'x (list (make-term 1 (make-number 1))))))))
@@ -331,13 +336,10 @@
               poly-2x+y+3
               (add x+3 (convert 'x y+x)))
               "Addition of a poly in x with another poly not in x that has x in its 0-th term")
-     ;(check (equal? 
-     ;         '(polynomial (x (2 (number 1))
-     ;                         (1 (number 1))
-     ;                         (0 (polynomial (y (3 (number 1))
-     ;                                           (0 (number 4)))))))
-     ;         (add x^2+x (convert 'x y^3+4)))
-     ;         "Addition of two polynomials with different vars but integer coefficients")
+     (check (equal? 
+              poly-x^2+x+y^3+4
+              (add x^2+x (convert 'x y^3+4)))
+              "Addition of two polynomials with different vars but integer coefficients")
 
      ;(check (equal? 
      ;         '(polynomial (x (2 (number 1))

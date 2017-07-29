@@ -191,13 +191,16 @@
 (display sample-denominator)
 (newline)
 ; TODO: introduce make-rational 
+(define (make-rational n d)
+  (attach-tag 'rational (list n d)))
+; TODO: extract make-rational into its own package with generic operation (put 'make 'rational n d)
 ; TODO: introduce add generic operation for 'rational type (put 'add 'rational rational)
 ; TODO: implement gcd for 'polynomial
 ; TODO: use gcd to reduce 'rational to lowest terms in the result of div
 (display (div sample-numerator sample-denominator))
 (newline)
 (in-test-group
-   division
+   division-of-polynomials
    (define-each-test
      (check (equal? 
               (list (make-polynomial 'x
@@ -205,6 +208,18 @@
                     (make-polynomial 'x
                                      '((1 1) (0 -1))))
               (div sample-numerator sample-denominator))
+              "Conversion of empty polynomial")
+    ))
+(in-test-group
+   rational-functions
+   (define-each-test
+     (check (equal? 
+              (list 'rational
+                    (list (make-polynomial 'x
+                                           '((5 1) (0 -1)))
+                          (make-polynomial 'x
+                                           '((2 1) (0 -1)))))
+              (make-rational sample-numerator sample-denominator))
               "Conversion of empty polynomial")
     ))
 (run-registered-tests)

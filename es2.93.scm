@@ -192,8 +192,22 @@
 (newline)
 ; TODO: introduce make-rational 
 (define (make-rational n d)
-  (attach-tag 'rational (list n d)))
+  ((apply-generic 'make '(rational)) n d))
 ; TODO: extract make-rational into its own package with generic operation (put 'make 'rational n d)
+(define (install-rational-package)
+  (define (tag value)
+    (attach-tag 'rational value))
+  (put 'make '(rational)
+       (lambda (n d) (tag (list n d)))))
+  ;(put 'zero? '(number)
+  ;  (lambda (x) (= 0 x)))
+  ;(put 'add '(number number)
+  ;  (lambda (a b) (+ a b)))
+  ;(put 'mul '(number number)
+  ;  (lambda (a b) (* a b)))
+  ;(put 'div '(number number)
+  ;  (lambda (a b) (/ a b))))
+(install-rational-package)
 ; TODO: introduce add generic operation for 'rational type (put 'add 'rational rational)
 ; TODO: implement gcd for 'polynomial
 ; TODO: use gcd to reduce 'rational to lowest terms in the result of div

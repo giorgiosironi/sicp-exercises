@@ -259,6 +259,14 @@
   (make-polynomial 'x
                    (list (make-term 2 (make-number 1))
                          (make-term 1 (make-number 1)))))
+(define y^3+1
+  (make-polynomial 'y
+                   (list (make-term 3 (make-number 1))
+                         (make-term 0 (make-number 1)))))
+(define x^2+_y^3+1_x
+  (make-polynomial 'x
+                   (list (make-term 2 (make-number 1))
+                         (make-term 1 y^3+1))))
 (define xy^3
   (make-polynomial 'y
                    (list (make-term 3 (make-polynomial 'x (list (make-term 1 (make-number 1))))))))
@@ -341,12 +349,10 @@
               (add x^2+x (convert 'x y^3+4)))
               "Addition of two polynomials with different vars but integer coefficients")
 
-     ;(check (equal? 
-     ;         '(polynomial (x (2 (number 1))
-     ;                         (1 (polynomial (y (3 (number 1))
-     ;                                           (0 (number 1)))))))
-     ;         (add x^2+x (convert 'x xy^3)))
-     ;         "Addition where one polynomial has a polynomial coefficient")
+     (check (equal? 
+              x^2+_y^3+1_x
+              (add x^2+x (convert 'x xy^3)))
+              "Addition where one polynomial has a polynomial coefficient")
      ))
 ; TODO: multiplication
 (run-registered-tests)

@@ -338,6 +338,13 @@
   (make-polynomial 'x
                    (list (make-term 1 (make-polynomial 'y (list (make-term 2 (make-number 1)))))
                          (make-term 0 (make-number 1)))))
+(define x^2+yx
+  (make-polynomial 'x
+                   (list (make-term 2 (make-number 1))
+                         (make-term 1 y))))
+(define yx
+  (make-polynomial 'x
+                   (list (make-term 1 y))))
 ; TODO: automated conversion from x to y polynomial
 (load "/code/test-manager/load.scm")
 (in-test-group
@@ -416,8 +423,16 @@
               x^2+3x+2
               (mul x+1 x+2))
               "Multiplication of two polynomials in the same variable")
+     (check (equal? 
+              yx
+              (mul x (convert 'x y)))
+              "Multiplication of two monomials in two different variables")
+     (check (equal? 
+              x^2+yx
+              (mul x (convert 'x y+x)))
+              "Multiplication of two polynomials in two different variables containing spurious terms")
      ))
-; TODO: multiplication
+; BEWARE: there may be uncovered cases we didn't test for
 (run-registered-tests)
 ;(run-test '(conversion anonymous-test-4))
 ;(run-test '(multiplication anonymous-test-14))

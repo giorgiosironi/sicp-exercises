@@ -77,8 +77,8 @@
       (make-poly (variable p1)
                  (add-terms (term-list p1)
                             (term-list p2)))
-      (error "Polys not in same var -- ADD-POLY"
-             (list p1 p2))))
+      (add-poly p1
+                (contents ((convert-poly p2) (variable p1))))))
   (define (tag p) (attach-tag 'polynomial p))
   (define (simplify var terms)
     ; simplifications: if it's coeff*x^0, it's just coeff
@@ -399,24 +399,24 @@
               "Addition of a polynomial without a 0th term but with a coefficient and a number")
      (check (equal? 
               x+y
-              (add x (convert 'x y)))
+              (add x y))
               "Addition of a polynomial without a 0th term but with a coefficient and a number")
      (check (equal? 
               x+y+3
-              (add x+3 (convert 'x y)))
+              (add x+3 y))
               "Addition of two polynomials with 0th terms")
      (check (equal? 
               poly-2x+y+3
-              (add x+3 (convert 'x y+x)))
+              (add x+3 y+x))
               "Addition of a poly in x with another poly not in x that has x in its 0-th term")
      (check (equal? 
               poly-x^2+x+y^3+4
-              (add x^2+x (convert 'x y^3+4)))
+              (add x^2+x y^3+4))
               "Addition of two polynomials with different vars but integer coefficients")
 
      (check (equal? 
               x^2+_y^3+1_x
-              (add x^2+x (convert 'x xy^3)))
+              (add x^2+x xy^3))
               "Addition where one polynomial has a polynomial coefficient")
      ))
 (in-test-group
@@ -445,5 +445,5 @@
      ))
 ; BEWARE: there may be uncovered cases we didn't test for
 (run-registered-tests)
-;(run-test '(conversion anonymous-test-4))
+;(run-test '(addition anonymous-test-9))
 ;(run-test '(multiplication anonymous-test-14))

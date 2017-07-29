@@ -157,20 +157,10 @@
       (error "Polys not in same var -- MUL-POLY"
              (list p1 p2))))
   (define (mul-poly-number p n)
-    (let ((p-with-coalesced-0th-term
-            (if (any (lambda (term) (eq? (order term) 0))
-                     (term-list p))
-              p
-              (make-poly (variable p)
-                         (append (term-list p) 
-                                 (list (make-term 0 (list 'number 0))))))))
-
-      (make-poly (variable p-with-coalesced-0th-term)
-                 (map (lambda (term)
-                        (if (eq? (order term) 0)
-                          (make-term (order term) (mul (coeff term) (attach-tag 'number n)))
-                          term))
-                      (term-list p-with-coalesced-0th-term)))))
+    (make-poly (variable p)
+               (map (lambda (term)
+                      (make-term (order term) (mul (coeff term) (attach-tag 'number n))))
+                    (term-list p))))
   (put 'add '(polynomial polynomial)
        (lambda (p1 p2) (tag (add-poly p1 p2))))
   (put 'add '(polynomial number)

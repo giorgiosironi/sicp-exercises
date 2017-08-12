@@ -220,32 +220,32 @@
 (define sample-rf (make-rational (make-polynomial 'x '((2 1) (0 1)))
                                  (make-polynomial 'x '((3 1) (0 1)))))
 (in-test-group
-   division-of-polynomials
-   (define-each-test
-     (check (equal? 
-              (list (make-polynomial 'x
-                                     '((3 1) (1 1)))
-                    (make-polynomial 'x
-                                     '((1 1) (0 -1))))
-              (div sample-numerator sample-denominator))
-              "Division with quotient and remainder")
+  division-of-polynomials
+  (define-each-test
+    (check (equal? 
+             (list (make-polynomial 'x
+                                    '((3 1) (1 1)))
+                   (make-polynomial 'x
+                                    '((1 1) (0 -1))))
+             (div sample-numerator sample-denominator))
+           "Division with quotient and remainder")
     ))
 (in-test-group
-   rational-functions
-   (define-each-test
-     (check (equal? 
-              (list 'rational
-                    (list (make-polynomial 'x
-                                           '((5 1) (0 -1)))
-                          (make-polynomial 'x
-                                           '((2 1) (0 -1)))))
-              (make-rational sample-numerator sample-denominator))
-              "Building a rational function")
-     (check (equal? 
-              (make-rational (make-polynomial 'x '((2 2) (0 2)))
-                             (make-polynomial 'x '((3 1) (0 1))))
-              (add sample-rf sample-rf))
-              "Adding two rational functions")
+  rational-functions
+  (define-each-test
+    (check (equal? 
+             (list 'rational
+                   (list (make-polynomial 'x
+                                          '((5 1) (0 -1)))
+                         (make-polynomial 'x
+                                          '((2 1) (0 -1)))))
+             (make-rational sample-numerator sample-denominator))
+           "Building a rational function")
+    (check (equal? 
+             (make-rational (make-polynomial 'x '((2 2) (0 2)))
+                            (make-polynomial 'x '((3 1) (0 1))))
+             (add sample-rf sample-rf))
+           "Adding two rational functions")
     ))
 (run-registered-tests)
 ;(run-test '(addition anonymous-test-9))

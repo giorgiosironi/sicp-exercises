@@ -1,4 +1,4 @@
-; library from previous exercises (2.91)
+; forked from previous exercise (2.93)
 (define *operation-table* (make-hash-table))
 (define (put op types proc)
     (hash-table/put! 
@@ -95,11 +95,22 @@
                             (term-list p2)))
       (error "Polys not in same var -- MUL-POLY"
              (list p1 p2))))
+  (define (mul-poly-number p n)
+    (make-poly (variable p)
+               (map (lambda (term)
+                      (make-term (order term) (mul (coeff term) (attach-tag 'number n))))
+                    (term-list p))))
   (define (tag p) (attach-tag 'polynomial p))
   (put 'add '(polynomial polynomial)
        (lambda (p1 p2) (tag (add-poly p1 p2))))
   (put 'mul '(polynomial polynomial)
        (lambda (p1 p2) (tag (mul-poly p1 p2))))
+  (put 'mul '(polynomial polynomial)
+       (lambda (p1 p2) (tag (mul-poly p1 p2))))
+  (put 'mul '(polynomial number)
+       (lambda (p1 p2) (tag (mul-poly-number p1 p2))))
+  (put 'mul '(number polynomial)
+       (lambda (p1 p2) (tag (mul-poly-number p2 p1))))
   (put 'make 'polynomial
        (lambda (var terms) (tag (make-poly var terms))))
   (define (zero?-poly p)
@@ -138,11 +149,8 @@
       a
       (gcd-terms b (remainder-terms a b))))
   (put 'gcd '(polynomial polynomial)
-       (lambda (p1 p2) 
-         (if (eq? (variable p1) (variable p2))
-           (tag (make-poly (variable p1)
-                           (gcd-terms (term-list p1) (term-list p2))))
-           (error "Polynomials not in the same variable -- GCD" (list p1 p2)))))
+       (lambda (p1 p2) (tag (make-poly (variable p1)
+                                       (gcd-terms (term-list p1) (term-list p2))))))
   'done)
 (install-polynomial-package)
 (define (install-number-package)
@@ -208,34 +216,61 @@
 (define (make-rational n d)
   ((get 'make '(rational)) n d))
 (define (install-rational-package)
-  (define (numerator r)
+  (define (num r)
     (car r))
-  (define (denominator r)
+  (define (den r)
     (cadr r))
-  (define (make-rat n d) (tag (list n d)))
+  (define (make-rat n d) (list n d))
   (define (tag value)
     (attach-tag 'rational value))
-  (put 'make '(rational) make-rat)
+  (put 'make '(rational) (lambda (n d) (tag (make-rat n d))))
   ;(put 'zero? '(number)
   ;  (lambda (x) (= 0 x)))
+  (define (simplify n d)
+    (let ((the-gcd (greatest-common-divisor n d)))
+      (make-rat (car (div n the-gcd))
+                (car (div d the-gcd)))))
   (put 'add '(rational rational)
-    (lambda (a b) (make-rat (add (numerator a) (numerator b))
-                            (denominator a)))))
+    (lambda (a b) (tag (simplify (add (num a) (num b))
+                                 (den a)))))
+  (put 'mul-both-n-d '(rational)
+    (lambda (rf)
+      (lambda (number) (tag (make-rat (mul (num rf) number)
+                                      (mul (den rf) number)))))))
   ;(put 'mul '(number number)
   ;  (lambda (a b) (* a b)))
   ;(put 'div '(number number)
   ;  (lambda (a b) (/ a b))))
 (install-rational-package)
+(define (mul-both-n-d rf number)
+  ((apply-generic 'mul-both-n-d rf) number))
 ; TODO: use gcd to reduce 'rational to lowest terms in the result of div
 (display (div sample-numerator sample-denominator))
 (newline)
 (define x-1 (make-polynomial 'x '((1 1) (0 -1))))
+(define x+1 (make-polynomial 'x '((1 1) (0 1))))
 (define x^2+1 (make-polynomial 'x '((2 1) (0 1))))
 (define x^3+1 (make-polynomial 'x '((3 1) (0 1))))
 (define x^2-1 (make-polynomial 'x '((2 1) (0 -1))))
 (define x^3-1 (make-polynomial 'x '((3 1) (0 -1))))
+(define sample--x^2+x (make-polynomial 'x '((2 -1) (1 1))))
+(define sample-2x^2+2x+2 (make-polynomial 'x '((2 2) (1 2) (0 2))))
 (define sample-rf (make-rational x^2+1
                                  x^3+1))
+; from exercise
+(define p1 (make-polynomial 'x '((4 1) (3 -1) (2 -2) (1 2))))
+(define p2 (make-polynomial 'x '((3 1) (1 -1))))
+(in-test-group
+  division-of-polynomials
+  (define-each-test
+    (check (equal? 
+             (list (make-polynomial 'x
+                                    '((3 1) (1 1)))
+                   (make-polynomial 'x
+                                    '((1 1) (0 -1))))
+             (div sample-numerator sample-denominator))
+           "Division with quotient and remainder")
+    ))
 (in-test-group
   greatest-common-divisor-of-polynomials
   (define-each-test
@@ -243,6 +278,10 @@
              x-1
              (greatest-common-divisor x^2-1 x^3-1))
            "Simple common divisor")
+    (check (equal?
+             sample--x^2+x
+             (greatest-common-divisor p1 p2))
+           "Example from book's exercise")
     ))
 (in-test-group
   rational-functions
@@ -255,11 +294,19 @@
                                           '((2 1) (0 -1)))))
              (make-rational sample-numerator sample-denominator))
            "Building a rational function")
+    ; strange results: integers are not considered
+    ; and numerators/denominators are divided by 2 or 4 each
+    ; algebrically correct, but not really "simplified"
     (check (equal? 
-             (make-rational (make-polynomial 'x '((2 2) (0 2)))
-                            (make-polynomial 'x '((3 1) (0 1))))
+             (make-rational (make-polynomial 'x '((2 1/2) (0 1/2)))
+                            (make-polynomial 'x '((3 1/4) (0 1/4))))
              (add sample-rf sample-rf))
-           "Adding two rational functions, no simplification")
+           "Adding two rational functions")
+    ; same here: numerator and denominator are divided by 2 each
+    (check (equal? 
+             (mul-both-n-d (make-rational sample-2x^2+2x+2 x+1) 1/2)
+             (add (make-rational x^3-1 x^2-1)
+                  (make-rational x^3-1 x^2-1)))
+             "Adding two rational functions and simplifying them")
     ))
 (run-registered-tests)
-;(run-test '(addition anonymous-test-9))

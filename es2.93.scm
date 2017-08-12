@@ -193,14 +193,19 @@
 (define (make-rational n d)
   ((get 'make '(rational)) n d))
 (define (install-rational-package)
+  (define (numerator r)
+    (car r))
+  (define (denominator r)
+    (cadr r))
+  (define (make-rat n d) (tag (list n d)))
   (define (tag value)
     (attach-tag 'rational value))
-  (put 'make '(rational)
-       (lambda (n d) (tag (list n d)))))
+  (put 'make '(rational) make-rat)
   ;(put 'zero? '(number)
   ;  (lambda (x) (= 0 x)))
-  ;(put 'add '(number number)
-  ;  (lambda (a b) (+ a b)))
+  (put 'add '(rational rational)
+    (lambda (a b) (make-rat (add (numerator a) (numerator b))
+                            (denominator a)))))
   ;(put 'mul '(number number)
   ;  (lambda (a b) (* a b)))
   ;(put 'div '(number number)
@@ -211,6 +216,9 @@
 ; TODO: use gcd to reduce 'rational to lowest terms in the result of div
 (display (div sample-numerator sample-denominator))
 (newline)
+; (x^2+1)/(x^3+1)
+(define sample-rf (make-rational (make-polynomial 'x '((2 1) (0 1)))
+                                 (make-polynomial 'x '((3 1) (0 1)))))
 (in-test-group
    division-of-polynomials
    (define-each-test
@@ -220,7 +228,7 @@
                     (make-polynomial 'x
                                      '((1 1) (0 -1))))
               (div sample-numerator sample-denominator))
-              "Conversion of empty polynomial")
+              "Division with quotient and remainder")
     ))
 (in-test-group
    rational-functions
@@ -232,7 +240,12 @@
                           (make-polynomial 'x
                                            '((2 1) (0 -1)))))
               (make-rational sample-numerator sample-denominator))
-              "Conversion of empty polynomial")
+              "Building a rational function")
+     (check (equal? 
+              (make-rational (make-polynomial 'x '((2 2) (0 2)))
+                             (make-polynomial 'x '((3 1) (0 1))))
+              (add sample-rf sample-rf))
+              "Adding two rational functions")
     ))
 (run-registered-tests)
 ;(run-test '(addition anonymous-test-9))

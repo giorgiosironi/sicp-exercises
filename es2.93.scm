@@ -190,10 +190,8 @@
 (newline)
 (display sample-denominator)
 (newline)
-; TODO: introduce make-rational 
 (define (make-rational n d)
-  ((apply-generic 'make '(rational)) n d))
-; TODO: extract make-rational into its own package with generic operation (put 'make 'rational n d)
+  ((get 'make '(rational)) n d))
 (define (install-rational-package)
   (define (tag value)
     (attach-tag 'rational value))

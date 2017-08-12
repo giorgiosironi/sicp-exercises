@@ -130,6 +130,16 @@
                  remainder-result))))))
   (put 'div '(polynomial polynomial)
        (lambda (p1 p2) (div-poly p1 p2)))
+
+  (define (remainder-terms a b)
+    (cadr (div-terms a b)))
+  (define (gcd-terms a b)
+    (if (empty-termlist? b)
+      a
+      (gcd-terms b (remainder-terms a b))))
+  (put 'gcd '(polynomial polynomial)
+       (lambda (p1 p2) (tag (make-poly (variable p1)
+                                       (gcd-terms (term-list p1) (term-list p2))))))
   'done)
 (install-polynomial-package)
 (define (install-number-package)
@@ -174,6 +184,8 @@
   (apply-generic 'mul a b))
 (define (div a b)
   (apply-generic 'div a b))
+(define (greatest-common-divisor a b)
+  (apply-generic 'gcd a b))
 (define (make-polynomial var terms)
   ((get 'make 'polynomial) var terms))
 ; examples
@@ -217,8 +229,13 @@
 (display (div sample-numerator sample-denominator))
 (newline)
 ; (x^2+1)/(x^3+1)
-(define sample-rf (make-rational (make-polynomial 'x '((2 1) (0 1)))
-                                 (make-polynomial 'x '((3 1) (0 1)))))
+(define x-1 (make-polynomial 'x '((1 1) (0 -1))))
+(define x^2+1 (make-polynomial 'x '((2 1) (0 1))))
+(define x^3+1 (make-polynomial 'x '((3 1) (0 1))))
+(define x^2-1 (make-polynomial 'x '((2 1) (0 -1))))
+(define x^3-1 (make-polynomial 'x '((3 1) (0 -1))))
+(define sample-rf (make-rational x^2+1
+                                 x^3+1))
 (in-test-group
   division-of-polynomials
   (define-each-test
@@ -229,6 +246,14 @@
                                     '((1 1) (0 -1))))
              (div sample-numerator sample-denominator))
            "Division with quotient and remainder")
+    ))
+(in-test-group
+  greatest-common-divisor-of-polynomials
+  (define-each-test
+    (check (equal?
+             x-1
+             (greatest-common-divisor x^2-1 x^3-1))
+           "Simple common divisor")
     ))
 (in-test-group
   rational-functions

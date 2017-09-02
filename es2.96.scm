@@ -329,4 +329,12 @@
              (greatest-common-divisor q1 q2))
            "Book's corner case example. Thanks to the integerizing-factor used by pseudoremainder-terms, we get a GCD that has integer coefficients. It is however not minimal")
     ))
+(in-test-group
+  reducing-rational-functions
+  (define-each-test
+    (check (equal? 
+             (make-rational (make-polynomial 'x '((2 2) (0 2)))
+                            (make-polynomial 'x '((3 1) (0 1))))
+             (add sample-rf sample-rf))
+           "Adding two rational functions and simplifying the result. `add` uses `simplify` now and with the modified `gcd-terms` we get the expected result")))
 (run-registered-tests)

@@ -102,9 +102,9 @@
                     (term-list p))))
   (define (reduce-poly p1 p2)
     (if (same-variable? (variable p1) (variable p2))
-      (make-poly (variable p1)
-                 (reduce-terms (term-list p1)
-							   (term-list p2)))
+      (map (lambda (terms) (make-poly (variable p1) terms))
+		   (reduce-terms (term-list p1)
+						 (term-list p2)))
       (error "Polys not in same var -- REDUCE-POLY"
              (list p1 p2))))
   (define (tag p) (attach-tag 'polynomial p))
@@ -119,7 +119,7 @@
   (put 'mul '(number polynomial)
        (lambda (p1 p2) (tag (mul-poly-number p2 p1))))
   (put 'reduce '(polynomial polynomial)
-       (lambda (p1 p2) (tag (reduce-poly p1 p2))))
+       (lambda (p1 p2) (map tag (reduce-poly p1 p2))))
   (put 'make 'polynomial
        (lambda (var terms) (tag (make-poly var terms))))
   (define (zero?-poly p)
@@ -190,6 +190,11 @@
   (define (gcd-multiple-numbers numbers)
     (reduce gcd-integer (car numbers) numbers))
   (define (reduce-terms t1 t2)
+	(define (take-only-quotient q-and-r)
+	  (if (eq? (cadr q-and-r) '())
+		(car q-and-r)
+		(error "We were expecting an empty remainder to only get  the quotient, but we have both -- TAKE-ONLY-QUOTIENT" q-and-r)))
+
 	(define (integerizing-factor-customized-for-gcd p q common-divisor)
 		(let ((o1 (max (order (car p)) (order (car q))))
 			  (o2 (order (car common-divisor)))
@@ -203,20 +208,25 @@
 		(display "integerizing-factor: ") (newline)
 		(display integerizing-factor) (newline)
 		(let ((large-integers-intermediate-result (map (lambda (t)
-			   (div-terms (mul-terms-by t integerizing-factor)
-							common-divisor))
+			   (take-only-quotient (div-terms
+									 (mul-terms-by t
+												   integerizing-factor)
+									 common-divisor)))
 			; TODO: more pressing problem, the term list have an empty term at the end
 			; TODO: we are missing the simplification of integer coefficients from t1 and t2
 			 (list t1 t2))))
-		  (let ((all-coefficients
-				  (map (lambda (terms) terms)
-						 ;(map coeff terms))
-					   large-integers-intermediate-result)))
-			(begin 
-				;(display "all-coefficients: ")
-			  ;(display all-coefficients)
+		  (let* ((all-coefficients
+				  (reduce append
+						  '()
+						  (map (lambda (terms) 
+								 (map coeff terms))
+							   large-integers-intermediate-result)))
+				(gcd-coefficients (gcd-multiple-numbers all-coefficients)))
+				(display "all-coefficients: ")
+			  (display all-coefficients)
 			  (newline)
-			  large-integers-intermediate-result)))))
+			  (map (lambda (terms) (mul-terms-by terms (/ 1 gcd-coefficients)))
+				   large-integers-intermediate-result)))))
   (put 'gcd '(polynomial polynomial)
        (lambda (p1 p2)
          (tag 
@@ -327,14 +337,14 @@
 (define (mul-both-n-d rf number)
   ((apply-generic 'mul-both-n-d rf) number))
 ; from previous exercise
-(define p1 (make-polynomial 'x
+(define old-p1 (make-polynomial 'x
                             '((2 1) (1 -2) (0 1))))
-(define p2 (make-polynomial 'x
+(define old-p2 (make-polynomial 'x
                             '((2 11) (0 7))))
-(define p3 (make-polynomial 'x
+(define old-p3 (make-polynomial 'x
                             '((1 13) (0 5))))
-(define q1 (mul p1 p2)) ; (polynomial (x (4 11) (3 -22) (2 18) (1 -14) (0 7)))
-(define q2 (mul p1 p3)) ; (polynomial (x (3 13) (2 -21) (1 3) (0 5)))
+(define old-q1 (mul old-p1 old-p2)) ; (polynomial (x (4 11) (3 -22) (2 18) (1 -14) (0 7)))
+(define old-q2 (mul old-p1 old-p3)) ; (polynomial (x (3 13) (2 -21) (1 3) (0 5)))
 ; this exercise
 (define p1 (make-polynomial 'x '((1 1) (0 1))))
 (define p2 (make-polynomial 'x '((3 1) (0 -1))))
@@ -350,8 +360,8 @@
              (reduce-generic 30 40))
            "Two integers with a common factor")
     (check (equal? 
-			 (list p2 p3)
-             (reduce-generic q1 q2))
+			 (list old-p2 old-p3)
+             (reduce-generic old-q1 old-q2))
            "Two polynomials with a common divisor")
 	))
 ;(in-test-group

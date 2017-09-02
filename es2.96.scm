@@ -171,8 +171,8 @@
     (let ((coefficients (map coeff
                              (term-list p))))
       (contents (mul (tag p)
-                     (make-number (/ 1
-                                     (gcd-multiple-numbers coefficients)))))))
+                     (/ 1
+						(gcd-multiple-numbers coefficients))))))
   ; es1.33
   (define (gcd-integer a b)
     (if (= b 0)
@@ -234,8 +234,6 @@
   (apply-generic 'div a b))
 (define (greatest-common-divisor a b)
   (apply-generic 'gcd a b))
-(define (make-number n)
-  (list 'number n))
 (define (make-polynomial var terms)
   ((get 'make 'polynomial) var terms))
 ; examples
@@ -283,7 +281,6 @@
 (install-rational-package)
 (define (mul-both-n-d rf number)
   ((apply-generic 'mul-both-n-d rf) number))
-; TODO: use gcd to reduce 'rational to lowest terms in the result of div
 (display (div sample-numerator sample-denominator))
 (newline)
 (define x-1 (make-polynomial 'x '((1 1) (0 -1))))
@@ -305,14 +302,8 @@
                             '((2 11) (0 7))))
 (define p3 (make-polynomial 'x
                             '((1 13) (0 5))))
-(define q1 (mul p1 p2))
-(define q2 (mul p1 p3))
-(display "Q1: ") (display q1) (newline) ; (polynomial (x (4 11) (3 -22) (2 18) (1 -14) (0 7)))
-(display "Q2: ")(display q2) (newline) ; (polynomial (x (3 13) (2 -21) (1 3) (0 5)))
-; suppose we want to do q1/q2
-(define c 13)
-(define o1 4)
-(define o2 3)
+(define q1 (mul p1 p2)) ; (polynomial (x (4 11) (3 -22) (2 18) (1 -14) (0 7)))
+(define q2 (mul p1 p3)) ; (polynomial (x (3 13) (2 -21) (1 3) (0 5)))
 (in-test-group
   greatest-common-divisor-of-polynomials
   (define-each-test

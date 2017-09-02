@@ -244,7 +244,6 @@
 (install-rational-package)
 (define (mul-both-n-d rf number)
   ((apply-generic 'mul-both-n-d rf) number))
-; TODO: use gcd to reduce 'rational to lowest terms in the result of div
 (display (div sample-numerator sample-denominator))
 (newline)
 (define x-1 (make-polynomial 'x '((1 1) (0 -1))))

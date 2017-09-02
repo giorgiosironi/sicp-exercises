@@ -167,9 +167,27 @@
     (if (empty-termlist? b)
       a
       (gcd-terms b (pseudoremainder-terms a b))))
+  (define (reduce-by-common-factor p)
+    (let ((coefficients (map coeff
+                             (term-list p))))
+      (contents (mul (tag p)
+                     (make-number (/ 1
+                                     (gcd-multiple-numbers coefficients)))))))
+  ; es1.33
+  (define (gcd-integer a b)
+    (if (= b 0)
+      a
+      (gcd-integer b (remainder a b))))
+  (define (gcd-multiple-numbers numbers)
+    (reduce gcd-integer (car numbers) numbers))
   (put 'gcd '(polynomial polynomial)
-       (lambda (p1 p2) (tag (make-poly (variable p1)
-                                       (gcd-terms (term-list p1) (term-list p2))))))
+       (lambda (p1 p2)
+         (tag 
+           (let ((not-reduced-result
+                   (make-poly (variable p1)
+                              (gcd-terms (term-list p1) 
+                                         (term-list p2)))))
+             (reduce-by-common-factor not-reduced-result)))))
   'done)
 (install-polynomial-package)
 (define (install-number-package)
@@ -216,6 +234,8 @@
   (apply-generic 'div a b))
 (define (greatest-common-divisor a b)
   (apply-generic 'gcd a b))
+(define (make-number n)
+  (list 'number n))
 (define (make-polynomial var terms)
   ((get 'make 'polynomial) var terms))
 ; examples
@@ -296,11 +316,16 @@
 (in-test-group
   greatest-common-divisor-of-polynomials
   (define-each-test
-    ; part a
-    (check (equal?
+    ; part a (after implementing part b it doesn't pass anymore)
+    ;(check (equal?
 
-             (mul p1 1458)
-             ; (polynomial (x (2 1458) (1 -2916) (0 1458))) * 169
+    ;         (mul p1 1458)
+    ;         ; (polynomial (x (2 1458) (1 -2916) (0 1458)))
+    ;         (greatest-common-divisor q1 q2))
+    ;       "Book's corner case example. Thanks to the integerizing-factor used by pseudoremainder-terms, we get a GCD that has integer coefficients. It is however not minimal")
+    (check (equal?
+             p1
+             ; (polynomial (x (2 1) (1 -2) (0 1)))
              (greatest-common-divisor q1 q2))
            "Book's corner case example. Thanks to the integerizing-factor used by pseudoremainder-terms, we get a GCD that has integer coefficients. It is however not minimal")
     ))

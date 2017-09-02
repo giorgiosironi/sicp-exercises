@@ -364,6 +364,8 @@
              (reduce-generic old-q1 old-q2))
            "Two polynomials with a common divisor")
 	))
+; TODO: uncomment and make this test pass
+; you'll have to use the new reduce-generic inside make-rat
 ;(in-test-group
 ;  reducing-rational-functions
 ;  (define-each-test

@@ -322,9 +322,17 @@
     (let ((the-gcd (greatest-common-divisor n d)))
       (make-rat (car (div n the-gcd))
                 (car (div d the-gcd)))))
-  (put 'add '(rational rational)
-    (lambda (a b) (tag (simplify (add (num a) (num b))
-                                 (den a)))))
+  (put 'add
+       '(rational rational)
+       (lambda (a b)
+         (let ((result-numerator 
+                 (add (mul (num a)
+                           (den b))
+                      (mul (num b)
+                           (den a))))
+               (result-denominator (mul (den a) (den b))))
+           (tag (simplify result-numerator
+                          result-denominator)))))
   (put 'mul-both-n-d '(rational)
     (lambda (rf)
       (lambda (number) (tag (make-rat (mul (num rf) number)
@@ -366,13 +374,36 @@
 	))
 ; TODO: uncomment and make this test pass
 ; you'll have to use the new reduce-generic inside make-rat
-;(in-test-group
-;  reducing-rational-functions
-;  (define-each-test
-;    (check (equal? 
-;             (list)
-;			;(make-rational (make-polynomial 'x '((2 2) (0 2)))
-;			;               (make-polynomial 'x '((3 1) (0 1))))
-;             (add rf1 rf2))
-;           "Maximum recursion depth exceeded...")))
+(define x+1 (make-polynomial 'x '((1 1) (0 1))))
+(define x-1 (make-polynomial 'x '((1 1) (0 -1))))
+(define x^2-1 (make-polynomial 'x '((2 1) (0 -1))))
+(define poly-2x+2 (make-polynomial 'x '((1 2) (0 2))))
+(define poly-2x^2+2 (make-polynomial 'x '((2 2) (0 2))))
+(in-test-group
+  reducing-rational-functions-during-addition
+  (define-each-test
+    (check (equal? 
+			 (make-rational poly-2x+2 x-1)
+             (add 
+                 (make-rational x+1 x-1)
+                 (make-rational x+1 x-1)))
+           "Result of addition, base case")
+    (check (equal? 
+             ; numerator (x^2+2x+1)+(x^2-2x+1)
+             ; denominator: (x+1)(x-1)
+			 (make-rational poly-2x^2+2 x^2-1)
+             (add 
+                 (make-rational x+1 x-1)
+                 (make-rational x-1 x+1)))
+           "Result of addition, different denominators")
+    (check (equal? 
+             ; equivalent to the result of https://wizardbook.wordpress.com/2010/12/14/exercise-2-97/
+    		 (make-rational (make-polynomial 'x '((3 1) (2 2) (1 3) (0 1)))
+                            (make-polynomial 'x '((4 1) (3 1) (1 -1) (0 -1))))
+             ; p2 and p4, the denominators, have order 3 and 2
+             ; so without simplifications you would expect a order 5 denominator
+             ; instead, we get a order 4 because there is a common factor x-1 in them
+             (add rf1 rf2))
+           "Result of addition should be simplified")
+    ))
 (run-registered-tests)

@@ -18,7 +18,7 @@ Actually in the end, we should compile the meta-circular evaluator, so we won't 
 
 What should be the first acceptance test?
 
-- fork the es5.51 code
++ fork the es5.51 code
 - write a `compile` that only works for self-evaluating (even if it's fake)
 - try to write `compile-and-go`, which should (re)use `assemble`
 -- `assemble` may need to be extracted from the previous code

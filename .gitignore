@@ -1,9 +1,9 @@
-/es5.51/main
-/es5.51/runUnitTests
-/es5.51/*.o
-/es5.51/*.cmake
-/es5.51/CMakeCache.txt
-/es5.51/CMakeFiles/
-/es5.51/Makefile
-/es5.51/**/*.pyc
+/es5.5*/main
+/es5.5*/runUnitTests
+/es5.5*/*.o
+/es5.5*/*.cmake
+/es5.5*/CMakeCache.txt
+/es5.5*/CMakeFiles/
+/es5.5*/Makefile
+/es5.5*/**/*.pyc
 

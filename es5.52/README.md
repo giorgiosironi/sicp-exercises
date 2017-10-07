@@ -36,6 +36,8 @@ What should be the first acceptance test?
 --- perhaps subclasses
 -- pass linkage to `compile`
 -- implement `preserve`
+- `Value::to_string()` should become `const`, if this means what I think it means. It could then be used when you have a `const Value` without `discards qualifiers` interrupting the compilation
+- `final` classes?
 
 ## References
 

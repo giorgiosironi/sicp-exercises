@@ -5,9 +5,16 @@
 using namespace std;
 
 class InstructionSequence {
+    private:
+        vector<Symbol*> needs;
+        vector<Symbol*> modifies;
+        Value* statements;
     public:
         InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements);
-        //virtual std::string to_string();
+        bool equals(const InstructionSequence& other) const;
 };
+
+bool operator==(const InstructionSequence& lhs, const InstructionSequence& rhs);
+bool operator!=(const InstructionSequence& lhs, const InstructionSequence& rhs);
 
 #endif

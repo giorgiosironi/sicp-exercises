@@ -20,10 +20,11 @@ What should be the first acceptance test?
 
 + fork the es5.51 code
 - write a `compile` that only works for self-evaluating (even if it's fake)
--- stub InstructionSequence data structure
--- returns just a fixed instruction sequence
--- write a unit test for `compile`
--- complete InstructionSequence data structure so that you can assert on it
+++ stub InstructionSequence data structure
+++ returns just a fixed instruction sequence
+++ write a unit test for `compile`
+++ complete InstructionSequence data structure so that you can assert on it
+-- implement compile just enough for the compileTest first test to pass
 - try to write `compile-and-go`, which should (re)use `assemble`
 -- `assemble` may need to be extracted from the previous code
 - use it to compile `(list 42)` which should only evaluate 42 and stop

@@ -31,7 +31,11 @@ What should be the first acceptance test?
 -- then you can put it into the `Machine` instead and try to execute it
 
 ## You know you'll have to do this but you can postpone this until the first acceptance test works
--- `compile` should implement `end-with-linkage` to wrap the `InstructionSequence`
+- `compile` should implement `end-with-linkage` to wrap the `InstructionSequence`
+-- create `Linkage` enum (or similar data structure with limited choices
+--- perhaps subclasses
+-- pass linkage to `compile`
+-- implement `preserve`
 
 ## References
 

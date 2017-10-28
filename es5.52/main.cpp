@@ -42,6 +42,7 @@ using namespace std;
 #include "src/primitive_equal.h"
 #include "src/primitive_times.h"
 #include "src/primitive_list.h"
+#include "src/compile.h"
 
 
 Value* build_list(std::vector<Value*> elements) {
@@ -54,12 +55,8 @@ Value* build_list(std::vector<Value*> elements) {
 
 Value* mymain()
 {
-    return build_list({
-        //start-of-machine
-        new Symbol("start-of-machine"),
-        //end-of-machine
-        new Symbol("end-of-machine"),
-    });
+    return compile(new Integer(42), new Symbol("val"))
+        ->statements();
 }
 
 std::map<Symbol,Operation*> machine_operations(Environment* global_environment)

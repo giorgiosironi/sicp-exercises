@@ -8,7 +8,12 @@ InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> 
 {
     this->needs = needs;
     this->modifies = modifies;
-    this->statements = statements;
+    this->_statements = statements;
+}
+
+Value* InstructionSequence::statements()
+{
+    return this->_statements;
 }
 
 bool operator==(const InstructionSequence& lhs, const InstructionSequence& rhs)
@@ -50,7 +55,7 @@ bool InstructionSequence::equals(const InstructionSequence& other) const
     )) {
         return false;
     }
-    if (*this->statements != *other.statements) {
+    if (*this->_statements != *other._statements) {
         return false;
     }
     return true;

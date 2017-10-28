@@ -8,10 +8,11 @@ class InstructionSequence {
     private:
         vector<Symbol*> needs;
         vector<Symbol*> modifies;
-        Value* statements;
+        Value* _statements;
     public:
         InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements);
         bool equals(const InstructionSequence& other) const;
+        Value* statements();
 };
 
 bool operator==(const InstructionSequence& lhs, const InstructionSequence& rhs);

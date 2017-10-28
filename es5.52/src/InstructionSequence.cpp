@@ -32,7 +32,7 @@ bool InstructionSequence::equals(const InstructionSequence& other) const
         end(this->needs),
         begin(other.needs),
         [](const Value* lhs, const Value* rhs){
-            return *lhs == * rhs;
+            return *lhs == *rhs;
         }
     )) {
         return false;
@@ -45,12 +45,12 @@ bool InstructionSequence::equals(const InstructionSequence& other) const
         end(this->modifies),
         begin(other.modifies),
         [](const Value* lhs, const Value* rhs){
-            return *lhs == * rhs;
+            return *lhs == *rhs;
         }
     )) {
         return false;
     }
-    if (this->statements != other.statements) {
+    if (*this->statements != *other.statements) {
         return false;
     }
     return true;

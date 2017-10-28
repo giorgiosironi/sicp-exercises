@@ -1,6 +1,8 @@
 #include "../src/instruction_sequence.h"
 #include "../src/nil.h"
 #include "../src/cons.h"
+#include "../src/symbol.h"
+#include "../src/integer.h"
 #include <gtest/gtest.h>
 using namespace std;
  
@@ -21,6 +23,37 @@ TEST(InstructionSequenceTest, Equality) {
             vector<Symbol*>({ new Symbol("exp") }),
             vector<Symbol*>(),
             NIL
+        )
+    );
+
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("exp") }),
+            vector<Symbol*>(),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(42)
+                    })
+                })
+            })
+        ),
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("exp") }),
+            vector<Symbol*>(),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(42)
+                    })
+                })
+            })
         )
     );
 }

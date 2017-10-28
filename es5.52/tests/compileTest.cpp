@@ -6,13 +6,13 @@
  
 TEST(compileTest, SelfEvaluating) { 
     ASSERT_EQ(
-        new InstructionSequence(
+        InstructionSequence(
             vector<Symbol*>(),
-            vector<Symbol*>({ new Symbol("exp") }),
+            vector<Symbol*>({ new Symbol("val") }),
             Cons::from_vector({
                 Cons::from_vector({
                     new Symbol("assign"),
-                    new Symbol("exp"),
+                    new Symbol("val"),
                     Cons::from_vector({
                         new Symbol("const"),
                         new Integer(42),
@@ -20,6 +20,6 @@ TEST(compileTest, SelfEvaluating) {
                 })
             })
         ),
-        compile(new Integer(42), new Symbol("exp"))
+        *compile(new Integer(42), new Symbol("val"))
     );
 }

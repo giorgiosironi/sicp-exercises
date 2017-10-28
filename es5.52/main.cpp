@@ -42,7 +42,10 @@ using namespace std;
 #include "src/primitive_equal.h"
 #include "src/primitive_times.h"
 #include "src/primitive_list.h"
+
+// proper 5.52 components
 #include "src/compile.h"
+#include "src/input.h"
 
 
 Value* build_list(std::vector<Value*> elements) {
@@ -51,12 +54,6 @@ Value* build_list(std::vector<Value*> elements) {
         head = new Cons(elements.at(i), head);
     }
     return head;
-}
-
-Value* mymain()
-{
-    return compile(new Integer(42), new Symbol("val"))
-        ->statements();
 }
 
 std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
@@ -273,7 +270,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
 /**
  * Inline here make_machine, the Facade
  */
-Machine* mymachine()
+Machine* compile_and_go(Value* input)
 {
     Machine* mymachine = new Machine();
     mymachine->allocate_register("exp");
@@ -285,14 +282,18 @@ Machine* mymachine()
     mymachine->allocate_register("unev");
     Environment* global_environment = add_primitive_procedures(new Environment());
     mymachine->install_operations(machine_operations(global_environment));
-    mymachine->install_instruction_sequence(mymachine->assemble(mymain()));
+    mymachine->install_instruction_sequence(
+        mymachine->assemble(
+            compile(input, new Symbol("val"))->statements()
+        )
+    );
     return mymachine;
 }
 
 
 
 int main() {
-    Machine* machine = mymachine();
+    Machine* machine = compile_and_go(input());
     try {
         machine->start();
     } catch (char const* e) {

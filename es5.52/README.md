@@ -34,7 +34,7 @@ What should be the first acceptance test?
 ++ implement InstructionSequence::to_string()
 ++ implement InstructionSequence << overload to use it
 ++ now do you have a good error message?
--- implement the compile-variable port
+++ implement the compile-variable port
 -- generalize to_string in dump.h
 - (compile-quoted exp target linkage)
 - add linkage

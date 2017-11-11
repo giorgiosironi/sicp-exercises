@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iostream>
 #include "instruction_sequence.h"
+#include "dump.h"
 using namespace std;
 
 InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements)
@@ -14,6 +15,14 @@ InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> 
 Value* InstructionSequence::statements()
 {
     return this->_statements;
+}
+
+string InstructionSequence::to_string() const
+{
+    return string("InstructionSequence(\n")
+        + "    needs: " + ::to_string(this->needs) + "\n"
+        + "    modifies: " + ::to_string(this->modifies) + "\n"
+        + "    statements: " + this->_statements->to_string() + "\n";
 }
 
 bool operator==(const InstructionSequence& lhs, const InstructionSequence& rhs)
@@ -60,3 +69,8 @@ bool InstructionSequence::equals(const InstructionSequence& other) const
     }
     return true;
 }
+
+ostream& operator<<(ostream& os, const ::InstructionSequence& instructionSequence) {
+    return os << instructionSequence.to_string();
+}
+

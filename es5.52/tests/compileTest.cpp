@@ -51,3 +51,30 @@ TEST(compileTest, Variable) {
         *compile(new Symbol("my-number"), new Symbol("val"))
     );
 }
+
+TEST(compileTest, Quoted) { 
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({}),
+            vector<Symbol*>({ new Symbol("val") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("target"),
+                    // not sure
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(2017),
+                    }),
+                })
+            })
+        ),
+        *compile(
+            new Cons(
+                new Symbol("year"),
+                new Integer(2017)
+            ),
+            new Symbol("val")
+        )
+    );
+}

@@ -13,6 +13,8 @@ InstructionSequence* compile(Value* exp, Symbol* target)
     if (is_variable(exp)) {
         return compile_variable(exp, target);
     }
+    if (is_tagged_list(exp)) {
+    }
     // TODO: throw exception
     return new InstructionSequence(vector<Symbol*>(), vector<Symbol*>(), NIL);
 }

@@ -60,8 +60,7 @@ TEST(compileTest, Quoted) {
             Cons::from_vector({
                 Cons::from_vector({
                     new Symbol("assign"),
-                    new Symbol("target"),
-                    // not sure
+                    new Symbol("val"),
                     Cons::from_vector({
                         new Symbol("const"),
                         new Integer(2017),
@@ -70,10 +69,10 @@ TEST(compileTest, Quoted) {
             })
         ),
         *compile(
-            new Cons(
+            Cons::from_vector({
                 new Symbol("year"),
                 new Integer(2017)
-            ),
+            }),
             new Symbol("val")
         )
     );

@@ -1,9 +1,11 @@
 #include "compile.h"
-// temporary
-#include "nil.h"
 #include "cons.h"
 #include "is.h"
 #include "symbol.h"
+#include "conversion.h"
+
+// temporary
+#include "nil.h"
 
 InstructionSequence* compile(Value* exp, Symbol* target)
 {
@@ -14,6 +16,7 @@ InstructionSequence* compile(Value* exp, Symbol* target)
         return compile_variable(exp, target);
     }
     if (is_tagged_list(exp)) {
+        return compile_quoted(exp, target);
     }
     // TODO: throw exception
     return new InstructionSequence(vector<Symbol*>(), vector<Symbol*>(), NIL);
@@ -71,6 +74,24 @@ InstructionSequence* compile_variable(Value* exp, Symbol* target)
                     new Symbol("reg"),
                     new Symbol("env"),
                 })
+            })
+        })
+    );
+}
+
+InstructionSequence* compile_quoted(Value* exp, Symbol* target)
+{
+    return new InstructionSequence(
+        vector<Symbol*>({ }),
+        vector<Symbol*>({ target }),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("assign"),
+                target,
+                Cons::from_vector({
+                    new Symbol("const"),
+                    convert_to<Cons>(exp)->cadr()
+                }),
             })
         })
     );

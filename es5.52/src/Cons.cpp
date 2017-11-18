@@ -110,11 +110,18 @@ std::string Cons::to_string()
             + std::string(")");
     }
     std::string rest = this->cdr_ptr->to_string();
-    this->car_ptr->to_string();
-    return std::string("(")
-        + this->car_ptr->to_string()
-        + std::string(" ")
-        + rest.substr(1, rest.size() - 1);
+    if (rest.substr(0, 1) == "(") {
+        return std::string("(")
+            + this->car_ptr->to_string()
+            + std::string(" ")
+            + rest.substr(1, rest.size() - 1);
+    } else {
+        return std::string("(")
+            + this->car_ptr->to_string()
+            + std::string(" . ")
+            + rest
+            + ")";
+    }
 }
 
 std::vector<Value*> Cons::to_vector()

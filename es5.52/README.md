@@ -37,7 +37,9 @@ What should be the first acceptance test?
 ++ implement the compile-variable port
 ++ generalize to_string in dump.h
 - (compile-quoted exp target linkage)
-- add linkage
+++ fix Cons-as-pair to_string
+-- make test pass
+- add linkage! as the 3rd parameter to compile, at least one sample case
 - (compile-assignment exp target linkage)
 - (compile-definition exp target linkage)
 - (compile-if exp target linkage)

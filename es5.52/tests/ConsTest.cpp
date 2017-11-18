@@ -2,6 +2,7 @@
 #include "../src/cons.h"
 #include "../src/nil.h"
 #include "../src/integer.h"
+#include "../src/symbol.h"
 #include <gtest/gtest.h>
 using namespace std;
  
@@ -17,6 +18,9 @@ TEST(ConsTest, FromStringAndToString) {
 
     auto three_elements = Cons::from_vector({ new Integer(1), new Integer(2), new Integer(3) });
     ASSERT_EQ("(1 2 3)", three_elements->to_string());
+
+    auto pair = new Cons(new Symbol("year"), new Integer(2017));
+    ASSERT_EQ("(year . 2017)", pair->to_string());
 }
 
 TEST(ConsTest, ToVector) {

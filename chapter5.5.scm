@@ -41,7 +41,7 @@
         (else
           (make-instruction-sequence '() '()
                                      `((goto (label ,linkage)))))))
-; the linkage code will be joined in to instructions
+; the linkage code will be joined in two instructions
 ; by preserving continue, which is needed in case of 'return
 (define (end-with-linkage linkage instruction-sequence)
   (preserving '(continue)

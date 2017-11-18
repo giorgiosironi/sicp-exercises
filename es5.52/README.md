@@ -30,12 +30,12 @@ What should be the first acceptance test?
 + use it to compile `(list 42)` which should only evaluate 42 and stop
 ++ start from a `main()` that compiles a fixed input `(list 42)` to a sequence of assembly instructions, and just prints it
 ++ then you can put it into the `Machine` instead and try to execute it
-- (compile-variable exp target linkage)
++ (compile-variable exp target linkage)
 ++ implement InstructionSequence::to_string()
 ++ implement InstructionSequence << overload to use it
 ++ now do you have a good error message?
 ++ implement the compile-variable port
--- generalize to_string in dump.h
+++ generalize to_string in dump.h
 - (compile-quoted exp target linkage)
 - add linkage
 - (compile-assignment exp target linkage)

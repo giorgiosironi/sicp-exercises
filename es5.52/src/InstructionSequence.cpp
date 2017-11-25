@@ -75,6 +75,10 @@ ostream& operator<<(ostream& os, const ::InstructionSequence& instructionSequenc
     return os << instructionSequence.to_string();
 }
 
+InstructionSequence* InstructionSequence::append(InstructionSequence* followUp) {
+    return InstructionSequence::empty();
+}
+
 InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence* followUp) {
     return InstructionSequence::empty();
 }

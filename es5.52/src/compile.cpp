@@ -10,13 +10,13 @@
 InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
 {
     if (is_self_evaluating(exp)) {
-        return compile_self_evaluating(exp, target);
+        return compile_self_evaluating(exp, target, linkage);
     }
     if (is_variable(exp)) {
-        return compile_variable(exp, target);
+        return compile_variable(exp, target, linkage);
     }
     if (is_tagged_list(exp)) {
-        return compile_quoted(exp, target);
+        return compile_quoted(exp, target, linkage);
     }
     // TODO: throw exception
     return new InstructionSequence(vector<Symbol*>(), vector<Symbol*>(), NIL);
@@ -27,7 +27,7 @@ bool is_self_evaluating(Value* exp)
     return is_number(exp) || is_string(exp);
 }
 
-InstructionSequence* compile_self_evaluating(Value* exp, Symbol* target)
+InstructionSequence* compile_self_evaluating(Value* exp, Symbol* target, Linkage* linkage)
 {
     return new InstructionSequence(
         vector<Symbol*>(),
@@ -53,7 +53,7 @@ bool is_variable(Value* exp)
     return false;
 }
 
-InstructionSequence* compile_variable(Value* exp, Symbol* target)
+InstructionSequence* compile_variable(Value* exp, Symbol* target, Linkage* linkage)
 {
     return new InstructionSequence(
         vector<Symbol*>({ new Symbol("env") }),
@@ -79,7 +79,7 @@ InstructionSequence* compile_variable(Value* exp, Symbol* target)
     );
 }
 
-InstructionSequence* compile_quoted(Value* exp, Symbol* target)
+InstructionSequence* compile_quoted(Value* exp, Symbol* target, Linkage* linkage)
 {
     return new InstructionSequence(
         vector<Symbol*>({ }),

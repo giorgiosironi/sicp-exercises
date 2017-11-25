@@ -25,6 +25,14 @@ InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> 
     this->_statements = statements;
 }
 
+vector<Symbol*> InstructionSequence::needs() {
+    return this->_needs;
+}
+
+vector<Symbol*> InstructionSequence::modifies() {
+    return this->_modifies;
+}
+
 Value* InstructionSequence::statements()
 {
     return this->_statements;

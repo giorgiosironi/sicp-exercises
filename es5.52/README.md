@@ -51,7 +51,7 @@ What should be the first acceptance test?
 ---- other Linkage
 -- implement `InstructionSequence::append(InstructionSequence* another)`
 +++ define as best as you can expectation
---- hardcode a result
++++ hardcode a result
 --- compute `needs`
 --- compute `modifies`
 --- compute `statements`

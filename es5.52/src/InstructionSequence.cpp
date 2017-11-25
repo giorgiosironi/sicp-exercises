@@ -4,6 +4,10 @@
 #include "instruction_sequence.h"
 #include "dump.h"
 #include "nil.h"
+// temporary:
+#include "cons.h"
+#include "integer.h"
+
 using namespace std;
 
 InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements)
@@ -76,7 +80,28 @@ ostream& operator<<(ostream& os, const ::InstructionSequence& instructionSequenc
 }
 
 InstructionSequence* InstructionSequence::append(InstructionSequence* followUp) {
-    return InstructionSequence::empty();
+    return new InstructionSequence(
+        vector<Symbol*>({ new Symbol("val") }), // sure about that?
+        vector<Symbol*>({ new Symbol("val"), new Symbol("exp") }),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("val"),
+                Cons::from_vector({
+                    new Symbol("const"),
+                    new Integer(42)
+                })
+            }),
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("exp"),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("val"),
+                })
+            })
+        })
+    );
 }
 
 InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence* followUp) {

@@ -42,15 +42,19 @@ What should be the first acceptance test?
 + add linkage! as the 3rd parameter to compile, at least one sample case
 ++ can we do Linkage as an enum? No, `return`, `next` or arbitrary `label`
 +++ some kind of polimorphism? start with a Value Object
---- linkage.h with base class and subclass
++++ linkage.h with base class and subclass
 +++ add `InstructionSequence::empty()` or similar to create an empty one
--- implement `compile_linkage(Linkage)`
---- as a virtual method of Linkage
+++ implement `compile_linkage(Linkage)`
++-- as a virtual method of Linkage
+++++ LinkageNext
+---- other Linkage
+---- other Linkage
 -- implement `preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`
 --- this seems complex, add intermediate steps and primitives
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`
--- start passing a Linkage (default one, `next`) to `compile_*()`
--- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`
++- start passing a Linkage (default one, `next`) to `compile_*()`
++- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`
+-- actually use Linkage in `compile[_*]()`
 - (compile-assignment exp target linkage)
 - (compile-definition exp target linkage)
 - (compile-if exp target linkage)
@@ -59,6 +63,7 @@ What should be the first acceptance test?
 - (compile (cond->if exp) target linkage)
 - (compile-application exp target linkage)
 - `compile_and_go` should be extended to include `eceval` alongside the compiled expressions, see chapter5.5.scm
+- think about where to deallocate memory, `delete` not just `new`
 
 ## You know you'll have to do this but you can postpone this until the first acceptance test works
 - `compile` should implement `end-with-linkage` to wrap the `InstructionSequence`

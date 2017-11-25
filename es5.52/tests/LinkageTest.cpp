@@ -5,8 +5,8 @@
 TEST(LinkageTest, Next) { 
     Linkage* linkage = new LinkageNext();
 
-    //ASSERT_EQ(
-    //    InstructionSequence::empty(),
-    //    *linkage->compile()
-    //);
+    ASSERT_EQ(
+        *InstructionSequence::empty(),
+        *linkage->compile()
+    );
 }

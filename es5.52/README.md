@@ -53,6 +53,10 @@ What should be the first acceptance test?
 +++ define as best as you can expectation
 +++ hardcode a result
 --- compute `needs`
+---- `registers-needed` is just `this->needs` through a getter
+---- `registers-modified` is just `this->modifies` through a getter
+---- `list-union` 
+---- `list-difference` 
 --- compute `modifies`
 --- compute `statements`
 -- implement `InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`

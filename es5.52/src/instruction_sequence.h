@@ -8,8 +8,8 @@ using namespace std;
 
 class InstructionSequence {
     private:
-        vector<Symbol*> needs;
-        vector<Symbol*> modifies;
+        vector<Symbol*> _needs;
+        vector<Symbol*> _modifies;
         Value* _statements;
     public:
         InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements);

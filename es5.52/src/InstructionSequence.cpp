@@ -10,10 +10,18 @@
 
 using namespace std;
 
+/*
+ * 5.5.4
+ * an instruction sequence is represented as a list of the registers needed, the registers modified, and
+ * the actual instructions. We will also consider a label (symbol) to be a degenerate case of an instruction sequence,
+ * which doesn't need or modify any registers. So to determine the registers needed and modified by instruction
+ * sequences we use the selectors
+ * TODO: Introduce Label class, which has a common superclass with InstructionSequence
+ */
 InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements)
 {
-    this->needs = needs;
-    this->modifies = modifies;
+    this->_needs = needs;
+    this->_modifies = modifies;
     this->_statements = statements;
 }
 
@@ -25,8 +33,8 @@ Value* InstructionSequence::statements()
 string InstructionSequence::to_string() const
 {
     return string("InstructionSequence(\n")
-        + "    needs: " + ::to_string(this->needs) + "\n"
-        + "    modifies: " + ::to_string(this->modifies) + "\n"
+        + "    needs: " + ::to_string(this->_needs) + "\n"
+        + "    modifies: " + ::to_string(this->_modifies) + "\n"
         + "    statements: " + this->_statements->to_string() + "\n";
 }
 
@@ -43,26 +51,26 @@ bool operator!=(const InstructionSequence& lhs, const InstructionSequence& rhs)
 bool InstructionSequence::equals(const InstructionSequence& other) const
 {
     //https://stackoverflow.com/questions/39855341/equals-operator-on-stl-vector-of-pointers
-    if (this->needs.size() != other.needs.size()) {
+    if (this->_needs.size() != other._needs.size()) {
         return false;
     }
     if (!equal(
-        begin(this->needs),
-        end(this->needs),
-        begin(other.needs),
+        begin(this->_needs),
+        end(this->_needs),
+        begin(other._needs),
         [](const Value* lhs, const Value* rhs){
             return *lhs == *rhs;
         }
     )) {
         return false;
     }
-    if (this->modifies.size() != other.modifies.size()) {
+    if (this->_modifies.size() != other._modifies.size()) {
         return false;
     }
     if (!equal(
-        begin(this->modifies),
-        end(this->modifies),
-        begin(other.modifies),
+        begin(this->_modifies),
+        end(this->_modifies),
+        begin(other._modifies),
         [](const Value* lhs, const Value* rhs){
             return *lhs == *rhs;
         }

@@ -58,6 +58,7 @@ What should be the first acceptance test?
 - (compile-sequence (begin-actions exp) target linkage))
 - (compile (cond->if exp) target linkage)
 - (compile-application exp target linkage)
+- `compile_and_go` should be extended to include `eceval` alongside the compiled expressions, see chapter5.5.scm
 
 ## You know you'll have to do this but you can postpone this until the first acceptance test works
 - `compile` should implement `end-with-linkage` to wrap the `InstructionSequence`

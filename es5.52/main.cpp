@@ -269,6 +269,10 @@ Environment* add_primitive_procedures(Environment* initial_environment)
 
 /**
  * Inline here make_machine, the Facade
+ * TODO: possibly we should install the instruction sequence along with the eceval machine, to be able to continue executing stuff
+ * after we have compiled it.
+ * This is a limited version which just executed what has been compiled rather than giving you a prompt
+ * see chapter5.5.scm
  */
 Machine* compile_and_go(Value* input)
 {
@@ -284,7 +288,11 @@ Machine* compile_and_go(Value* input)
     mymachine->install_operations(machine_operations(global_environment));
     mymachine->install_instruction_sequence(
         mymachine->assemble(
-            compile(input, new Symbol("val"))->statements()
+            compile(
+                input,
+                new Symbol("val"),
+                new LinkageNext()
+            )->statements()
         )
     );
     return mymachine;

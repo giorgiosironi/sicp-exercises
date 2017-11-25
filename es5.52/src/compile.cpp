@@ -7,7 +7,7 @@
 // temporary
 #include "nil.h"
 
-InstructionSequence* compile(Value* exp, Symbol* target)
+InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
 {
     if (is_self_evaluating(exp)) {
         return compile_self_evaluating(exp, target);

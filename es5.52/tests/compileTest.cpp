@@ -20,7 +20,7 @@ TEST(compileTest, SelfEvaluating) {
                 })
             })
         ),
-        *compile(new Integer(42), new Symbol("val"))
+        *compile(new Integer(42), new Symbol("val"), new LinkageNext())
     );
 }
 
@@ -48,7 +48,7 @@ TEST(compileTest, Variable) {
                 })
             })
         ),
-        *compile(new Symbol("my-number"), new Symbol("val"))
+        *compile(new Symbol("my-number"), new Symbol("val"), new LinkageNext())
     );
 }
 
@@ -73,7 +73,8 @@ TEST(compileTest, Quoted) {
                 new Symbol("year"),
                 new Integer(2017)
             }),
-            new Symbol("val")
+            new Symbol("val"),
+            new LinkageNext()
         )
     );
 }

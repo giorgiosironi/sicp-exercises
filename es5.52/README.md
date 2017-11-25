@@ -50,6 +50,7 @@ What should be the first acceptance test?
 ---- other Linkage
 ---- other Linkage
 -- implement `preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`
+--- as a method of InstructionSequence
 --- this seems complex, add intermediate steps and primitives
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`
 +- start passing a Linkage (default one, `next`) to `compile_*()`

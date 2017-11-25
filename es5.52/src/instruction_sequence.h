@@ -16,6 +16,7 @@ class InstructionSequence {
         bool equals(const InstructionSequence& other) const;
         Value* statements();
         string to_string() const;
+        InstructionSequence* preserving(vector<Symbol*> registers, InstructionSequence* followUp);
         static InstructionSequence* empty();
 };
 

@@ -16,6 +16,7 @@ class InstructionSequence {
         bool equals(const InstructionSequence& other) const;
         Value* statements();
         string to_string() const;
+        static InstructionSequence* empty();
 };
 
 bool operator==(const InstructionSequence& lhs, const InstructionSequence& rhs);

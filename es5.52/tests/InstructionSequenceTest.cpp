@@ -96,3 +96,14 @@ TEST(InstructionSequenceTest, Inequality) {
         )
     );
 }
+
+TEST(InstructionSequenceTest, Empty) { 
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>(),
+            vector<Symbol*>(),
+            NIL
+        ),
+        *InstructionSequence::empty()
+    );
+}

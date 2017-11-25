@@ -3,6 +3,7 @@
 #include <iostream>
 #include "instruction_sequence.h"
 #include "dump.h"
+#include "nil.h"
 using namespace std;
 
 InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements)
@@ -74,3 +75,10 @@ ostream& operator<<(ostream& os, const ::InstructionSequence& instructionSequenc
     return os << instructionSequence.to_string();
 }
 
+InstructionSequence* InstructionSequence::empty() {
+    return new InstructionSequence(
+        vector<Symbol*>(),
+        vector<Symbol*>(),
+        NIL
+    );
+}

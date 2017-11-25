@@ -124,24 +124,41 @@ TEST(InstructionSequenceTest, Append) {
         })
     );
     auto followUp = new InstructionSequence(
-        vector<Symbol*>(),
+        vector<Symbol*>({ new Symbol("val") }),
         vector<Symbol*>({ new Symbol("exp") }),
         Cons::from_vector({
             Cons::from_vector({
                 new Symbol("assign"),
                 new Symbol("exp"),
                 Cons::from_vector({
-                    new Symbol("const"),
-                    new Integer(42)
+                    new Symbol("reg"),
+                    new Symbol("val")
                 })
             })
         })
     );
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>(),
-            vector<Symbol*>(),
-            NIL
+            vector<Symbol*>({ new Symbol("val") }), // sure about that?
+            vector<Symbol*>({ new Symbol("val"), new Symbol("exp") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(42)
+                    })
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("exp"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    })
+                })
+            })
         ),
         *original->append(followUp)
     );

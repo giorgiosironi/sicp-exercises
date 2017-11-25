@@ -50,6 +50,11 @@ What should be the first acceptance test?
 ---- other Linkage
 ---- other Linkage
 -- implement `InstructionSequence::append(InstructionSequence* another)`
++++ define as best as you can expectation
+--- hardcode a result
+--- compute `needs`
+--- compute `modifies`
+--- compute `statements`
 -- implement `InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`
 --- this seems complex, add intermediate steps and primitives
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`

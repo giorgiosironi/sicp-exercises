@@ -55,9 +55,8 @@ What should be the first acceptance test?
 --- compute `needs`
 ++++ `registers-needed` is just `this->needs` through a getter
 ++++ `registers-modified` is just `this->modifies` through a getter
----- `list-union` is http://www.cplusplus.com/reference/algorithm/set_union/
------ may need to implement `operator<` or a custom `Comp` for Symbol
----- `list-difference` is http://www.cplusplus.com/reference/algorithm/set_difference/
+++++ `list-union` is http://www.cplusplus.com/reference/algorithm/set_union/
+++++ `list-difference` is http://www.cplusplus.com/reference/algorithm/set_difference/
 --- compute `modifies`
 --- compute `statements`
 -- implement `InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`

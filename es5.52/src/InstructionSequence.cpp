@@ -96,8 +96,30 @@ ostream& operator<<(ostream& os, const ::InstructionSequence& instructionSequenc
 }
 
 InstructionSequence* InstructionSequence::append(InstructionSequence* followUp) {
+    auto needed1 = this->needs();
+    auto needed2 = followUp->needs();
+    auto modified1 = this->modifies();
+    sort(needed2.begin(), needed2.begin()+needed2.size());
+    sort(modified1.begin(), modified1.begin()+modified1.size());
+    vector<Symbol*> difference;
+    set_difference(
+        needed2.begin(),
+        needed2.begin()+needed2.size(),
+        modified1.begin(),
+        modified1.begin()+modified1.size(),
+        inserter(difference, difference.end())
+    );
+    vector<Symbol*> new_needs;
+    set_union(
+        needed1.begin(),
+        needed1.begin()+needed1.size(),
+        difference.begin(),
+        difference.begin()+difference.size(),
+        inserter(new_needs, new_needs.end())
+    );
+
     return new InstructionSequence(
-        vector<Symbol*>({ new Symbol("val") }), // sure about that?
+        new_needs,
         vector<Symbol*>({ new Symbol("val"), new Symbol("exp") }),
         Cons::from_vector({
             Cons::from_vector({

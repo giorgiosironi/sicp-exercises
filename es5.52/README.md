@@ -57,7 +57,7 @@ What should be the first acceptance test?
 ++++ `registers-modified` is just `this->modifies` through a getter
 ++++ `list-union` is http://www.cplusplus.com/reference/algorithm/set_union/
 ++++ `list-difference` is http://www.cplusplus.com/reference/algorithm/set_difference/
---- compute `modifies`
++++ compute `modifies`
 --- compute `statements`
 -- implement `InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`
 --- this seems complex, add intermediate steps and primitives

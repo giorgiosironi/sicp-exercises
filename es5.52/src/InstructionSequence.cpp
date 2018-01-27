@@ -99,6 +99,7 @@ InstructionSequence* InstructionSequence::append(InstructionSequence* followUp) 
     auto needed1 = this->needs();
     auto needed2 = followUp->needs();
     auto modified1 = this->modifies();
+    auto modified2 = followUp->modifies();
     sort(needed2.begin(), needed2.begin()+needed2.size());
     sort(modified1.begin(), modified1.begin()+modified1.size());
     vector<Symbol*> difference;
@@ -118,9 +119,18 @@ InstructionSequence* InstructionSequence::append(InstructionSequence* followUp) 
         inserter(new_needs, new_needs.end())
     );
 
+    vector<Symbol*> new_modifies;
+    set_union(
+        modified1.begin(),
+        modified1.begin()+modified1.size(),
+        modified2.begin(),
+        modified2.begin()+modified2.size(),
+        inserter(new_modifies, new_modifies.end())
+    );
+
     return new InstructionSequence(
         new_needs,
-        vector<Symbol*>({ new Symbol("val"), new Symbol("exp") }),
+        new_modifies,
         Cons::from_vector({
             Cons::from_vector({
                 new Symbol("assign"),

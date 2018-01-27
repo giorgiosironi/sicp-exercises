@@ -88,3 +88,9 @@ What should be the first acceptance test?
 
 - `es5.51/` provides the virtual machine (this will be forked)
 - `chapter5.5.scm` (and dependencies) has the compiler
+
+## Dependencies
+
+- `cmake`
+- `libboost-regex-dev`
+- `libgtest-dev` and [googletest](https://www.eriksmistad.no/getting-started-with-google-test-on-ubuntu/)

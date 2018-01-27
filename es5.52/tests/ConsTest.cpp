@@ -34,7 +34,7 @@ TEST(ConsTest, ToVector) {
     ASSERT_EQ(2, list2->to_vector().size());
 }
 
-TEST(ConsTest, Append) { 
+TEST(ConsTest, AppendValue) { 
     auto list = (Cons*) Cons::from_vector({ new Integer(1) });
     auto expanded = list->append(new Integer(2));
     ASSERT_EQ(

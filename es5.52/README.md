@@ -59,6 +59,8 @@ What should be the first acceptance test?
 ++++ `list-difference` is http://www.cplusplus.com/reference/algorithm/set_difference/
 +++ compute `modifies`
 --- compute `statements`
+---- implement `Cons::append(Cons*)`
+---- concatenate the two Cons to make `new_statements`
 -- implement `InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`
 --- this seems complex, add intermediate steps and primitives
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`

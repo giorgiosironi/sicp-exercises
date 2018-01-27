@@ -128,6 +128,9 @@ InstructionSequence* InstructionSequence::append(InstructionSequence* followUp) 
         inserter(new_modifies, new_modifies.end())
     );
 
+    //Cons* new_statements = convert_to<Cons>(this->_statements);
+    //vector1.insert( vector1.end(), vector2.begin(), vector2.end() );
+
     return new InstructionSequence(
         new_needs,
         new_modifies,

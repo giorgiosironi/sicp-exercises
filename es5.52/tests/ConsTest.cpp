@@ -49,3 +49,19 @@ TEST(ConsTest, AppendValue) {
         *expanded
     );
 }
+
+TEST(ConsTest, AppendCons) { 
+    auto list = (Cons*) Cons::from_vector({ new Integer(1) });
+    auto expanded = list->append_list(Cons::from_vector({ new Integer(2) }));
+    ASSERT_EQ(
+        *Cons::from_vector({ new Integer(1), new Integer(2) }),
+        *expanded
+    );
+
+    list = (Cons*) Cons::from_vector({ new Integer(1), new Integer(2) });
+    expanded = list->append_list(Cons::from_vector({ new Integer(3) }));
+    ASSERT_EQ(
+        *Cons::from_vector({ new Integer(1), new Integer(2), new Integer(3) }),
+        *expanded
+    );
+}

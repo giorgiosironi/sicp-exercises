@@ -92,6 +92,21 @@ Cons* Cons::append(Value* element)
     return list;
 }
 
+List* Cons::append_list(List *next)
+{
+    auto contents = vector<Value*>();
+    Value* current_element = this;
+    while (*current_element != *NIL) {
+        contents.push_back(((Cons* ) current_element)->car());
+        current_element = ((Cons*) current_element)->cdr();
+    }
+    List* list = next;
+    for(std::vector<Value*>::reverse_iterator rit = contents.rbegin(); rit != contents.rend(); ++rit) {
+        list = new Cons(*rit, list);
+    }
+    return list;
+}
+
 bool Cons::equals(const Value& other) const
 {
     const Cons* other_cons = dynamic_cast<const Cons*>(&other);

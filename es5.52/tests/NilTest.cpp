@@ -7,7 +7,7 @@
 
 using namespace std;
  
-TEST(NilTest, Append) { 
+TEST(NilTest, AppendValue) { 
     auto expanded = NIL->append(new Integer(2));
     ASSERT_EQ(
         *Cons::from_vector({ new Integer(2) }),
@@ -15,6 +15,15 @@ TEST(NilTest, Append) {
     );
 }
 
+TEST(NilTest, AppendList) {
+    auto expanded = NIL->append_list(Cons::from_vector({ new Integer(1) }));
+    ASSERT_EQ(
+        *Cons::from_vector({ new Integer(1) }),
+        *expanded
+    );
+}
+
 TEST(NilTest, Car) {  
     ASSERT_ANY_THROW(NIL->car());
 }
+

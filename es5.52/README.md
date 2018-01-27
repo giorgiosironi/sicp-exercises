@@ -61,7 +61,8 @@ What should be the first acceptance test?
 --- compute `statements`
 ++++ implement `Cons::append_(Cons*)`
 ++++ rename `Cons::append_(Cons*)`
----- implement `Nil::append_list*(Cons*)`
+++++ implement `Nil::append_list*(Cons*)`
+++++ pull up the common signature
 ---- concatenate the two Cons to make `new_statements`
 -- implement `InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`
 --- this seems complex, add intermediate steps and primitives

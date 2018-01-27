@@ -7,7 +7,6 @@
 class Nil : public List 
 {
     public:
-        virtual List* append(Value *element);
         virtual Value* car();
         virtual Value* cdr();
         virtual Value* caadr();
@@ -20,6 +19,8 @@ class Nil : public List
         virtual Value* caaddr();
         virtual Value* cadadr();
         virtual Value* cadaddr();
+        virtual List* append(Value *element);
+        virtual List* append_list(List *element);
         virtual std::vector<Value*> to_vector();
         virtual std::string to_string();
         virtual bool equals(const Value& other) const;

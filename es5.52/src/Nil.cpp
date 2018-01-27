@@ -21,6 +21,11 @@ List* Nil::append(Value* element)
     return Cons::from_vector({ element });
 }
 
+List* Nil::append_list(List* next)
+{
+    return next;
+}
+
 Value* Nil::car()
 {
     INVALID_OPERATION();

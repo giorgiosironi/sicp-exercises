@@ -19,6 +19,7 @@ class List : public Value
         virtual Value* cadadr() = 0;
         virtual Value* cadaddr() = 0;
         virtual List* append(Value *element) = 0;
+        virtual List* append_list(List *next) = 0;
         virtual std::vector<Value*> to_vector() = 0;
 };
 

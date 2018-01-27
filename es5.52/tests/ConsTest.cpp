@@ -50,7 +50,7 @@ TEST(ConsTest, AppendValue) {
     );
 }
 
-TEST(ConsTest, AppendCons) { 
+TEST(ConsTest, AppendList) { 
     auto list = (Cons*) Cons::from_vector({ new Integer(1) });
     auto expanded = list->append_list(Cons::from_vector({ new Integer(2) }));
     ASSERT_EQ(

@@ -139,7 +139,7 @@ TEST(InstructionSequenceTest, Append) {
     );
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>({ new Symbol("val") }), // sure about that?
+            vector<Symbol*>({ new Symbol("val") }),
             vector<Symbol*>({ new Symbol("val"), new Symbol("exp") }),
             Cons::from_vector({
                 Cons::from_vector({

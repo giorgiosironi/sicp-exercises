@@ -4,6 +4,7 @@
 #include "instruction_sequence.h"
 #include "dump.h"
 #include "nil.h"
+#include "conversion.h"
 // temporary:
 #include "cons.h"
 #include "integer.h"
@@ -128,30 +129,12 @@ InstructionSequence* InstructionSequence::append(InstructionSequence* followUp) 
         inserter(new_modifies, new_modifies.end())
     );
 
-    //Cons* new_statements = convert_to<Cons>(this->_statements);
-    //vector1.insert( vector1.end(), vector2.begin(), vector2.end() );
+    List* new_statements = convert_to<Cons>(this->_statements)->append_list(convert_to<List>(followUp->_statements));
 
     return new InstructionSequence(
         new_needs,
         new_modifies,
-        Cons::from_vector({
-            Cons::from_vector({
-                new Symbol("assign"),
-                new Symbol("val"),
-                Cons::from_vector({
-                    new Symbol("const"),
-                    new Integer(42)
-                })
-            }),
-            Cons::from_vector({
-                new Symbol("assign"),
-                new Symbol("exp"),
-                Cons::from_vector({
-                    new Symbol("reg"),
-                    new Symbol("val"),
-                })
-            })
-        })
+        new_statements
     );
 }
 

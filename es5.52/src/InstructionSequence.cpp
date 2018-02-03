@@ -166,8 +166,13 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
     if (registers.empty()) {
         return this->append(followUp);
     }
-    if (false) {
+    if (followUp->needs(registers.at(0)) && this->modifies(registers.at(0))) {
+        // TODO: wrong, but we fall into this condition now
+        // add save/restore
+        registers.erase(registers.begin());
+        return this->preserving(registers, followUp);
     } else {
+        // inefficient, but what can you do
         registers.erase(registers.begin());
         return this->preserving(registers, followUp);
     }

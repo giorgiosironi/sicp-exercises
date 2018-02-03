@@ -244,7 +244,7 @@ TEST(InstructionSequenceTest, PreservingWithNoRegisters) {
     );
 }
 
-TEST(InstructionSequenceTest, PreservingARegister) { 
+TEST(InstructionSequenceTest, PreservingAnUntouchedRegister) { 
     auto original = new InstructionSequence(
         vector<Symbol*>({}),
         vector<Symbol*>({ new Symbol("val") }),
@@ -274,7 +274,6 @@ TEST(InstructionSequenceTest, PreservingARegister) {
         })
     );
     ASSERT_EQ(
-        // TODO: wrong, update as implementation catches on, to avoid regressions
         InstructionSequence(
             vector<Symbol*>(),
             vector<Symbol*>({ new Symbol("val"), new Symbol("exp") }),
@@ -299,6 +298,65 @@ TEST(InstructionSequenceTest, PreservingARegister) {
         ),
         *original->preserving(
             vector<Symbol*>({ new Symbol("env") }),
+            followUp
+        )
+    );
+}
+
+TEST(InstructionSequenceTest, PreservingAUsedRegister) { 
+    auto original = new InstructionSequence(
+        vector<Symbol*>({}),
+        vector<Symbol*>({ new Symbol("val") }),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("val"),
+                Cons::from_vector({
+                    new Symbol("const"),
+                    new Integer(42)
+                })
+            })
+        })
+    );
+    auto followUp = new InstructionSequence(
+        vector<Symbol*>({ new Symbol("val") }),
+        vector<Symbol*>({ new Symbol("exp") }),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("exp"),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("val")
+                })
+            })
+        })
+    );
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("val"), new Symbol("exp") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(42)
+                    })
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("exp"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    })
+                })
+            })
+        ),
+        *original->preserving(
+            vector<Symbol*>({ new Symbol("val") }),
             followUp
         )
     );

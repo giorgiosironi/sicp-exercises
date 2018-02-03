@@ -30,6 +30,18 @@ vector<Symbol*> InstructionSequence::needs() {
     return this->_needs;
 }
 
+bool InstructionSequence::needs(Symbol* candidate) {
+    return
+        find_if(
+            this->_needs.begin(),
+            this->_needs.end(),
+            [&candidate](Symbol* e) { return *e == *candidate; }
+            )
+        !=
+        this->_needs.end()
+    ;
+}
+
 vector<Symbol*> InstructionSequence::modifies() {
     return this->_modifies;
 }

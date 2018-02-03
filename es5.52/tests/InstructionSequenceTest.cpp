@@ -108,6 +108,16 @@ TEST(InstructionSequenceTest, Empty) {
     );
 }
 
+TEST(InstructionSequenceTest, Needs) { 
+    auto sequence = new InstructionSequence(
+        vector<Symbol*>({ new Symbol("val") }),
+        vector<Symbol*>(),
+        NIL
+    );
+    ASSERT_EQ(true, sequence->needs(new Symbol("val")));
+    ASSERT_EQ(false, sequence->needs(new Symbol("exp")));
+}
+
 TEST(InstructionSequenceTest, Append) { 
     auto original = new InstructionSequence(
         vector<Symbol*>({}),
@@ -224,44 +234,62 @@ TEST(InstructionSequenceTest, PreservingWithNoRegisters) {
     );
 }
 
-//TEST(InstructionSequenceTest, PreservingARegister) { 
-//    auto original = new InstructionSequence(
-//        vector<Symbol*>({}),
-//        vector<Symbol*>({ new Symbol("val") }),
-//        Cons::from_vector({
-//            Cons::from_vector({
-//                new Symbol("assign"),
-//                new Symbol("val"),
-//                Cons::from_vector({
-//                    new Symbol("const"),
-//                    new Integer(42)
-//                })
-//            })
-//        })
-//    );
-//    auto followUp = new InstructionSequence(
-//        vector<Symbol*>(),
-//        vector<Symbol*>({ new Symbol("exp") }),
-//        Cons::from_vector({
-//            Cons::from_vector({
-//                new Symbol("assign"),
-//                new Symbol("exp"),
-//                Cons::from_vector({
-//                    new Symbol("const"),
-//                    new Integer(42)
-//                })
-//            })
-//        })
-//    );
-//    ASSERT_EQ(
-//        InstructionSequence(
-//            vector<Symbol*>(),
-//            vector<Symbol*>(),
-//            NIL
-//        ),
-//        *original->preserving(
-//            vector<Symbol*>({ new Symbol("val") }),
-//            followUp
-//        )
-//    );
-//}
+TEST(InstructionSequenceTest, PreservingARegister) { 
+    auto original = new InstructionSequence(
+        vector<Symbol*>({}),
+        vector<Symbol*>({ new Symbol("val") }),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("val"),
+                Cons::from_vector({
+                    new Symbol("const"),
+                    new Integer(42)
+                })
+            })
+        })
+    );
+    auto followUp = new InstructionSequence(
+        vector<Symbol*>(),
+        vector<Symbol*>({ new Symbol("exp") }),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("exp"),
+                Cons::from_vector({
+                    new Symbol("const"),
+                    new Integer(42)
+                })
+            })
+        })
+    );
+    ASSERT_EQ(
+        // TODO: wrong, update as implementation catches on, to avoid regressions
+        InstructionSequence(
+            vector<Symbol*>(),
+            vector<Symbol*>({ new Symbol("val"), new Symbol("exp") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(42)
+                    })
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("exp"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(42)
+                    })
+                })
+            })
+        ),
+        *original->preserving(
+            vector<Symbol*>({ new Symbol("env") }),
+            followUp
+        )
+    );
+}

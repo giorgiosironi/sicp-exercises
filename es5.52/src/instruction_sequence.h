@@ -15,6 +15,7 @@ class InstructionSequence {
         InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements);
         bool equals(const InstructionSequence& other) const;
         vector<Symbol*> needs();
+        bool needs(Symbol* candidate);
         vector<Symbol*> modifies();
         Value* statements();
         string to_string() const;

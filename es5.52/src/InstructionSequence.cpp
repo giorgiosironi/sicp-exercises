@@ -172,9 +172,10 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
 
         auto new_needs = this->needs();
         // TODO: work around the fact that I should have used a set for this->_needs and this->_modifies
-        //if (!this->needs(first)) {
-        //    new_needs.insert(new_needs.begin(), first);
-        //}
+        cout << "THIS: " << *this << endl;
+        if (!this->needs(first)) {
+            new_needs.insert(new_needs.begin(), first);
+        }
         auto new_modifies = this->modifies();
 
         auto found = find_if( new_modifies.begin(), new_modifies.end(), [&first](Symbol* e) { return *e == *first; });
@@ -188,6 +189,7 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
             //         `((restore ,first-reg))))
             this->statements()
         );
+        cout << "WRAPPED: " << *wrapped << endl;
         return wrapped->preserving(registers, followUp);
     } else {
         // inefficient, but what can you do

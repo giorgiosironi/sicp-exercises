@@ -17,6 +17,7 @@ class InstructionSequence {
         vector<Symbol*> needs();
         bool needs(Symbol* candidate);
         vector<Symbol*> modifies();
+        bool modifies(Symbol* candidate);
         Value* statements();
         string to_string() const;
         InstructionSequence* append(InstructionSequence* followUp);

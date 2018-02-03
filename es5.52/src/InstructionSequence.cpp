@@ -46,6 +46,18 @@ vector<Symbol*> InstructionSequence::modifies() {
     return this->_modifies;
 }
 
+bool InstructionSequence::modifies(Symbol* candidate) {
+    return
+        find_if(
+            this->_modifies.begin(),
+            this->_modifies.end(),
+            [&candidate](Symbol* e) { return *e == *candidate; }
+            )
+        !=
+        this->_modifies.end()
+    ;
+}
+
 Value* InstructionSequence::statements()
 {
     return this->_statements;

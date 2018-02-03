@@ -118,6 +118,16 @@ TEST(InstructionSequenceTest, Needs) {
     ASSERT_EQ(false, sequence->needs(new Symbol("exp")));
 }
 
+TEST(InstructionSequenceTest, Modifies) { 
+    auto sequence = new InstructionSequence(
+        vector<Symbol*>(),
+        vector<Symbol*>({ new Symbol("val") }),
+        NIL
+    );
+    ASSERT_EQ(true, sequence->modifies(new Symbol("val")));
+    ASSERT_EQ(false, sequence->modifies(new Symbol("exp")));
+}
+
 TEST(InstructionSequenceTest, Append) { 
     auto original = new InstructionSequence(
         vector<Symbol*>({}),

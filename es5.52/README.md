@@ -68,7 +68,7 @@ What should be the first acceptance test?
 +++ case with 0 registers
 --- case with some registers
 ++++ implement `needs(Symbol*)`
----- implement `modifies(Symbol*)`
+++++ implement `modifies(Symbol*)`
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`

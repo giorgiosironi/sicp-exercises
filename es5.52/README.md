@@ -71,6 +71,11 @@ What should be the first acceptance test?
 ++++ implement `modifies(Symbol*)`
 ++++ case of untouched register
 ---- case of modified register
++++++ build wrapped
++++++ build new call to preserve
+----- avoid repetition in needs, modifies
+----- add save calls
+----- add restore calls
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`

@@ -335,7 +335,7 @@ TEST(InstructionSequenceTest, PreservingAUsedRegister) {
     ASSERT_EQ(
         InstructionSequence(
             vector<Symbol*>({ new Symbol("val") }),
-            vector<Symbol*>({ new Symbol("val"), new Symbol("exp") }),
+            vector<Symbol*>({ new Symbol("exp") }),
             Cons::from_vector({
                 Cons::from_vector({
                     new Symbol("assign"),

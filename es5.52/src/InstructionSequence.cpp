@@ -168,18 +168,13 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
     }
     Symbol* first = registers.at(0);
     if (followUp->needs(first) && this->modifies(first)) {
-        // TODO: wrong, but we fall into this condition now
-        // add save/restore
         registers.erase(registers.begin());
 
-        //            (make-instruction-sequence
-        //              (list-difference (registers-modified seq1)
-        //                               (list first-reg))
-        //              (append `((save ,first-reg))
-        //                      (statements seq1)
-        //                      `((restore ,first-reg))))
         auto new_needs = this->needs();
-        new_needs.insert(new_needs.begin(), first);
+        // TODO: work around the fact that I should have used a set for this->_needs and this->_modifies
+        //if (!this->needs(first)) {
+        //    new_needs.insert(new_needs.begin(), first);
+        //}
         auto new_modifies = this->modifies();
 
         auto found = find_if( new_modifies.begin(), new_modifies.end(), [&first](Symbol* e) { return *e == *first; });
@@ -187,6 +182,10 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
         auto wrapped = new InstructionSequence(
             new_needs,
             new_modifies,
+            // TODO: add save/restore
+            // (append `((save ,first-reg))
+            //         (statements seq1)
+            //         `((restore ,first-reg))))
             this->statements()
         );
         return wrapped->preserving(registers, followUp);

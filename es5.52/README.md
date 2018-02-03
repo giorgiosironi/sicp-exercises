@@ -52,7 +52,7 @@ What should be the first acceptance test?
 -- implement `InstructionSequence::append(InstructionSequence* another)`
 +++ define as best as you can expectation
 +++ hardcode a result
---- compute `needs`
++++ compute `needs`
 ++++ `registers-needed` is just `this->needs` through a getter
 ++++ `registers-modified` is just `this->modifies` through a getter
 ++++ `list-union` is http://www.cplusplus.com/reference/algorithm/set_union/
@@ -65,7 +65,8 @@ What should be the first acceptance test?
 ++++ pull up the common signature
 ++++ concatenate the two Cons to make `new_statements`
 -- implement `InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`
---- this seems complex, add intermediate steps and primitives
++++ case with 0 registers
+--- case with some registers
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`

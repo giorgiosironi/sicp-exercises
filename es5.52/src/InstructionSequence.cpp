@@ -166,11 +166,30 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
     if (registers.empty()) {
         return this->append(followUp);
     }
-    if (followUp->needs(registers.at(0)) && this->modifies(registers.at(0))) {
+    Symbol* first = registers.at(0);
+    if (followUp->needs(first) && this->modifies(first)) {
         // TODO: wrong, but we fall into this condition now
         // add save/restore
         registers.erase(registers.begin());
-        return this->preserving(registers, followUp);
+
+        //            (make-instruction-sequence
+        //              (list-difference (registers-modified seq1)
+        //                               (list first-reg))
+        //              (append `((save ,first-reg))
+        //                      (statements seq1)
+        //                      `((restore ,first-reg))))
+        auto new_needs = this->needs();
+        new_needs.insert(new_needs.begin(), first);
+        auto new_modifies = this->modifies();
+
+        auto found = find_if( new_modifies.begin(), new_modifies.end(), [&first](Symbol* e) { return *e == *first; });
+        new_modifies.erase(found);
+        auto wrapped = new InstructionSequence(
+            new_needs,
+            new_modifies,
+            this->statements()
+        );
+        return wrapped->preserving(registers, followUp);
     } else {
         // inefficient, but what can you do
         registers.erase(registers.begin());

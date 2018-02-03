@@ -163,7 +163,14 @@ InstructionSequence* InstructionSequence::append(InstructionSequence* followUp) 
 }
 
 InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence* followUp) {
-    return this->append(followUp);
+    if (registers.empty()) {
+        return this->append(followUp);
+    }
+    if (false) {
+    } else {
+        registers.erase(registers.begin());
+        return this->preserving(registers, followUp);
+    }
 }
 
 InstructionSequence* InstructionSequence::empty() {

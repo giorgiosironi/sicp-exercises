@@ -30,3 +30,14 @@ TEST(ValueTest, Inequality) {
     ASSERT_NE(Cons(new Integer(43), new Nil()), Cons(new Integer(42), new Nil()));
 }
 
+TEST(ValueTest, LessThan) { 
+    Value* integer42 = new Integer(42);
+    Value* string42 = new String("42");
+    ASSERT_LT(Integer(42), Integer(43));
+    //Value* integer41 = new Integer(41);
+    //ASSERT_NE(*integer41, *integer42);
+    //ASSERT_NE(String("hello"), String("world"));
+    //ASSERT_NE(Symbol("exp"), Symbol("val"));
+    //ASSERT_NE(Bool(true), Bool(false));
+    //ASSERT_NE(Cons(new Integer(43), new Nil()), Cons(new Integer(42), new Nil()));
+}

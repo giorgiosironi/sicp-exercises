@@ -12,6 +12,17 @@ bool operator!=(const Value& lhs, const Value& rhs)
     return !(lhs == rhs);
 }
 
+bool operator<(const Value& lhs, const Value& rhs)
+{
+    // approximate, but we only need this for set ordering
+    if (typeid(lhs) != typeid(rhs)) {
+        return false;
+    }
+
+    //return lhs.to_string() < rhs.to_string();
+    return false;
+}
+
 bool Value::equals(const Value& other) const
 {
     return false;

@@ -23,3 +23,10 @@ TEST(dumpTest, SetOfIntegers) {
         to_string<Integer>(set<Integer*>({ new Integer(42), new Integer(43) }))
     );
 }
+
+TEST(dumpTest, SetWithDuplicates) { 
+    ASSERT_EQ(
+        "{42}",
+        to_string<Integer>(set<Integer*>({ new Integer(42), new Integer(42) }))
+    );
+}

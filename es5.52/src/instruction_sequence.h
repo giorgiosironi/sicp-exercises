@@ -1,6 +1,7 @@
 #ifndef INSTRUCTION_SEQUENCE_H
 #define INSTRUCTION_SEQUENCE_H
 #include <vector>
+#include <set>
 #include <iostream>
 #include <string>
 #include "../src/symbol.h"
@@ -8,7 +9,8 @@ using namespace std;
 
 class InstructionSequence {
     private:
-        vector<Symbol*> _needs;
+        //vector<Symbol*> _needs;
+        set<Symbol*> _needs;
         vector<Symbol*> _modifies;
         Value* _statements;
     public:

@@ -21,13 +21,17 @@ using namespace std;
  */
 InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements)
 {
-    this->_needs = needs;
+    set<Symbol*> myset(needs.begin(), needs.end());
+    this->_needs = myset;
+    //this->_needs = needs;
     this->_modifies = modifies;
     this->_statements = statements;
 }
 
 vector<Symbol*> InstructionSequence::needs() {
-    return this->_needs;
+    auto needs = vector<Symbol*>(this->_needs.size());
+    copy(this->_needs.begin(), this->_needs.end(), needs.begin());
+    return needs;
 }
 
 bool InstructionSequence::needs(Symbol* candidate) {
@@ -172,7 +176,6 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
 
         auto new_needs = this->needs();
         // TODO: work around the fact that I should have used a set for this->_needs and this->_modifies
-        cout << "THIS: " << *this << endl;
         if (!this->needs(first)) {
             new_needs.insert(new_needs.begin(), first);
         }
@@ -189,12 +192,12 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
             //         `((restore ,first-reg))))
             this->statements()
         );
-        cout << "WRAPPED: " << *wrapped << endl;
         return wrapped->preserving(registers, followUp);
     } else {
         // inefficient, but what can you do
         registers.erase(registers.begin());
-        return this->preserving(registers, followUp);
+        auto tmp = this->preserving(registers, followUp);
+        return tmp;
     }
 }
 

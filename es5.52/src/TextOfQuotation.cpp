@@ -11,7 +11,7 @@ Value* TextOfQuotation::execute(std::vector<Value*> elements)
     return operand->cadr();
 }
 
-std::string TextOfQuotation::to_string()
+std::string TextOfQuotation::to_string() const
 {
     return std::string("Operation-TextOfQuotation");
 }

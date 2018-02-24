@@ -14,7 +14,7 @@ Value* PromptForInput::execute(std::vector<Value*> elements)
     return new Symbol("ok");
 }
 
-std::string PromptForInput::to_string()
+std::string PromptForInput::to_string() const
 {
     return std::string("Operation-PromptForInput");
 }

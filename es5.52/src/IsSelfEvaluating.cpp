@@ -9,7 +9,7 @@ Value* IsSelfEvaluating::execute(std::vector<Value*> elements)
     return new Bool(is_number(value) || is_string(value) || is_bool(value));
 }
 
-std::string IsSelfEvaluating::to_string()
+std::string IsSelfEvaluating::to_string() const
 {
     return std::string("Operation-IsSelfEvaluating");
 }

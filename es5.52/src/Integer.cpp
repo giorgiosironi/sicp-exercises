@@ -6,7 +6,7 @@ Integer::Integer(int contents)
     this->contents = contents;
 }
 
-std::string Integer::to_string()
+std::string Integer::to_string() const
 {
     return std::to_string(this->contents);
 }

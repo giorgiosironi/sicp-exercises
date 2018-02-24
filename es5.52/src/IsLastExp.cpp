@@ -19,7 +19,7 @@ Value* IsLastExp::execute(vector<Value*> elements)
     }
 }
 
-string IsLastExp::to_string()
+string IsLastExp::to_string() const
 {
     return string("Operation-IsLastExp");
 }

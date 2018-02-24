@@ -13,7 +13,7 @@ Value* PrimitiveEqual::apply(List* arguments)
     return new Bool(result);
 }
 
-string PrimitiveEqual::to_string()
+string PrimitiveEqual::to_string() const
 {
     return string("PrimitiveProcedure:=");
 }

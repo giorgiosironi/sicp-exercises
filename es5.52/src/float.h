@@ -8,7 +8,7 @@ class Float : public Value
         float contents;
     public:
         Float(float contents);
-        virtual std::string to_string();
+        virtual std::string to_string() const;
         float as_float();
         virtual bool equals(const Value& other) const;
 };

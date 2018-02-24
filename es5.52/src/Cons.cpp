@@ -117,7 +117,7 @@ bool Cons::equals(const Value& other) const
         && *this->cdr_ptr == *other_cons->cdr_ptr;
 }
 
-std::string Cons::to_string()
+std::string Cons::to_string() const
 {
     if (*this->cdr_ptr == *NIL) {
         return std::string("(")

@@ -9,7 +9,7 @@ Value* PrimitiveList::apply(List* arguments)
     return arguments;
 }
 
-string PrimitiveList::to_string()
+string PrimitiveList::to_string() const
 {
     return string("PrimitiveProcedure:list");
 }

@@ -9,7 +9,7 @@ Value* UserPrint::execute(std::vector<Value*> elements)
     cout << elements.at(0)->to_string() << endl;
 }
 
-std::string UserPrint::to_string()
+std::string UserPrint::to_string() const
 {
     return std::string("Operation-UserPrint");
 }

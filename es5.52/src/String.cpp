@@ -5,7 +5,7 @@ String::String(std::string contents)
     this->contents = contents;
 }
 
-std::string String::to_string()
+std::string String::to_string() const
 {
     return "\"" + this->contents + "\"";
 }

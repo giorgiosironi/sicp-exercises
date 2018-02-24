@@ -169,7 +169,7 @@ def parse_sexp(string):
     return sexp[0]
 */
 
-std::string Read::to_string()
+std::string Read::to_string() const
 {
     return std::string("Operation-Read");
 }

@@ -2,7 +2,7 @@
 #include "cons.h"
 #define INVALID_OPERATION()  throw "Cannot access list elements of Nil"
 
-std::string Nil::to_string()
+std::string Nil::to_string() const
 {
     return std::string("NIL");
 }

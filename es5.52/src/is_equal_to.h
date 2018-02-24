@@ -8,7 +8,7 @@ class IsEqualTo: public Operation {
     public:
         IsEqualTo(Value* reference);
         virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string to_string();
+        virtual std::string to_string() const;
 };
 
 #endif

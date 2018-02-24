@@ -18,7 +18,7 @@ Value* IsTaggedList::execute(std::vector<Value*> elements)
     return new Bool(false);
 }
 
-std::string IsTaggedList::to_string()
+std::string IsTaggedList::to_string() const
 {
     return std::string("Operation-IsTaggedList");
 }

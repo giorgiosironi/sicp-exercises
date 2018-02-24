@@ -9,7 +9,7 @@ class Constant: public Operation {
     public:
         Constant(Value* constant);
         virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string to_string();
+        virtual std::string to_string() const;
 };
 
 

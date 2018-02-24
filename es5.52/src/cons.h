@@ -26,7 +26,7 @@ class Cons : public List
         virtual Value* cadaddr();
         virtual Cons* append(Value *element);
         virtual List* append_list(List *next);
-        virtual std::string to_string();
+        virtual std::string to_string() const;
         virtual bool equals(const Value& other) const;
         virtual std::vector<Value*> to_vector();
         static List* from_vector(std::vector<Value*> vector);

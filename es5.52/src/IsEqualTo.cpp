@@ -14,7 +14,7 @@ Value* IsEqualTo::execute(std::vector<Value*> elements)
     return new Bool(is_eq(this->reference, value));
 }
 
-std::string IsEqualTo::to_string()
+std::string IsEqualTo::to_string() const
 {
     return std::string("Operation-IsEqualTo");
 }

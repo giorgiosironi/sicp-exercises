@@ -12,7 +12,7 @@ Value* AdjoinArg::execute(vector<Value*> elements)
     return list->append(elements.at(0));
 }
 
-string AdjoinArg::to_string()
+string AdjoinArg::to_string() const
 {
     return string("Operation-AdjoinArg");
 }

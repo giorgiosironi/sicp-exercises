@@ -8,7 +8,7 @@ class Bool: public Value {
         bool value;
     public:
         Bool(bool value);
-        virtual std::string to_string();
+        virtual std::string to_string() const;
         bool is_true();
         bool is_false();
         virtual bool equals(const Value& other) const;

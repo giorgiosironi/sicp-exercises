@@ -5,7 +5,7 @@
 class PrimitiveMinus: public PrimitiveProcedure {
     public:
         virtual Value* apply(List* arguments);
-        virtual std::string to_string();
+        virtual std::string to_string() const;
 };
 
 #endif

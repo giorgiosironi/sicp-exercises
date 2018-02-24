@@ -17,7 +17,7 @@ Value* ConsMethodOperation::execute(std::vector<Value*> elements)
     return (*list.*(this->method_to_call))();
 }
 
-std::string ConsMethodOperation::to_string()
+std::string ConsMethodOperation::to_string() const
 {
     return std::string("Operation-ConsMethodOperation");
 }

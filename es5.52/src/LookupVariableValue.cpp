@@ -16,7 +16,7 @@ Value* LookupVariableValue::execute(std::vector<Value*> elements)
     return result;
 }
 
-std::string LookupVariableValue::to_string()
+std::string LookupVariableValue::to_string() const
 {
     return std::string("Operation-LookupVariableValue");
 }

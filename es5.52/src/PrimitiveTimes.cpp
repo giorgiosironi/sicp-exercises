@@ -16,7 +16,7 @@ Value* PrimitiveTimes::apply(List* arguments)
     return new Integer(result);
 }
 
-string PrimitiveTimes::to_string()
+string PrimitiveTimes::to_string() const
 {
     return string("PrimitiveProcedure:*");
 }

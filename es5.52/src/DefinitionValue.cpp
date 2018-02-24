@@ -23,7 +23,7 @@ Value* DefinitionValue::execute(std::vector<Value*> elements)
     );
 }
 
-std::string DefinitionValue::to_string()
+std::string DefinitionValue::to_string() const
 {
     return std::string("Operation-DefinitionValue");
 }

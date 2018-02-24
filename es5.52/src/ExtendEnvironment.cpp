@@ -25,7 +25,7 @@ Value* ExtendEnvironment::execute(std::vector<Value*> elements)
     ));
 }
 
-std::string ExtendEnvironment::to_string()
+std::string ExtendEnvironment::to_string() const
 {
     return std::string("Operation-ExtendEnvironment");
 }

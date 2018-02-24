@@ -16,7 +16,7 @@ Value* ApplyPrimitiveProcedure::execute(vector<Value*> elements)
     return result;
 }
 
-string ApplyPrimitiveProcedure::to_string()
+string ApplyPrimitiveProcedure::to_string() const
 {
     return string("Operation-ApplyPrimitiveProcedure");
 }

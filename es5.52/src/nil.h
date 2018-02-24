@@ -22,7 +22,7 @@ class Nil : public List
         virtual List* append(Value *element);
         virtual List* append_list(List *element);
         virtual std::vector<Value*> to_vector();
-        virtual std::string to_string();
+        virtual std::string to_string() const;
         virtual bool equals(const Value& other) const;
 };
 

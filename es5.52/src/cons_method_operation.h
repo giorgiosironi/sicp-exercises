@@ -9,7 +9,7 @@ class ConsMethodOperation: public Operation {
     public:
         ConsMethodOperation(Value* (Cons::*method_to_call)());
         virtual Value* execute(std::vector<Value*> elements);
-        virtual std::string to_string();
+        virtual std::string to_string() const;
         static ConsMethodOperation* car();
         static ConsMethodOperation* cdr();
         static ConsMethodOperation* cadr();

@@ -16,7 +16,7 @@ Value* PrimitivePlus::apply(List* arguments)
     return new Integer(result);
 }
 
-string PrimitivePlus::to_string()
+string PrimitivePlus::to_string() const
 {
     return string("PrimitiveProcedure:+");
 }

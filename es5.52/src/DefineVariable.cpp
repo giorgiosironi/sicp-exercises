@@ -17,7 +17,7 @@ Value* DefineVariable::execute(std::vector<Value*> elements)
     return new Symbol("ok");
 }
 
-std::string DefineVariable::to_string()
+std::string DefineVariable::to_string() const
 {
     return std::string("Operation-DefineVariable");
 }

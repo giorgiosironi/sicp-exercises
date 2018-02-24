@@ -14,7 +14,7 @@ Value* IsNotEqualTo::execute(std::vector<Value*> elements)
     return new Bool(this->reference->to_string() != value->to_string());
 }
 
-std::string IsNotEqualTo::to_string()
+std::string IsNotEqualTo::to_string() const
 {
     return std::string("Operation-IsNotEqualTo");
 }

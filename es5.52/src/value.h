@@ -6,7 +6,7 @@ using namespace std;
 class Value
 {
     public:
-        virtual string to_string() = 0;
+        virtual string to_string() const = 0;
         virtual bool equals(const Value& other) const;
 };
 

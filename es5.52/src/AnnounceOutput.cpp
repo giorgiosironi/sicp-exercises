@@ -9,7 +9,7 @@ Value* AnnounceOutput::execute(std::vector<Value*> elements)
     cout << elements.at(0)->to_string() << endl;
 }
 
-std::string AnnounceOutput::to_string()
+std::string AnnounceOutput::to_string() const
 {
     return std::string("Operation-AnnounceOutput");
 }

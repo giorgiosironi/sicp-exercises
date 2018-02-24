@@ -12,7 +12,7 @@ Value* PrimitiveMinus::apply(List* arguments)
     return new Integer(result);
 }
 
-string PrimitiveMinus::to_string()
+string PrimitiveMinus::to_string() const
 {
     return string("PrimitiveProcedure:-");
 }

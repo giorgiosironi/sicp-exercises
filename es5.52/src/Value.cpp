@@ -29,11 +29,10 @@ bool operator<(const Value& lhs, const Value& rhs)
         return false;
     }
 
-    const Example example = Example();
-    return example.to_string() == "";
+    //const Example example = Example();
+    //return example.to_string() == "";
 
-    //return lhs.to_string() < rhs.to_string();
-    return false;
+    return lhs.to_string() < rhs.to_string();
 }
 
 bool Value::equals(const Value& other) const

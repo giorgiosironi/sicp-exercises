@@ -6,7 +6,7 @@ Float::Float(float contents)
     this->contents = contents;
 }
 
-std::string Float::to_string()
+std::string Float::to_string() const
 {
     return std::to_string(this->contents);
 }

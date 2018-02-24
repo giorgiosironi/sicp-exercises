@@ -36,6 +36,8 @@ vector<Symbol*> InstructionSequence::needs() {
     for (set<Symbol>::iterator it = this->_needsSet.begin(); it != this->_needsSet.end(); ++it) {
         needs.push_back(new Symbol((*it).name()));
     }
+
+    // causes segmentation faults
     //return needs;
     return this->_needs;
 }

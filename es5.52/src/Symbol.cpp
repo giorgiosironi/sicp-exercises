@@ -1,7 +1,7 @@
 #include <string>
 #include "symbol.h"
 
-Symbol::Symbol(std::string name)
+Symbol::Symbol(const std::string name)
 {
     this->_name = name;
 }

@@ -9,7 +9,7 @@ class Symbol: public Value {
     public:
         Symbol(std::string name);
         virtual std::string to_string() const;
-        std::string name();
+        std::string name() const;
         bool operator <(const Symbol& right) const
         {
             return this->_name < right._name;

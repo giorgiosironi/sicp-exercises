@@ -11,7 +11,7 @@ std::string Symbol::to_string() const
     return this->_name;
 }
 
-std::string Symbol::name()
+std::string Symbol::name() const
 {
     return this->_name;
 }

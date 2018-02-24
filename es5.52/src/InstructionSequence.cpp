@@ -32,23 +32,23 @@ InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> 
 }
 
 vector<Symbol*> InstructionSequence::needs() {
-    return this->_needs;
-    //auto needs = vector<Symbol*>(this->_needs.size());
-    //for (set<Symbol*>::iterator it = this->_needs.begin(); it != this->_needs.end(); ++it) {
-    //    needs.push_back(new Symbol((*it)->name()));
-    //}
+    auto needs = vector<Symbol*>(this->_needsSet.size());
+    for (set<Symbol>::iterator it = this->_needsSet.begin(); it != this->_needsSet.end(); ++it) {
+        needs.push_back(new Symbol((*it).name()));
+    }
     //return needs;
+    return this->_needs;
 }
 
 bool InstructionSequence::needs(Symbol* candidate) {
     return
         find_if(
-            this->_needs.begin(),
-            this->_needs.end(),
-            [&candidate](Symbol* e) { return *e == *candidate; }
+            this->_needsSet.begin(),
+            this->_needsSet.end(),
+            [&candidate](Symbol e) { return e == *candidate; }
             )
         !=
-        this->_needs.end()
+        this->_needsSet.end()
     ;
 }
 

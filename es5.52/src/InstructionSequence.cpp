@@ -21,17 +21,23 @@ using namespace std;
  */
 InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements)
 {
-    set<Symbol*> myset(needs.begin(), needs.end());
-    this->_needs = myset;
-    //this->_needs = needs;
+    set<Symbol> myset;
+    for (vector<Symbol*>::iterator it = needs.begin(); it != needs.end(); ++it) {
+        myset.insert(**it);
+    }
+    this->_needsSet = myset;
+    this->_needs = needs;
     this->_modifies = modifies;
     this->_statements = statements;
 }
 
 vector<Symbol*> InstructionSequence::needs() {
-    auto needs = vector<Symbol*>(this->_needs.size());
-    copy(this->_needs.begin(), this->_needs.end(), needs.begin());
-    return needs;
+    return this->_needs;
+    //auto needs = vector<Symbol*>(this->_needs.size());
+    //for (set<Symbol*>::iterator it = this->_needs.begin(); it != this->_needs.end(); ++it) {
+    //    needs.push_back(new Symbol((*it)->name()));
+    //}
+    //return needs;
 }
 
 bool InstructionSequence::needs(Symbol* candidate) {

@@ -14,5 +14,7 @@ bool operator==(const Value& lhs, const Value& rhs);
 bool operator!=(const Value& lhs, const Value& rhs);
 bool operator<(const Value& lhs, const Value& rhs);
 
+//bool operator<(const Value* &lhs, const Value* &rhs);
+
 
 #endif

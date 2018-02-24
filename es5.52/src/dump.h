@@ -20,16 +20,16 @@ template <class T> string to_string(vector<T*> v)
     return ss.str();
 }
 
-template <class T> string to_string(set<T*> v)
+template <class T> string to_string(set<T> v)
 {
     stringstream ss;
     ss << "{";
     int i = 0;
-    for (typename set<T*>::iterator it = v.begin(); it != v.end(); ++it) {
+    for (typename set<T>::iterator it = v.begin(); it != v.end(); ++it) {
         if(i != 0){ 
             ss << ",";
         }
-        ss << (*it)->to_string();
+        ss << (*it).to_string();
         i++;
     }
     ss << "}";

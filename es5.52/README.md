@@ -74,11 +74,12 @@ What should be the first acceptance test?
 +++++ build wrapped
 +++++ build new call to preserve
 ----- avoid repetition in needs, modifies
------- change Value::to_string() to `const`
-------- maybe there is a better way to implement `<` that does not require this?
------- implement `<` for `Value`
------- introduce set for `this->_needs`
------- introduce set for `this->needs()`
+++++++ change Value::to_string() to `const`
+++++++ implement `<` for `Value`
+------ introduce `set<Symbol>` for `this->_needs`
+------ use `set<Symbol>` in all methods using `this->_needs`
+------ introduce `set<Symbol>` for `this->_modifies`?
+------ use `set<Symbol>` in all methods using `this->_modifies`?
 ----- add save calls
 ----- add restore calls
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`

@@ -206,7 +206,19 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
             // (append `((save ,first-reg))
             //         (statements seq1)
             //         `((restore ,first-reg))))
-            this->statements()
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("save"),
+                    first
+                })
+            })
+                ->append_list(this->statements())
+                ->append_list(Cons::from_vector({
+                    Cons::from_vector({
+                        new Symbol("restore"),
+                        first
+                    })
+                }))
         );
         return wrapped->preserving(registers, followUp);
     } else {

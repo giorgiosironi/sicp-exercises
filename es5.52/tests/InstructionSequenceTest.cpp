@@ -342,6 +342,10 @@ TEST(InstructionSequenceTest, PreservingAUsedRegister) {
             vector<Symbol*>({ new Symbol("exp") }),
             Cons::from_vector({
                 Cons::from_vector({
+                    new Symbol("save"),
+                    new Symbol("val"),
+                }),
+                Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("val"),
                     Cons::from_vector({
@@ -350,13 +354,17 @@ TEST(InstructionSequenceTest, PreservingAUsedRegister) {
                     })
                 }),
                 Cons::from_vector({
+                    new Symbol("restore"),
+                    new Symbol("val"),
+                }),
+                Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("exp"),
                     Cons::from_vector({
                         new Symbol("reg"),
                         new Symbol("val"),
                     })
-                })
+                }),
             })
         ),
         *actual

@@ -80,8 +80,8 @@ What should be the first acceptance test?
 ++++++ use `set<Symbol>` in all methods using `this->_needs`
 ++++++ introduce `set<Symbol>` for `this->_modifies`?
 ++++++ use `set<Symbol>` in all methods using `this->_modifies`?
------ add save calls
------ add restore calls
++++++ add save calls
++++++ add restore calls
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`

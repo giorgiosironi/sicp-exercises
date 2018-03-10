@@ -70,10 +70,65 @@ TEST(compileTest, Quoted) {
         ),
         *compile(
             Cons::from_vector({
-                new Symbol("year"),
+                new Symbol("quote"),
                 new Integer(2017)
             }),
             new Symbol("val"),
+            new LinkageNext()
+        )
+    );
+}
+
+TEST(compileTest, DefinitionVariable) { 
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("env"), new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("some"), new Symbol("val") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(42),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("perform"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("define-variable!"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Symbol("answer"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("some"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Symbol("ok"),
+                    }),
+                }),
+            })
+        ),
+        *compile(
+            Cons::from_vector({
+                new Symbol("define"),
+                new Symbol("answer"),
+                new Integer(42)
+            }),
+            new Symbol("some"),
             new LinkageNext()
         )
     );

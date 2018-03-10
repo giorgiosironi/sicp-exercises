@@ -15,8 +15,11 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
     if (is_variable(exp)) {
         return compile_variable(exp, target, linkage);
     }
-    if (is_tagged_list(exp)) {
+    if (is_quoted(exp)) {
         return compile_quoted(exp, target, linkage);
+    }
+    if (is_definition(exp)) {
+        return compile_definition(exp, target, linkage);
     }
     // TODO: throw exception
     return new InstructionSequence(vector<Symbol*>(), vector<Symbol*>(), NIL);
@@ -79,6 +82,10 @@ InstructionSequence* compile_variable(Value* exp, Symbol* target, Linkage* linka
     );
 }
 
+bool is_quoted(Value *exp) {
+    return is_tagged_list(exp, new Symbol("quote"));
+}
+
 InstructionSequence* compile_quoted(Value* exp, Symbol* target, Linkage* linkage)
 {
     return new InstructionSequence(
@@ -94,5 +101,60 @@ InstructionSequence* compile_quoted(Value* exp, Symbol* target, Linkage* linkage
                 }),
             })
         })
+    );
+}
+
+bool is_definition(Value *exp) {
+    return is_tagged_list(exp, new Symbol("define"));
+}
+
+InstructionSequence* compile_definition(Value* exp, Symbol* target, Linkage* linkage)
+{
+    // TODO: only implements variables, not functions
+    Value* definition_variable = convert_to<Cons>(exp)->cadr();
+    Value* definition_value = convert_to<Cons>(exp)->caddr();
+    InstructionSequence* value_code = compile(definition_value, new Symbol("val"), new LinkageNext());
+
+    InstructionSequence* intermediate = new InstructionSequence(
+        vector<Symbol*>({ new Symbol("env"), new Symbol("val") }),
+        vector<Symbol*>({ target }),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("perform"),
+                Cons::from_vector({
+                    new Symbol("op"),
+                    new Symbol("define-variable!"),
+                }),
+                Cons::from_vector({
+                    new Symbol("const"),
+                    definition_variable,
+                }),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("val"),
+                }),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("env"),
+                }),
+            }),
+            Cons::from_vector({
+                new Symbol("assign"),
+                target,
+                Cons::from_vector({
+                    new Symbol("const"),
+                    new Symbol("ok"),
+                }),
+            }),
+        })
+    );
+
+    // TODO: (end-with-linkage linkage
+    //                  (preserving '(env)
+    //                              get-value-code
+    //                              intermediate
+    return value_code->preserving(
+        { new Symbol("env") },
+        intermediate
     );
 }

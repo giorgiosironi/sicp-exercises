@@ -38,15 +38,17 @@ class End2endTest(unittest.TestCase):
     #    self._input('(+ 42 43)')
     #    self._assertOutput(['85'])
 
-    #def test_assignment(self):
-    #    self._input(
-    #        "(define answer 42)",
-    #        "answer"
-    #    )
-    #    self._assertOutput([
-    #        "ok",
-    #        "42",
-    #    ])
+    def test_assignment(self):
+        self._input(
+            "(define answer 42)",
+            "answer"
+        )
+        # TODO: complete
+        self._assertErr([])
+        #self._assertOutput([
+        #    "ok",
+        #    "42",
+        #])
 
     #def test_sum_as_compound_procedure(self):
     #    self._input(

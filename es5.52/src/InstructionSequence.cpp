@@ -32,14 +32,13 @@ InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> 
 }
 
 vector<Symbol*> InstructionSequence::needs() {
-    auto needs = vector<Symbol*>(this->_needsSet.size());
+    auto needs = vector<Symbol*>();
     for (set<Symbol>::iterator it = this->_needsSet.begin(); it != this->_needsSet.end(); ++it) {
-        needs.push_back(new Symbol((*it).name()));
+        std::string name = (*it).name();
+        needs.push_back(new Symbol(name));
     }
 
-    // causes segmentation faults
-    //return needs;
-    return this->_needs;
+    return needs;
 }
 
 bool InstructionSequence::needs(Symbol* candidate) {

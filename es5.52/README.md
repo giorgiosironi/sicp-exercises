@@ -82,11 +82,12 @@ What should be the first acceptance test?
 ++++++ use `set<Symbol>` in all methods using `this->_modifies`?
 +++++ add save calls
 +++++ add restore calls
--- implement `end_with_linkage(Linkage, InstructionSequence*)`
---- `Linkage::use_to_end_with(InstructionSequence)`
+++ implement `end_with_linkage(Linkage, InstructionSequence*)`
++++ in the form of `Linkage::use_to_end_with(InstructionSequence)`
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`
 -- actually use Linkage in `compile[_*]()`
+-- add end2end test: an assignment (will fail)
 - (compile-assignment exp target linkage)
 - (compile-definition exp target linkage)
 - (compile-if exp target linkage)

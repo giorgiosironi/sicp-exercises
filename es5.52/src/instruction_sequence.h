@@ -10,7 +10,7 @@ using namespace std;
 class InstructionSequence {
     private:
         set<Symbol> _needsSet;
-        vector<Symbol*> _modifies;
+        set<Symbol> _modifiesSet;
         Value* _statements;
     public:
         InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements);

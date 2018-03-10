@@ -78,8 +78,8 @@ What should be the first acceptance test?
 ++++++ implement `<` for `Value`
 ++++++ introduce `set<Symbol>` for `this->_needs`
 ++++++ use `set<Symbol>` in all methods using `this->_needs`
------- introduce `set<Symbol>` for `this->_modifies`?
------- use `set<Symbol>` in all methods using `this->_modifies`?
+++++++ introduce `set<Symbol>` for `this->_modifies`?
+++++++ use `set<Symbol>` in all methods using `this->_modifies`?
 ----- add save calls
 ----- add restore calls
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`

@@ -21,12 +21,17 @@ using namespace std;
  */
 InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements)
 {
-    set<Symbol> myset;
+    set<Symbol> needsSet;
     for (vector<Symbol*>::iterator it = needs.begin(); it != needs.end(); ++it) {
-        myset.insert(**it);
+        needsSet.insert(**it);
     }
-    this->_needsSet = myset;
-    this->_modifies = modifies;
+    this->_needsSet = needsSet;
+    set<Symbol> modifiesSet;
+    for (vector<Symbol*>::iterator it = modifies.begin(); it != modifies.end(); ++it) {
+        modifiesSet.insert(**it);
+    }
+    this->_needsSet = needsSet;
+    this->_modifiesSet = modifiesSet;
     this->_statements = statements;
 }
 
@@ -53,18 +58,24 @@ bool InstructionSequence::needs(Symbol* candidate) {
 }
 
 vector<Symbol*> InstructionSequence::modifies() {
-    return this->_modifies;
+    auto modifies = vector<Symbol*>();
+    for (set<Symbol>::iterator it = this->_modifiesSet.begin(); it != this->_modifiesSet.end(); ++it) {
+        std::string name = (*it).name();
+        modifies.push_back(new Symbol(name));
+    }
+
+    return modifies;
 }
 
 bool InstructionSequence::modifies(Symbol* candidate) {
     return
         find_if(
-            this->_modifies.begin(),
-            this->_modifies.end(),
-            [&candidate](Symbol* e) { return *e == *candidate; }
+            this->_modifiesSet.begin(),
+            this->_modifiesSet.end(),
+            [&candidate](Symbol e) { return e == *candidate; }
             )
         !=
-        this->_modifies.end()
+        this->_modifiesSet.end()
     ;
 }
 
@@ -77,7 +88,7 @@ string InstructionSequence::to_string() const
 {
     return string("InstructionSequence(\n")
         + "    needs: " + ::to_string(this->_needsSet) + "\n"
-        + "    modifies: " + ::to_string(this->_modifies) + "\n"
+        + "    modifies: " + ::to_string(this->_modifiesSet) + "\n"
         + "    statements: " + this->_statements->to_string() + "\n";
 }
 
@@ -107,15 +118,15 @@ bool InstructionSequence::equals(const InstructionSequence& other) const
     )) {
         return false;
     }
-    if (this->_modifies.size() != other._modifies.size()) {
+    if (this->_modifiesSet.size() != other._modifiesSet.size()) {
         return false;
     }
     if (!equal(
-        begin(this->_modifies),
-        end(this->_modifies),
-        begin(other._modifies),
-        [](const Value* lhs, const Value* rhs){
-            return *lhs == *rhs;
+        begin(this->_modifiesSet),
+        end(this->_modifiesSet),
+        begin(other._modifiesSet),
+        [](Symbol lhs, Symbol rhs){
+            return lhs == rhs;
         }
     )) {
         return false;
@@ -181,7 +192,6 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
         registers.erase(registers.begin());
 
         auto new_needs = this->needs();
-        // TODO: work around the fact that I should have used a set for this->_modifies
         if (!this->needs(first)) {
             new_needs.insert(new_needs.begin(), first);
         }

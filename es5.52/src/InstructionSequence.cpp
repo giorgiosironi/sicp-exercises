@@ -202,10 +202,6 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
         auto wrapped = new InstructionSequence(
             new_needs,
             new_modifies,
-            // TODO: add save/restore
-            // (append `((save ,first-reg))
-            //         (statements seq1)
-            //         `((restore ,first-reg))))
             Cons::from_vector({
                 Cons::from_vector({
                     new Symbol("save"),

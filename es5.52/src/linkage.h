@@ -15,4 +15,10 @@ class LinkageNext : public Linkage
         virtual InstructionSequence* compile();
 };
 
+class LinkageReturn : public Linkage
+{
+    public:
+        virtual InstructionSequence* compile();
+};
+
 #endif

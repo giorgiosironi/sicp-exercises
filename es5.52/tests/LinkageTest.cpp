@@ -13,8 +13,29 @@ TEST(LinkageTest, Next) {
     );
 }
 
+TEST(LinkageTest, Return) { 
+    Linkage* linkage = new LinkageReturn();
+
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("continue") }),
+            vector<Symbol*>(),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("continue"),
+                    })
+                })
+            })
+        ),
+        *linkage->compile()
+    );
+}
+
 TEST(LinkageTest, UseToEndWith) { 
-    Linkage* linkage = new LinkageNext();
+    Linkage* linkage = new LinkageReturn();
     List* assignment = Cons::from_vector({
         new Symbol("assign"),
         new Symbol("continue"),
@@ -26,8 +47,8 @@ TEST(LinkageTest, UseToEndWith) {
 
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>(),
             vector<Symbol*>({ new Symbol("continue") }),
+            vector<Symbol*>(),
             Cons::from_vector({
                 Cons::from_vector({
                     new Symbol("save"),
@@ -37,6 +58,13 @@ TEST(LinkageTest, UseToEndWith) {
                 Cons::from_vector({
                     new Symbol("restore"),
                     new Symbol("continue"),
+                }),
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("continue"),
+                    }),
                 }),
             })
         ),

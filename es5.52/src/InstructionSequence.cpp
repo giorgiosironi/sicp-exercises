@@ -174,7 +174,7 @@ InstructionSequence* InstructionSequence::append(InstructionSequence* followUp) 
         inserter(new_modifies, new_modifies.end())
     );
 
-    List* new_statements = convert_to<Cons>(this->_statements)->append_list(convert_to<List>(followUp->_statements));
+    List* new_statements = convert_to<List>(this->_statements)->append_list(convert_to<List>(followUp->_statements));
 
     return new InstructionSequence(
         new_needs,

@@ -5,6 +5,7 @@
 class Linkage
 {
     public:
+        InstructionSequence* use_to_end_with(InstructionSequence* original);
         virtual InstructionSequence* compile() = 0;
 };
 

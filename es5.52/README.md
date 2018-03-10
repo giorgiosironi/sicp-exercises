@@ -47,8 +47,8 @@ What should be the first acceptance test?
 ++ implement `compile_linkage(Linkage)`
 +-- as a virtual method of Linkage
 ++++ LinkageNext
----- other Linkage
----- other Linkage
+---- LinkageReturn
+---- LinkageLabel
 -- implement `InstructionSequence::append(InstructionSequence* another)`
 +++ define as best as you can expectation
 +++ hardcode a result
@@ -64,16 +64,16 @@ What should be the first acceptance test?
 ++++ implement `Nil::append_list*(Cons*)`
 ++++ pull up the common signature
 ++++ concatenate the two Cons to make `new_statements`
--- implement `InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`
+++ implement `InstructionSequence::preserving(vector<Symbol*> registers, InstructionSequence*, InstructionSequence*)`
 +++ case with 0 registers
---- case with some registers
++++ case with some registers
 ++++ implement `needs(Symbol*)`
 ++++ implement `modifies(Symbol*)`
 ++++ case of untouched register
----- case of modified register
+++++ case of modified register
 +++++ build wrapped
 +++++ build new call to preserve
------ avoid repetition in needs, modifies
++++++ avoid repetition in needs, modifies
 ++++++ change Value::to_string() to `const`
 ++++++ implement `<` for `Value`
 ++++++ introduce `set<Symbol>` for `this->_needs`
@@ -83,6 +83,7 @@ What should be the first acceptance test?
 +++++ add save calls
 +++++ add restore calls
 -- implement `end_with_linkage(Linkage, InstructionSequence*)`
+--- `Linkage::use_to_end_with(InstructionSequence)`
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`
 -- actually use Linkage in `compile[_*]()`

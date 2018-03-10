@@ -19,7 +19,7 @@ using namespace std;
  * sequences we use the selectors
  * TODO: Introduce Label class, which has a common superclass with InstructionSequence
  */
-InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements)
+InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, List* statements)
 {
     set<Symbol> needsSet;
     for (vector<Symbol*>::iterator it = needs.begin(); it != needs.end(); ++it) {
@@ -79,7 +79,7 @@ bool InstructionSequence::modifies(Symbol* candidate) {
     ;
 }
 
-Value* InstructionSequence::statements()
+List* InstructionSequence::statements()
 {
     return this->_statements;
 }

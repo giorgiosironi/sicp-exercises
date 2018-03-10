@@ -5,21 +5,22 @@
 #include <iostream>
 #include <string>
 #include "../src/symbol.h"
+#include "../src/list.h"
 using namespace std;
 
 class InstructionSequence {
     private:
         set<Symbol> _needsSet;
         set<Symbol> _modifiesSet;
-        Value* _statements;
+        List* _statements;
     public:
-        InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, Value* statements);
+        InstructionSequence(vector<Symbol*> needs, vector<Symbol*> modifies, List* statements);
         bool equals(const InstructionSequence& other) const;
         vector<Symbol*> needs();
         bool needs(Symbol* candidate);
         vector<Symbol*> modifies();
         bool modifies(Symbol* candidate);
-        Value* statements();
+        List* statements();
         string to_string() const;
         InstructionSequence* append(InstructionSequence* followUp);
         InstructionSequence* preserving(vector<Symbol*> registers, InstructionSequence* followUp);

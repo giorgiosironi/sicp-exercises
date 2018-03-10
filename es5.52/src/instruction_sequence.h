@@ -9,7 +9,6 @@ using namespace std;
 
 class InstructionSequence {
     private:
-        vector<Symbol*> _needs;
         set<Symbol> _needsSet;
         vector<Symbol*> _modifies;
         Value* _statements;

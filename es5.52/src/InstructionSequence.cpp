@@ -26,7 +26,6 @@ InstructionSequence::InstructionSequence(vector<Symbol*> needs, vector<Symbol*> 
         myset.insert(**it);
     }
     this->_needsSet = myset;
-    this->_needs = needs;
     this->_modifies = modifies;
     this->_statements = statements;
 }
@@ -77,7 +76,7 @@ Value* InstructionSequence::statements()
 string InstructionSequence::to_string() const
 {
     return string("InstructionSequence(\n")
-        + "    needs: " + ::to_string(this->_needs) + "\n"
+        + "    needs: " + ::to_string(this->_needsSet) + "\n"
         + "    modifies: " + ::to_string(this->_modifies) + "\n"
         + "    statements: " + this->_statements->to_string() + "\n";
 }
@@ -95,15 +94,15 @@ bool operator!=(const InstructionSequence& lhs, const InstructionSequence& rhs)
 bool InstructionSequence::equals(const InstructionSequence& other) const
 {
     //https://stackoverflow.com/questions/39855341/equals-operator-on-stl-vector-of-pointers
-    if (this->_needs.size() != other._needs.size()) {
+    if (this->_needsSet.size() != other._needsSet.size()) {
         return false;
     }
     if (!equal(
-        begin(this->_needs),
-        end(this->_needs),
-        begin(other._needs),
-        [](const Value* lhs, const Value* rhs){
-            return *lhs == *rhs;
+        begin(this->_needsSet),
+        end(this->_needsSet),
+        begin(other._needsSet),
+        [](Symbol lhs, Symbol rhs){
+            return lhs == rhs;
         }
     )) {
         return false;
@@ -182,7 +181,7 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
         registers.erase(registers.begin());
 
         auto new_needs = this->needs();
-        // TODO: work around the fact that I should have used a set for this->_needs and this->_modifies
+        // TODO: work around the fact that I should have used a set for this->_modifies
         if (!this->needs(first)) {
             new_needs.insert(new_needs.begin(), first);
         }

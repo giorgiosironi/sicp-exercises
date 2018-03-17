@@ -301,6 +301,7 @@ Machine* compile_and_go(Value* input)
 
 
 int main() {
+    // we should not start this as-is, we should start eceval
     Machine* machine = compile_and_go(input());
     try {
         machine->start();

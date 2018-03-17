@@ -90,6 +90,13 @@ What should be the first acceptance test?
 -- add end2end test: an assignment (will fail)
 - (compile-assignment exp target linkage)
 + (compile-definition exp target linkage)
+-- to end2end test it, Register `env` must be initialized
+--- what we need to do is to replicate `compile-and-go`
+--- `assemble` must include eceval (for some reason, but also because it initializes stack and environment).
+---- in general, it gives you a REPL where to use what you just compiled?
+---- when Machine is created it must be initialized with the explicit control evaluator
+---- needs to be ported over from es5.51
+--- this will be substituted later when we compile the meta-circular evaluator (some configuration to be done)
 - (compile-if exp target linkage)
 - (compile-lambda exp target linkage)
 - (compile-sequence (begin-actions exp) target linkage))

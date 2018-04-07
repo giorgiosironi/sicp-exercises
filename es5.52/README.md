@@ -85,9 +85,10 @@ What should be the first acceptance test?
 ++ implement `end_with_linkage(Linkage, InstructionSequence*)`
 +++ in the form of `Linkage::use_to_end_with(InstructionSequence)`
 - (compile-application exp target linkage)
--- end2end test for calling a primitive procedure
--- make sure it produces an error saying this is not implemented
+++ end2end test for calling a primitive procedure
+++ make sure it produces an error saying this is not implemented
 -- implement compile part
+--- also unit test should produce comprehensible errors
 -- add linkage (if needed for this)
 -- end2end test should show somewhere the sum, even if it doesn't print it on stdout due to the lack of a REPL
 +- start passing a Linkage (default one, `next`) to `compile_*()`

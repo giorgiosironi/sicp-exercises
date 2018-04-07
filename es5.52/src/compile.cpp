@@ -157,3 +157,12 @@ InstructionSequence* compile_definition(Value* exp, Symbol* target, Linkage* lin
         intermediate
     );
 }
+
+bool is_application(Value *exp) {
+    return is_pair(exp);
+}
+
+InstructionSequence* compile_assignment(Value* exp, Symbol* target, Linkage* linkage)
+{
+    return NULL;
+}

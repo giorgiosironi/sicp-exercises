@@ -14,5 +14,7 @@ bool is_quoted(Value *exp);
 InstructionSequence* compile_quoted(Value* exp, Symbol* target, Linkage* linkage);
 bool is_definition(Value *exp);
 InstructionSequence* compile_definition(Value* exp, Symbol* target, Linkage* linkage);
+bool is_application(Value *exp);
+InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* linkage);
 
 #endif

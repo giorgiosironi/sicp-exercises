@@ -133,3 +133,23 @@ TEST(compileTest, DefinitionVariable) {
         )
     );
 }
+
+TEST(compileTest, ApplicationOfPrimitiveProcedure) { 
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("a")}),
+            vector<Symbol*>({ new Symbol("a")}),
+            Cons::from_vector({
+            })
+        ),
+        *compile(
+            Cons::from_vector({
+                new Symbol("+"),
+                new Integer(1),
+                new Integer(2)
+            }),
+            new Symbol("val"),
+            new LinkageNext()
+        )
+    );
+}

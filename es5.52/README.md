@@ -84,13 +84,20 @@ What should be the first acceptance test?
 +++++ add restore calls
 ++ implement `end_with_linkage(Linkage, InstructionSequence*)`
 +++ in the form of `Linkage::use_to_end_with(InstructionSequence)`
+- (compile-application exp target linkage)
+-- end2end test for calling a primitive procedure
+-- make sure it produces an error saying this is not implemented
+-- implement compile part
+-- add linkage (if needed for this)
+-- end2end test should show somewhere the sum, even if it doesn't print it on stdout due to the lack of a REPL
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`
 -- actually use Linkage in `compile[_*]()`
 -- add end2end test: an assignment (will fail)
 - (compile-assignment exp target linkage)
 + (compile-definition exp target linkage)
--- to end2end test it, Register `env` must be initialized
+++ to end2end test it, Register `env` must be initialized
+++ done this with `compile-and-execute`
 --- what we need to do is to replicate `compile-and-go`
 --- `assemble` must include eceval (for some reason, but also because it initializes stack and environment).
 ---- in general, it gives you a REPL where to use what you just compiled?
@@ -101,7 +108,6 @@ What should be the first acceptance test?
 - (compile-lambda exp target linkage)
 - (compile-sequence (begin-actions exp) target linkage))
 - (compile (cond->if exp) target linkage)
-- (compile-application exp target linkage)
 - `compile_and_go` should be extended to include `eceval` alongside the compiled expressions, see chapter5.5.scm
 - think about where to deallocate memory, `delete` not just `new`
 

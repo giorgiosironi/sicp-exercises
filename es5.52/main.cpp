@@ -1799,9 +1799,12 @@ Machine* compile_and_execute(Value* expression)
 
 int main() {
     // TODO: we should use compile_and_go() when ready
-    Machine* machine = compile_and_execute(input());
     try {
+        Machine* machine = compile_and_execute(input());
         machine->start();
+    } catch (std::string e) {
+        cerr << e << endl;
+        return 3;
     } catch (char const* e) {
         cerr << e << endl;
         if (std::string(e) == "CTRL+D pressed") {

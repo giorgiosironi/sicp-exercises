@@ -21,8 +21,7 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
     if (is_definition(exp)) {
         return compile_definition(exp, target, linkage);
     }
-    // TODO: throw exception
-    return new InstructionSequence(vector<Symbol*>(), vector<Symbol*>(), NIL);
+    throw std::string("Cannot compile expression: " + exp->to_string());
 }
 
 bool is_self_evaluating(Value* exp)

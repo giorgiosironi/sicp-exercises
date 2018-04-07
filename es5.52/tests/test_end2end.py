@@ -4,11 +4,21 @@ import unittest
 class End2endTest(unittest.TestCase):
     def setUp(self):
         self._p = Popen(['./main'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+        self.maxDiff = None
 
     def test_integer(self):
         self._input('42')
         self._assertOutput([])
-        self._assertErr(['Assign (val): 42', 'End of controller'])
+        self._assertErr([
+            'operation: initialize-stack',
+            'make_perform: Operation-InitializeStack',
+            '(assign env (op get-global-environment))',
+            'make_assign: get-global-environment',
+            '(assign val (const 42))',
+            'Perform: Operation-InitializeStack []',
+            'Assign (env): Operation-GetGlobalEnvironment == Environment',
+            'Assign (val): 42', 'End of controller'
+        ])
 
     #def test_string(self):
     #    self._input('"ab"')
@@ -43,12 +53,26 @@ class End2endTest(unittest.TestCase):
             "(define answer 42)",
             "answer"
         )
-        # TODO: complete
-        self._assertErr([])
-        #self._assertOutput([
-        #    "ok",
-        #    "42",
-        #])
+        self._assertErr([
+            'operation: initialize-stack',
+            'make_perform: Operation-InitializeStack',
+            '(assign env (op get-global-environment))',
+            'make_assign: get-global-environment',
+            '(assign val (const 42))',
+            '(perform (op define-variable!) (const answer) (reg val) (reg env))',
+            'operation: define-variable!',
+            'make_perform: Operation-DefineVariable',
+            'operands: ((const answer) (reg val) (reg env))',
+            'vector: 3',
+            '(assign val (const ok))',
+            'Perform: Operation-InitializeStack []',
+            'Assign (env): Operation-GetGlobalEnvironment == Environment',
+            'Assign (val): 42',
+            'Perform: Operation-DefineVariable [answer, 42, Environment, ]',
+            'Assign (val): ok',
+            'End of controller',
+        ])
+        self._assertOutput([])
 
     #def test_sum_as_compound_procedure(self):
     #    self._input(

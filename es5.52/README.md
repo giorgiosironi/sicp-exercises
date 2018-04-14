@@ -89,7 +89,14 @@ What should be the first acceptance test?
 ++ make sure it produces an error saying this is not implemented
 -- implement compile part
 +++ also unit test should produce comprehensible errors
--- add linkage (if needed for this)
+-- ADD LINKAGE (if needed for this)
+++ compile operator
+++ compile operands
+-- (construct-arglist operand-codes)
+--- ...
+-- (compile-procedure-call target linkage)))))
+--- ...
+-- put them together with preserving()
 -- end2end test should show somewhere the sum, even if it doesn't print it on stdout due to the lack of a REPL
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`

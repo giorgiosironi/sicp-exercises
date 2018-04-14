@@ -47,6 +47,7 @@ using namespace std;
 // proper 5.52 components
 #include "src/compile.h"
 #include "src/input.h"
+#include "src/input_end_exception.h"
 
 
 Value* build_list(std::vector<Value*> elements) {
@@ -1803,14 +1804,14 @@ int main() {
         Machine* machine = compile_and_execute(input());
         machine->start();
     } catch (std::runtime_error e) {
-        cerr << e << endl;
+        cerr << e.what() << endl;
         return 3;
-    } catch (char const* e) {
-        cerr << e << endl;
-        if (std::string(e) == "CTRL+D pressed") {
-            return 0;
-        }
-        return 2;
+    } catch (InputEndException e) {
+        cerr << "CTRL+D pressed" << endl;
+        return 0;
+    //} catch (char const* e) {
+    //    cerr << e << endl;
+    //    return 2;
     }
     return 0;
 }

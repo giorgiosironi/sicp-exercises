@@ -4,6 +4,7 @@
 #include "lexer.h"
 #include "reader.h"
 #include "length.h"
+#include "input_end_exception.h"
 
 Value* input()
 {
@@ -11,7 +12,7 @@ Value* input()
     while (input == "") {
         getline(cin, input);
         if (cin.eof() && input == "") {
-            throw "CTRL+D pressed";
+            throw InputEndException();
         }
     }
 	Lexer lexer;

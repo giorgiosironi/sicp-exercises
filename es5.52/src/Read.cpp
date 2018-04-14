@@ -14,6 +14,7 @@
 #include "lexer.h"
 #include "reader.h"
 #include "length.h"
+#include "input_end_exception.h"
 using namespace std;
 
 
@@ -23,7 +24,7 @@ Value* Read::execute(std::vector<Value*> elements)
     while (input == "") {
         getline(cin, input);
         if (cin.eof() && input == "") {
-            throw "CTRL+D pressed";
+            throw InputEndException();
         }
     }
 	Lexer lexer;

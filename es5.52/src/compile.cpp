@@ -22,6 +22,9 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
     if (is_definition(exp)) {
         return compile_definition(exp, target, linkage);
     }
+    if (is_application(exp)) {
+        return compile_application(exp, target, linkage);
+    }
     throw std::runtime_error("Cannot compile expression: " + exp->to_string());
 }
 
@@ -163,7 +166,17 @@ bool is_application(Value *exp) {
     return is_pair(exp);
 }
 
-InstructionSequence* compile_assignment(Value* exp, Symbol* target, Linkage* linkage)
+InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* linkage)
 {
-    return NULL;
+    //(let ((proc-code (compile (operator exp) 'proc 'next))
+    //      (operand-codes
+    //        (map (lambda (operand)
+    //               (compile operand 'val 'next))
+    //             (operands exp))))
+    //  (preserving '(env continue)
+    //              proc-code
+    //              (preserving '(proc continue)
+    //                          (construct-arglist operand-codes)
+    //                          (compile-procedure-call target linkage)))))
+    return InstructionSequence::empty();
 }

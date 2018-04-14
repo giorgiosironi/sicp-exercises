@@ -137,9 +137,25 @@ TEST(compileTest, DefinitionVariable) {
 TEST(compileTest, ApplicationOfPrimitiveProcedure) { 
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>({ new Symbol("a")}),
-            vector<Symbol*>({ new Symbol("a")}),
+            vector<Symbol*>({ new Symbol("env")}),
+            vector<Symbol*>({ new Symbol("proc")}),
             Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("proc"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("lookup-variable-value"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Symbol("+"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    }),
+                })
             })
         ),
         *compile(

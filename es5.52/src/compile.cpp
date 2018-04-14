@@ -168,6 +168,10 @@ bool is_application(Value *exp) {
 
 InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* linkage)
 {
+    List* application = convert_to<List>(exp);
+    Value* operator_ = application->car();
+    InstructionSequence* procedureCode = compile(operator_, new Symbol("proc"), new LinkageNext());
+    Value* operands = application->cdr();
     //(let ((proc-code (compile (operator exp) 'proc 'next))
     //      (operand-codes
     //        (map (lambda (operand)
@@ -178,5 +182,5 @@ InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* li
     //              (preserving '(proc continue)
     //                          (construct-arglist operand-codes)
     //                          (compile-procedure-call target linkage)))))
-    return InstructionSequence::empty();
+    return procedureCode;
 }

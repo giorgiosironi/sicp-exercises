@@ -21,7 +21,7 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
     if (is_definition(exp)) {
         return compile_definition(exp, target, linkage);
     }
-    throw std::string("Cannot compile expression: " + exp->to_string());
+    throw std::runtime_error("Cannot compile expression: " + exp->to_string());
 }
 
 bool is_self_evaluating(Value* exp)

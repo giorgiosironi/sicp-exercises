@@ -8,10 +8,10 @@
 Cons::Cons(Value *car_ptr, Value *cdr_ptr)
 {
     if (car_ptr == NULL) {
-        throw "cat_ptr cannot be null";
+        throw std::runtime_error("car_ptr cannot be null");
     }
     if (cdr_ptr == NULL) {
-        throw "cat_ptr cannot be null";
+        throw std::runtime_error("cdr_ptr cannot be null");
     }
     this->car_ptr = car_ptr;
     this->cdr_ptr = cdr_ptr;

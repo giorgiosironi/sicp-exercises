@@ -4,6 +4,7 @@
 #include "nil.h"
 #include <iostream>
 #include <typeinfo>
+#include <stdexcept>
 
 Cons::Cons(Value *car_ptr, Value *cdr_ptr)
 {

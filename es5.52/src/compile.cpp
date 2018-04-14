@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "compile.h"
 #include "cons.h"
 #include "is.h"

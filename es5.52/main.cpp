@@ -1802,7 +1802,7 @@ int main() {
     try {
         Machine* machine = compile_and_execute(input());
         machine->start();
-    } catch (std::string e) {
+    } catch (std::runtime_error e) {
         cerr << e << endl;
         return 3;
     } catch (char const* e) {

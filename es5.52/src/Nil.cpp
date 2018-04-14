@@ -1,6 +1,7 @@
+#include <stdexcept>
 #include "nil.h"
 #include "cons.h"
-#define INVALID_OPERATION()  throw "Cannot access list elements of Nil"
+#define INVALID_OPERATION()  throw std::runtime_error("Cannot access list elements of Nil")
 
 std::string Nil::to_string() const
 {

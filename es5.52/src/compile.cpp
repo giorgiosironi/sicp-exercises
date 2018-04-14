@@ -171,7 +171,11 @@ InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* li
     List* application = convert_to<List>(exp);
     Value* operator_ = application->car();
     InstructionSequence* procedureCode = compile(operator_, new Symbol("proc"), new LinkageNext());
-    Value* operands = application->cdr();
+    vector<Value*> operands = convert_to<List>(application->cdr())->to_vector();
+    vector<InstructionSequence*> operandCodes = vector<InstructionSequence*>();
+    for (vector<Value*>::iterator it = operands.begin(); it != operands.end(); ++it) {
+        operandCodes.push_back(compile(*it, new Symbol("val"), new LinkageNext()));
+    }
     //(let ((proc-code (compile (operator exp) 'proc 'next))
     //      (operand-codes
     //        (map (lambda (operand)

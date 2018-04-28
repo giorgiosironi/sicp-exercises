@@ -2,6 +2,7 @@
 #include "../src/integer.h"
 #include "../src/instruction_sequence.h"
 #include "../src/cons.h"
+#include "../src/nil.h"
 #include <gtest/gtest.h>
  
 TEST(compileTest, SelfEvaluating) { 
@@ -169,3 +170,55 @@ TEST(compileTest, ApplicationOfPrimitiveProcedure) {
         )
     );
 }
+
+TEST(compileTest, construct_arg_list) { 
+    vector<InstructionSequence*> operand_codes = {};
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>(),
+            vector<Symbol*>({ new Symbol("argl") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("argl"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        NIL
+                    })
+                })
+            })
+        ),
+        *construct_arg_list(operand_codes)
+    );
+}
+
+/*
+        new InstructionSequence(
+            vector<Symbol*>(),
+            vector<Symbol*>({ new Symbol("val") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(1),
+                    })
+                })
+            })
+        ),
+        new InstructionSequence(
+            vector<Symbol*>(),
+            vector<Symbol*>({ new Symbol("val") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(2),
+                    })
+                })
+            })
+        ),
+        */

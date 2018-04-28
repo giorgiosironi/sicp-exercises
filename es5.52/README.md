@@ -93,7 +93,9 @@ What should be the first acceptance test?
 ++ compile operator
 ++ compile operands
 -- (construct-arglist operand-codes)
---- ...
+--- reverse
++++ implement zero argument case
+--- implement two arguments case
 -- (compile-procedure-call target linkage)))))
 --- ...
 -- put them together with preserving()

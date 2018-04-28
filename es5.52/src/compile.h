@@ -17,4 +17,6 @@ InstructionSequence* compile_definition(Value* exp, Symbol* target, Linkage* lin
 bool is_application(Value *exp);
 InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* linkage);
 
+InstructionSequence* construct_arg_list(vector<InstructionSequence*> operand_codes);
+
 #endif

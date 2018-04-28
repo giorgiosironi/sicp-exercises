@@ -171,8 +171,8 @@ TEST(compileTest, ApplicationOfPrimitiveProcedure) {
     );
 }
 
-TEST(compileTest, construct_arg_list) { 
-    vector<InstructionSequence*> operand_codes = {};
+TEST(compileTest, construct_arg_list_0_operands) { 
+    vector<InstructionSequence*> operandCodes = {};
     ASSERT_EQ(
         InstructionSequence(
             vector<Symbol*>(),
@@ -188,11 +188,12 @@ TEST(compileTest, construct_arg_list) {
                 })
             })
         ),
-        *construct_arg_list(operand_codes)
+        *construct_arg_list(operandCodes)
     );
 }
 
-/*
+TEST(compileTest, construct_arg_list_1_operand) { 
+    vector<InstructionSequence*> operandCodes = {
         new InstructionSequence(
             vector<Symbol*>(),
             vector<Symbol*>({ new Symbol("val") }),
@@ -207,18 +208,34 @@ TEST(compileTest, construct_arg_list) {
                 })
             })
         ),
-        new InstructionSequence(
-            vector<Symbol*>(),
+    };
+    ASSERT_EQ(
+        InstructionSequence(
             vector<Symbol*>({ new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("argl"), new Symbol("val") }),
             Cons::from_vector({
                 Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("val"),
                     Cons::from_vector({
                         new Symbol("const"),
-                        new Integer(2),
+                        new Integer(1),
+                    })
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("argl"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("list"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
                     })
                 })
             })
         ),
-        */
+        *construct_arg_list(operandCodes)
+    );
+}

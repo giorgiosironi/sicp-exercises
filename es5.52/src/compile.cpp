@@ -189,11 +189,11 @@ InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* li
     return procedureCode;
 }
 
-InstructionSequence* construct_arg_list(vector<InstructionSequence*> operand_codes)
+InstructionSequence* construct_arg_list(vector<InstructionSequence*> operandCodes)
 {
 //(define (construct-arglist operand-codes)
 //  (let ((operand-codes (reverse operand-codes)))
-    if (operand_codes.size() == 0) {
+    if (operandCodes.size() == 0) {
         return new InstructionSequence(
             vector<Symbol*>(),
             vector<Symbol*>({ new Symbol("argl") }),
@@ -209,6 +209,30 @@ InstructionSequence* construct_arg_list(vector<InstructionSequence*> operand_cod
             })
         );
     }
+    InstructionSequence* code_to_get_last_arg = operandCodes.at(0)->append(
+        new InstructionSequence(
+            vector<Symbol*>({ new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("argl") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("argl"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("list"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                })
+            })
+        )
+    );
+    if (operandCodes.size() == 1) {
+        return code_to_get_last_arg;
+    }
+    return InstructionSequence::empty();
 //    (if (null? operand-codes)
 //      ; 0-argument case
 //      (make-instruction-sequence '() '(argl)

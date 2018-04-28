@@ -95,6 +95,7 @@ What should be the first acceptance test?
 -- (construct-arglist operand-codes)
 --- reverse
 +++ implement zero argument case
++++ implement one argument case
 --- implement two arguments case
 -- (compile-procedure-call target linkage)))))
 --- ...

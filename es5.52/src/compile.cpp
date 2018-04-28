@@ -233,11 +233,13 @@ InstructionSequence* construct_arg_list(vector<InstructionSequence*> operandCode
     if (operandCodes.size() == 1) {
         return code_to_get_last_arg;
     } else {
-        return InstructionSequence::empty();
-//          (preserving '(env)
-//                      code-to-get-last-arg
-//                      (code-to-get-rest-args
-//                        (cdr operand-codes))))))))
+        vector<InstructionSequence*>::const_iterator first = operandCodes.begin() + 1;
+        vector<InstructionSequence*>::const_iterator last = operandCodes.end();
+        vector<InstructionSequence*> rest(first, last);
+        return code_to_get_last_arg->preserving(
+            vector<Symbol*>({ new Symbol("env") }),
+            code_to_get_rest_args(rest)
+        );
     }
 }
 
@@ -272,11 +274,12 @@ InstructionSequence* code_to_get_rest_args(vector<InstructionSequence*> operandC
     if (operandCodes.size() == 1) {
         return codeForNextArg;
     } else {
+        vector<InstructionSequence*>::const_iterator first = operandCodes.begin() + 1;
+        vector<InstructionSequence*>::const_iterator last = operandCodes.end();
+        vector<InstructionSequence*> rest(first, last);
         return codeForNextArg->preserving(
             vector<Symbol*>({ new Symbol("env") }),
-            // WRONG: cut away first element
-            code_to_get_rest_args(operandCodes)
-            // (code-to-get-rest-args (cdr operand-codes))))))
+            code_to_get_rest_args(rest)
         );
     }
 }

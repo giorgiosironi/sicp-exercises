@@ -273,7 +273,7 @@ TEST(compileTest, construct_arg_list_2_operand) {
     };
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>({ new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("argl"), new Symbol("val") }),
             vector<Symbol*>({ new Symbol("argl"), new Symbol("val") }),
             Cons::from_vector({
                 Cons::from_vector({
@@ -281,7 +281,7 @@ TEST(compileTest, construct_arg_list_2_operand) {
                     new Symbol("val"),
                     Cons::from_vector({
                         new Symbol("const"),
-                        new Integer(1),
+                        new Integer(2),
                     })
                 }),
                 Cons::from_vector({
@@ -295,7 +295,31 @@ TEST(compileTest, construct_arg_list_2_operand) {
                         new Symbol("reg"),
                         new Symbol("val"),
                     })
-                })
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(1),
+                    })
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("argl"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("cons"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("argl"),
+                    })
+                }),
             })
         ),
         *construct_arg_list(operandCodes)

@@ -97,7 +97,7 @@ What should be the first acceptance test?
 +++ code-to-get-rest-args
 +++ implement zero argument case
 +++ implement one argument case
---- complete 2 missing cdr on operandCodes
++++ complete 2 missing cdr on operandCodes
 ---- could pass an iterator around rather than a copy of the vector? https://stackoverflow.com/questions/421573/best-way-to-extract-a-subvector-from-a-vector
 ---- implement vector copy first, then refactor
 --- implement two arguments case

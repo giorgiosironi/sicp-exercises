@@ -93,9 +93,11 @@ What should be the first acceptance test?
 ++ compile operator
 ++ compile operands
 -- (construct-arglist operand-codes)
---- reverse
++++ reverse
++++ code-to-get-rest-args
 +++ implement zero argument case
 +++ implement one argument case
+--- complete 2 missing cdr on operandCodes
 --- implement two arguments case
 -- (compile-procedure-call target linkage)))))
 --- ...

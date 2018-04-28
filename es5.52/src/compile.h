@@ -18,5 +18,6 @@ bool is_application(Value *exp);
 InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* linkage);
 
 InstructionSequence* construct_arg_list(vector<InstructionSequence*> operandCodes);
+InstructionSequence* code_to_get_rest_args(vector<InstructionSequence*> operandCodes);
 
 #endif

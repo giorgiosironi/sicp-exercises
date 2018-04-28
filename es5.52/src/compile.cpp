@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <algorithm>
 #include "compile.h"
 #include "cons.h"
 #include "is.h"
@@ -189,10 +190,10 @@ InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* li
     return procedureCode;
 }
 
+// building the argument list from last to first, with cons
 InstructionSequence* construct_arg_list(vector<InstructionSequence*> operandCodes)
 {
-//(define (construct-arglist operand-codes)
-//  (let ((operand-codes (reverse operand-codes)))
+    std::reverse(operandCodes.begin(), operandCodes.end());
     if (operandCodes.size() == 0) {
         return new InstructionSequence(
             vector<Symbol*>(),
@@ -231,22 +232,51 @@ InstructionSequence* construct_arg_list(vector<InstructionSequence*> operandCode
     );
     if (operandCodes.size() == 1) {
         return code_to_get_last_arg;
-    }
-    return InstructionSequence::empty();
-//    (if (null? operand-codes)
-//      ; 0-argument case
-//      (make-instruction-sequence '() '(argl)
-//                                 '((assign argl (const ()))))
-//      (let ((code-to-get-last-arg
-//              (append-instruction-sequences
-//                (car operand-codes)
-//                (make-instruction-sequence '(val) '(argl)
-//                                           '((assign argl (op list) (reg val)))))))
-//        (if (null? (cdr operand-codes))
-//          ; 1-argument case
-//          code-to-get-last-arg
+    } else {
+        return InstructionSequence::empty();
 //          (preserving '(env)
 //                      code-to-get-last-arg
 //                      (code-to-get-rest-args
 //                        (cdr operand-codes))))))))
+    }
+}
+
+// building all the arguments different from the last
+InstructionSequence* code_to_get_rest_args(vector<InstructionSequence*> operandCodes)
+{
+    InstructionSequence* codeForNextArg = operandCodes.at(0)->preserving(
+        vector<Symbol*>({ new Symbol("argl") }),
+        new InstructionSequence(
+            vector<Symbol*>({ new Symbol("val"), new Symbol("argl") }),
+            vector<Symbol*>({ new Symbol("argl") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("argl"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("cons"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("argl"),
+                    }),
+                })
+            })
+        )
+    );
+    if (operandCodes.size() == 1) {
+        return codeForNextArg;
+    } else {
+        return codeForNextArg->preserving(
+            vector<Symbol*>({ new Symbol("env") }),
+            // WRONG: cut away first element
+            code_to_get_rest_args(operandCodes)
+            // (code-to-get-rest-args (cdr operand-codes))))))
+        );
+    }
 }

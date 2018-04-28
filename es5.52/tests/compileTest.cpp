@@ -239,3 +239,65 @@ TEST(compileTest, construct_arg_list_1_operand) {
         *construct_arg_list(operandCodes)
     );
 }
+
+TEST(compileTest, construct_arg_list_2_operand) { 
+    vector<InstructionSequence*> operandCodes = {
+        new InstructionSequence(
+            vector<Symbol*>(),
+            vector<Symbol*>({ new Symbol("val") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(1),
+                    })
+                })
+            })
+        ),
+        new InstructionSequence(
+            vector<Symbol*>(),
+            vector<Symbol*>({ new Symbol("val") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(2),
+                    })
+                })
+            })
+        ),
+    };
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("argl"), new Symbol("val") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(1),
+                    })
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("argl"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("list"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    })
+                })
+            })
+        ),
+        *construct_arg_list(operandCodes)
+    );
+}

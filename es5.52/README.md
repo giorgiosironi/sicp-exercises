@@ -98,9 +98,10 @@ What should be the first acceptance test?
 +++ implement zero argument case
 +++ implement one argument case
 +++ complete 2 missing cdr on operandCodes
----- could pass an iterator around rather than a copy of the vector? https://stackoverflow.com/questions/421573/best-way-to-extract-a-subvector-from-a-vector
----- implement vector copy first, then refactor
---- implement two arguments case
+++++ could pass an iterator around rather than a copy of the vector? https://stackoverflow.com/questions/421573/best-way-to-extract-a-subvector-from-a-vector
+++++ tried, but after comparing `reverse_iterators` the code became unreadable and couldn't get it to work
+++++ implement vector copy first, then refactor
++++ implement two arguments case
 -- (compile-procedure-call target linkage)))))
 --- ...
 -- put them together with preserving()

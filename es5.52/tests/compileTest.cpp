@@ -325,3 +325,4 @@ TEST(compileTest, construct_arg_list_2_operand) {
         *construct_arg_list(operandCodes)
     );
 }
+

@@ -24,3 +24,7 @@ bool Symbol::equals(const Value& other) const
     }
     return this->_name == other_symbol->_name;
 }
+
+ostream& operator<<(ostream& os, const ::Symbol& symbol) {
+    return os << symbol.to_string();
+}

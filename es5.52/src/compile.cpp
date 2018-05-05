@@ -283,3 +283,30 @@ InstructionSequence* code_to_get_rest_args(vector<InstructionSequence*> operandC
         );
     }
 }
+
+//; compiling the procedure call, either to a primitive or compiled procedure
+//; the primitive branch is directly specified here
+//(define (compile-procedure-call target linkage)
+//  (let ((primitive-branch (make-label 'primitive-branch))
+//        (compiled-branch (make-label 'compiled-branch))
+//        (after-call (make-label 'after-call)))
+//    (let ((compiled-linkage
+//            (if (eq? linkage 'next) after-call linkage)))
+//      (append-instruction-sequences
+//        (make-instruction-sequence '(proc) '()`((test (op primitive-procedure?) (reg proc))
+//                                                (branch (label ,primitive-branch))))
+//        ; parallel becaue they won't be executed sequentially
+//        (parallel-instruction-sequences
+//          (append-instruction-sequences
+//            compiled-branch
+//            (compile-proc-appl target compiled-linkage))
+//          (append-instruction-sequences
+//            primitive-branch
+//            (end-with-linkage linkage
+//                              (make-instruction-sequence '(proc argl)
+//                                                         (list target)
+//                                                         `((assign ,target
+//                                                                   (op apply-primitive-procedure)
+//                                                                   (reg proc)
+//                                                                   (reg argl)))))))
+//        after-call))))

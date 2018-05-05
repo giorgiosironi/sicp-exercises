@@ -5,9 +5,12 @@
 #include "is.h"
 #include "symbol.h"
 #include "conversion.h"
+#include "make_label.h"
 
 // temporary
 #include "nil.h"
+
+MakeLabel make_label;
 
 InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
 {

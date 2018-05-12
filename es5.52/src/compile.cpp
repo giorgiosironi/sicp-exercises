@@ -289,14 +289,18 @@ InstructionSequence* code_to_get_rest_args(vector<InstructionSequence*> operandC
 
 
 InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage) {
-//; compiling the procedure call, either to a primitive or compiled procedure
-//; the primitive branch is directly specified here
-//(define (compile-procedure-call target linkage)
-//  (let ((primitive-branch (make-label 'primitive-branch))
-//        (compiled-branch (make-label 'compiled-branch))
-//        (after-call (make-label 'after-call)))
-//    (let ((compiled-linkage
-//            (if (eq? linkage 'next) after-call linkage)))
+    Symbol* primitive_branch = make_label.next("primitive-branch");
+    Symbol* compiled_branch = make_label.next("compiled-branch");
+    Symbol* after_call = make_label.next("after-call");
+
+    Linkage/*Jump*/* compiled_linkage;
+    // checking for a LinkageNext class 
+    LinkageNext* result = dynamic_cast<LinkageNext*>(linkage);
+    if (result != NULL) {
+        compiled_linkage = new LinkageLabel(after_call);
+    } else {
+        compiled_linkage = /*(LinkageJump*)*/ linkage;
+    }
 //      (append-instruction-sequences
 //        (make-instruction-sequence '(proc) '()`((test (op primitive-procedure?) (reg proc))
 //                                                (branch (label ,primitive-branch))))

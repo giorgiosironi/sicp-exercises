@@ -23,4 +23,13 @@ class LinkageReturn : public Linkage
         virtual InstructionSequence* compile();
 };
 
+class LinkageLabel : public Linkage
+{
+    private:
+        Symbol* label;
+    public:
+        LinkageLabel(Symbol* label);
+        virtual InstructionSequence* compile();
+};
+
 #endif

@@ -47,9 +47,9 @@ What should be the first acceptance test?
 ++ implement `compile_linkage(Linkage)`
 +-- as a virtual method of Linkage
 ++++ LinkageNext
----- LinkageReturn
----- LinkageLabel
--- implement `InstructionSequence::append(InstructionSequence* another)`
+++++ LinkageReturn
+++++ LinkageLabel
+++ implement `InstructionSequence::append(InstructionSequence* another)`
 +++ define as best as you can expectation
 +++ hardcode a result
 +++ compute `needs`
@@ -90,7 +90,6 @@ What should be the first acceptance test?
 -- implement compile part
 +++ also unit test should produce comprehensible errors
 -- ADD LINKAGE (if needed for this)
---- LinkageLabel is missing!
 ++ compile operator
 ++ compile operands
 -- (construct-arglist operand-codes)
@@ -108,6 +107,7 @@ What should be the first acceptance test?
 +++ parallel-instruction-sequences
 --- compile-proc-appl
 ---- case 1: target val, linkage not return
+----- not sure what to put as the `,linkage` value, should be a label we are able to jump to
 ---- case 2: not target val, linkage not return
 ---- case 3: target val, linkage return
 ---- case 4: not target val, linkage return: exception

@@ -34,6 +34,27 @@ TEST(LinkageTest, Return) {
     );
 }
 
+TEST(LinkageTest, Label) { 
+    Linkage* linkage = new LinkageLabel(new Symbol("after-some-if"));
+
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>(),
+            vector<Symbol*>(),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("after-some-if"),
+                    })
+                })
+            })
+        ),
+        *linkage->compile()
+    );
+}
+
 TEST(LinkageTest, UseToEndWith) { 
     Linkage* linkage = new LinkageReturn();
     List* assignment = Cons::from_vector({

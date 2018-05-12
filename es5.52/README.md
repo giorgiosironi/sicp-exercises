@@ -121,6 +121,9 @@ What should be the first acceptance test?
 ---- case 2: not target val, linkage not return
 ---- case 3: target val, linkage return
 ---- case 4: not target val, linkage return: exception
+--- actual code of compile-procedure-call
+---- case with LinkageNext is the base
+---- case with a LinkageJump, just to test the difference without writing down the whole assembly code all over again
 -- put them together with preserving()
 -- end2end test should show somewhere the sum, even if it doesn't print it on stdout due to the lack of a REPL
 +- start passing a Linkage (default one, `next`) to `compile_*()`

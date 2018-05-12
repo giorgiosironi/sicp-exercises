@@ -287,6 +287,8 @@ InstructionSequence* code_to_get_rest_args(vector<InstructionSequence*> operandC
     }
 }
 
+
+InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage) {
 //; compiling the procedure call, either to a primitive or compiled procedure
 //; the primitive branch is directly specified here
 //(define (compile-procedure-call target linkage)
@@ -313,3 +315,5 @@ InstructionSequence* code_to_get_rest_args(vector<InstructionSequence*> operandC
 //                                                                   (reg proc)
 //                                                                   (reg argl)))))))
 //        after-call))))
+    return InstructionSequence::empty();
+}

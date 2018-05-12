@@ -326,3 +326,13 @@ TEST(compileTest, construct_arg_list_2_operand) {
     );
 }
 
+
+TEST(compileTest, compile_procedure_call_linkage_next) { 
+    Symbol* target = new Symbol("val");
+    Linkage* linkage = new LinkageNext();
+    ASSERT_EQ(
+        *InstructionSequence::empty(),
+        *compile_procedure_call(target, linkage)
+    );
+}
+

@@ -331,8 +331,32 @@ TEST(compileTest, compile_procedure_call_linkage_next) {
     Symbol* target = new Symbol("val");
     Linkage* linkage = new LinkageNext();
     ASSERT_EQ(
-        *InstructionSequence::empty(),
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("proc") }),
+            vector<Symbol*>(),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("test"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("is-primitive-procedure"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("proc"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("branch"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("primitive-branch1"),
+                    }),
+                }),
+            })
+        ),
         *compile_procedure_call(target, linkage)
     );
 }
+
 

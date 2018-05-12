@@ -302,9 +302,34 @@ InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage) {
         compiled_linkage = /*(LinkageJump*)*/ linkage;
     }
 //      (append-instruction-sequences
-//        (make-instruction-sequence '(proc) '()`((test (op primitive-procedure?) (reg proc))
-//                                                (branch (label ,primitive-branch))))
-//        ; parallel becaue they won't be executed sequentially
+    InstructionSequence* primitive_decision = new InstructionSequence(
+        vector<Symbol*>({ new Symbol("proc") }),
+        vector<Symbol*>(),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("test"),
+                Cons::from_vector({
+                    new Symbol("op"),
+                    // TODO: implement this as operation
+                    new Symbol("is-primitive-procedure"),
+                }),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("proc"),
+                }),
+            }),
+            Cons::from_vector({
+                new Symbol("branch"),
+                Cons::from_vector({
+                    new Symbol("label"),
+                    primitive_branch
+                }),
+            }),
+        })
+    );
+    
+    InstructionSequence* parallel_branches = InstructionSequence::empty();
+//        ; parallel because they won't be executed sequentially
 //        (parallel-instruction-sequences
 //          (append-instruction-sequences
 //            compiled-branch
@@ -319,5 +344,5 @@ InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage) {
 //                                                                   (reg proc)
 //                                                                   (reg argl)))))))
 //        after-call))))
-    return InstructionSequence::empty();
+    return primitive_decision->append(parallel_branches);
 }

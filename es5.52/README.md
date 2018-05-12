@@ -104,7 +104,7 @@ What should be the first acceptance test?
 +++ implement two arguments case
 -- (compile-procedure-call target linkage)))))
 +++ make-label
---- parallel-instruction-sequences
++++ parallel-instruction-sequences
 --- compile-proc-appl
 -- put them together with preserving()
 -- end2end test should show somewhere the sum, even if it doesn't print it on stdout due to the lack of a REPL

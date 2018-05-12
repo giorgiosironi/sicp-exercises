@@ -370,3 +370,60 @@ TEST(InstructionSequenceTest, PreservingAUsedRegister) {
         *actual
     );
 }
+
+TEST(InstructionSequenceTest, ParallelSequences) { 
+    auto original = new InstructionSequence(
+        vector<Symbol*>({ new Symbol("env") }),
+        vector<Symbol*>({ new Symbol("val") }),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("val"),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("env"),
+                })
+            })
+        })
+    );
+    auto parallel = new InstructionSequence(
+        vector<Symbol*>({ new Symbol("argl") }),
+        vector<Symbol*>({ new Symbol("exp") }),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("exp"),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("argl")
+                })
+            })
+        })
+    );
+    auto actual = original->parallel(parallel);
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("argl"), new Symbol("env")}),
+            vector<Symbol*>({ new Symbol("val"), new Symbol("exp") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    })
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("exp"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("argl")
+                    })
+                })
+            })
+        ),
+        *actual
+    );
+}

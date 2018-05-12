@@ -235,7 +235,7 @@
       (append-instruction-sequences
         (make-instruction-sequence '(proc) '()`((test (op primitive-procedure?) (reg proc))
                                                 (branch (label ,primitive-branch))))
-        ; parallel becaue they won't be executed sequentially
+        ; parallel because they won't be executed sequentially
         (parallel-instruction-sequences
           (append-instruction-sequences
             compiled-branch

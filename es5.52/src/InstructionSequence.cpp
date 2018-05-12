@@ -225,6 +225,40 @@ InstructionSequence* InstructionSequence::preserving(vector<Symbol*> registers, 
     }
 }
 
+InstructionSequence* InstructionSequence::parallel(InstructionSequence* parallel) {
+    auto needed1 = this->needs();
+    auto needed2 = parallel->needs();
+    sort(needed1.begin(), needed1.begin()+needed1.size());
+    sort(needed2.begin(), needed2.begin()+needed2.size());
+    vector<Symbol*> new_needs;
+    set_union(
+        needed1.begin(),
+        needed1.begin()+needed1.size(),
+        needed2.begin(),
+        needed2.begin()+needed2.size(),
+        inserter(new_needs, new_needs.end())
+    );
+
+    auto modified1 = this->modifies();
+    auto modified2 = parallel->modifies();
+    sort(modified1.begin(), modified1.begin()+modified1.size());
+    sort(modified2.begin(), modified2.begin()+modified2.size());
+    vector<Symbol*> new_modifies;
+    set_union(
+        modified1.begin(),
+        modified1.begin()+modified1.size(),
+        modified2.begin(),
+        modified2.begin()+modified2.size(),
+        inserter(new_modifies, new_modifies.end())
+    );
+
+    return new InstructionSequence(
+        new_needs,
+        new_modifies,
+        this->_statements->append_list(parallel->_statements)
+    );
+}
+
 InstructionSequence* InstructionSequence::empty() {
     return new InstructionSequence(
         vector<Symbol*>(),

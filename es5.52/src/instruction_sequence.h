@@ -24,6 +24,7 @@ class InstructionSequence {
         string to_string() const;
         InstructionSequence* append(InstructionSequence* followUp);
         InstructionSequence* preserving(vector<Symbol*> registers, InstructionSequence* followUp);
+        InstructionSequence* parallel(InstructionSequence* parallel);
         static InstructionSequence* empty();
 };
 

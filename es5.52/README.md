@@ -108,6 +108,16 @@ What should be the first acceptance test?
 --- compile-proc-appl
 ---- case 1: target val, linkage not return
 ----- not sure what to put as the `,linkage` value, should be a label we are able to jump to
+----- clear enough that I can put a Symbol (label) into `continue` for a `LinkageLabel`
+----- not clear for LinkageNext: is the Symbol `next` being put into `continue`?
+----- maybe it should be an error if we get into the situation of having to jump to `next`?
+    (let ((compiled-linkage
+            (if (eq? linkage 'next) after-call linkage)))
+------ means LinkageNext can't be used here, only LinkageLabel and LinkageReturn
+------- therefore we need a LinkageJump(Linkage)
+-------- LinkageLabel and LinkageReturn extend it
+-------- LinkageNext does not extend it
+------- then `compile-proc-appl` actually moves on LinkageJump
 ---- case 2: not target val, linkage not return
 ---- case 3: target val, linkage return
 ---- case 4: not target val, linkage return: exception

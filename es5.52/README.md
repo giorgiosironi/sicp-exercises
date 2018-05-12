@@ -90,6 +90,7 @@ What should be the first acceptance test?
 -- implement compile part
 +++ also unit test should produce comprehensible errors
 -- ADD LINKAGE (if needed for this)
+--- LinkageLabel is missing!
 ++ compile operator
 ++ compile operands
 -- (construct-arglist operand-codes)
@@ -106,6 +107,10 @@ What should be the first acceptance test?
 +++ make-label
 +++ parallel-instruction-sequences
 --- compile-proc-appl
+---- case 1: target val, linkage not return
+---- case 2: not target val, linkage not return
+---- case 3: target val, linkage return
+---- case 4: not target val, linkage return: exception
 -- put them together with preserving()
 -- end2end test should show somewhere the sum, even if it doesn't print it on stdout due to the lack of a REPL
 +- start passing a Linkage (default one, `next`) to `compile_*()`

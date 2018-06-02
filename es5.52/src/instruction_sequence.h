@@ -26,6 +26,7 @@ class InstructionSequence {
         InstructionSequence* preserving(vector<Symbol*> registers, InstructionSequence* followUp);
         InstructionSequence* parallel(InstructionSequence* parallel);
         static InstructionSequence* empty();
+        static InstructionSequence* label(Symbol* symbol);
 };
 
 bool operator==(const InstructionSequence& lhs, const InstructionSequence& rhs);

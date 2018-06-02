@@ -123,7 +123,7 @@ What should be the first acceptance test?
 ---- case 3: target val, linkage return
 ---- case 4: not target val, linkage return: exception
 --- actual code of compile-procedure-call
----- case with LinkageNext is the base
+++++ case with LinkageNext is the base
 ---- case with a LinkageJump, just to test the difference without writing down the whole assembly code all over again
 ++++ is-primitive-procedure needs to be implemented as an operation
 +++++ implemented with IsTaggedList(new Symbol("primitive"))

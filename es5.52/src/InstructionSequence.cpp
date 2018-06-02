@@ -266,3 +266,13 @@ InstructionSequence* InstructionSequence::empty() {
         NIL
     );
 }
+
+InstructionSequence* InstructionSequence::label(Symbol* symbol) {
+    return new InstructionSequence(
+        vector<Symbol*>(),
+        vector<Symbol*>(),
+        Cons::from_vector({
+            symbol
+        })
+    );
+}

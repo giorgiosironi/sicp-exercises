@@ -330,12 +330,12 @@ InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage) {
         })
     );
     
-    InstructionSequence* parallel_branches = InstructionSequence::empty();
+    InstructionSequence* parallel_branches =
+
 //        ; parallel because they won't be executed sequentially
 //        (parallel-instruction-sequences
-//          (append-instruction-sequences
-//            compiled-branch
-//            (compile-proc-appl target compiled-linkage))
+    InstructionSequence::label(compiled_branch)
+        ->append(compiled_linkage->compile_proc_appl(target));
 //          (append-instruction-sequences
 //            primitive-branch
 //            (end-with-linkage linkage

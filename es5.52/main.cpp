@@ -1756,6 +1756,8 @@ Machine* compile_and_go(Value* input)
 Machine* compile_and_execute(Value* expression)
 {
     List* compiledProgram = compile(expression, new Symbol("val"), new LinkageNext())->statements();
+    cout << "compiledProgram" << endl;
+    cout << compiledProgram->to_string() << endl;
     List* linkedProgram = Cons::from_vector({
         Cons::from_vector({
             new Symbol("perform"),

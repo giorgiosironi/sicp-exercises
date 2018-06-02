@@ -180,17 +180,20 @@ InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* li
     for (vector<Value*>::iterator it = operands.begin(); it != operands.end(); ++it) {
         operandCodes.push_back(compile(*it, new Symbol("val"), new LinkageNext()));
     }
-    //(let ((proc-code (compile (operator exp) 'proc 'next))
-    //      (operand-codes
-    //        (map (lambda (operand)
-    //               (compile operand 'val 'next))
-    //             (operands exp))))
+
     //  (preserving '(env continue)
     //              proc-code
     //              (preserving '(proc continue)
     //                          (construct-arglist operand-codes)
     //                          (compile-procedure-call target linkage)))))
-    return procedureCode;
+    return procedureCode->preserving(
+        { new Symbol("env"), new Symbol("continue") }
+        construct_arg_list(operandCodes)
+            ->preserving(
+                { new Symbol("proc"), new Symbol("continue") }
+                compile_procedure_call(target, linkage)
+            )
+    );
 }
 
 // building the argument list from last to first, with cons

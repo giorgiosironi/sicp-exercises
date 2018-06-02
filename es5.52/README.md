@@ -127,6 +127,9 @@ What should be the first acceptance test?
 ---- case with a LinkageJump, just to test the difference without writing down the whole assembly code all over again
 ++++ is-primitive-procedure needs to be implemented as an operation
 +++++ implemented with IsTaggedList(new Symbol("primitive"))
+++++ needs minimal end-with-linkage
++++++ implemented on Linkage
+++++ then two labels and be prepended/appended
 -- end2end test should show somewhere the sum, even if it doesn't print it on stdout due to the lack of a REPL
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`

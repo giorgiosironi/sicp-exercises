@@ -330,21 +330,47 @@ InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage) {
         })
     );
     
-    InstructionSequence* parallel_branches =
 
 //        ; parallel because they won't be executed sequentially
 //        (parallel-instruction-sequences
-    InstructionSequence::label(compiled_branch)
+    InstructionSequence* compiled_parallel_branch = InstructionSequence::label(compiled_branch)
         ->append(compiled_linkage->compile_proc_appl(target));
-//          (append-instruction-sequences
-//            primitive-branch
-//            (end-with-linkage linkage
-//                              (make-instruction-sequence '(proc argl)
-//                                                         (list target)
-//                                                         `((assign ,target
-//                                                                   (op apply-primitive-procedure)
-//                                                                   (reg proc)
-//                                                                   (reg argl)))))))
-//        after-call))))
+
+    InstructionSequence* primitive_parallel_branch = InstructionSequence::label(primitive_branch)
+        ->append(
+            linkage->use_to_end_with(new InstructionSequence(
+                vector<Symbol*>({ new Symbol("proc"), new Symbol("argl") }),
+                vector<Symbol*>({ target }),
+                Cons::from_vector({
+                    Cons::from_vector({
+                        new Symbol("assign"),
+                        target,
+                        Cons::from_vector({
+                            new Symbol("op"),
+                            new Symbol("apply-primitive-procedure"),
+                        }),
+                        Cons::from_vector({
+                            new Symbol("reg"),
+                            new Symbol("proc"),
+                        }),
+                        Cons::from_vector({
+                            new Symbol("reg"),
+                            new Symbol("argl"),
+                        }),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("branch"),
+                        Cons::from_vector({
+                            new Symbol("label"),
+                            primitive_branch
+                        }),
+                    }),
+                })
+            ))
+        )->append(
+            InstructionSequence::label(after_call)
+        );
+
+    InstructionSequence* parallel_branches = compiled_parallel_branch->parallel(primitive_parallel_branch);
     return primitive_decision->append(parallel_branches);
 }

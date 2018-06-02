@@ -4,8 +4,8 @@
 #include <set>
 #include <iostream>
 #include <string>
-#include "../src/symbol.h"
-#include "../src/list.h"
+#include "symbol.h"
+#include "list.h"
 using namespace std;
 
 class InstructionSequence {

@@ -332,7 +332,7 @@ TEST(compileTest, compile_procedure_call_linkage_next) {
     Linkage* linkage = new LinkageNext();
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>({ new Symbol("proc") }),
+            vector<Symbol*>({ new Symbol("argl"), new Symbol("proc") }),
             vector<Symbol*>({ 
                 new Symbol("argl"),
                 new Symbol("continue"), 
@@ -387,6 +387,31 @@ TEST(compileTest, compile_procedure_call_linkage_next) {
                         new Symbol("val"),
                     }),
                 }),
+                new Symbol("primitive-branch1"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("apply-primitive-procedure"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("proc"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("argl"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("branch"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("primitive-branch1"),
+                    }),
+                }),
+                new Symbol("after-call3"),
             })
         ),
         *compile_procedure_call(target, linkage)

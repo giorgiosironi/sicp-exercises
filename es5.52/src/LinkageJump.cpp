@@ -16,7 +16,7 @@ InstructionSequence* LinkageJump::compile_proc_appl(Symbol* target)
                     new Symbol("continue"),
                     Cons::from_vector({
                         new Symbol("label"),
-                        new Symbol("TODO-should-point-to-a-label?")
+                        this->_label
                     })
                 }),
                 Cons::from_vector({

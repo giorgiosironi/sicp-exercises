@@ -112,7 +112,7 @@ TEST(LinkageTest, CompileProcAppl_TargetVal_NonReturn) {
                     new Symbol("continue"),
                     Cons::from_vector({
                         new Symbol("label"),
-                        new Symbol("TODO-should-point-to-a-label?"),
+                        new Symbol("somewhere"),
                     }),
                 }),
                 Cons::from_vector({

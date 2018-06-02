@@ -18,6 +18,8 @@ class LinkageNext : public Linkage
 
 class LinkageJump : public Linkage
 {
+    protected:
+        Symbol* _label;
     public:
         virtual InstructionSequence* compile_proc_appl(Symbol* target);
         // seems not to be necessary to redefine it here
@@ -34,8 +36,6 @@ class LinkageReturn : public LinkageJump
 
 class LinkageLabel : public LinkageJump
 {
-    private:
-        Symbol* label;
     public:
         LinkageLabel(Symbol* label);
         virtual InstructionSequence* compile();

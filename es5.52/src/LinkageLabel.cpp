@@ -3,7 +3,7 @@
 
 LinkageLabel::LinkageLabel(Symbol* label)
 {
-    this->label = label;
+    this->_label = label;
 }
 
 InstructionSequence* LinkageLabel::compile()
@@ -16,7 +16,7 @@ InstructionSequence* LinkageLabel::compile()
                 new Symbol("goto"),
                 Cons::from_vector({
                     new Symbol("label"),
-                    this->label
+                    this->_label
                 })
             })
         })

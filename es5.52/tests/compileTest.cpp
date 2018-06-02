@@ -365,7 +365,7 @@ TEST(compileTest, compile_procedure_call_linkage_next) {
                     new Symbol("continue"),
                     Cons::from_vector({
                         new Symbol("label"),
-                        new Symbol("TODO-should-point-to-a-label?"),
+                        new Symbol("after-call3"),
                     }),
                 }),
                 Cons::from_vector({

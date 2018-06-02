@@ -17,13 +17,20 @@ class LinkageNext : public Linkage
         virtual InstructionSequence* compile();
 };
 
-class LinkageReturn : public Linkage
+class LinkageJump : public Linkage
+{
+    // seems not to be necessary to redefine it here
+    //public:
+    //    virtual InstructionSequence* compile() = 0;
+};
+
+class LinkageReturn : public LinkageJump
 {
     public:
         virtual InstructionSequence* compile();
 };
 
-class LinkageLabel : public Linkage
+class LinkageLabel : public LinkageJump
 {
     private:
         Symbol* label;

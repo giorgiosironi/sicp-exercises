@@ -310,7 +310,6 @@ InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage) {
                 new Symbol("test"),
                 Cons::from_vector({
                     new Symbol("op"),
-                    // TODO: implement this as operation
                     new Symbol("is-primitive-procedure"),
                 }),
                 Cons::from_vector({

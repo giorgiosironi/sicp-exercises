@@ -109,22 +109,24 @@ What should be the first acceptance test?
 ---- case 1: target val, linkage not return
 ----- not sure what to put as the `,linkage` value, should be a label we are able to jump to
 ----- clear enough that I can put a Symbol (label) into `continue` for a `LinkageLabel`
------ not clear for LinkageNext: is the Symbol `next` being put into `continue`?
------ maybe it should be an error if we get into the situation of having to jump to `next`?
++++++ not clear for LinkageNext: is the Symbol `next` being put into `continue`?
+++++++ no, would just cause a runtime error
+----- it should be an error if we get into the situation of having to jump to `next`?
     (let ((compiled-linkage
             (if (eq? linkage 'next) after-call linkage)))
 ------ means LinkageNext can't be used here, only LinkageLabel and LinkageReturn
-------- therefore we need a LinkageJump(Linkage)
--------- LinkageLabel and LinkageReturn extend it
--------- LinkageNext does not extend it
-------- then `compile-proc-appl` actually moves on LinkageJump
++++++++ therefore we need a LinkageJump(Linkage)
+++++++++ LinkageLabel and LinkageReturn extend it
+++++++++ LinkageNext does not extend it
++++++++ then `compile-proc-appl` actually moves on LinkageJump
 ---- case 2: not target val, linkage not return
 ---- case 3: target val, linkage return
 ---- case 4: not target val, linkage return: exception
 --- actual code of compile-procedure-call
 ---- case with LinkageNext is the base
 ---- case with a LinkageJump, just to test the difference without writing down the whole assembly code all over again
----- is-primitive-procedure needs to be implemented as an operation
+++++ is-primitive-procedure needs to be implemented as an operation
++++++ implemented with IsTaggedList(new Symbol("primitive"))
 -- end2end test should show somewhere the sum, even if it doesn't print it on stdout due to the lack of a REPL
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`

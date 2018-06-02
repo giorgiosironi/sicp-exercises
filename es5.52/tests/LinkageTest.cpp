@@ -100,7 +100,7 @@ TEST(LinkageTest, UseToEndWith) {
 }
 
 TEST(LinkageTest, CompileProcAppl_TargetVal_NonReturn) { 
-    Linkage* non_return_linkage = new LinkageNext();
+    LinkageJump* non_return_linkage = new LinkageLabel(new Symbol("somewhere"));
 
     ASSERT_EQ(
         InstructionSequence(

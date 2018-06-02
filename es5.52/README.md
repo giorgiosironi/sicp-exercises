@@ -111,10 +111,10 @@ What should be the first acceptance test?
 ----- clear enough that I can put a Symbol (label) into `continue` for a `LinkageLabel`
 +++++ not clear for LinkageNext: is the Symbol `next` being put into `continue`?
 ++++++ no, would just cause a runtime error
------ it should be an error if we get into the situation of having to jump to `next`?
++++++ it should be an error if we get into the situation of having to jump to `next`?
     (let ((compiled-linkage
             (if (eq? linkage 'next) after-call linkage)))
------- means LinkageNext can't be used here, only LinkageLabel and LinkageReturn
+++++++ means LinkageNext can't be used here, only LinkageLabel and LinkageReturn
 +++++++ therefore we need a LinkageJump(Linkage)
 ++++++++ LinkageLabel and LinkageReturn extend it
 ++++++++ LinkageNext does not extend it

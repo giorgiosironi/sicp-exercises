@@ -2,7 +2,7 @@
 #include "symbol.h"
 #include "cons.h"
 
-InstructionSequence* Linkage::compile_proc_appl(Symbol* target)
+InstructionSequence* LinkageJump::compile_proc_appl(Symbol* target)
 {
     if (*target == Symbol("val")) {
         // target is val, linkage is not return, no tail recursion (it's not a tail)

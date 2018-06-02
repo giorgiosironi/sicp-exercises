@@ -293,13 +293,16 @@ InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage) {
     Symbol* compiled_branch = make_label.next("compiled-branch");
     Symbol* after_call = make_label.next("after-call");
 
-    Linkage/*Jump*/* compiled_linkage;
+    LinkageJump* compiled_linkage;
     // checking for a LinkageNext class 
     LinkageNext* result = dynamic_cast<LinkageNext*>(linkage);
     if (result != NULL) {
         compiled_linkage = new LinkageLabel(after_call);
     } else {
-        compiled_linkage = /*(LinkageJump*)*/ linkage;
+        compiled_linkage = dynamic_cast<LinkageJump*>(linkage);
+        if (compiled_linkage == NULL) {
+            throw std::runtime_error("Cannot convert Linkage to LinkageJump");
+        }
     }
 //      (append-instruction-sequences
     InstructionSequence* primitive_decision = new InstructionSequence(

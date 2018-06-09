@@ -138,8 +138,8 @@ TEST(compileTest, DefinitionVariable) {
 TEST(compileTest, ApplicationOfPrimitiveProcedure) { 
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>({ new Symbol("env")}),
-            vector<Symbol*>({ new Symbol("proc")}),
+            vector<Symbol*>({ new Symbol("argl"), new Symbol("env"), new Symbol("proc"), new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("argl"), new Symbol("continue"), new Symbol("env"), new Symbol("proc"), new Symbol("val") }),
             Cons::from_vector({
                 Cons::from_vector({
                     new Symbol("assign"),
@@ -156,7 +156,115 @@ TEST(compileTest, ApplicationOfPrimitiveProcedure) {
                         new Symbol("reg"),
                         new Symbol("env"),
                     }),
-                })
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(2),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("argl"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("list"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(1),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("argl"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("cons"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("argl"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("test"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("is-primitive-procedure"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("proc"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("branch"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("primitive-branch1"),
+                    }),
+                }),
+                new Symbol("compiled-branch2"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("continue"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("after-call3"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("compiled-procedure-entry"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("proc"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                }),
+                new Symbol("primitive-branch1"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("apply-primitive-procedure"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("proc"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("argl"),
+                    }),
+                }),
+                new Symbol("after-call3"),
             })
         ),
         *compile(
@@ -402,13 +510,6 @@ TEST(compileTest, compile_procedure_call_linkage_next) {
                     Cons::from_vector({
                         new Symbol("reg"),
                         new Symbol("argl"),
-                    }),
-                }),
-                Cons::from_vector({
-                    new Symbol("branch"),
-                    Cons::from_vector({
-                        new Symbol("label"),
-                        new Symbol("primitive-branch1"),
                     }),
                 }),
                 new Symbol("after-call3"),

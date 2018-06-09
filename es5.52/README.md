@@ -130,11 +130,11 @@ What should be the first acceptance test?
 ++++ needs minimal end-with-linkage
 +++++ implemented on Linkage
 ++++ then two labels and be prepended/appended
--- end2end test should show somewhere the sum, even if it doesn't print it on stdout due to the lack of a REPL
---- implement missing operations
+++ end2end test should show somewhere the sum, even if it doesn't print it on stdout due to the lack of a REPL
++++ implement missing operations
 ++++ list
 ++++ cons
----- compiled-procedure-entry
+++++ compiled-procedure-entry
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`
 -- actually use Linkage in `compile[_*]()`

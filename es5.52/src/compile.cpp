@@ -181,16 +181,11 @@ InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* li
         operandCodes.push_back(compile(*it, new Symbol("val"), new LinkageNext()));
     }
 
-    //  (preserving '(env continue)
-    //              proc-code
-    //              (preserving '(proc continue)
-    //                          (construct-arglist operand-codes)
-    //                          (compile-procedure-call target linkage)))))
     return procedureCode->preserving(
-        { new Symbol("env"), new Symbol("continue") }
+        { new Symbol("env"), new Symbol("continue") },
         construct_arg_list(operandCodes)
             ->preserving(
-                { new Symbol("proc"), new Symbol("continue") }
+                { new Symbol("proc"), new Symbol("continue") },
                 compile_procedure_call(target, linkage)
             )
     );

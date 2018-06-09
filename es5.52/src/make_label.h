@@ -9,6 +9,7 @@ class MakeLabel {
         int counter = 0;
     public:
         Symbol* next(string prefix);
+        void reset();
 };
 
 #endif

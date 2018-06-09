@@ -12,6 +12,10 @@
 
 MakeLabel make_label;
 
+void reset_labels() {
+	make_label.reset();
+}
+
 InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
 {
     if (is_self_evaluating(exp)) {

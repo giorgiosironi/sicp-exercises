@@ -4,8 +4,16 @@
 #include "../src/cons.h"
 #include "../src/nil.h"
 #include <gtest/gtest.h>
- 
-TEST(compileTest, SelfEvaluating) { 
+
+class compileTest : public testing::Test {
+  //virtual void SetUp() {}
+
+  virtual void TearDown() {
+	reset_labels();
+  }
+};
+
+TEST_F(compileTest, SelfEvaluating) { 
     ASSERT_EQ(
         InstructionSequence(
             vector<Symbol*>(),
@@ -25,7 +33,7 @@ TEST(compileTest, SelfEvaluating) {
     );
 }
 
-TEST(compileTest, Variable) { 
+TEST_F(compileTest, Variable) { 
     ASSERT_EQ(
         InstructionSequence(
             vector<Symbol*>({ new Symbol("env") }),
@@ -53,7 +61,7 @@ TEST(compileTest, Variable) {
     );
 }
 
-TEST(compileTest, Quoted) { 
+TEST_F(compileTest, Quoted) { 
     ASSERT_EQ(
         InstructionSequence(
             vector<Symbol*>({}),
@@ -80,7 +88,7 @@ TEST(compileTest, Quoted) {
     );
 }
 
-TEST(compileTest, DefinitionVariable) { 
+TEST_F(compileTest, DefinitionVariable) { 
     ASSERT_EQ(
         InstructionSequence(
             vector<Symbol*>({ new Symbol("env"), new Symbol("val") }),
@@ -135,7 +143,7 @@ TEST(compileTest, DefinitionVariable) {
     );
 }
 
-TEST(compileTest, ApplicationOfPrimitiveProcedure) { 
+TEST_F(compileTest, ApplicationOfPrimitiveProcedure) { 
     ASSERT_EQ(
         InstructionSequence(
             vector<Symbol*>({ new Symbol("argl"), new Symbol("env"), new Symbol("proc"), new Symbol("val") }),
@@ -279,7 +287,7 @@ TEST(compileTest, ApplicationOfPrimitiveProcedure) {
     );
 }
 
-TEST(compileTest, construct_arg_list_0_operands) { 
+TEST_F(compileTest, construct_arg_list_0_operands) { 
     vector<InstructionSequence*> operandCodes = {};
     ASSERT_EQ(
         InstructionSequence(
@@ -300,7 +308,7 @@ TEST(compileTest, construct_arg_list_0_operands) {
     );
 }
 
-TEST(compileTest, construct_arg_list_1_operand) { 
+TEST_F(compileTest, construct_arg_list_1_operand) { 
     vector<InstructionSequence*> operandCodes = {
         new InstructionSequence(
             vector<Symbol*>(),
@@ -348,7 +356,7 @@ TEST(compileTest, construct_arg_list_1_operand) {
     );
 }
 
-TEST(compileTest, construct_arg_list_2_operand) { 
+TEST_F(compileTest, construct_arg_list_2_operand) { 
     vector<InstructionSequence*> operandCodes = {
         new InstructionSequence(
             vector<Symbol*>(),
@@ -435,7 +443,7 @@ TEST(compileTest, construct_arg_list_2_operand) {
 }
 
 
-TEST(compileTest, compile_procedure_call_linkage_next) { 
+TEST_F(compileTest, compile_procedure_call_linkage_next) { 
     Symbol* target = new Symbol("val");
     Linkage* linkage = new LinkageNext();
     ASSERT_EQ(

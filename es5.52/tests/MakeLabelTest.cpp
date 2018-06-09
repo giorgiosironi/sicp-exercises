@@ -5,6 +5,7 @@
 
 using namespace std;
  
+// TODO: teardown here
 TEST(MakeLabelTest, SequentialValues) { 
     MakeLabel my;
     ASSERT_EQ(

@@ -37,6 +37,7 @@ using namespace std;
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
 #include "src/list_operation.h"
+#include "src/cons_operation.h"
 
 // primitive procedures
 #include "src/primitive_plus.h"
@@ -1700,6 +1701,10 @@ std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
     operations.insert(std::make_pair(
         Symbol("list"),
         new ListOperation()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("cons"),
+        new ConsOperation()
     ));
     return operations;
 }

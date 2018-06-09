@@ -10,7 +10,7 @@
 // temporary
 #include "nil.h"
 
-MakeLabel make_label;
+static MakeLabel make_label;
 
 void reset_labels() {
 	make_label.reset();

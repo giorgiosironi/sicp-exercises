@@ -356,13 +356,6 @@ InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage) {
                             new Symbol("argl"),
                         }),
                     }),
-                    Cons::from_vector({
-                        new Symbol("branch"),
-                        Cons::from_vector({
-                            new Symbol("label"),
-                            primitive_branch
-                        }),
-                    }),
                 })
             ))
         )->append(

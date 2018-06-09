@@ -10,7 +10,7 @@ The compiler doesn't really need to be ported, because it should produce assembl
 
 If we write a translation layer for the output of the compiler, we can use that to transform the compiler output into the C-data-structure-based assembly.
 
-We also have to link it up into the existing explicit-control evaluator in some way (`compile-and-go`).
+Do we also have to link it up into the existing explicit-control evaluator in some way (`compile-and-go`)?
 
 Actually in the end, we should compile the meta-circular evaluator, so we won't need to use the explicit-control evaluator; only the underlying virtual machine.
 

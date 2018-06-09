@@ -36,6 +36,7 @@ using namespace std;
 #include "src/announce_output.h"
 #include "src/initialize_stack.h"
 #include "src/user_print.h"
+#include "src/list_operation.h"
 
 // primitive procedures
 #include "src/primitive_plus.h"
@@ -1695,6 +1696,10 @@ std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
     operations.insert(std::make_pair(
         Symbol("user-print"),
         new UserPrint()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("list"),
+        new ListOperation()
     ));
     return operations;
 }

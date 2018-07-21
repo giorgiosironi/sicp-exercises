@@ -45,6 +45,7 @@ using namespace std;
 #include "src/primitive_equal.h"
 #include "src/primitive_times.h"
 #include "src/primitive_list.h"
+#include "src/primitive_display.h"
 
 // proper 5.52 components
 #include "src/compile.h"
@@ -1722,13 +1723,14 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             new Symbol("="),
             new Symbol("*"),
             new Symbol("list"),
+            new Symbol("display"),
         },
         {
             Cons::from_vector({ new Symbol("primitive"), new PrimitivePlus() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveMinus() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveEqual() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveTimes() }),
-            Cons::from_vector({ new Symbol("primitive"), new PrimitiveList() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveDisplay() }),
         }
     ));
 }

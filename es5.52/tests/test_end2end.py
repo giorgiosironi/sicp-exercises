@@ -46,7 +46,7 @@ class End2endTest(unittest.TestCase):
     #    self._assertOutput(['(42 43)'])
 
     def test_sum_as_primitive_procedure(self):
-        self._input('(+ 42 43)')
+        self._input('(display (+ 42 43))')
         self._assertOutput(['85'])
 
     def test_assignment(self):
@@ -118,11 +118,7 @@ class End2endTest(unittest.TestCase):
 
     def _output(self):
         output_lines = self._stdout_data.split("\n")
-        output_indexes = []
-        for index, line in enumerate(output_lines):
-            if '>>> ";;; EC-Eval value:"' == line:
-                output_indexes.append(index + 1)
-        return [l for i, l in enumerate(output_lines) if i in output_indexes]
+        return [l for i, l in enumerate(output_lines) if l != '']
 
     def _err(self):
         err_lines = self._stderr_data.split("\n")

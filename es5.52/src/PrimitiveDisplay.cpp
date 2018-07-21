@@ -7,7 +7,8 @@ using namespace std;
 
 Value* PrimitiveDisplay::apply(List* arguments)
 {
-    cout << arguments->to_string() << endl;
+    // TODO: assert exactly 1 element in list
+    cout << arguments->car()->to_string();
     return new Symbol("ok");
 }
 

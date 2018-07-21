@@ -3,12 +3,20 @@
 #include <stdexcept>
 #include <vector>
 #include <stack>
-#include <iostream>
+#include <typeinfo>
+
+/**
+ * http://man7.org/linux/man-pages/man3/backtrace.3.html
+ */
+void dump_stacktrace();
 
 template <typename T> void assert_elements(std::vector<T> v, int count)
 {
     if (v.size() != count) {
-        throw std::length_error("Value asserted is not " + std::to_string(count) + " elements long as requested");
+        dump_stacktrace();
+
+        auto type_name = typeid(T).name();
+        throw std::length_error("Value vector<" + std::string(type_name) + "> asserted is not " + std::to_string(count) + " elements long as requested, but " + std::to_string(v.size()));
     }
 }
 

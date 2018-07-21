@@ -10,6 +10,7 @@ class End2endTest(unittest.TestCase):
         self._input('42')
         self._assertOutput([])
         self._assertErr([
+            '(perform (op initialize-stack))',
             'operation: initialize-stack',
             'make_perform: Operation-InitializeStack',
             '(assign env (op get-global-environment))',
@@ -54,6 +55,7 @@ class End2endTest(unittest.TestCase):
             "answer"
         )
         self._assertErr([
+            '(perform (op initialize-stack))',
             'operation: initialize-stack',
             'make_perform: Operation-InitializeStack',
             '(assign env (op get-global-environment))',

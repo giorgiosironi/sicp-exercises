@@ -1730,6 +1730,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveMinus() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveEqual() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveTimes() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveList() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveDisplay() }),
         }
     ));

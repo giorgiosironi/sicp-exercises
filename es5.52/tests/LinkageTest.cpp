@@ -4,8 +4,15 @@
 #include "../src/cons.h"
 #include "../src/make_label.h"
 #include <gtest/gtest.h>
+
+class LinkageTest : public testing::Test {
+
+  virtual void TearDown() {
+	reset_labels();
+  }
+};
  
-TEST(LinkageTest, Next) { 
+TEST_F(LinkageTest, Next) { 
     Linkage* linkage = new LinkageNext();
 
     ASSERT_EQ(
@@ -14,7 +21,7 @@ TEST(LinkageTest, Next) {
     );
 }
 
-TEST(LinkageTest, Return) { 
+TEST_F(LinkageTest, Return) { 
     Linkage* linkage = new LinkageReturn();
 
     ASSERT_EQ(
@@ -35,7 +42,7 @@ TEST(LinkageTest, Return) {
     );
 }
 
-TEST(LinkageTest, Label) { 
+TEST_F(LinkageTest, Label) { 
     Linkage* linkage = new LinkageLabel(new Symbol("after-some-if"));
 
     ASSERT_EQ(
@@ -56,7 +63,7 @@ TEST(LinkageTest, Label) {
     );
 }
 
-TEST(LinkageTest, UseToEndWith) { 
+TEST_F(LinkageTest, UseToEndWith) { 
     Linkage* linkage = new LinkageReturn();
     List* assignment = Cons::from_vector({
         new Symbol("assign"),
@@ -100,7 +107,7 @@ TEST(LinkageTest, UseToEndWith) {
     );
 }
 
-TEST(LinkageTest, CompileProcAppl_TargetVal_NonReturn) { 
+TEST_F(LinkageTest, CompileProcAppl_TargetVal_NonReturn) { 
     LinkageJump* non_return_linkage = new LinkageLabel(new Symbol("somewhere"));
 
     ASSERT_EQ(
@@ -141,7 +148,7 @@ TEST(LinkageTest, CompileProcAppl_TargetVal_NonReturn) {
     );
 }
 
-TEST(LinkageTest, CompileProcAppl_TargetNotVal_NonReturn) { 
+TEST_F(LinkageTest, CompileProcAppl_TargetNotVal_NonReturn) { 
     LinkageJump* non_return_linkage = new LinkageLabel(new Symbol("somewhere"));
 
     ASSERT_EQ(

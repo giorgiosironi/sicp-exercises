@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "linkage.h"
 #include "cons.h"
 
@@ -51,6 +52,6 @@ InstructionSequence* LinkageReturn::compile_proc_appl(Symbol* target)
             })
         );
     } else {
-        // not implemented
+        throw std::runtime_error("Trying to compile a LinkageReturn for a non-`val` Register");
     }
 }

@@ -474,16 +474,16 @@ TEST_F(compileTest, compile_procedure_call_target_val_linkage_next) {
                     new Symbol("branch"),
                     Cons::from_vector({
                         new Symbol("label"),
-                        new Symbol("primitive-branch1"),
+                        new Symbol("primitive-branch4"),
                     }),
                 }),
-                new Symbol("compiled-branch2"),
+                new Symbol("compiled-branch5"),
                 Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("continue"),
                     Cons::from_vector({
                         new Symbol("label"),
-                        new Symbol("after-call3"),
+                        new Symbol("after-call6"),
                     }),
                 }),
                 Cons::from_vector({
@@ -505,7 +505,7 @@ TEST_F(compileTest, compile_procedure_call_target_val_linkage_next) {
                         new Symbol("val"),
                     }),
                 }),
-                new Symbol("primitive-branch1"),
+                new Symbol("primitive-branch4"),
                 Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("val"),
@@ -522,7 +522,7 @@ TEST_F(compileTest, compile_procedure_call_target_val_linkage_next) {
                         new Symbol("argl"),
                     }),
                 }),
-                new Symbol("after-call3"),
+                new Symbol("after-call6"),
             })
         ),
         *compile_procedure_call(target, linkage)

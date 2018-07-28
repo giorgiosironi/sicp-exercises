@@ -41,9 +41,11 @@ class End2endTest(unittest.TestCase):
         self._assertOutput([])
         self._assertInErr('Assign (val): foo')
 
-    #def test_list(self):
-    #    self._input('(list 42 43)')
-    #    self._assertOutput(['(42 43)'])
+    def test_list(self):
+        self._input('(list 42 43)')
+        self._assertOutput([])
+        self._assertInErr('Assign (proc): Operation-LookupVariableValue == (primitive PrimitiveProcedure:list)')
+        self._assertInErr('Assign (val): Operation-ApplyPrimitiveProcedure == (42 43)')
 
     #def test_quoted_list(self):
     #    self._input('\'(42 43)')

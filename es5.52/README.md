@@ -138,7 +138,7 @@ What should be the first acceptance test?
 +++ add PrimitiveDisplay and configure it
 +++ try to run '(display (+ 2 3))'
 +++ debug why it explodes
---- add assertions
++++ add assertions
 --- the intention is to in the end compile the meta-circular evaluator which has the REPL, so we don't need a REPL now
 +- start passing a Linkage (default one, `next`) to `compile_*()`
 +- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`

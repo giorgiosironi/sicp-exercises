@@ -1,6 +1,5 @@
 #include <iostream>
 #include "input.h"
-#include "input.h"
 #include "lexer.h"
 #include "reader.h"
 #include "length.h"

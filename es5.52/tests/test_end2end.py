@@ -21,9 +21,10 @@ class End2endTest(unittest.TestCase):
             'Assign (val): 42', 'End of controller'
         ])
 
-    #def test_string(self):
-    #    self._input('"ab"')
-    #    self._assertOutput(['"ab"'])
+    def test_string(self):
+        self._input('"ab"')
+        self._assertOutput([])
+        self._assertInErr('Assign (val): "ab"')
 
     #def test_float(self):
     #    self._input('1.2')
@@ -140,5 +141,12 @@ class End2endTest(unittest.TestCase):
         self.assertEqual(
             actual_err,
             err,
+        )
+
+    def _assertInErr(self, line):
+        actual_err = self._err()
+        self.assertIn(
+            line,
+            actual_err
         )
 

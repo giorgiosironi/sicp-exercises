@@ -12,4 +12,6 @@ class MakeLabel {
         void reset();
 };
 
+static MakeLabel make_label;
+
 #endif

@@ -443,7 +443,8 @@ TEST_F(compileTest, construct_arg_list_2_operand) {
 }
 
 
-TEST_F(compileTest, compile_procedure_call_linkage_next) { 
+// if LinkageNext is used, the target register may or may not be `val`, it doesn't matter
+TEST_F(compileTest, compile_procedure_call_target_val_linkage_next) { 
     Symbol* target = new Symbol("val");
     Linkage* linkage = new LinkageNext();
     ASSERT_EQ(
@@ -526,5 +527,4 @@ TEST_F(compileTest, compile_procedure_call_linkage_next) {
         *compile_procedure_call(target, linkage)
     );
 }
-
 

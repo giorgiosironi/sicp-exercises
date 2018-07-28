@@ -119,7 +119,9 @@ What should be the first acceptance test?
 ++++++++ LinkageLabel and LinkageReturn extend it
 ++++++++ LinkageNext does not extend it
 +++++++ then `compile-proc-appl` actually moves on LinkageJump
----- case 2: not target val, linkage not return
+++++ case 2: not target val, linkage not return
+----- implement teardown for LinkageTest
+----- move code up into LinkageLabel
 ---- case 3: target val, linkage return
 ---- case 4: not target val, linkage return: exception
 --- actual code of compile-procedure-call
@@ -140,11 +142,12 @@ What should be the first acceptance test?
 +++ debug why it explodes
 +++ add assertions
 --- the intention is to in the end compile the meta-circular evaluator which has the REPL, so we don't need a REPL now
-+- start passing a Linkage (default one, `next`) to `compile_*()`
-+- start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`
+++ start passing a Linkage (default one, `next`) to `compile_*()`
+++ start passing a Linkage to `compile()` but perhaps overload allowing a default of `next`
 -- actually use Linkage in `compile[_*]()`
+--- with `use_to_end_with()`
 -- add end2end test: an assignment (will fail)
-- (compile-assignment exp target linkage)
++ (compile-assignment exp target linkage)
 + (compile-definition exp target linkage)
 ++ to end2end test it, Register `env` must be initialized
 ++ done this with `compile-and-execute`
@@ -163,9 +166,9 @@ What should be the first acceptance test?
 
 ## You know you'll have to do this but you can postpone this until the first acceptance test works
 - `compile` should implement `end-with-linkage` to wrap the `InstructionSequence`
--- create `Linkage` enum (or similar data structure with limited choices
---- perhaps subclasses
--- pass linkage to `compile`
+++ create `Linkage` enum (or similar data structure with limited choices
++++ perhaps subclasses
+++ pass linkage to `compile`
 -- implement `preserve`
 - `Value::to_string()` should become `const`, if this means what I think it means. It could then be used when you have a `const Value` without `discards qualifiers` interrupting the compilation
 - `final` classes?

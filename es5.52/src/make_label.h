@@ -13,5 +13,7 @@ class MakeLabel {
 };
 
 static MakeLabel make_label;
+void reset_labels();
+
 
 #endif

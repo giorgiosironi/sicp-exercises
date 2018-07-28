@@ -3,6 +3,7 @@
 #include "../src/instruction_sequence.h"
 #include "../src/cons.h"
 #include "../src/nil.h"
+#include "../src/make_label.h"
 #include <gtest/gtest.h>
 
 class compileTest : public testing::Test {

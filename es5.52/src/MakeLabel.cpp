@@ -8,3 +8,8 @@ Symbol* MakeLabel::next(string prefix) {
 void MakeLabel::reset() {
     counter = 0;
 }
+
+void reset_labels() {
+	make_label.reset();
+}
+

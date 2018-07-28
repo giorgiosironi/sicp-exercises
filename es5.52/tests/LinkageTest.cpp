@@ -2,6 +2,7 @@
 #include "../src/instruction_sequence.h"
 #include "../src/nil.h"
 #include "../src/cons.h"
+#include "../src/make_label.h"
 #include <gtest/gtest.h>
  
 TEST(LinkageTest, Next) { 

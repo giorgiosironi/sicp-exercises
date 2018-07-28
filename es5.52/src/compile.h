@@ -5,8 +5,6 @@
 #include "instruction_sequence.h"
 #include "linkage.h"
 
-void reset_labels();
-
 InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage);
 bool is_self_evaluating(Value* exp);
 InstructionSequence* compile_self_evaluating(Value* exp, Symbol* target, Linkage* linkage);

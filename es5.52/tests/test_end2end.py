@@ -33,7 +33,8 @@ class End2endTest(unittest.TestCase):
 
     #def test_boolean(self):
     #    self._input('#f')
-    #    self._assertOutput(['#f'])
+    #    self._assertOutput([''])
+    #    self._assertInErr('Assign (val): #f')
 
     #def test_symbol(self):
     #    self._input('\'foo')

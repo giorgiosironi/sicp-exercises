@@ -17,3 +17,8 @@ InstructionSequence* LinkageReturn::compile()
         })
     );
 }
+
+InstructionSequence* LinkageReturn::compile_proc_appl(Symbol* target)
+{
+    // not implemented
+}

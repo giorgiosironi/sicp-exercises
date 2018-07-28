@@ -121,7 +121,7 @@ What should be the first acceptance test?
 +++++++ then `compile-proc-appl` actually moves on LinkageJump
 ++++ case 2: not target val, linkage not return
 +++++ implement teardown for LinkageTest
------ move code up into LinkageLabel
++++++ move code up into LinkageLabel
 +++++ update compileTest that broke
 ---- case 3: target val, linkage return
 ---- case 4: not target val, linkage return: exception

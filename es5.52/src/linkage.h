@@ -21,7 +21,7 @@ class LinkageJump : public Linkage
     protected:
         Symbol* _label;
     public:
-        virtual InstructionSequence* compile_proc_appl(Symbol* target);
+        virtual InstructionSequence* compile_proc_appl(Symbol* target) = 0;
         // seems not to be necessary to redefine it here
         //virtual InstructionSequence* compile() = 0;
 };
@@ -32,6 +32,7 @@ class LinkageReturn : public LinkageJump
         // TODO?
         // LinkageReturn(Symbol* label);
         virtual InstructionSequence* compile();
+        virtual InstructionSequence* compile_proc_appl(Symbol* target);
 };
 
 class LinkageLabel : public LinkageJump
@@ -39,6 +40,7 @@ class LinkageLabel : public LinkageJump
     public:
         LinkageLabel(Symbol* label);
         virtual InstructionSequence* compile();
+        virtual InstructionSequence* compile_proc_appl(Symbol* target);
 };
 
 #endif

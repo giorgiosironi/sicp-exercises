@@ -36,9 +36,10 @@ class End2endTest(unittest.TestCase):
     #    self._assertOutput([''])
     #    self._assertInErr('Assign (val): #f')
 
-    #def test_symbol(self):
-    #    self._input('\'foo')
-    #    self._assertOutput(['foo'])
+    def test_symbol(self):
+        self._input('\'foo')
+        self._assertOutput([])
+        self._assertInErr('Assign (val): foo')
 
     #def test_list(self):
     #    self._input('(list 42 43)')

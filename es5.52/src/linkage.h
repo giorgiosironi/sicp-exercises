@@ -29,8 +29,6 @@ class LinkageJump : public Linkage
 class LinkageReturn : public LinkageJump
 {
     public:
-        // TODO?
-        // LinkageReturn(Symbol* label);
         virtual InstructionSequence* compile();
         virtual InstructionSequence* compile_proc_appl(Symbol* target);
 };

@@ -107,7 +107,7 @@ TEST_F(LinkageTest, UseToEndWith) {
     );
 }
 
-TEST_F(LinkageTest, CompileProcAppl_TargetVal_NonReturn) { 
+TEST_F(LinkageTest, CompileProcAppl_TargetVal_Label) { 
     LinkageJump* non_return_linkage = new LinkageLabel(new Symbol("somewhere"));
 
     ASSERT_EQ(
@@ -148,7 +148,7 @@ TEST_F(LinkageTest, CompileProcAppl_TargetVal_NonReturn) {
     );
 }
 
-TEST_F(LinkageTest, CompileProcAppl_TargetNotVal_NonReturn) { 
+TEST_F(LinkageTest, CompileProcAppl_TargetNotVal_Label) { 
     LinkageJump* non_return_linkage = new LinkageLabel(new Symbol("somewhere"));
 
     ASSERT_EQ(
@@ -203,5 +203,38 @@ TEST_F(LinkageTest, CompileProcAppl_TargetNotVal_NonReturn) {
             })
         ),
         *non_return_linkage->compile_proc_appl(new Symbol("exp"))
+    );
+}
+
+TEST_F(LinkageTest, CompileProcAppl_TargetVal_Return) { 
+    LinkageReturn* return_linkage = new LinkageReturn(); //new Symbol("somewhere"));
+
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("continue"), new Symbol("proc") }),
+            vector<Symbol*>({ new Symbol("argl"), new Symbol("continue"), new Symbol("env"), new Symbol("proc"), new Symbol("val")}),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("compiled-procedure-entry"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("proc"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                }),
+            })
+        ),
+        *return_linkage->compile_proc_appl(new Symbol("val"))
     );
 }

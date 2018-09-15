@@ -15,7 +15,7 @@ class compileTest : public testing::Test {
   }
 };
 
-TEST_F(compileTest, SelfEvaluating) { 
+TEST_F(compileTest, SelfEvaluatingInteger) { 
     ASSERT_EQ(
         InstructionSequence(
             vector<Symbol*>(),
@@ -32,6 +32,26 @@ TEST_F(compileTest, SelfEvaluating) {
             })
         ),
         *compile(new Integer(42), new Symbol("val"), new LinkageNext())
+    );
+}
+
+TEST_F(compileTest, SelfEvaluatingBool) { 
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>(),
+            vector<Symbol*>({ new Symbol("val") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Bool(true),
+                    })
+                })
+            })
+        ),
+        *compile(new Bool(true), new Symbol("val"), new LinkageNext())
     );
 }
 

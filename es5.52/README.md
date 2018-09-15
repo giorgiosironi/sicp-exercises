@@ -161,7 +161,10 @@ What should be the first acceptance test?
 ---- needs to be ported over from es5.51
 --- this will be substituted later when we compile the meta-circular evaluator (some configuration to be done)
 - (compile-if exp target linkage)
--- first have to compile a boolean
+++ first have to compile a boolean
+-- acceptance test of if
+-- port compilation result
+-- update test
 - (compile-lambda exp target linkage)
 - (compile-sequence (begin-actions exp) target linkage))
 - (compile (cond->if exp) target linkage)

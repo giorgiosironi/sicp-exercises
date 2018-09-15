@@ -33,7 +33,7 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
 
 bool is_self_evaluating(Value* exp)
 {
-    return is_number(exp) || is_string(exp);
+    return is_number(exp) || is_string(exp) || is_bool(exp);
 }
 
 InstructionSequence* compile_self_evaluating(Value* exp, Symbol* target, Linkage* linkage)

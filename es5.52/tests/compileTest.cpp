@@ -3,6 +3,7 @@
 #include "../src/instruction_sequence.h"
 #include "../src/cons.h"
 #include "../src/nil.h"
+#include "../src/bool.h"
 #include "../src/make_label.h"
 #include <gtest/gtest.h>
 
@@ -528,4 +529,33 @@ TEST_F(compileTest, compile_procedure_call_target_val_linkage_next) {
         *compile_procedure_call(target, linkage)
     );
 }
+
+//TEST_F(compileTest, If) { 
+//    ASSERT_EQ(
+//        InstructionSequence(
+//            vector<Symbol*>(),
+//            vector<Symbol*>({ new Symbol("val") }),
+//            Cons::from_vector({
+//                Cons::from_vector({
+//                    new Symbol("assign"),
+//                    new Symbol("val"),
+//                    Cons::from_vector({
+//                        new Symbol("const"),
+//                        new Integer(42),
+//                    })
+//                })
+//            })
+//        ),
+//        *compile(
+//            Cons::from_vector({
+//                new Symbol("if"),
+//                new Bool(true),
+//                new Integer(42),
+//                new Integer(43),
+//            }),
+//            new Symbol("val"), 
+//            new LinkageNext()
+//        )
+//    );
+//}
 

@@ -92,13 +92,13 @@ class End2endTest(unittest.TestCase):
     #        "42",
     #    ])
 
-    #def test_if(self):
-    #    self._input(
-    #        "(if (= 42 42) 'equal 'wrong)",
-    #    )
-    #    self._assertOutput([
-    #        "equal",
-    #    ])
+    def test_if(self):
+        self._input(
+            "(if (= 42 42) 'equal 'wrong)",
+        )
+        self._assertOutput([
+            "equal",
+        ])
 
     #def test_lambda(self):
     #    self._input(

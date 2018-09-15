@@ -162,9 +162,15 @@ What should be the first acceptance test?
 --- this will be substituted later when we compile the meta-circular evaluator (some configuration to be done)
 - (compile-if exp target linkage)
 ++ first have to compile a boolean
--- acceptance test of if
+++ acceptance test of if
 -- port compilation result
--- update test
++++ implement `p_code`
++++ use `compile_if` in `compile`
+--- implement `c_code`
+--- implement `a_code`
+--- implement `preserving_call`
+-- update unit test test
+-- update acceptance test
 - (compile-lambda exp target linkage)
 - (compile-sequence (begin-actions exp) target linkage))
 - (compile (cond->if exp) target linkage)

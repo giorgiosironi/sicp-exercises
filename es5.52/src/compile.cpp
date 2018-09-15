@@ -25,6 +25,9 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
     if (is_definition(exp)) {
         return compile_definition(exp, target, linkage);
     }
+    if (is_if(exp)) {
+        return compile_if(exp, target, linkage);
+    }
     if (is_application(exp)) {
         return compile_application(exp, target, linkage);
     }
@@ -363,4 +366,66 @@ InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage) {
 
     InstructionSequence* parallel_branches = compiled_parallel_branch->parallel(primitive_parallel_branch);
     return primitive_decision->append(parallel_branches);
+}
+
+bool is_if(Value *exp) {
+    return is_tagged_list(exp, new Symbol("if"));
+}
+
+InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
+{
+    //List* application = convert_to<List>(exp);
+    //Value* operator_ = application->car();
+    //InstructionSequence* procedureCode = compile(operator_, new Symbol("proc"), new LinkageNext());
+    //vector<Value*> operands = convert_to<List>(application->cdr())->to_vector();
+    //vector<InstructionSequence*> operandCodes = vector<InstructionSequence*>();
+    //for (vector<Value*>::iterator it = operands.begin(); it != operands.end(); ++it) {
+    //    operandCodes.push_back(compile(*it, new Symbol("val"), new LinkageNext()));
+    //}
+
+    //return procedureCode->preserving(
+    //    { new Symbol("env"), new Symbol("continue") },
+    //    construct_arg_list(operandCodes)
+    //        ->preserving(
+    //            { new Symbol("proc"), new Symbol("continue") },
+    //            compile_procedure_call(target, linkage)
+    //        )
+    //);
+    //
+    Symbol* t_branch = make_label.next("true-branch");
+    Symbol* f_branch = make_label.next("false-branch");
+    Symbol* after_if = make_label.next("after-if");
+    Linkage* consequent_linkage;
+    // TODO: extract to Linkage.consequent(after_if)
+    // and rename consequent to something meaningful
+    if (LinkageNext *next = dynamic_cast<LinkageNext *>(linkage)) {
+        consequent_linkage = new LinkageLabel(after_if);
+    } else {
+        consequent_linkage = linkage;
+    }
+    InstructionSequence* p_code = compile(convert_to<Cons>(exp)->cadr(), new Symbol("val"), new LinkageNext());
+    // TODO: return the whole sequence rather than just evaluating the predicate
+    return p_code;
+
+    //      (let (
+    //            (c-code
+    //              (compile
+    //                (if-consequent exp)
+    //                target
+    //                consequent-linkage))
+    //            (a-code
+    //              (compile 
+    //                (if-alternative exp)
+    //                target
+    //                linkage)))
+    //        (preserving '(env continue)
+    //                    p-code
+    //                    (append-instruction-sequences
+    //                      (make-instruction-sequence '(val) '()
+    //                                                 `((test (op false?) (reg val))
+    //                                                   (branch (label ,f-branch))))
+    //                      (parallel-instruction-sequences
+    //                        (append-instruction-sequences t-branch c-code)
+    //                        (append-instruction-sequences f-branch a-code))
+    //                      after-if))))))
 }

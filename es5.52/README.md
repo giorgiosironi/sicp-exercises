@@ -166,11 +166,13 @@ What should be the first acceptance test?
 -- port compilation result
 +++ implement `p_code`
 +++ use `compile_if` in `compile`
---- implement `c_code`
---- implement `a_code`
---- implement `preserving_call`
++++ implement `c_code`
++++ implement `a_code`
+--- implement `preserving` call
+--- implement `false?` operation
 -- update unit test test
 -- update acceptance test
+-- allow optional else by introducing `if_alternative` rather than `cadddr`
 - (compile-lambda exp target linkage)
 - (compile-sequence (begin-actions exp) target linkage))
 - (compile (cond->if exp) target linkage)

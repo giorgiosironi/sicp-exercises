@@ -404,28 +404,64 @@ InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
         consequent_linkage = linkage;
     }
     InstructionSequence* p_code = compile(convert_to<Cons>(exp)->cadr(), new Symbol("val"), new LinkageNext());
+    InstructionSequence* c_code = compile(convert_to<Cons>(exp)->caddr(), target, consequent_linkage);
+    InstructionSequence* a_code = compile(convert_to<Cons>(exp)->cadddr(), target, linkage);
     // TODO: return the whole sequence rather than just evaluating the predicate
-    return p_code;
-
-    //      (let (
-    //            (c-code
-    //              (compile
-    //                (if-consequent exp)
-    //                target
-    //                consequent-linkage))
-    //            (a-code
-    //              (compile 
-    //                (if-alternative exp)
-    //                target
-    //                linkage)))
-    //        (preserving '(env continue)
-    //                    p-code
-    //                    (append-instruction-sequences
-    //                      (make-instruction-sequence '(val) '()
-    //                                                 `((test (op false?) (reg val))
-    //                                                   (branch (label ,f-branch))))
-    //                      (parallel-instruction-sequences
-    //                        (append-instruction-sequences t-branch c-code)
-    //                        (append-instruction-sequences f-branch a-code))
-    //                      after-if))))))
+    InstructionSequence* test = new InstructionSequence(
+        vector<Symbol*>({ new Symbol("val") }),
+        vector<Symbol*>(),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("test"),
+                Cons::from_vector({
+                    new Symbol("op"),
+                    new Symbol("false?"),
+                }),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("val"),
+                })
+            }),
+            Cons::from_vector({
+                new Symbol("branch"),
+                Cons::from_vector({
+                    new Symbol("label"),
+                    f_branch
+                }),
+            }),
+        })
+    );
+    // TODO: move to InstructionSequence::forLabel(Symbol*)
+    InstructionSequence* t_branch_sequence = new InstructionSequence(
+        {},
+        {},
+        Cons::from_vector({
+            t_branch
+        })
+    );
+    InstructionSequence* f_branch_sequence = new InstructionSequence(
+        {},
+        {},
+        Cons::from_vector({
+            f_branch
+        })
+    );
+    InstructionSequence* after_if_sequence = new InstructionSequence(
+        {},
+        {},
+        Cons::from_vector({
+            after_if
+        })
+    );
+    InstructionSequence* parallel = t_branch_sequence->append(c_code)->parallel(f_branch_sequence->append(a_code));
+    return p_code->preserving(
+        { new Symbol("env"), new Symbol("continue") },
+        test->append(parallel)->append(after_if_sequence)
+        // TODO: danger, we need to append 3 instruction sequences, 2 at a time
+        // 1 ,test
+        // 2   (parallel-instruction-sequences
+        //      (append-instruction-sequences t-branch c-code)
+        //      (append-instruction-sequences f-branch a-code))
+        // 3   after-if))))))
+    );
 }

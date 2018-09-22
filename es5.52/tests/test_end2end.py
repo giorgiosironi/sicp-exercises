@@ -58,8 +58,8 @@ class End2endTest(unittest.TestCase):
     def test_assignment(self):
         self._input(
             "(define answer 42)",
-            "answer"
         )
+        self._assertOutput([])
         self._assertErr([
             'operation: initialize-stack',
             'make_perform: Operation-InitializeStack',
@@ -79,7 +79,6 @@ class End2endTest(unittest.TestCase):
             'Assign (val): ok',
             'End of controller',
         ])
-        self._assertOutput([])
 
     #def test_sum_as_compound_procedure(self):
     #    self._input(

@@ -171,13 +171,13 @@ What should be the first acceptance test?
 +++ implement `preserving` call
 ++ update unit test test
 ++ implement `is-false` operation
--- bug: `end-with-linkage` is not ported in all `compile` cases
+++ bug: `end-with-linkage` is not ported in all `compile` cases
 +++ `compile_self_evaluating`
---- `compile_variable`
++++ `compile_variable`
 +++ `compile_quoted`
---- `compile_definition`
++++ `compile_definition`
 +++ `compile_procedure_call`
---- `compile_if`
++++ `compile_if` (is delegated to the compilation of consequent and alternative)
 -- update acceptance test
 -- allow optional else by introducing `if_alternative` rather than `cadddr`
 - (compile-lambda exp target linkage)

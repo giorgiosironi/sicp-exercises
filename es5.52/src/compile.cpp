@@ -67,7 +67,7 @@ bool is_variable(Value* exp)
 
 InstructionSequence* compile_variable(Value* exp, Symbol* target, Linkage* linkage)
 {
-    return new InstructionSequence(
+    return linkage->use_to_end_with(new InstructionSequence(
         vector<Symbol*>({ new Symbol("env") }),
         vector<Symbol*>({ target }),
         Cons::from_vector({
@@ -88,7 +88,7 @@ InstructionSequence* compile_variable(Value* exp, Symbol* target, Linkage* linka
                 })
             })
         })
-    );
+    ));
 }
 
 bool is_quoted(Value *exp) {
@@ -158,14 +158,10 @@ InstructionSequence* compile_definition(Value* exp, Symbol* target, Linkage* lin
         })
     );
 
-    // TODO: (end-with-linkage linkage
-    //                  (preserving '(env)
-    //                              get-value-code
-    //                              intermediate
-    return value_code->preserving(
+    return linkage->use_to_end_with(value_code->preserving(
         { new Symbol("env") },
         intermediate
-    );
+    ));
 }
 
 bool is_application(Value *exp) {

@@ -94,7 +94,7 @@ class End2endTest(unittest.TestCase):
 
     def test_if_constant_condition(self):
         self._input(
-            "(display (if #t 'equal 'wrong))",
+            "(display (if #t 'first 'second))",
         )
         self._assertOutput([
             "equal",

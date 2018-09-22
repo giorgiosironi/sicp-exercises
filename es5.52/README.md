@@ -178,7 +178,7 @@ What should be the first acceptance test?
 +++ `compile_definition`
 +++ `compile_procedure_call`
 +++ `compile_if` (is delegated to the compilation of consequent and alternative)
--- update acceptance test
+++ update acceptance test
 -- allow optional else by introducing `if_alternative` rather than `cadddr`
 - (compile-lambda exp target linkage)
 - (compile-sequence (begin-actions exp) target linkage))

@@ -99,13 +99,21 @@ class End2endTest(unittest.TestCase):
             "first",
         ])
 
-    #def test_if_compute_condition(self):
-    #    self._input(
-    #        "(display (if (= 42 42) 'equal 'wrong))",
-    #    )
-    #    self._assertOutput([
-    #        "equal",
-    #    ])
+    def test_if_compute_condition_consequent(self):
+        self._input(
+            "(display (if (= 42 42) 'first 'second))",
+        )
+        self._assertOutput([
+            "first",
+        ])
+
+    def test_if_compute_condition_alternative(self):
+        self._input(
+            "(display (if (= 42 43) 'first 'second))",
+        )
+        self._assertOutput([
+            "second",
+        ])
 
     #def test_lambda(self):
     #    self._input(

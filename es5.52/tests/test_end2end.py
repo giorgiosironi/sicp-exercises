@@ -92,13 +92,21 @@ class End2endTest(unittest.TestCase):
     #        "42",
     #    ])
 
-    def test_if(self):
+    def test_if_constant_condition(self):
         self._input(
-            "(if (= 42 42) 'equal 'wrong)",
+            "(display (if #t 'equal 'wrong))",
         )
         self._assertOutput([
             "equal",
         ])
+
+    #def test_if_compute_condition(self):
+    #    self._input(
+    #        "(display (if (= 42 42) 'equal 'wrong))",
+    #    )
+    #    self._assertOutput([
+    #        "equal",
+    #    ])
 
     #def test_lambda(self):
     #    self._input(

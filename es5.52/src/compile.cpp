@@ -41,7 +41,7 @@ bool is_self_evaluating(Value* exp)
 
 InstructionSequence* compile_self_evaluating(Value* exp, Symbol* target, Linkage* linkage)
 {
-    return new InstructionSequence(
+    return linkage->use_to_end_with(new InstructionSequence(
         vector<Symbol*>(),
         vector<Symbol*>({ target }),
         Cons::from_vector({
@@ -54,7 +54,7 @@ InstructionSequence* compile_self_evaluating(Value* exp, Symbol* target, Linkage
                 })
             })
         })
-    );
+    ));
 }
 
 bool is_variable(Value* exp)
@@ -374,24 +374,6 @@ bool is_if(Value *exp) {
 
 InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
 {
-    //List* application = convert_to<List>(exp);
-    //Value* operator_ = application->car();
-    //InstructionSequence* procedureCode = compile(operator_, new Symbol("proc"), new LinkageNext());
-    //vector<Value*> operands = convert_to<List>(application->cdr())->to_vector();
-    //vector<InstructionSequence*> operandCodes = vector<InstructionSequence*>();
-    //for (vector<Value*>::iterator it = operands.begin(); it != operands.end(); ++it) {
-    //    operandCodes.push_back(compile(*it, new Symbol("val"), new LinkageNext()));
-    //}
-
-    //return procedureCode->preserving(
-    //    { new Symbol("env"), new Symbol("continue") },
-    //    construct_arg_list(operandCodes)
-    //        ->preserving(
-    //            { new Symbol("proc"), new Symbol("continue") },
-    //            compile_procedure_call(target, linkage)
-    //        )
-    //);
-    //
     Symbol* t_branch = make_label.next("true-branch");
     Symbol* f_branch = make_label.next("false-branch");
     Symbol* after_if = make_label.next("after-if");
@@ -399,6 +381,7 @@ InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
     // TODO: extract to Linkage.consequent(after_if)
     // and rename consequent to something meaningful
     if (LinkageNext *next = dynamic_cast<LinkageNext *>(linkage)) {
+        // we are here
         consequent_linkage = new LinkageLabel(after_if);
     } else {
         consequent_linkage = linkage;
@@ -406,7 +389,6 @@ InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
     InstructionSequence* p_code = compile(convert_to<Cons>(exp)->cadr(), new Symbol("val"), new LinkageNext());
     InstructionSequence* c_code = compile(convert_to<Cons>(exp)->caddr(), target, consequent_linkage);
     InstructionSequence* a_code = compile(convert_to<Cons>(exp)->cadddr(), target, linkage);
-    // TODO: return the whole sequence rather than just evaluating the predicate
     InstructionSequence* test = new InstructionSequence(
         vector<Symbol*>({ new Symbol("val") }),
         vector<Symbol*>(),
@@ -415,7 +397,7 @@ InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
                 new Symbol("test"),
                 Cons::from_vector({
                     new Symbol("op"),
-                    new Symbol("false?"),
+                    new Symbol("is-false"),
                 }),
                 Cons::from_vector({
                     new Symbol("reg"),
@@ -432,6 +414,8 @@ InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
         })
     );
     // TODO: move to InstructionSequence::forLabel(Symbol*)
+    // it appears t_branch_sequence doesn't jump to after_if_sequence after
+    // executing
     InstructionSequence* t_branch_sequence = new InstructionSequence(
         {},
         {},
@@ -456,12 +440,7 @@ InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
     InstructionSequence* parallel = t_branch_sequence->append(c_code)->parallel(f_branch_sequence->append(a_code));
     return p_code->preserving(
         { new Symbol("env"), new Symbol("continue") },
-        test->append(parallel)->append(after_if_sequence)
         // TODO: danger, we need to append 3 instruction sequences, 2 at a time
-        // 1 ,test
-        // 2   (parallel-instruction-sequences
-        //      (append-instruction-sequences t-branch c-code)
-        //      (append-instruction-sequences f-branch a-code))
-        // 3   after-if))))))
+        test->append(parallel)->append(after_if_sequence)
     );
 }

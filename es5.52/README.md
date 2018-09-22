@@ -169,8 +169,15 @@ What should be the first acceptance test?
 +++ implement `c_code`
 +++ implement `a_code`
 +++ implement `preserving` call
--- update unit test test
--- implement `false?` operation
+++ update unit test test
+++ implement `is-false` operation
+-- bug: `end-with-linkage` is not ported in all `compile` cases
+--- `compile_self_evaluating`
+--- `compile_variable`
+--- `compile_quoted`
+--- `compile_definition`
++++ `compile_procedure_call`
+--- `compile_if`
 -- update acceptance test
 -- allow optional else by introducing `if_alternative` rather than `cadddr`
 - (compile-lambda exp target linkage)

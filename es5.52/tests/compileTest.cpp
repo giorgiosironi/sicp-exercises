@@ -553,7 +553,7 @@ TEST_F(compileTest, compile_procedure_call_target_val_linkage_next) {
 TEST_F(compileTest, If) { 
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>(),
+            vector<Symbol*>({ new Symbol("val") }),
             vector<Symbol*>({ new Symbol("val") }),
             Cons::from_vector({
                 Cons::from_vector({
@@ -561,9 +561,53 @@ TEST_F(compileTest, If) {
                     new Symbol("val"),
                     Cons::from_vector({
                         new Symbol("const"),
+                        new Bool(true),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("test"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("is-false"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("branch"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("false-branch8"),
+                    }),
+                }),
+                new Symbol("true-branch7"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
                         new Integer(42),
-                    })
-                })
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("after-if9"),
+                    }),
+                }),
+                new Symbol("false-branch8"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(43),
+                    }),
+                }),
+                new Symbol("after-if9"),
             })
         ),
         *compile(

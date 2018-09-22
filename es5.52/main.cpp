@@ -23,6 +23,7 @@ using namespace std;
 #include "src/text_of_quotation.h"
 #include "src/cons_method_operation.h"
 #include "src/is_not_equal_to.h"
+#include "src/is_equal_to.h"
 #include "src/make_procedure.h"
 #include "src/is_last_exp.h"
 #include "src/is_instance_of.h"
@@ -1570,6 +1571,10 @@ std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
         Symbol("is-true"),
         // whatever is not #f is true in an (if ... ... ...)
         new IsNotEqualTo(new Bool(false))
+    ));
+    operations.insert(std::make_pair(
+        Symbol("is-false"),
+        new IsEqualTo(new Bool(false))
     ));
     operations.insert(std::make_pair(
         Symbol("if-consequent"),

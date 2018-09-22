@@ -172,9 +172,9 @@ What should be the first acceptance test?
 ++ update unit test test
 ++ implement `is-false` operation
 -- bug: `end-with-linkage` is not ported in all `compile` cases
---- `compile_self_evaluating`
++++ `compile_self_evaluating`
 --- `compile_variable`
---- `compile_quoted`
++++ `compile_quoted`
 --- `compile_definition`
 +++ `compile_procedure_call`
 --- `compile_if`

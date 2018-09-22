@@ -97,7 +97,7 @@ bool is_quoted(Value *exp) {
 
 InstructionSequence* compile_quoted(Value* exp, Symbol* target, Linkage* linkage)
 {
-    return new InstructionSequence(
+    return linkage->use_to_end_with(new InstructionSequence(
         vector<Symbol*>({ }),
         vector<Symbol*>({ target }),
         Cons::from_vector({
@@ -110,7 +110,7 @@ InstructionSequence* compile_quoted(Value* exp, Symbol* target, Linkage* linkage
                 }),
             })
         })
-    );
+    ));
 }
 
 bool is_definition(Value *exp) {

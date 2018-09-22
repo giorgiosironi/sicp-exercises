@@ -10,7 +10,6 @@ class End2endTest(unittest.TestCase):
         self._input('42')
         self._assertOutput([])
         self._assertErr([
-            '(perform (op initialize-stack))',
             'operation: initialize-stack',
             'make_perform: Operation-InitializeStack',
             '(assign env (op get-global-environment))',
@@ -18,7 +17,8 @@ class End2endTest(unittest.TestCase):
             '(assign val (const 42))',
             'Perform: Operation-InitializeStack []',
             'Assign (env): Operation-GetGlobalEnvironment == Environment',
-            'Assign (val): 42', 'End of controller'
+            'Assign (val): 42',
+            'End of controller'
         ])
 
     def test_string(self):
@@ -61,7 +61,6 @@ class End2endTest(unittest.TestCase):
             "answer"
         )
         self._assertErr([
-            '(perform (op initialize-stack))',
             'operation: initialize-stack',
             'make_perform: Operation-InitializeStack',
             '(assign env (op get-global-environment))',
@@ -97,7 +96,7 @@ class End2endTest(unittest.TestCase):
             "(display (if #t 'first 'second))",
         )
         self._assertOutput([
-            "equal",
+            "first",
         ])
 
     #def test_if_compute_condition(self):

@@ -15,21 +15,21 @@ class End2endTest(unittest.TestCase):
             '[a] (assign env (op get-global-environment))',
             '[a] make_assign: get-global-environment',
             '[a] (assign val (const 42))',
-            'Perform: Operation-InitializeStack []',
-            'Assign (env): Operation-GetGlobalEnvironment == Environment',
-            'Assign (val): 42',
+            '[e] Perform: Operation-InitializeStack []',
+            '[e] Assign (env): Operation-GetGlobalEnvironment == Environment',
+            '[e] Assign (val): 42',
             'End of controller'
         ])
 
     def test_string(self):
         self._input('"ab"')
         self._assertOutput([])
-        self._assertInErr('Assign (val): "ab"')
+        self._assertInErr('[e] Assign (val): "ab"')
 
     def test_float(self):
         self._input('1.2')
         self._assertOutput([])
-        self._assertInErr('Assign (val): 1.200000')
+        self._assertInErr('[e] Assign (val): 1.200000')
 
     #def test_boolean(self):
     #    self._input('#f')
@@ -39,13 +39,13 @@ class End2endTest(unittest.TestCase):
     def test_symbol(self):
         self._input('\'foo')
         self._assertOutput([])
-        self._assertInErr('Assign (val): foo')
+        self._assertInErr('[e] Assign (val): foo')
 
     def test_list(self):
         self._input('(list 42 43)')
         self._assertOutput([])
-        self._assertInErr('Assign (proc): Operation-LookupVariableValue == (primitive PrimitiveProcedure:list)')
-        self._assertInErr('Assign (val): Operation-ApplyPrimitiveProcedure == (42 43)')
+        self._assertInErr('[e] Assign (proc): Operation-LookupVariableValue == (primitive PrimitiveProcedure:list)')
+        self._assertInErr('[e] Assign (val): Operation-ApplyPrimitiveProcedure == (42 43)')
 
     #def test_quoted_list(self):
     #    self._input('\'(42 43)')
@@ -72,11 +72,11 @@ class End2endTest(unittest.TestCase):
             '[a] operands: ((const answer) (reg val) (reg env))',
             '[a] vector: 3',
             '[a] (assign val (const ok))',
-            'Perform: Operation-InitializeStack []',
-            'Assign (env): Operation-GetGlobalEnvironment == Environment',
-            'Assign (val): 42',
-            'Perform: Operation-DefineVariable [answer, 42, Environment, ]',
-            'Assign (val): ok',
+            '[e] Perform: Operation-InitializeStack []',
+            '[e] Assign (env): Operation-GetGlobalEnvironment == Environment',
+            '[e] Assign (val): 42',
+            '[e] Perform: Operation-DefineVariable [answer, 42, Environment, ]',
+            '[e] Assign (val): ok',
             'End of controller',
         ])
 

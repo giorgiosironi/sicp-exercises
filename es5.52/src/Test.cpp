@@ -15,10 +15,10 @@ void Test::execute()
 {
     if (this->operation != NULL) {
         Value* result = this->operation->execute(this->fetch_operands(this->operands));
-        cerr << "Test: " << result->to_string() << endl;
+        cerr << "[e] " << "Test: " << result->to_string() << endl;
         this->targetRegister->set(result);
     } else {
-        cerr << "Operation is null for Test " << endl;
+        cerr << "[e] " << "Operation is null for Test " << endl;
         exit(1);
     }
     this->machine_feedback->next_instruction();

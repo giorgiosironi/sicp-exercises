@@ -14,6 +14,15 @@ Do we also have to link it up into the existing explicit-control evaluator in so
 
 Actually in the end, we should compile the meta-circular evaluator, so we won't need to use the explicit-control evaluator; only the underlying virtual machine.
 
+## Output
+
+Standard output is populated with `(display ...) calls.
+
+Standard error contains diagnostic information:
+
+- `[a]`: an instruction is assembled into the virtual machine after its compilation
+- `[e]`: an instruction is executed
+
 ## Testing
 
 What should be the first acceptance test?
@@ -205,3 +214,4 @@ What should be the first acceptance test?
 - `cmake`
 - `libboost-regex-dev`
 - `libgtest-dev` and [googletest](https://www.eriksmistad.no/getting-started-with-google-test-on-ubuntu/)
+

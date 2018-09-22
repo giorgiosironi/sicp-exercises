@@ -10,6 +10,6 @@ LabelNoop::LabelNoop(std::string name, MachineFeedback* machine)
 
 void LabelNoop::execute()
 {
-    cerr << "Label: " << this->name << endl;
+    cerr << "[e] " << "Label: " << this->name << endl;
     this->machine_feedback->next_instruction();
 }

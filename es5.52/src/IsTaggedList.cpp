@@ -11,7 +11,7 @@ IsTaggedList::IsTaggedList(Symbol* tag)
 
 Value* IsTaggedList::execute(std::vector<Value*> elements)
 {
-    cerr << elements.at(0)->to_string() << endl;
+    cerr << "[e] " << elements.at(0)->to_string() << endl;
     if (is_tagged_list(elements.at(0), this->tag)) {
         return new Bool(true);
     }

@@ -20,11 +20,11 @@ Goto::Goto(MachineFeedback* machine, Register* index)
 void Goto::execute()
 {
     if (this->index != NULL) {
-        cerr << "Goto(reg " << this->index->name() << ")" << endl;
+        cerr << "[e] " << "Goto(reg " << this->index->name() << ")" << endl;
         Integer* registerIndex = dynamic_cast<Integer *>(this->index->get());
         this->machine_feedback->force_instruction(registerIndex->as_int());
     } else {
-        cerr << "Goto(" << this->labelIndex << ")" << endl;
+        cerr << "[e] " << "Goto(" << this->labelIndex << ")" << endl;
         this->machine_feedback->force_instruction(this->labelIndex);
     }
 }

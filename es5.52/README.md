@@ -168,9 +168,9 @@ What should be the first acceptance test?
 +++ use `compile_if` in `compile`
 +++ implement `c_code`
 +++ implement `a_code`
---- implement `preserving` call
---- implement `false?` operation
++++ implement `preserving` call
 -- update unit test test
+-- implement `false?` operation
 -- update acceptance test
 -- allow optional else by introducing `if_alternative` rather than `cadddr`
 - (compile-lambda exp target linkage)

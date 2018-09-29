@@ -29,7 +29,8 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
         return compile_if(exp, target, linkage);
     }
     if (is_begin(exp)) {
-        return compile_begin(exp, target, linkage);
+        Value* beginActions = convert_to<Cons>(exp)->cdr();
+        return compile_sequence(beginActions, target, linkage);
     }
     if (is_application(exp)) {
         return compile_application(exp, target, linkage);
@@ -448,7 +449,7 @@ bool is_begin(Value *exp) {
     return is_tagged_list(exp, new Symbol("begin"));
 }
 
-InstructionSequence* compile_begin(Value* exp, Symbol* target, Linkage* linkage)
+InstructionSequence* compile_sequence(Value* seq, Symbol* target, Linkage* linkage)
 {
     return new InstructionSequence(
         vector<Symbol*>({ new Symbol("val") }),

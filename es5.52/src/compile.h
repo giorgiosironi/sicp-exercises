@@ -20,6 +20,9 @@ InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* li
 bool is_if(Value *exp);
 InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage);
 
+bool is_begin(Value *exp);
+InstructionSequence* compile_begin(Value* exp, Symbol* target, Linkage* linkage);
+
 InstructionSequence* construct_arg_list(vector<InstructionSequence*> operandCodes);
 InstructionSequence* code_to_get_rest_args(vector<InstructionSequence*> operandCodes);
 InstructionSequence* compile_procedure_call(Symbol* target, Linkage* linkage);

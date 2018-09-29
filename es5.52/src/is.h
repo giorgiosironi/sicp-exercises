@@ -11,6 +11,5 @@ bool is_string(Value *exp);
 bool is_eq(Value *former, Value *latter);
 bool is_tagged_list(Value *exp);
 bool is_tagged_list(Value *exp, Symbol* tag);
-bool is_begin(Value* exp);
 
 #endif

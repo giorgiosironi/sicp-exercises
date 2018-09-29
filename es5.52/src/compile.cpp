@@ -28,6 +28,9 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
     if (is_if(exp)) {
         return compile_if(exp, target, linkage);
     }
+    if (is_begin(exp)) {
+        return compile_begin(exp, target, linkage);
+    }
     if (is_application(exp)) {
         return compile_application(exp, target, linkage);
     }
@@ -438,5 +441,26 @@ InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
         { new Symbol("env"), new Symbol("continue") },
         // TODO: danger, we need to append 3 instruction sequences, 2 at a time
         test->append(parallel)->append(after_if_sequence)
+    );
+}
+
+bool is_begin(Value *exp) {
+    return is_tagged_list(exp, new Symbol("begin"));
+}
+
+InstructionSequence* compile_begin(Value* exp, Symbol* target, Linkage* linkage)
+{
+    return new InstructionSequence(
+        vector<Symbol*>({ new Symbol("val") }),
+        vector<Symbol*>(),
+        Cons::from_vector({
+            Cons::from_vector({
+               // new Symbol("branch"),
+               // Cons::from_vector({
+               //     new Symbol("label"),
+               //     f_branch
+               // }),
+            }),
+        })
     );
 }

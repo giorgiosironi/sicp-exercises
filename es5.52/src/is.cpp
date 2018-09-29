@@ -71,8 +71,3 @@ bool is_tagged_list(Value *exp, Symbol* tag)
     }
     return false;
 }
-
-bool is_begin(Value* exp)
-{
-    return is_tagged_list(exp, new Symbol("begin"));
-}

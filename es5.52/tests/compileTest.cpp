@@ -629,6 +629,8 @@ TEST_F(compileTest, Lambda) {
             vector<Symbol*>({ new Symbol("continue"), new Symbol("env") }),
             vector<Symbol*>({ new Symbol("val") }),
             Cons::from_vector({
+                // TODO: label counters have to be reset before *each* compileTest.* to allow this to stable be entry1 rather than entry1/entry10
+                //new Symbol("entry1"),
                 Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("val"),

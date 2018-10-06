@@ -474,6 +474,46 @@ InstructionSequence* compile_lambda(Value* exp, Symbol* target, Linkage* linkage
 InstructionSequence* compile_lambda_body(Value* exp, Symbol* proc_entry)
 {
     Value* formals = convert_to<List>(exp)->cadr();
+    InstructionSequence* environment_extension = new InstructionSequence(
+        { new Symbol("env"), new Symbol("proc"), new Symbol("argl"), },
+        { new Symbol("env") },
+        Cons::from_vector({
+            proc_entry,
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("env"),
+                Cons::from_vector({
+                    new Symbol("op"),
+                    new Symbol("compiled-procedure-env"),
+                }),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("proc"),
+                }),
+            }),
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("env"),
+                Cons::from_vector({
+                    new Symbol("op"),
+                    new Symbol("extend-environment"),
+                }),
+                Cons::from_vector({
+                    new Symbol("const"),
+                    // TODO: substitute
+                    new Symbol("formals"),
+                }),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("..."),
+                }),
+                Cons::from_vector({
+                    new Symbol("const"),
+                    new Symbol("formals"),
+                }),
+            }),
+        })
+    );
     //  (append-instruction-sequences
     //    (make-instruction-sequence '(env proc argl) '(env)
     //                               `(,proc-entry
@@ -485,7 +525,9 @@ InstructionSequence* compile_lambda_body(Value* exp, Symbol* proc_entry)
     //                                          (reg env))))
     //    (compile-sequence (lambda-body exp) 'val 'return))))
     List* lambda_body = convert_to<List>(convert_to<List>(exp)->cddr());
-    return compile_sequence(lambda_body, new Symbol("val"), new LinkageReturn());
+    return /*environment_extension->append(*/
+        compile_sequence(lambda_body, new Symbol("val"), new LinkageReturn())
+    /*)*/;
 }
 
 bool is_begin(Value *exp) {

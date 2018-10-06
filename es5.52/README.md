@@ -193,8 +193,8 @@ What should be the first acceptance test?
 ++ failing unit test
 ++ `lambda?` is tagged list test on `lambda` tag
 -- `compile-lambda-body`
---- `lambda-parameters` is `cadr`
---- `lambda-body` is `cddr`
++++ `lambda-parameters` is `cadr`
++++ `lambda-body` is `cddr`
 -- `tack-on-instruction-sequence`
 -- put together `compile-lambda`
 -- update unit test

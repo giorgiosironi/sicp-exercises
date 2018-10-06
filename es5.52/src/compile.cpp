@@ -473,7 +473,19 @@ InstructionSequence* compile_lambda(Value* exp, Symbol* target, Linkage* linkage
 
 InstructionSequence* compile_lambda_body(Value* exp, Symbol* proc_entry)
 {
-    return new InstructionSequence({}, {}, Cons::from_vector({}));
+    Value* formals = convert_to<List>(exp)->cadr();
+    //  (append-instruction-sequences
+    //    (make-instruction-sequence '(env proc argl) '(env)
+    //                               `(,proc-entry
+    //                                  (assign env (op compiled-procedure-env) (reg proc))
+    //                                  (assign env
+    //                                          (op extend-environment)
+    //                                          (const ,formals)
+    //                                          (reg argl)
+    //                                          (reg env))))
+    //    (compile-sequence (lambda-body exp) 'val 'return))))
+    List* lambda_body = convert_to<List>(convert_to<List>(exp)->cddr());
+    return compile_sequence(lambda_body, new Symbol("val"), new LinkageReturn());
 }
 
 bool is_begin(Value *exp) {

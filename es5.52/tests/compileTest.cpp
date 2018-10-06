@@ -626,12 +626,31 @@ TEST_F(compileTest, If) {
 TEST_F(compileTest, Lambda) { 
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>({ }),
+            vector<Symbol*>({ new Symbol("continue"), new Symbol("env") }),
             vector<Symbol*>({ new Symbol("val") }),
             Cons::from_vector({
                 Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("lookup-variable-value"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Symbol("x"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("continue"),
+                    })
                 }),
             })
         ),
@@ -642,9 +661,7 @@ TEST_F(compileTest, Lambda) {
                     new Symbol("x"),
                     new Symbol("y"),
                 }),
-                Cons::from_vector({
-                    new Symbol("x"),
-                })
+                new Symbol("x"),
             }),
             new Symbol("val"),
             new LinkageNext()

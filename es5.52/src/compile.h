@@ -20,6 +20,9 @@ InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* li
 bool is_if(Value *exp);
 InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage);
 
+bool is_lambda(Value *exp);
+InstructionSequence* compile_lambda(Value* exp, Symbol* target, Linkage* linkage);
+
 bool is_begin(Value *exp);
 InstructionSequence* compile_sequence(List* seq, Symbol* target, Linkage* linkage);
 

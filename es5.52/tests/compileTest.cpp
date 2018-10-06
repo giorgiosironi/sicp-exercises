@@ -623,6 +623,36 @@ TEST_F(compileTest, If) {
     );
 }
 
+TEST_F(compileTest, Lambda) { 
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ }),
+            vector<Symbol*>({ new Symbol("val") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                }),
+            })
+        ),
+        *compile(
+            Cons::from_vector({
+                new Symbol("lambda"),
+                Cons::from_vector({
+                    new Symbol("x"),
+                    new Symbol("y"),
+                }),
+                Cons::from_vector({
+                    new Symbol("x"),
+                })
+            }),
+            new Symbol("val"),
+            new LinkageNext()
+        )
+    );
+}
+
+
 TEST_F(compileTest, Begin) { 
     ASSERT_EQ(
         InstructionSequence(

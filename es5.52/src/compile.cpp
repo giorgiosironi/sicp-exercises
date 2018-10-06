@@ -28,6 +28,9 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
     if (is_if(exp)) {
         return compile_if(exp, target, linkage);
     }
+    if (is_lambda(exp)) {
+        return compile_lambda(exp, target, linkage);
+    }
     if (is_begin(exp)) {
         List* beginActions = convert_to<Cons>(convert_to<Cons>(exp)->cdr());
         return compile_sequence(beginActions, target, linkage);
@@ -443,6 +446,15 @@ InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
         // TODO: danger, we need to append 3 instruction sequences, 2 at a time
         test->append(parallel)->append(after_if_sequence)
     );
+}
+
+bool is_lambda(Value *exp) {
+    return is_tagged_list(exp, new Symbol("lambda"));
+}
+
+InstructionSequence* compile_lambda(Value* exp, Symbol* target, Linkage* linkage)
+{
+    return new InstructionSequence({}, {}, Cons::from_vector({}));
 }
 
 bool is_begin(Value *exp) {

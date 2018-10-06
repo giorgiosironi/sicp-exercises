@@ -189,7 +189,15 @@ What should be the first acceptance test?
 +++ `compile_if` (is delegated to the compilation of consequent and alternative)
 ++ update acceptance test
 -- allow optional else by introducing `if_alternative` rather than `cadddr`
-- (compile-lambda exp target linkage)
+- `(compile-lambda exp target linkage)`
+-- failing unit test
+-- `lambda?` is tagged list test on `lambda` tag
+-- `compile-lambda-body`
+--- `lambda-parameters` is `cadr`
+--- `lambda-body` is `cddr`
+-- `tack-on-instruction-sequence`
+-- put together `compile-lambda`
+-- acceptance test
 - (compile-sequence (begin-actions exp) target linkage))
 -- write acceptance test
 ++ `begin?` is just `is_tagged_list` `begin`
@@ -219,6 +227,7 @@ What should be the first acceptance test?
 
 - `es5.51/` provides the virtual machine (this will be forked)
 - `chapter5.5.scm` (and dependencies) has the compiler
+- `chapter5.scm` has lots of primitives
 
 ## Dependencies
 

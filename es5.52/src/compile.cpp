@@ -454,6 +454,25 @@ bool is_lambda(Value *exp) {
 
 InstructionSequence* compile_lambda(Value* exp, Symbol* target, Linkage* linkage)
 {
+    Symbol* proc_entry = make_label.next("entry");
+    Symbol* after_lambda = make_label.next("after-lambda");
+    //  (let ((lambda-linkage
+    //          (if (eq? linkage 'next) after-lambda linkage)))
+    //    (append-instruction-sequences
+    //      (tack-on-instruction-sequence
+    //        (end-with-linkage lambda-linkage
+    //                          (make-instruction-sequence '(env) (list target)
+    //                                                     `((assign ,target
+    //                                                               (op make-compiled-procedure)
+    //                                                               (label ,proc-entry)
+    //                                                               (reg env)))))
+    //        (compile-lambda-body exp proc-entry))
+    //      after-lambda))))
+    return compile_lambda_body(exp, proc_entry);
+}
+
+InstructionSequence* compile_lambda_body(Value* exp, Symbol* proc_entry)
+{
     return new InstructionSequence({}, {}, Cons::from_vector({}));
 }
 

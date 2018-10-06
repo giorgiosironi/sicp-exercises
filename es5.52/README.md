@@ -194,13 +194,13 @@ What should be the first acceptance test?
 -- write acceptance test
 ++ `begin?` is just `is_tagged_list` `begin`
 ++ `begin-actions` is just `cdr`
--- actual `compile-sequence`
---- `first-exp` is just `car`
---- `rest-exp` is just `cdr`
---- `last-exp` is a null check on `cdr`
---- write unit test
---- recursive implementation with `preserving`
---- update unit test
+++ actual `compile-sequence`
++++ `first-exp` is just `car`
++++ `rest-exp` is just `cdr`
++++ `last-exp` is a null check on `cdr`
++++ write unit test
++++ recursive implementation with `preserving`
++++ update unit test
 --- update acceptance test
 - (compile (cond->if exp) target linkage)
 - `compile_and_go` should be extended to include `eceval` alongside the compiled expressions, see chapter5.5.scm

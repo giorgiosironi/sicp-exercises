@@ -626,7 +626,7 @@ TEST_F(compileTest, If) {
 TEST_F(compileTest, Begin) { 
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>({ new Symbol("val") }),
+            vector<Symbol*>({ }),
             vector<Symbol*>({ new Symbol("val") }),
             Cons::from_vector({
                 Cons::from_vector({
@@ -634,7 +634,15 @@ TEST_F(compileTest, Begin) {
                     new Symbol("val"),
                     Cons::from_vector({
                         new Symbol("const"),
-                        new Bool(true),
+                        new Integer(42),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(43),
                     }),
                 }),
             })
@@ -645,7 +653,7 @@ TEST_F(compileTest, Begin) {
                 new Integer(42),
                 new Integer(43),
             }),
-            new Symbol("val"), 
+            new Symbol("val"),
             new LinkageNext()
         )
     );

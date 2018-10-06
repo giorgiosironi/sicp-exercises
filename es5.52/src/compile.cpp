@@ -451,17 +451,17 @@ bool is_begin(Value *exp) {
 
 InstructionSequence* compile_sequence(List* seq, Symbol* target, Linkage* linkage)
 {
-    return new InstructionSequence(
-        vector<Symbol*>({ new Symbol("val") }),
-        vector<Symbol*>(),
-        Cons::from_vector({
-            Cons::from_vector({
-               // new Symbol("branch"),
-               // Cons::from_vector({
-               //     new Symbol("label"),
-               //     f_branch
-               // }),
-            }),
-        })
-    );
+    if (*NIL == *seq->cdr()) {
+        return compile(seq->car(), target, linkage);
+    } else {
+        // (preserving '(env continue)
+        //             (compile (first-exp seq) target 'next)
+        //             (compile-sequence (rest-exps seq) target linkage))))
+        InstructionSequence* firstStepOfSequence = compile(seq->car(), target, new LinkageNext());
+        InstructionSequence* restOfSequence = compile_sequence(convert_to<List>(seq->cdr()), target, linkage);
+        return firstStepOfSequence->preserving(
+            { new Symbol("env"), new Symbol("continue") },
+            restOfSequence
+        );
+    }
 }

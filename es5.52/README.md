@@ -201,7 +201,7 @@ What should be the first acceptance test?
 +++ write unit test
 +++ recursive implementation with `preserving`
 +++ update unit test
---- update acceptance test
++++ update acceptance test
 - (compile (cond->if exp) target linkage)
 - `compile_and_go` should be extended to include `eceval` alongside the compiled expressions, see chapter5.5.scm
 - think about where to deallocate memory, `delete` not just `new`

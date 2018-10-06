@@ -114,6 +114,14 @@ class End2endTest(unittest.TestCase):
             "second",
         ])
 
+    def test_begin(self):
+        self._input(
+            "(display (begin 'first 'second))",
+        )
+        self._assertOutput([
+            "second",
+        ])
+
     #def test_lambda(self):
     #    self._input(
     #        "((lambda (n) (* 2 n)) 5)",
@@ -152,7 +160,7 @@ class End2endTest(unittest.TestCase):
         self.assertEqual(
             actual_output,
             output,
-            "STDOUT: %s\nSTDERR: %s" % (self._stdout_data, self._stderr_data)
+            "\nSTDOUT: %s\nSTDERR: %s" % (self._stdout_data, self._stderr_data)
         )
 
     def _assertErr(self, err):

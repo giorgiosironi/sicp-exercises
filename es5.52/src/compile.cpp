@@ -500,8 +500,7 @@ InstructionSequence* compile_lambda_body(Value* exp, Symbol* proc_entry)
                 }),
                 Cons::from_vector({
                     new Symbol("const"),
-                    // TODO: substitute
-                    new Symbol("formals"),
+                    formals,
                 }),
                 Cons::from_vector({
                     new Symbol("reg"),
@@ -514,16 +513,6 @@ InstructionSequence* compile_lambda_body(Value* exp, Symbol* proc_entry)
             }),
         })
     );
-    //  (append-instruction-sequences
-    //    (make-instruction-sequence '(env proc argl) '(env)
-    //                               `(,proc-entry
-    //                                  (assign env (op compiled-procedure-env) (reg proc))
-    //                                  (assign env
-    //                                          (op extend-environment)
-    //                                          (const ,formals)
-    //                                          (reg argl)
-    //                                          (reg env))))
-    //    (compile-sequence (lambda-body exp) 'val 'return))))
     List* lambda_body = convert_to<List>(convert_to<List>(exp)->cddr());
     return environment_extension->append(
         compile_sequence(lambda_body, new Symbol("val"), new LinkageReturn())

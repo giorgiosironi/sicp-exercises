@@ -651,8 +651,7 @@ TEST_F(compileTest, Lambda) {
                     }),
                     Cons::from_vector({
                         new Symbol("const"),
-                        // TODO: substitute
-                        new Symbol("formals"),
+                        Cons::from_vector({ new Symbol("x"), new Symbol("y"), }),
                     }),
                     Cons::from_vector({
                         new Symbol("reg"),

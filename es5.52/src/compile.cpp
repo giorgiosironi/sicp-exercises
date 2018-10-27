@@ -505,11 +505,11 @@ InstructionSequence* compile_lambda_body(Value* exp, Symbol* proc_entry)
                 }),
                 Cons::from_vector({
                     new Symbol("reg"),
-                    new Symbol("..."),
+                    new Symbol("argl"),
                 }),
                 Cons::from_vector({
-                    new Symbol("const"),
-                    new Symbol("formals"),
+                    new Symbol("reg"),
+                    new Symbol("env"),
                 }),
             }),
         })
@@ -525,9 +525,9 @@ InstructionSequence* compile_lambda_body(Value* exp, Symbol* proc_entry)
     //                                          (reg env))))
     //    (compile-sequence (lambda-body exp) 'val 'return))))
     List* lambda_body = convert_to<List>(convert_to<List>(exp)->cddr());
-    return /*environment_extension->append(*/
+    return environment_extension->append(
         compile_sequence(lambda_body, new Symbol("val"), new LinkageReturn())
-    /*)*/;
+    );
 }
 
 bool is_begin(Value *exp) {

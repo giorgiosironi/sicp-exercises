@@ -626,11 +626,43 @@ TEST_F(compileTest, If) {
 TEST_F(compileTest, Lambda) { 
     ASSERT_EQ(
         InstructionSequence(
-            vector<Symbol*>({ new Symbol("continue"), new Symbol("env") }),
-            vector<Symbol*>({ new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("argl"), new Symbol("continue"), new Symbol("env"), new Symbol("proc"), }),
+            vector<Symbol*>({ new Symbol("env"), new Symbol("val") }),
             Cons::from_vector({
-                // TODO: label counters have to be reset before *each* compileTest.* to allow this to stable be entry1 rather than entry1/entry10
-                //new Symbol("entry1"),
+                new Symbol("entry1"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("env"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("compiled-procedure-env"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("proc"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("env"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("extend-environment"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        // TODO: substitute
+                        new Symbol("formals"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("argl"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    }),
+                }),
                 Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("val"),

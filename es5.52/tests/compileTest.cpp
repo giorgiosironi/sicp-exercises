@@ -10,9 +10,9 @@
 class compileTest : public testing::Test {
   //virtual void SetUp() {}
 
-  virtual void TearDown() {
-	reset_labels();
-  }
+    virtual void TearDown() {
+	    reset_labels();
+    }
 };
 
 TEST_F(compileTest, SelfEvaluatingInteger) { 
@@ -495,16 +495,16 @@ TEST_F(compileTest, compile_procedure_call_target_val_linkage_next) {
                     new Symbol("branch"),
                     Cons::from_vector({
                         new Symbol("label"),
-                        new Symbol("primitive-branch4"),
+                        new Symbol("primitive-branch1"),
                     }),
                 }),
-                new Symbol("compiled-branch5"),
+                new Symbol("compiled-branch2"),
                 Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("continue"),
                     Cons::from_vector({
                         new Symbol("label"),
-                        new Symbol("after-call6"),
+                        new Symbol("after-call3"),
                     }),
                 }),
                 Cons::from_vector({
@@ -526,7 +526,7 @@ TEST_F(compileTest, compile_procedure_call_target_val_linkage_next) {
                         new Symbol("val"),
                     }),
                 }),
-                new Symbol("primitive-branch4"),
+                new Symbol("primitive-branch1"),
                 Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("val"),
@@ -543,7 +543,7 @@ TEST_F(compileTest, compile_procedure_call_target_val_linkage_next) {
                         new Symbol("argl"),
                     }),
                 }),
-                new Symbol("after-call6"),
+                new Symbol("after-call3"),
             })
         ),
         *compile_procedure_call(target, linkage)
@@ -579,10 +579,10 @@ TEST_F(compileTest, If) {
                     new Symbol("branch"),
                     Cons::from_vector({
                         new Symbol("label"),
-                        new Symbol("false-branch8"),
+                        new Symbol("false-branch2"),
                     }),
                 }),
-                new Symbol("true-branch7"),
+                new Symbol("true-branch1"),
                 Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("val"),
@@ -595,10 +595,10 @@ TEST_F(compileTest, If) {
                     new Symbol("goto"),
                     Cons::from_vector({
                         new Symbol("label"),
-                        new Symbol("after-if9"),
+                        new Symbol("after-if3"),
                     }),
                 }),
-                new Symbol("false-branch8"),
+                new Symbol("false-branch2"),
                 Cons::from_vector({
                     new Symbol("assign"),
                     new Symbol("val"),
@@ -607,7 +607,7 @@ TEST_F(compileTest, If) {
                         new Integer(43),
                     }),
                 }),
-                new Symbol("after-if9"),
+                new Symbol("after-if3"),
             })
         ),
         *compile(

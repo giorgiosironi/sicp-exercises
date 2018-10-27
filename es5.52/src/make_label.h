@@ -10,9 +10,10 @@ class MakeLabel {
     public:
         Symbol* next(string prefix);
         void reset();
+        int current();
 };
 
-static MakeLabel make_label;
+extern MakeLabel make_label;
 void reset_labels();
 
 

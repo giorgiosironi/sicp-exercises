@@ -9,7 +9,12 @@ void MakeLabel::reset() {
     counter = 0;
 }
 
+int MakeLabel::current() {
+    return counter;
+}
+
 void reset_labels() {
 	make_label.reset();
 }
 
+MakeLabel make_label;

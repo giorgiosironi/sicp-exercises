@@ -427,3 +427,55 @@ TEST(InstructionSequenceTest, ParallelSequences) {
         *actual
     );
 }
+
+TEST(InstructionSequenceTest, TackOn) { 
+    auto original = new InstructionSequence(
+        vector<Symbol*>({ new Symbol("val") }),
+        vector<Symbol*>({ new Symbol("exp") }),
+        Cons::from_vector({
+            Cons::from_vector({
+                new Symbol("assign"),
+                new Symbol("val"),
+                Cons::from_vector({
+                    new Symbol("const"),
+                    new Integer(42)
+                })
+            })
+        })
+    );
+    auto followUpStatements = Cons::from_vector({
+        Cons::from_vector({
+            new Symbol("assign"),
+            new Symbol("exp"),
+            Cons::from_vector({
+                new Symbol("reg"),
+                new Symbol("val")
+            })
+        })
+    });
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("exp") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(42)
+                    })
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("exp"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    })
+                })
+            })
+        ),
+        *original->tack_on(followUpStatements)
+    );
+}

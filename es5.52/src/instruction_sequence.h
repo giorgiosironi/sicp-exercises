@@ -25,6 +25,7 @@ class InstructionSequence {
         InstructionSequence* append(InstructionSequence* followUp);
         InstructionSequence* preserving(vector<Symbol*> registers, InstructionSequence* followUp);
         InstructionSequence* parallel(InstructionSequence* parallel);
+        InstructionSequence* tack_on(List* followUpStatements);
         static InstructionSequence* empty();
         static InstructionSequence* label(Symbol* symbol);
 };

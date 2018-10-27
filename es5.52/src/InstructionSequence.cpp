@@ -259,6 +259,14 @@ InstructionSequence* InstructionSequence::parallel(InstructionSequence* parallel
     );
 }
 
+InstructionSequence* InstructionSequence::tack_on(List* followUpStatements) {
+    return new InstructionSequence(
+        this->needs(),
+        this->modifies(),
+        this->_statements->append_list(followUpStatements)
+    );
+}
+
 InstructionSequence* InstructionSequence::empty() {
     return new InstructionSequence(
         vector<Symbol*>(),

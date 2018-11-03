@@ -122,13 +122,13 @@ class End2endTest(unittest.TestCase):
             "second",
         ])
 
-    #def test_lambda(self):
-    #    self._input(
-    #        "((lambda (n) (* 2 n)) 5)",
-    #    )
-    #    self._assertOutput([
-    #        "10",
-    #    ])
+    def test_lambda(self):
+        self._input(
+            "((lambda (n) (* 2 n)) 5)",
+        )
+        self._assertOutput([
+            "10",
+        ])
 
     #def test_factorial(self):
     #    self._input(

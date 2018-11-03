@@ -200,7 +200,7 @@ What should be the first acceptance test?
 --- `make-compiled-procedure` Operation
 ++ `tack-on-instruction-sequence`
 ++ put together `compile-lambda`
--- update unit test
+++ update unit test
 -- acceptance test
 - (compile-sequence (begin-actions exp) target linkage))
 -- write acceptance test

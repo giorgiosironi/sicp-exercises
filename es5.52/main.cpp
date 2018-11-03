@@ -39,6 +39,7 @@ using namespace std;
 #include "src/user_print.h"
 #include "src/list_operation.h"
 #include "src/cons_operation.h"
+#include "src/make_compiled_procedure.h"
 
 // primitive procedures
 #include "src/primitive_plus.h"
@@ -1711,6 +1712,10 @@ std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
     operations.insert(std::make_pair(
         Symbol("cons"),
         new ConsOperation()
+    ));
+    operations.insert(std::make_pair(
+        Symbol("make-compiled-procedure"),
+        new MakeCompiledProcedure()
     ));
     operations.insert(std::make_pair(
         Symbol("compiled-procedure-entry"),

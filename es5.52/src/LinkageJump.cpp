@@ -96,3 +96,8 @@ InstructionSequence* LinkageJump::compile_proc_appl(Symbol* target)
         );
     }
 }
+
+Linkage* LinkageJump::lambda_linkage(Symbol* after_lambda)
+{
+    return this;
+}

@@ -8,12 +8,14 @@ class Linkage
         InstructionSequence* use_to_end_with(InstructionSequence* original);
         vector<Symbol*> all_registers();
         virtual InstructionSequence* compile() = 0;
+        virtual Linkage* lambda_linkage(Symbol* after_lambda) = 0;
 };
 
 class LinkageNext : public Linkage
 {
     public:
         virtual InstructionSequence* compile();
+        virtual Linkage* lambda_linkage(Symbol* after_lambda);
 };
 
 class LinkageJump : public Linkage
@@ -24,6 +26,7 @@ class LinkageJump : public Linkage
         virtual InstructionSequence* compile_proc_appl(Symbol* target) = 0;
         // seems not to be necessary to redefine it here
         //virtual InstructionSequence* compile() = 0;
+        virtual Linkage* lambda_linkage(Symbol* after_lambda);
 };
 
 class LinkageReturn : public LinkageJump

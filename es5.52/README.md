@@ -197,8 +197,9 @@ What should be the first acceptance test?
 +++ `lambda-body` is `cddr`
 +++ solve `make_label` counter reset in tests
 +++ `compiled-procedure-env` Operation
+--- `make-compiled-procedure` Operation
 ++ `tack-on-instruction-sequence`
--- put together `compile-lambda`
+++ put together `compile-lambda`
 -- update unit test
 -- acceptance test
 - (compile-sequence (begin-actions exp) target linkage))

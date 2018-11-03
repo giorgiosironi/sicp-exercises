@@ -629,6 +629,29 @@ TEST_F(compileTest, Lambda) {
             vector<Symbol*>({ new Symbol("argl"), new Symbol("continue"), new Symbol("env"), new Symbol("proc"), }),
             vector<Symbol*>({ new Symbol("env"), new Symbol("val") }),
             Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("make-compiled-procedure"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("entry1"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("after-lambda2"),
+                    }),
+                }),
                 new Symbol("entry1"),
                 Cons::from_vector({
                     new Symbol("assign"),
@@ -685,6 +708,7 @@ TEST_F(compileTest, Lambda) {
                         new Symbol("continue"),
                     })
                 }),
+                new Symbol("after-lambda2"),
             })
         ),
         *compile(

@@ -456,19 +456,38 @@ InstructionSequence* compile_lambda(Value* exp, Symbol* target, Linkage* linkage
 {
     Symbol* proc_entry = make_label.next("entry");
     Symbol* after_lambda = make_label.next("after-lambda");
-    //  (let ((lambda-linkage
-    //          (if (eq? linkage 'next) after-lambda linkage)))
-    //    (append-instruction-sequences
-    //      (tack-on-instruction-sequence
-    //        (end-with-linkage lambda-linkage
-    //                          (make-instruction-sequence '(env) (list target)
-    //                                                     `((assign ,target
-    //                                                               (op make-compiled-procedure)
-    //                                                               (label ,proc-entry)
-    //                                                               (reg env)))))
-    //        (compile-lambda-body exp proc-entry))
-    //      after-lambda))))
-    return compile_lambda_body(exp, proc_entry);
+    Linkage* lambda_linkage = linkage->lambda_linkage(after_lambda);
+    return lambda_linkage
+        ->use_to_end_with(
+            new InstructionSequence(
+                { new Symbol("env") },
+                { target },
+                Cons::from_vector({
+                    Cons::from_vector({
+                        new Symbol("assign"),
+                        target,
+                        Cons::from_vector({
+                            new Symbol("op"),
+                            new Symbol("make-compiled-procedure"),
+                        }),
+                        Cons::from_vector({
+                            new Symbol("label"),
+                            proc_entry,
+                        }),
+                        Cons::from_vector({
+                            new Symbol("reg"),
+                            new Symbol("env"),
+                        }),
+                    })
+                })
+            )
+        )
+        ->append(
+            compile_lambda_body(exp, proc_entry)
+                ->tack_on(Cons::from_vector({
+                    after_lambda
+                }))
+        );
 }
 
 InstructionSequence* compile_lambda_body(Value* exp, Symbol* proc_entry)

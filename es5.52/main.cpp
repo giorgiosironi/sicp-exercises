@@ -1716,6 +1716,10 @@ std::map<Symbol,Operation*> machine_operations(Environment* global_environment)
         Symbol("compiled-procedure-entry"),
         ConsMethodOperation::cadr()
     ));
+    operations.insert(std::make_pair(
+        Symbol("compiled-procedure-env"),
+        ConsMethodOperation::caddr()
+    ));
     return operations;
 }
 

@@ -196,7 +196,7 @@ What should be the first acceptance test?
 +++ `lambda-parameters` is `cadr`
 +++ `lambda-body` is `cddr`
 +++ solve `make_label` counter reset in tests
---- `compiled-procedure-env` Operation
++++ `compiled-procedure-env` Operation
 ++ `tack-on-instruction-sequence`
 -- put together `compile-lambda`
 -- update unit test

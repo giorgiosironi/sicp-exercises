@@ -13,8 +13,9 @@ class End2endTest(unittest.TestCase):
             '[a] operation: initialize-stack',
             '[a] make_perform: Operation-InitializeStack',
             '[a] (assign env (op get-global-environment))',
-            '[a] make_assign: get-global-environment',
+            '[a] make_assign (op): get-global-environment',
             '[a] (assign val (const 42))',
+            '[a] make_assign (const): 42',
             '[e] Perform: Operation-InitializeStack []',
             '[e] Assign (env): Operation-GetGlobalEnvironment == Environment',
             '[e] Assign (val): 42',
@@ -64,14 +65,16 @@ class End2endTest(unittest.TestCase):
             '[a] operation: initialize-stack',
             '[a] make_perform: Operation-InitializeStack',
             '[a] (assign env (op get-global-environment))',
-            '[a] make_assign: get-global-environment',
+            '[a] make_assign (op): get-global-environment',
             '[a] (assign val (const 42))',
+            '[a] make_assign (const): 42',
             '[a] (perform (op define-variable!) (const answer) (reg val) (reg env))',
             '[a] operation: define-variable!',
             '[a] make_perform: Operation-DefineVariable',
             '[a] operands: ((const answer) (reg val) (reg env))',
             '[a] vector: 3',
             '[a] (assign val (const ok))',
+            '[a] make_assign (const): ok',
             '[e] Perform: Operation-InitializeStack []',
             '[e] Assign (env): Operation-GetGlobalEnvironment == Environment',
             '[e] Assign (val): 42',
@@ -124,7 +127,7 @@ class End2endTest(unittest.TestCase):
 
     def test_lambda(self):
         self._input(
-            "((lambda (n) (* 2 n)) 5)",
+            "(display ((lambda (n) (* 2 n)) 5))",
         )
         self._assertOutput([
             "10",

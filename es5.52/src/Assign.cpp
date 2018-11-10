@@ -33,9 +33,6 @@ Assign::Assign(Register* register_, Register* source, MachineFeedback *machine)
 void Assign::execute()
 {
     if (this->operation != NULL) {
-        // only 0-argument supported for now
-        //auto elements = std::vector<Value*>();
-        //Value* result = this->operation->execute(elements);
         Value* result = this->operation->execute(this->fetch_operands(this->operands));
         cerr << "[e] " << "Assign (" << this->register_->name() << "): " << this->operation->to_string() << " == " << result->to_string() << endl;
         this->register_->set(result);

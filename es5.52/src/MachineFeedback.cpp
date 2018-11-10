@@ -24,3 +24,12 @@ void MachineFeedback::allocate_register(std::string name)
     ));
 }
 
+int MachineFeedback::get_label_index(Symbol* name)
+{
+    int l = this->labels[*name];
+    //if (l) { // what should this condition be?
+    //    throw std::logic_error("Unknown label: " + name->to_string());
+    //}
+    return l;
+}
+

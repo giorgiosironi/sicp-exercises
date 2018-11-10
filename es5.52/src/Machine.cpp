@@ -146,7 +146,7 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
     Symbol* assignmentType = (Symbol*) instruction->caaddr();
     if (assignmentType->name() == "op") {
         Symbol* operation = (Symbol*) instruction->cadaddr();
-        cerr << "[a] " << "make_assign: " << operation->to_string() << endl;
+        cerr << "[a] " << "make_assign (op): " << operation->to_string() << endl;
         Value* maybe_operands = instruction->cdddr();
         std::vector<Value*> operands_vector = this->operands_vector(maybe_operands);
         return new Assign(
@@ -157,6 +157,7 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
         );
     } else if (assignmentType->name() == "label") {
         Symbol* label = (Symbol*) instruction->cadaddr();
+        cerr << "[a] " << "make_assign (label): " << label->to_string() << endl;
 
         if (!labels.count(label->name())) {
             throw std::logic_error("Unknown label used by assign: " + label->to_string());
@@ -169,6 +170,8 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
         );
     } else if (assignmentType->name() == "reg") {
         Symbol* source = (Symbol*) instruction->cadaddr();
+        cerr << "[a] " << "make_assign (reg): " << source->to_string() << endl;
+
         return new Assign(
             this->get_register(register_->name()),
             this->get_register(source->name()),
@@ -176,6 +179,8 @@ Instruction* Machine::make_assign(Cons* instruction, std::map<Symbol,int> labels
         );
     } else if (assignmentType->name() == "const") {
         Value* constant = instruction->cadaddr();
+        cerr << "[a] " << "make_assign (const): " << constant->to_string() << endl;
+
         return new Assign(
             this->get_register(register_->name()),
             constant,
@@ -270,7 +275,7 @@ std::vector<Instruction*> Machine::assemble(Value* controller_text)
     int instruction_length = length(controller_text); 
     auto instructions = std::vector<Instruction*>({});
     Value *head = controller_text;
-    auto labels = this->extract_labels(controller_text);
+    labels = this->extract_labels(controller_text);
     for (int i = 0; i < instruction_length; i++) {
         Cons *head_as_cons = (Cons*) head;
         cerr << "[a] " << head_as_cons->car()->to_string() << endl;
@@ -304,7 +309,7 @@ Register* Machine::get_register(std::string name)
 {
     Register* r = this->registers[name];
     if (r == NULL) {
-        throw std::logic_error("Unknown register: ");
+        throw std::logic_error("Unknown register: " + name);
     }
     return r;
 }

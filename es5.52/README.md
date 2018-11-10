@@ -201,7 +201,13 @@ What should be the first acceptance test?
 ++ `tack-on-instruction-sequence`
 ++ put together `compile-lambda`
 ++ update unit test
--- acceptance test
+++ acceptance test
++++ problem is not `assign` of a `label`, but `assign` of an `op` that has as an argument a `label`
+++++ how should/can that be translated into a number?
+++++ create `MachineFeedback::get_label_index()`
+++++ ensure it works
+++++ use it in `fetch_operands`
+++++ integrate `test_lambda` again
 - (compile-sequence (begin-actions exp) target linkage))
 -- write acceptance test
 ++ `begin?` is just `is_tagged_list` `begin`
@@ -229,7 +235,8 @@ What should be the first acceptance test?
 
 ## References
 
-- `es5.51/` provides the virtual machine (this will be forked)
+- `chapter5.2` has the Lisp registry-based virtual machine
+- `es5.51/` provides the same virtual machine written in C++ (this is forked into `es5.52/`)
 - `chapter5.5.scm` (and dependencies) has the compiler
 - `chapter5.scm` has lots of primitives
 

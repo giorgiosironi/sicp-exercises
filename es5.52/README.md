@@ -189,15 +189,15 @@ What should be the first acceptance test?
 +++ `compile_if` (is delegated to the compilation of consequent and alternative)
 ++ update acceptance test
 -- allow optional else by introducing `if_alternative` rather than `cadddr`
-- `(compile-lambda exp target linkage)`
++ `(compile-lambda exp target linkage)`
 ++ failing unit test
 ++ `lambda?` is tagged list test on `lambda` tag
--- `compile-lambda-body`
+++ `compile-lambda-body`
 +++ `lambda-parameters` is `cadr`
 +++ `lambda-body` is `cddr`
 +++ solve `make_label` counter reset in tests
 +++ `compiled-procedure-env` Operation
---- `make-compiled-procedure` Operation
++++ `make-compiled-procedure` Operation
 ++ `tack-on-instruction-sequence`
 ++ put together `compile-lambda`
 ++ update unit test
@@ -208,8 +208,8 @@ What should be the first acceptance test?
 ++++ ensure it works
 ++++ use it in `fetch_operands`
 ++++ integrate `test_lambda` again
-- (compile-sequence (begin-actions exp) target linkage))
--- write acceptance test
++ (compile-sequence (begin-actions exp) target linkage))
+++ write acceptance test
 ++ `begin?` is just `is_tagged_list` `begin`
 ++ `begin-actions` is just `cdr`
 ++ actual `compile-sequence`

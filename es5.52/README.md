@@ -222,9 +222,9 @@ What should be the first acceptance test?
 +++ update acceptance test
 - `compile-assignment`
 - `test_factorial`
--- extend define to cover functions, not just variables
--- `definition_variable` needs to cover functions
--- `definition_value` needs to cover functions
+++ extend define to cover functions, not just variables
+++ `definition_variable` needs to cover functions
+++ `definition_value` needs to cover functions
 - `cond`
 - (compile (cond->if exp) target linkage)
 - `compile_and_go` should be extended to include `eceval` alongside the compiled expressions, see chapter5.5.scm

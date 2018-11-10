@@ -126,9 +126,26 @@ bool is_definition(Value *exp) {
 
 InstructionSequence* compile_definition(Value* exp, Symbol* target, Linkage* linkage)
 {
-    // TODO: only implements variables, not functions
-    Value* definition_variable = convert_to<Cons>(exp)->cadr();
-    Value* definition_value = convert_to<Cons>(exp)->caddr();
+    List* definition_list = convert_to<List>(exp);
+    Value* definition_variable;
+    if (is<Symbol>(definition_list->cadr())) {
+        definition_variable = definition_list->cadr();
+    } else {
+        definition_variable = definition_list->caadr();
+    }
+    definition_variable = definition_list->cadr();
+    Value* definition_value;
+    if (is<Symbol>(definition_list->cadr())) {
+        definition_value = convert_to<Cons>(exp)->caddr();
+    } else {
+        definition_value = new Cons(
+            new Symbol("lambda"),
+            new Cons(
+                definition_list->cdadr(),
+                definition_list->cddr()
+            )
+        );
+    }
     InstructionSequence* value_code = compile(definition_value, new Symbol("val"), new LinkageNext());
 
     InstructionSequence* intermediate = new InstructionSequence(

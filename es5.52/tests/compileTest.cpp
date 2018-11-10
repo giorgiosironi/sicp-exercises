@@ -165,6 +165,149 @@ TEST_F(compileTest, DefinitionVariable) {
     );
 }
 
+TEST_F(compileTest, DefinitionFunction) { 
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("argl"), new Symbol("continue"), new Symbol("env"), new Symbol("proc"), new Symbol("val"), }),
+            vector<Symbol*>({ new Symbol("val"), }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("save"),
+                    new Symbol("env"),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("make-compiled-procedure"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("entry1"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("after-lambda2"),
+                    }),
+                }),
+                new Symbol("entry1"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("env"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("compiled-procedure-env"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("proc"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("env"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("extend-environment"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        Cons::from_vector({
+                            new Symbol("x"),
+                        }),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("argl"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("lookup-variable-value"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Symbol("x"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("continue"),
+                    }),
+                }),
+                new Symbol("after-lambda2"),
+                Cons::from_vector({
+                    new Symbol("restore"),
+                    new Symbol("env"),
+                }),
+                Cons::from_vector({
+                    new Symbol("perform"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("define-variable!"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        Cons::from_vector({
+                            new Symbol("id"),
+                            new Symbol("x"),
+                        }),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Symbol("ok"),
+                    }),
+                }),
+            })
+        ),
+        *compile(
+            Cons::from_vector({
+                new Symbol("define"),
+                Cons::from_vector({
+                    new Symbol("id"),
+                    new Symbol("x"),
+                }),
+                new Symbol("x"),
+            }),
+            new Symbol("val"),
+            new LinkageNext()
+        )
+    );
+}
+
 TEST_F(compileTest, ApplicationOfPrimitiveProcedure) { 
     ASSERT_EQ(
         InstructionSequence(

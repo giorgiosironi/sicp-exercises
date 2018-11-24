@@ -89,15 +89,11 @@ class End2endTest(unittest.TestCase):
         )
         self._assertOutput(['42'])
 
-    #def test_sum_as_compound_procedure(self):
-    #    self._input(
-    #        "(define (sum x y) (+ x y))",
-    #        "(sum 20 22)"
-    #    )
-    #    self._assertOutput([
-    #        "ok",
-    #        "42",
-    #    ])
+    def test_sum_as_compound_procedure(self):
+        self._input(
+            "(begin (define (sum x y) (+ x y)) (display (sum 20 22)))"
+        )
+        self._assertOutput(['42'])
 
     def test_if_constant_condition(self):
         self._input(

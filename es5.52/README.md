@@ -160,7 +160,10 @@ What should be the first acceptance test?
 --- with `use_to_end_with()`
 -- add end2end test: an assignment (will fail)
 + (compile-assignment exp target linkage)
-+ (compile-definition exp target linkage)
+- (compile-definition exp target linkage)
+++ variable
+++ function
++++ end2end test
 ++ to end2end test it, Register `env` must be initialized
 ++ done this with `compile-and-execute`
 --- what we need to do is to replicate `compile-and-go`

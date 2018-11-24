@@ -133,7 +133,6 @@ InstructionSequence* compile_definition(Value* exp, Symbol* target, Linkage* lin
     } else {
         definition_variable = definition_list->caadr();
     }
-    definition_variable = definition_list->cadr();
     Value* definition_value;
     if (is<Symbol>(definition_list->cadr())) {
         definition_value = convert_to<Cons>(exp)->caddr();

@@ -56,7 +56,7 @@ class End2endTest(unittest.TestCase):
         self._input('(display (+ 42 43))')
         self._assertOutput(['85'])
 
-    def test_assignment(self):
+    def test_definition_variable(self):
         self._input(
             "(define answer 42)",
         )
@@ -82,6 +82,12 @@ class End2endTest(unittest.TestCase):
             '[e] Assign (val): ok',
             'End of controller',
         ])
+
+    def test_definition_function(self):
+        self._input(
+            "(begin (define (id x) x) (display (id 42)))",
+        )
+        self._assertOutput(['42'])
 
     #def test_sum_as_compound_procedure(self):
     #    self._input(

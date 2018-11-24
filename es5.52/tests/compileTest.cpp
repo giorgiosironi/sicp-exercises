@@ -269,10 +269,7 @@ TEST_F(compileTest, DefinitionFunction) {
                     }),
                     Cons::from_vector({
                         new Symbol("const"),
-                        Cons::from_vector({
-                            new Symbol("id"),
-                            new Symbol("x"),
-                        }),
+                        new Symbol("id"),
                     }),
                     Cons::from_vector({
                         new Symbol("reg"),

@@ -224,7 +224,15 @@ What should be the first acceptance test?
 +++ update unit test
 +++ update acceptance test
 - `compile-assignment`
-- `test_factorial`
+++ failing acceptance test
+-- failing unit test
+-- `is_assignment`
+-- `compile_assignment`
+--- `assignment_variable`, some cons operation
+--- `assignment_value`, some cons operation
+--- operations: `set-variable-value`
+---- complex, has to scan the frames of environments. Probably can be implemented on `Environment`
++ `test_factorial`
 ++ extend define to cover functions, not just variables
 ++ `definition_variable` needs to cover functions
 ++ `definition_value` needs to cover functions

@@ -56,6 +56,12 @@ class End2endTest(unittest.TestCase):
         self._input('(display (+ 42 43))')
         self._assertOutput(['85'])
 
+    def test_assignment(self):
+        self._input(
+            "(begin (set! answer 42) (display answer))",
+        )
+        self._assertOutput(['42'])
+
     def test_definition_variable(self):
         self._input(
             "(define answer 42)",

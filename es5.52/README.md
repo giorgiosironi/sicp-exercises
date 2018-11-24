@@ -225,7 +225,7 @@ What should be the first acceptance test?
 +++ update acceptance test
 - `compile-assignment`
 ++ failing acceptance test
--- failing unit test
+++ failing unit test
 -- `is_assignment`
 -- `compile_assignment`
 --- `assignment_variable`, some cons operation

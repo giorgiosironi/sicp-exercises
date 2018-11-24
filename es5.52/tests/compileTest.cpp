@@ -110,6 +110,34 @@ TEST_F(compileTest, Quoted) {
     );
 }
 
+TEST_F(compileTest, Assignment) { 
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("env"), new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("some"), new Symbol("val") }),
+            Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(42),
+                    }),
+                }),
+            })
+        ),
+        *compile(
+            Cons::from_vector({
+                new Symbol("set!"),
+                new Symbol("x"),
+                new Integer(42)
+            }),
+            new Symbol("some"),
+            new LinkageNext()
+        )
+    );
+}
+
 TEST_F(compileTest, DefinitionVariable) { 
     ASSERT_EQ(
         InstructionSequence(

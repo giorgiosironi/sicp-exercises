@@ -19,6 +19,9 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
     if (is_variable(exp)) {
         return compile_variable(exp, target, linkage);
     }
+    if (is_assignment(exp)) {
+        return compile_assignment(exp, target, linkage);
+    }
     if (is_quoted(exp)) {
         return compile_quoted(exp, target, linkage);
     }
@@ -94,6 +97,28 @@ InstructionSequence* compile_variable(Value* exp, Symbol* target, Linkage* linka
                     new Symbol("env"),
                 })
             })
+        })
+    ));
+}
+
+bool is_assignment(Value *exp) {
+    return is_tagged_list(exp, new Symbol("assignment"));
+}
+
+InstructionSequence* compile_assignment(Value* exp, Symbol* target, Linkage* linkage)
+{
+    return linkage->use_to_end_with(new InstructionSequence(
+        vector<Symbol*>({ }),
+        vector<Symbol*>({ }),
+        Cons::from_vector({
+            //Cons::from_vector({
+            //    new Symbol("assign"),
+            //    target,
+            //    Cons::from_vector({
+            //        new Symbol("const"),
+            //        convert_to<Cons>(exp)->cadr()
+            //    }),
+            //})
         })
     ));
 }

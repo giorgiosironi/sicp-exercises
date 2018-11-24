@@ -226,10 +226,10 @@ What should be the first acceptance test?
 - `compile-assignment`
 ++ failing acceptance test
 ++ failing unit test
--- `is_assignment`
--- `compile_assignment`
---- `assignment_variable`, some cons operation
---- `assignment_value`, some cons operation
+++ `is_assignment`
+++ `compile_assignment`
++++ `assignment_variable`, some cons operation
++++ `assignment_value`, some cons operation
 --- operations: `set-variable-value`
 ---- complex, has to scan the frames of environments. Probably can be implemented on `Environment`
 + `test_factorial`

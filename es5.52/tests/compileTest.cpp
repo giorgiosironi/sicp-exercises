@@ -124,6 +124,33 @@ TEST_F(compileTest, Assignment) {
                         new Integer(42),
                     }),
                 }),
+                Cons::from_vector({
+                    new Symbol("perform"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("set-variable-value!"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Symbol("x"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("env"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("some"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Symbol("ok"),
+                    }),
+                }),
             })
         ),
         *compile(

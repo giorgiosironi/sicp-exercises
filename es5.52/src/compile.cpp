@@ -102,25 +102,65 @@ InstructionSequence* compile_variable(Value* exp, Symbol* target, Linkage* linka
 }
 
 bool is_assignment(Value *exp) {
-    return is_tagged_list(exp, new Symbol("assignment"));
+    return is_tagged_list(exp, new Symbol("set!"));
 }
 
 InstructionSequence* compile_assignment(Value* exp, Symbol* target, Linkage* linkage)
 {
-    return linkage->use_to_end_with(new InstructionSequence(
-        vector<Symbol*>({ }),
-        vector<Symbol*>({ }),
+    //(define (assignment-variable exp) (cadr exp))
+    //(define (assignment-value exp) (caddr exp))
+      //(let ((var (assignment-variable exp))
+      //      (get-value-code
+      //        (compile (assignment-value exp) 'val 'next)))
+    List* assignmentStatement = convert_to<List>(exp);
+    Value* var = assignmentStatement->cadr();
+    InstructionSequence* getValueCode = compile(assignmentStatement->caddr(), new Symbol("val"), new LinkageNext());
+
+    InstructionSequence* performSequence = new InstructionSequence(
+        vector<Symbol*>({ new Symbol("env"), new Symbol("val"), }),
+        vector<Symbol*>({ target }),
         Cons::from_vector({
-            //Cons::from_vector({
-            //    new Symbol("assign"),
-            //    target,
-            //    Cons::from_vector({
-            //        new Symbol("const"),
-            //        convert_to<Cons>(exp)->cadr()
-            //    }),
-            //})
+            Cons::from_vector({
+                new Symbol("perform"),
+                Cons::from_vector({
+                    new Symbol("op"),
+                    new Symbol("set-variable-value!"),
+                }),
+                Cons::from_vector({
+                    new Symbol("const"),
+					var,
+                }),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("val"),
+                }),
+                Cons::from_vector({
+                    new Symbol("reg"),
+                    new Symbol("env"),
+                }),
+            }),
+            Cons::from_vector({
+                new Symbol("assign"),
+				target,
+                Cons::from_vector({
+                    new Symbol("const"),
+                    new Symbol("ok"),
+                }),
+            }),
         })
-    ));
+    );
+      //  (end-with-linkage linkage
+      //                    (preserving '(env)
+      //                                get-value-code
+      //                                (make-instruction-sequence '(env val) (list target)
+      //                                                           `((perform (op set-variable-value!)
+      //                                                                      (const ,var)
+      //                                                                      (reg val)
+      //                                                                      (reg env))
+      //                                                             (assign ,target (const ok))))))))
+    return linkage->use_to_end_with(
+		getValueCode->preserving({ new Symbol("env") }, performSequence)	
+    );
 }
 
 bool is_quoted(Value *exp) {

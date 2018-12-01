@@ -236,7 +236,17 @@ What should be the first acceptance test?
 ++ `definition_variable` needs to cover functions
 ++ `definition_value` needs to cover functions
 - `cond`
-- (compile (cond->if exp) target linkage)
+-- acceptance test
+-- unit test
+++ `cond?` is just `is-tagged-list` with `cond`
+-- `expand-clauses`
+--- `cond-predicate` is `car`
+--- `cond-actions` is `cdr`
++++ `sequence->exp`
+--- `make-if`
+++ `cond-clauses` is just `cdr`
+-- (compile (cond->if exp) target linkage)
+
 - `compile_and_go` should be extended to include `eceval` alongside the compiled expressions, see chapter5.5.scm
 - think about where to deallocate memory, `delete` not just `new`
 

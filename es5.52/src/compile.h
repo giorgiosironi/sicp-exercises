@@ -23,6 +23,9 @@ InstructionSequence* compile_application(Value* exp, Symbol* target, Linkage* li
 
 bool is_if(Value *exp);
 InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage);
+// cond_to_if(Value *exp);
+Value* sequence_to_exp(List *seq);
+
 
 bool is_lambda(Value *exp);
 InstructionSequence* compile_lambda(Value* exp, Symbol* target, Linkage* linkage);

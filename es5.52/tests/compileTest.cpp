@@ -818,6 +818,32 @@ TEST_F(compileTest, If) {
     );
 }
 
+TEST_F(compileTest, Cond) { 
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ new Symbol("val") }),
+            vector<Symbol*>({ new Symbol("val") }),
+            Cons::from_vector({
+            })
+        ),
+        *compile(
+            Cons::from_vector({
+                new Symbol("cond"),
+                Cons::from_vector({
+                    new Bool(false),
+                    new Integer(43),
+                }),
+                Cons::from_vector({
+                    new Bool(true),
+                    new Integer(42),
+                }),
+            }),
+            new Symbol("val"), 
+            new LinkageNext()
+        )
+    );
+}
+
 TEST_F(compileTest, Lambda) { 
     ASSERT_EQ(
         InstructionSequence(

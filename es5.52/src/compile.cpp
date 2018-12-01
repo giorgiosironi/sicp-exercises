@@ -529,6 +529,21 @@ InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
     );
 }
 
+Value* sequence_to_exp(List *seq) {
+    //(cond ((null? seq) seq)
+    //      ((last-exp? seq) (first-exp seq))
+    //      (else (make-begin seq))))
+    if (*seq == *NIL) {
+        return seq;
+    }
+    if (*seq->cdr() == *NIL) {
+        return seq->car();
+    }
+    return Cons::from_vector({
+        new Symbol("begin"),
+    })->append_list(seq);
+}
+
 bool is_lambda(Value *exp) {
     return is_tagged_list(exp, new Symbol("lambda"));
 }

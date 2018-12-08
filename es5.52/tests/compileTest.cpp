@@ -824,6 +824,102 @@ TEST_F(compileTest, Cond) {
             vector<Symbol*>({ new Symbol("val") }),
             vector<Symbol*>({ new Symbol("val") }),
             Cons::from_vector({
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Bool(false),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("test"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("is-false"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("branch"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("false-branch2"),
+                    }),
+                }),
+                new Symbol("true-branch1"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(43),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("after-if3"),
+                    }),
+                }),
+                new Symbol("false-branch2"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Bool(true),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("test"),
+                    Cons::from_vector({
+                        new Symbol("op"),
+                        new Symbol("is-false"),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("reg"),
+                        new Symbol("val"),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("branch"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("false-branch5"),
+                    }),
+                }),
+                new Symbol("true-branch4"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Integer(42),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("goto"),
+                    Cons::from_vector({
+                        new Symbol("label"),
+                        new Symbol("after-if6"),
+                    }),
+                }),
+                new Symbol("false-branch5"),
+                Cons::from_vector({
+                    new Symbol("assign"),
+                    new Symbol("val"),
+                    Cons::from_vector({
+                        new Symbol("const"),
+                        new Bool(false),
+                    }),
+                }),
+                new Symbol("after-if6"),
+                new Symbol("after-if3"),
             })
         ),
         *compile(

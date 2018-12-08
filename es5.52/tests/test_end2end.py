@@ -127,7 +127,7 @@ class End2endTest(unittest.TestCase):
 
     def test_cond_transformed_to_if(self):
         self._input(
-            "(display (cond (#f 'first) (#t second)))",
+            "(display (cond (#f 'first) (#t 'second)))",
         )
         self._assertOutput([
             "second",

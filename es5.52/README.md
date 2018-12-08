@@ -235,17 +235,19 @@ What should be the first acceptance test?
 ++ extend define to cover functions, not just variables
 ++ `definition_variable` needs to cover functions
 ++ `definition_value` needs to cover functions
-- `cond`
--- acceptance test
--- unit test
++ `cond`
+++ acceptance test
+++ unit test
+++ `is_cond`
 ++ `cond?` is just `is-tagged-list` with `cond`
--- `expand-clauses`
---- `cond-predicate` is `car`
---- `cond-actions` is `cdr`
+++ `expand-clauses`
++++ `cond-predicate` is `car`
++++ `cond-actions` is `cdr`
 +++ `sequence->exp`
---- `make-if`
++++ `make-if`
++++ complete with recursion TODO
 ++ `cond-clauses` is just `cdr`
--- (compile (cond->if exp) target linkage)
+++ (compile (cond->if exp) target linkage)
 
 - `compile_and_go` should be extended to include `eceval` alongside the compiled expressions, see chapter5.5.scm
 - think about where to deallocate memory, `delete` not just `new`

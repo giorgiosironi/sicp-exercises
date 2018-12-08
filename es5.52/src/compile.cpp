@@ -4,6 +4,7 @@
 #include "cons.h"
 #include "is.h"
 #include "symbol.h"
+#include "bool.h"
 #include "conversion.h"
 #include "make_label.h"
 
@@ -37,6 +38,9 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
     if (is_begin(exp)) {
         List* beginActions = convert_to<Cons>(convert_to<Cons>(exp)->cdr());
         return compile_sequence(beginActions, target, linkage);
+    }
+    if (is_cond(exp)) {
+        return compile(cond_to_if(exp), target, linkage);
     }
     if (is_application(exp)) {
         return compile_application(exp, target, linkage);
@@ -527,6 +531,44 @@ InstructionSequence* compile_if(Value* exp, Symbol* target, Linkage* linkage)
         // TODO: danger, we need to append 3 instruction sequences, 2 at a time
         test->append(parallel)->append(after_if_sequence)
     );
+}
+
+bool is_cond(Value *exp) {
+    return is_tagged_list(exp, new Symbol("cond"));
+}
+
+Value* cond_to_if(Value *exp) {
+    List* clauses = convert_to<List>(convert_to<List>(exp)->cdr());
+    return expand_clauses(clauses);
+}
+
+Value* expand_clauses(List* clauses)
+{
+    if (*clauses == *NIL) {
+        //    'false                          ; no else clause
+        return new Bool(false);
+    }
+    List* first = convert_to<List>(clauses->car());
+    List* rest = convert_to<List>(clauses->cdr());
+    Value* cond_predicate_clause = first->car();
+    if (Symbol("else") == *cond_predicate_clause) {
+        if (*rest == *NIL) {
+            return sequence_to_exp(convert_to<List>(first->cdr()));
+        } else {
+            //              (error "ELSE clause isn't last - COND->IF"
+            //                     clauses))
+        }
+    } else {
+        // (make-if (cond-predicate first)
+        //          (sequence->exp (cond-actions first))
+        //          (expand-clauses rest))))))
+        return Cons::from_vector({
+            new Symbol("if"),
+            first->car(),
+            sequence_to_exp(convert_to<List>(first->cdr())),
+            expand_clauses(rest)
+        });
+    }
 }
 
 Value* sequence_to_exp(List *seq) {

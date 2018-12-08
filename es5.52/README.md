@@ -6,13 +6,11 @@ written in C.
 
 ## Approach
 
-The compiler doesn't really need to be ported, because it should produce assembly instructions for the virtual machine.
+The compiler has been ported, it produces assembly instructions for the virtual machine.
 
-If we write a translation layer for the output of the compiler, we can use that to transform the compiler output into the C-data-structure-based assembly.
+The first implementation compiles and assemble a single expression passed over standard input.
 
-Do we also have to link it up into the existing explicit-control evaluator in some way (`compile-and-go`)?
-
-Actually in the end, we should compile the meta-circular evaluator, so we won't need to use the explicit-control evaluator; only the underlying virtual machine.
+In the end, we should compile the meta-circular evaluator, so we won't need to use the explicit-control evaluator; only the underlying virtual machine and the ported compiler. However we must be able to compile the full metacircular evaluator and provide all its operations.
 
 ## Output
 

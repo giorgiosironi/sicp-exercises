@@ -246,8 +246,16 @@ What should be the first acceptance test?
 +++ complete with recursion TODO
 ++ `cond-clauses` is just `cdr`
 ++ (compile (cond->if exp) target linkage)
+- metacircular-evaluator.lisp
+++ remove comments
+-- `cat` to ./main
+--- `apply` missing for `apply-in-uderlying-scheme`
+---- we do have an implementation of primitive procedure application, but in assembly
+---- can we implement this as a primitive procedure? But then we don't know how to apply it?
+---- this is the primitive application of L2 (interpreter), not of L1 (compiler)
+----- therefore I believe it could be implemented as a primitive procedure of the compiler, and the interpreter will delegate to it
+---- implement by passing in the environment that has been populated with primitvie procedures, so that the procedure can be selected and called
 
-- `compile_and_go` should be extended to include `eceval` alongside the compiled expressions, see chapter5.5.scm
 - think about where to deallocate memory, `delete` not just `new`
 
 ## You know you'll have to do this but you can postpone this until the first acceptance test works

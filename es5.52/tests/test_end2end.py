@@ -158,6 +158,10 @@ class End2endTest(unittest.TestCase):
         self._input('(display 1) (display 2)')
         self._assertOutput(['12'])
 
+    def test_multiple_instructions_multiple_lines(self):
+        self._input("(display 1)\n(display 2)")
+        self._assertOutput(['12'])
+
     def _input(self, *lines):
         # not very clear how long this waits
         (self._stdout_data, self._stderr_data) = self._p.communicate(input="\n".join(lines))

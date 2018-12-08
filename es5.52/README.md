@@ -253,11 +253,11 @@ What should be the first acceptance test?
 - think about where to deallocate memory, `delete` not just `new`
 
 ## You know you'll have to do this but you can postpone this until the first acceptance test works
-- `compile` should implement `end-with-linkage` to wrap the `InstructionSequence`
++ `compile` should implement `end-with-linkage` to wrap the `InstructionSequence`
 ++ create `Linkage` enum (or similar data structure with limited choices
 +++ perhaps subclasses
 ++ pass linkage to `compile`
--- implement `preserve`
+++ implement `preserve`
 - `Value::to_string()` should become `const`, if this means what I think it means. It could then be used when you have a `const Value` without `discards qualifiers` interrupting the compilation
 - `final` classes?
 

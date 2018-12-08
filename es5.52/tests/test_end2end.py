@@ -32,10 +32,9 @@ class End2endTest(unittest.TestCase):
         self._assertOutput([])
         self._assertInErr('[e] Assign (val): 1.200000')
 
-    #def test_boolean(self):
-    #    self._input('#f')
-    #    self._assertOutput([''])
-    #    self._assertInErr('Assign (val): #f')
+    def test_boolean(self):
+        self._input('(display #f)')
+        self._assertOutput(['#f'])
 
     def test_symbol(self):
         self._input('\'foo')
@@ -48,9 +47,9 @@ class End2endTest(unittest.TestCase):
         self._assertInErr('[e] Assign (proc): Operation-LookupVariableValue == (primitive PrimitiveProcedure:list)')
         self._assertInErr('[e] Assign (val): Operation-ApplyPrimitiveProcedure == (42 43)')
 
-    #def test_quoted_list(self):
-    #    self._input('\'(42 43)')
-    #    self._assertOutput(['(42 43)'])
+    def test_quoted_list(self):
+        self._input('(display \'(42 43))')
+        self._assertOutput(['(42 43)'])
 
     def test_sum_as_primitive_procedure(self):
         self._input('(display (+ 42 43))')

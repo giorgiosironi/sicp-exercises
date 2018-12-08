@@ -1,3 +1,4 @@
+#include <vector>
 #include "value.h"
 
-Value* input();
+std::vector<Value*> input();

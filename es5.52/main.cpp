@@ -1784,9 +1784,13 @@ Machine* compile_and_go(Value* input)
     return mymachine;
 }
 
-Machine* compile_and_execute(Value* expression)
+Machine* compile_and_execute(std::vector<Value*> expressions)
 {
-    List* compiledProgram = compile(expression, new Symbol("val"), new LinkageNext())->statements();
+    std::vector<List*> compiledPrograms;
+    for (int i = 0; i < expressions.size(); i++) {
+        List* compiledProgram = compile(expressions.at(i), new Symbol("val"), new LinkageNext())->statements();
+        compiledPrograms.push_back(compiledProgram);
+    }
     List* linkedProgram = Cons::from_vector({
         Cons::from_vector({
             new Symbol("perform"),
@@ -1803,7 +1807,10 @@ Machine* compile_and_execute(Value* expression)
                 new Symbol("get-global-environment"),
             }),
         }),
-    })->append_list(compiledProgram);
+    });
+    for (int i = 0; i < compiledPrograms.size(); i++) {
+        linkedProgram = linkedProgram->append_list(compiledPrograms[i]);
+    }
 
     Machine* mymachine = new Machine();
     mymachine->allocate_register("exp");

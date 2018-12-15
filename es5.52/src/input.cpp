@@ -14,16 +14,17 @@ std::vector<Value*> input()
         // TODO: this is overwriting input at each cycle
         getline(cin, input_line);
         input = input + input_line;
-        cout << "input" << input << endl;
+        //cout << "input: " << input << endl;
         if (cin.eof() && input_line == "") {
-            throw InputEndException();
+            break;
+            //throw InputEndException();
         }
     }
 	Lexer lexer;
 	Reader reader;
 
     List* parsed = reader.parse(lexer.tokenize(input));
-    cout << "parsed: " << parsed->to_string() << endl;
+    //cout << "parsed: " << parsed->to_string() << endl;
     // superceded:
     //if (length(parsed) != 1) {
     //    throw std::length_error("Only one expression should be typed in at the repl. Got the list " + parsed->to_string() + " instead");

@@ -11,7 +11,7 @@ Value* LookupVariableValue::execute(std::vector<Value*> elements)
     Environment* env = dynamic_cast<Environment*>(elements.at(1));
     Value* result = env->lookup(exp);
     if (result == NULL) {
-        throw runtime_error("Undefined variable: " + exp->name());
+        throw runtime_error("Undefined variable: `" + exp->name() + "`");
     }
     return result;
 }

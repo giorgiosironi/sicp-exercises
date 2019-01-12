@@ -10,7 +10,7 @@ Frame::Frame()
 
 Frame::Frame(vector<Symbol*> names, vector<Value*> values)
 {
-    assert_elements(values, names.size());
+    assert_elements(values, names.size(), "Frame has different number of names and values");
     this->names = names;
     this->values = values;
 }

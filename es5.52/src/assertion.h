@@ -12,11 +12,16 @@ void dump_stacktrace();
 
 template <typename T> void assert_elements(std::vector<T> v, int count)
 {
+    assert_elements(v, count, "");
+}
+
+template <typename T> void assert_elements(std::vector<T> v, int count, std::string message)
+{
     if (v.size() != count) {
         dump_stacktrace();
 
         auto type_name = typeid(T).name();
-        throw std::length_error("Value vector<" + std::string(type_name) + "> asserted is not " + std::to_string(count) + " elements long as requested, but " + std::to_string(v.size()));
+        throw std::length_error("Value vector<" + std::string(type_name) + "> asserted is not " + std::to_string(count) + " elements long as requested, but " + std::to_string(v.size()) + " " + message);
     }
 }
 

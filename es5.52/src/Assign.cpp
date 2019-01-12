@@ -39,7 +39,7 @@ void Assign::execute()
         }
         cerr << endl;
         Value* result = this->operation->execute(this->fetch_operands(this->operands));
-        cout << "[e] " << "Assign result: " << result->to_string() << endl;
+        cerr << "[e] " << "Assign result: " << result->to_string() << endl;
         this->register_->set(result);
     } else if (this->value != NULL) {
         cerr << "[e] " << "Assign (" << this->register_->name() << "): " << this->value->to_string() << endl;

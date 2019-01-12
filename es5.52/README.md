@@ -253,7 +253,7 @@ What should be the first acceptance test?
 ++++ `(assign val (op lookup-variable-value) (const               ) (reg env))`
 ++++ it is a list of spaces: my parser doesn't play well with newlines probably
 ++++ was tab characters coming from `metacircular-evaluator.lisp`
--- missing `<`
+-- missing `<` and various primitives
 --- `apply` missing for `apply-in-uderlying-scheme`
 ---- we do have an implementation of primitive procedure application, but in assembly
 ---- can we implement this as a primitive procedure? But then we don't know how to apply it?

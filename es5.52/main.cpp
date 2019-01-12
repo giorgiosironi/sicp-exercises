@@ -50,6 +50,7 @@ using namespace std;
 #include "src/primitive_less_than.h"
 #include "src/primitive_greater_than.h"
 #include "src/primitive_is_null.h"
+#include "src/primitive_cons.h"
 #include "src/primitive_list.h"
 #include "src/primitive_display.h"
 #include "src/primitive_apply.h"
@@ -1745,6 +1746,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             new Symbol("<"),
             new Symbol(">"),
             new Symbol("null?"),
+            new Symbol("cons"),
             new Symbol("list"),
             new Symbol("display"),
             new Symbol("apply"),
@@ -1758,6 +1760,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveLessThan() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveGreaterThan() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveIsNull() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveCons() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveList() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveDisplay() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveApply() }),

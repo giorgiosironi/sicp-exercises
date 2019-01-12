@@ -17,7 +17,8 @@ class End2endTest(unittest.TestCase):
             '[a] (assign val (const 42))',
             '[a] make_assign (const): 42',
             '[e] Perform: Operation-InitializeStack []',
-            '[e] Assign (env): Operation-GetGlobalEnvironment == Environment',
+            '[e] Assign (env): Operation-GetGlobalEnvironment',
+            '[e] Assign result: Environment',
             '[e] Assign (val): 42',
             'End of controller'
         ])
@@ -44,8 +45,10 @@ class End2endTest(unittest.TestCase):
     def test_list(self):
         self._input('(list 42 43)')
         self._assertOutput([])
-        self._assertInErr('[e] Assign (proc): Operation-LookupVariableValue == (primitive PrimitiveProcedure:list)')
-        self._assertInErr('[e] Assign (val): Operation-ApplyPrimitiveProcedure == (42 43)')
+        self._assertInErr('[e] Assign (proc): Operation-LookupVariableValue (const list) (reg env)')
+        self._assertInErr('[e] Assign result: (primitive PrimitiveProcedure:list)')
+        self._assertInErr('[e] Assign (val): Operation-ApplyPrimitiveProcedure (reg proc) (reg argl)')
+        self._assertInErr('[e] Assign result: (42 43)')
 
     def test_quoted_list(self):
         self._input('(display \'(42 43))')
@@ -81,7 +84,8 @@ class End2endTest(unittest.TestCase):
             '[a] (assign val (const ok))',
             '[a] make_assign (const): ok',
             '[e] Perform: Operation-InitializeStack []',
-            '[e] Assign (env): Operation-GetGlobalEnvironment == Environment',
+            '[e] Assign (env): Operation-GetGlobalEnvironment',
+            '[e] Assign result: Environment',
             '[e] Assign (val): 42',
             '[e] Perform: Operation-DefineVariable [answer, 42, Environment, ]',
             '[e] Assign (val): ok',

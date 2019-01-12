@@ -33,8 +33,9 @@ Assign::Assign(Register* register_, Register* source, MachineFeedback *machine)
 void Assign::execute()
 {
     if (this->operation != NULL) {
+        cerr << "[e] " << "Assign (" << this->register_->name() << "): " << this->operation->to_string() << endl;
         Value* result = this->operation->execute(this->fetch_operands(this->operands));
-        cerr << "[e] " << "Assign (" << this->register_->name() << "): " << this->operation->to_string() << " == " << result->to_string() << endl;
+        cout << "[e] " << "Assign result: " << result->to_string() << endl;
         this->register_->set(result);
     } else if (this->value != NULL) {
         cerr << "[e] " << "Assign (" << this->register_->name() << "): " << this->value->to_string() << endl;

@@ -46,6 +46,7 @@ using namespace std;
 #include "src/primitive_minus.h"
 #include "src/primitive_equal.h"
 #include "src/primitive_times.h"
+#include "src/primitive_less_than.h"
 #include "src/primitive_list.h"
 #include "src/primitive_display.h"
 #include "src/primitive_apply.h"
@@ -1737,6 +1738,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             new Symbol("-"),
             new Symbol("="),
             new Symbol("*"),
+            new Symbol("<"),
             new Symbol("list"),
             new Symbol("display"),
             new Symbol("apply"),
@@ -1746,6 +1748,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveMinus() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveEqual() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveTimes() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveLessThan() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveList() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveDisplay() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveApply() }),

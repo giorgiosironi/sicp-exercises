@@ -249,6 +249,11 @@ What should be the first acceptance test?
 - metacircular-evaluator.lisp
 ++ remove comments
 -- `cat` to ./main
++++ `(const    )` wrong compilation
+++++ `(assign val (op lookup-variable-value) (const               ) (reg env))`
+++++ it is a list of spaces: my parser doesn't play well with newlines probably
+++++ was tab characters coming from `metacircular-evaluator.lisp`
+-- missing `<`
 --- `apply` missing for `apply-in-uderlying-scheme`
 ---- we do have an implementation of primitive procedure application, but in assembly
 ---- can we implement this as a primitive procedure? But then we don't know how to apply it?

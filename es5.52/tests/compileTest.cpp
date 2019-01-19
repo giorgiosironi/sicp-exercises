@@ -1080,3 +1080,36 @@ TEST_F(compileTest, Begin) {
     );
 }
 
+TEST_F(compileTest, Let) { 
+    ASSERT_EQ(
+        InstructionSequence(
+            vector<Symbol*>({ }),
+            vector<Symbol*>({ new Symbol("val") }),
+            Cons::from_vector({
+            })
+        ),
+        *compile(
+            Cons::from_vector({
+                new Symbol("let"),
+                Cons::from_vector({
+                    Cons::from_vector({
+                        new Symbol("x"),
+                        new Integer(42),
+                    }),
+                    Cons::from_vector({
+                        new Symbol("y"),
+                        new Integer(43),
+                    }),
+                }),
+                Cons::from_vector({
+                    new Symbol("+"),
+                    new Symbol("x"),
+                    new Symbol("y"),
+                }),
+            }),
+            new Symbol("val"),
+            new LinkageNext()
+        )
+    );
+}
+

@@ -263,6 +263,11 @@ What should be the first acceptance test?
 ++ bad parsing of strings with spaces `"foo bar"`
 -- let is not implemented
 --- have to transform it to a immediately-called lambda
+--- 5.43 has the translation
+---- failing unit test
+---- `let->combination`
+---- `compile` `let` branch
+---- passing acceptance test
 
 - think about where to deallocate memory, `delete` not just `new`
 

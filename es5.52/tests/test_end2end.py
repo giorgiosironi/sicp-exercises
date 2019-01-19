@@ -174,6 +174,10 @@ class End2endTest(unittest.TestCase):
         self._input("(display 1)\n(display 2)")
         self._assertOutput(['12'])
 
+    def test_apply_in_underlying_scheme(self):
+        self._input("(display (apply-in-underlying-scheme + '(2 3)))")
+        self._assertOutput(['5'])
+
     def _input(self, *lines):
         # not very clear how long this waits
         (self._stdout_data, self._stderr_data) = self._p.communicate(input="\n".join(lines))

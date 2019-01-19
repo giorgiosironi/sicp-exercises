@@ -42,6 +42,8 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
     if (is_cond(exp)) {
         return compile(cond_to_if(exp), target, linkage);
     }
+    if (is_let(exp)) {
+    }
     if (is_application(exp)) {
         return compile_application(exp, target, linkage);
     }
@@ -584,6 +586,10 @@ Value* sequence_to_exp(List *seq) {
     return Cons::from_vector({
         new Symbol("begin"),
     })->append_list(seq);
+}
+
+bool is_let(Value *exp) {
+    return is_tagged_list(exp, new Symbol("let"));
 }
 
 bool is_lambda(Value *exp) {

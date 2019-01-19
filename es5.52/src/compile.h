@@ -28,6 +28,8 @@ Value* cond_to_if(Value *exp);
 Value* sequence_to_exp(List *seq);
 Value* expand_clauses(List* clauses);
 
+bool is_let(Value *exp);
+
 
 bool is_lambda(Value *exp);
 InstructionSequence* compile_lambda(Value* exp, Symbol* target, Linkage* linkage);

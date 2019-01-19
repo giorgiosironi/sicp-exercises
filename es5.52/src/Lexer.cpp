@@ -27,6 +27,24 @@ vector<string> Lexer::tokenize(string input)
             continue;
         }
 
+        // TODO: support escapings like \"
+        if (c == '"') {
+            string thestring = "";
+            char next = c;
+            do {
+                thestring += next;
+                if (length > i + 1) {
+                    next = input.at(i+1);
+                } else {
+                    next = 0;
+                }
+            } while (0 != next && next != '"' && ++i);
+            thestring += next;
+            ++i;
+            tokens.push_back(thestring);
+            continue;
+        }
+
         string atom = "";
         char next = c;
         do {
@@ -40,5 +58,4 @@ vector<string> Lexer::tokenize(string input)
         tokens.push_back(atom);
     }
     return tokens;
-    return vector<string>({ input });
 }

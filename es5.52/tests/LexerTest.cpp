@@ -36,6 +36,17 @@ INSTANTIATE_TEST_CASE_P(
 );
 
 INSTANTIATE_TEST_CASE_P(
+    Strings,
+    LexerTest,
+    Values(
+        make_tuple(string("\"3\""), vector<string>({ string("\"3\"") })),
+        make_tuple(string("\"foo\""), vector<string>({ string("\"foo\"") })),
+        make_tuple(string("\"a string\""), vector<string>({ string("\"a string\"") })),
+        make_tuple(string("\"first string\" \"second string\""), vector<string>({ string("\"first string\""), string("\"second string\"") }))
+    )
+);
+
+INSTANTIATE_TEST_CASE_P(
     EmptyList,
     LexerTest,
     Values(

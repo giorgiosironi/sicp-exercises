@@ -261,13 +261,13 @@ What should be the first acceptance test?
 ----- therefore I believe it could be implemented as a primitive procedure of the compiler, and the interpreter will delegate to it
 ---- implement by passing in the environment that has been populated with primitvie procedures, so that the procedure can be selected and called
 ++ bad parsing of strings with spaces `"foo bar"`
--- let is not implemented
---- have to transform it to a immediately-called lambda
---- 5.43 has the translation
----- failing unit test
----- `let->combination`
----- `compile` `let` branch
----- passing acceptance test
+++ let is not implemented
++++ have to transform it to a immediately-called lambda
++++ 5.43 has the translation
+++++ failing unit test
+++++ `let->combination`
+++++ `compile` `let` branch
+++++ passing acceptance test
 
 - think about where to deallocate memory, `delete` not just `new`
 

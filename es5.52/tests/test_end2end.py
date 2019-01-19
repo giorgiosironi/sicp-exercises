@@ -136,6 +136,14 @@ class End2endTest(unittest.TestCase):
             "second",
         ])
 
+    def test_let_transformed_to_combination(self):
+        self._input(
+            "(display (let ((first 42) (second 43)) (+ first second)))",
+        )
+        self._assertOutput([
+            "85",
+        ])
+
     def test_begin(self):
         self._input(
             "(display (begin 'first 'second))",

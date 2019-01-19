@@ -594,23 +594,6 @@ bool is_let(Value *exp) {
 }
 
 Value* let_to_combination(Value *exp) {
-    //(define (let->combination exp)
-    //  (define (make-lambda parameters body)
-    //    (cons 'lambda (cons parameters body)))
-    //  ; exercise
-    //  (define (make-application proc parameters)
-    //    (cons proc parameters))
-    //  (define (let-vars exp)
-    //    (map (lambda (binding) (car binding))
-    //         (cadr exp)))
-    //  (define (let-exps exp)
-    //    (map (lambda (binding) (cadr binding))
-    //         (cadr exp)))
-    //  (define (let-body exp)
-    //    (cddr exp))
-    //  (make-application (make-lambda (let-vars exp)
-    //                                 (let-body exp))
-    //                    (let-exps exp)))
     List* let = convert_to<List>(exp);
     vector<Value*> vars_and_exps = convert_to<List>(let->cadr())->to_vector();
     vector<Value*> vars;

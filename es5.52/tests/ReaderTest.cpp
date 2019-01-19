@@ -54,6 +54,15 @@ INSTANTIATE_TEST_CASE_P(
 );
 
 INSTANTIATE_TEST_CASE_P(
+    String,
+    ReaderTest,
+    Values(make_tuple(
+        vector<string>({ "\"foo bar\"" }),
+        (Value*) Cons::from_vector({ new String("foo bar") })
+    ))
+);
+
+INSTANTIATE_TEST_CASE_P(
     ListWithOneAtom,
     ReaderTest,
     Values(make_tuple(

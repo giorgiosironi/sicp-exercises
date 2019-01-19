@@ -29,6 +29,7 @@ Value* sequence_to_exp(List *seq);
 Value* expand_clauses(List* clauses);
 
 bool is_let(Value *exp);
+Value* let_to_combination(Value *exp);
 
 
 bool is_lambda(Value *exp);

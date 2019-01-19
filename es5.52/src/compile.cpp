@@ -43,6 +43,7 @@ InstructionSequence* compile(Value* exp, Symbol* target, Linkage* linkage)
         return compile(cond_to_if(exp), target, linkage);
     }
     if (is_let(exp)) {
+        return compile(let_to_combination(exp), target, linkage);
     }
     if (is_application(exp)) {
         return compile_application(exp, target, linkage);
@@ -590,6 +591,49 @@ Value* sequence_to_exp(List *seq) {
 
 bool is_let(Value *exp) {
     return is_tagged_list(exp, new Symbol("let"));
+}
+
+Value* let_to_combination(Value *exp) {
+    //(define (let->combination exp)
+    //  (define (make-lambda parameters body)
+    //    (cons 'lambda (cons parameters body)))
+    //  ; exercise
+    //  (define (make-application proc parameters)
+    //    (cons proc parameters))
+    //  (define (let-vars exp)
+    //    (map (lambda (binding) (car binding))
+    //         (cadr exp)))
+    //  (define (let-exps exp)
+    //    (map (lambda (binding) (cadr binding))
+    //         (cadr exp)))
+    //  (define (let-body exp)
+    //    (cddr exp))
+    //  (make-application (make-lambda (let-vars exp)
+    //                                 (let-body exp))
+    //                    (let-exps exp)))
+    List* let = convert_to<List>(exp);
+    vector<Value*> vars_and_exps = convert_to<List>(let->cadr())->to_vector();
+    vector<Value*> vars;
+    vector<Value*> exps;
+    for (vector<Value*>::iterator it = vars_and_exps.begin(); it != vars_and_exps.end(); ++it) {
+        List* var_and_exp = convert_to<List>(*it);
+        vars.push_back(var_and_exp->car());
+        exps.push_back(var_and_exp->cadr());
+    }
+    Value* let_vars = Cons::from_vector(vars);
+    Value* let_exps = Cons::from_vector(exps);
+    Value* let_body = let->cddr();
+    auto lambda = new Cons(
+        new Symbol("lambda"),
+        new Cons(
+            let_vars,
+            let_body
+        )
+    );
+    return new Cons(
+        lambda,
+        let_exps
+    );
 }
 
 bool is_lambda(Value *exp) {

@@ -1080,15 +1080,31 @@ TEST_F(compileTest, Begin) {
     );
 }
 
-TEST_F(compileTest, Let) { 
+TEST_F(compileTest, let_to_combination) { 
     ASSERT_EQ(
-        InstructionSequence(
-            vector<Symbol*>({ }),
-            vector<Symbol*>({ new Symbol("val") }),
+        Cons(
+            new Cons(
+                new Symbol("lambda"),
+                new Cons(
+                    Cons::from_vector({
+                        new Symbol("x"),
+                        new Symbol("y"),
+                    }),
+                    Cons::from_vector({
+                        Cons::from_vector({
+                            new Symbol("+"),
+                            new Symbol("x"),
+                            new Symbol("y"),
+                        })
+                    })
+                )
+            ),
             Cons::from_vector({
+                new Integer(42),
+                new Integer(43),
             })
-        ),
-        *compile(
+        ).to_string(),
+        let_to_combination(
             Cons::from_vector({
                 new Symbol("let"),
                 Cons::from_vector({
@@ -1106,10 +1122,8 @@ TEST_F(compileTest, Let) {
                     new Symbol("x"),
                     new Symbol("y"),
                 }),
-            }),
-            new Symbol("val"),
-            new LinkageNext()
-        )
+            })
+        )->to_string()
     );
 }
 

@@ -255,12 +255,15 @@ What should be the first acceptance test?
 ++++ was tab characters coming from `metacircular-evaluator.lisp`
 ++ missing `<` and various primitives
 --- `map`
+---- needs `apply`
 --- `apply` missing for `apply-in-uderlying-scheme`
+---- failing acceptance test
 ---- we do have an implementation of primitive procedure application, but in assembly
+----- `(op apply-primitive-procedure)`
 ---- can we implement this as a primitive procedure? But then we don't know how to apply it?
 ---- this is the primitive application of L2 (interpreter), not of L1 (compiler)
 ----- therefore I believe it could be implemented as a primitive procedure of the compiler, and the interpreter will delegate to it
----- implement by passing in the environment that has been populated with primitvie procedures, so that the procedure can be selected and called
+---- implement by passing in the environment that has been populated with primitvie procedures, so that the procedure can be selected and called? unclear
 ++ bad parsing of strings with spaces `"foo bar"`
 ++ let is not implemented
 +++ have to transform it to a immediately-called lambda

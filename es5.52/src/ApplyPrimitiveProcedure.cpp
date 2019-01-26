@@ -12,6 +12,7 @@ Value* ApplyPrimitiveProcedure::execute(vector<Value*> elements)
     Cons* taggedProcedure = convert_to<Cons>(elements.at(0));
     PrimitiveProcedure* procedure = convert_to<PrimitiveProcedure>(taggedProcedure->cadr());
     List* arguments = convert_to<List>(elements.at(1));
+    cout << taggedProcedure->cadr()->to_string() << endl;
     auto result = procedure->apply(arguments);
     return result;
 }

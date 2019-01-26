@@ -19,4 +19,3 @@ string PrimitiveApplyInUnderlyingScheme::to_string() const
 {
     return string("PrimitiveProcedure:apply-in-underlying-scheme");
 }
-

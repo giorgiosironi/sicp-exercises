@@ -1,3 +1,8 @@
+(define (cadr seq) (car (cdr seq)))
+(define (map p seq)
+  (if (null? seq)
+      '()
+      (cons (p (car seq)) (map p (cdr seq)))))
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
         ((variable? exp) (lookup-variable-value exp env))

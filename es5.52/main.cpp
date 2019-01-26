@@ -56,6 +56,7 @@ using namespace std;
 #include "src/primitive_list.h"
 #include "src/primitive_display.h"
 #include "src/primitive_apply_in_underlying_scheme.h"
+#include "src/primitive_length.h"
 
 // proper 5.52 components
 #include "src/compile.h"
@@ -1754,6 +1755,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             new Symbol("list"),
             new Symbol("display"),
             new Symbol("apply-in-underlying-scheme"),
+            new Symbol("length"),
         },
         {
             Cons::from_vector({ new Symbol("primitive"), new PrimitivePlus() }),
@@ -1770,6 +1772,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveList() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveDisplay() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveApplyInUnderlyingScheme() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveLength() }),
         }
     ));
 }

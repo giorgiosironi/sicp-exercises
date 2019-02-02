@@ -1784,7 +1784,6 @@ Environment* add_primitive_procedures(Environment* initial_environment)
  * This is a limited version which just executed what has been compiled rather than giving you a prompt
  * see chapter5.5.scm
  * TODO: incomplete
- */
 Machine* compile_and_go(Value* input)
 {
     Machine* mymachine = new Machine();
@@ -1810,6 +1809,7 @@ Machine* compile_and_go(Value* input)
     //);
     return mymachine;
 }
+ */
 
 Machine* compile_and_execute(std::vector<Value*> expressions)
 {

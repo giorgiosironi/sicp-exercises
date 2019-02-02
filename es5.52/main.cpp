@@ -1777,6 +1777,18 @@ Environment* add_primitive_procedures(Environment* initial_environment)
     ));
 }
 
+Environment* add_constants(Environment* initial_environment)
+{
+    return initial_environment->extend(new Frame(
+        { 
+            new Symbol("true"),
+        },
+        {
+            new Bool(true),
+        }
+    ));
+}
+
 /**
  * Inline here make_machine, the Facade
  * TODO: possibly we should install the instruction sequence along with the eceval machine, to be able to continue executing stuff
@@ -1848,6 +1860,7 @@ Machine* compile_and_execute(std::vector<Value*> expressions)
     mymachine->allocate_register("continue");
     mymachine->allocate_register("unev");
     Environment* globalEnvironment = add_primitive_procedures(new Environment());
+    globalEnvironment = add_constants(globalEnvironment);
     mymachine->install_operations(machine_operations(globalEnvironment));
     //vector<Value*> linkedProgramVector = linkedProgram->to_vector();
     //vector<Instruction*> castedLinkedProgramVector = vector<Instruction*>();
@@ -1864,7 +1877,6 @@ Machine* compile_and_execute(std::vector<Value*> expressions)
 
 
 int main() {
-    // TODO: we should use compile_and_go() when ready
     try {
         Machine* machine = compile_and_execute(input());
         machine->start();

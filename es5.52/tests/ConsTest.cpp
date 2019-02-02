@@ -74,3 +74,12 @@ TEST(ConsTest, SetCar) {
         *pair
     );
 }
+
+TEST(ConsTest, SetCdr) {
+    auto pair = new Cons(new Integer(1), new Integer(2));
+    pair->set_cdr(new Integer(3));
+    ASSERT_EQ(
+        Cons(new Integer(1), new Integer(3)),
+        *pair
+    );
+}

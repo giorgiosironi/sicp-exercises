@@ -31,6 +31,7 @@ class Cons : public List
         virtual std::vector<Value*> to_vector();
         static List* from_vector(std::vector<Value*> vector);
         virtual void set_car(Value *value);
+        virtual void set_cdr(Value *value);
 };
 
 #endif

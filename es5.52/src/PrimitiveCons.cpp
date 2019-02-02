@@ -13,4 +13,3 @@ string PrimitiveCons::to_string() const
 {
     return string("PrimitiveProcedure:cons");
 }
-

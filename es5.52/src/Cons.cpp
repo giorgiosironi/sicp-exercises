@@ -160,3 +160,7 @@ List* Cons::from_vector(std::vector<Value*> vector) {
     }
     return (List*) result;
 }
+
+void Cons::set_car(Value* value) {
+    this->car_ptr = value;
+}

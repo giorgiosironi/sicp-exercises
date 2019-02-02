@@ -65,3 +65,12 @@ TEST(ConsTest, AppendList) {
         *expanded
     );
 }
+
+TEST(ConsTest, SetCar) {
+    auto pair = new Cons(new Integer(1), new Integer(2));
+    pair->set_car(new Integer(3));
+    ASSERT_EQ(
+        Cons(new Integer(3), new Integer(2)),
+        *pair
+    );
+}

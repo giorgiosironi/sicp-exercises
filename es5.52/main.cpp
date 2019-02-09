@@ -1791,9 +1791,11 @@ Environment* add_constants(Environment* initial_environment)
     return initial_environment->extend(new Frame(
         { 
             new Symbol("true"),
+            new Symbol("false"),
         },
         {
             new Bool(true),
+            new Bool(false),
         }
     ));
 }

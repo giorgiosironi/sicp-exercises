@@ -9,7 +9,7 @@ void dump_stacktrace() {
     int nptrs;
     char **strings;
     nptrs = backtrace(buffer, BT_BUF_SIZE);
-    cout << "backtrace() returned " << nptrs << " addresses" << endl;
+    cerr << "backtrace() returned " << nptrs << " addresses" << endl;
     strings = backtrace_symbols(buffer, nptrs);
     if (strings == NULL) {
         perror("backtrace_symbols");

@@ -7,13 +7,14 @@ using namespace std;
 
 class Frame {
     private:
-        vector<Symbol*> names;
-        vector<Value*> values;
+        vector<Symbol*> _names;
+        vector<Value*> _values;
     public:
         Frame();
         Frame(vector<Symbol*> names, vector<Value*> values);
         Value* lookup(Symbol* symbol);
         void set(Symbol* symbol, Value* value);
+        string to_string();
 };
 
 #endif

@@ -16,7 +16,7 @@ std::vector<Value*> input(string filename)
         (istreambuf_iterator<char>(ifs)),
         (istreambuf_iterator<char>())
     );
-    cout << "Input length: " << input.size() << endl;
+    cerr << "[p] Input length: " << input.size() << endl;
     //std::string input_line = "";
     //while (input == "") {
     //while (!cin.eof()) {
@@ -36,7 +36,7 @@ std::vector<Value*> input(string filename)
     // debug start
     vector<Value*> parsed_vector = parsed->to_vector();
     for (vector<Value*>::iterator it = parsed_vector.begin() ; it != parsed_vector.end(); ++it) {
-        cout << "[p] " << (*it)->to_string() << endl;
+        cerr << "[p] " << (*it)->to_string() << endl;
     }
     // debug end
 	return parsed->to_vector();

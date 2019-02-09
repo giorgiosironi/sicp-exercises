@@ -52,5 +52,5 @@ Frame* Environment::firstFrame()
 
 string Environment::to_string() const
 {
-    return "Environment";
+    return "Environment: (\n" + this->frames[this->frames.size() -1]->to_string() + ",\n ...)";
 }

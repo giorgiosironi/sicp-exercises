@@ -58,6 +58,7 @@ using namespace std;
 #include "src/primitive_list.h"
 #include "src/primitive_display.h"
 #include "src/primitive_newline.h"
+#include "src/primitive_read.h"
 #include "src/primitive_apply_in_underlying_scheme.h"
 #include "src/primitive_length.h"
 #include "src/primitive_eq.h"
@@ -1761,6 +1762,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             new Symbol("list"),
             new Symbol("display"),
             new Symbol("newline"),
+            new Symbol("read"),
             new Symbol("apply-in-underlying-scheme"),
             new Symbol("length"),
             new Symbol("eq?"),
@@ -1782,6 +1784,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveList() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveDisplay() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveNewline() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveRead() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveApplyInUnderlyingScheme() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveLength() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveEq() }),
@@ -1890,9 +1893,13 @@ Machine* compile_and_execute(std::vector<Value*> expressions)
 }
 
 
-int main() {
+int main(int argc, char** argv) {
+    if (argc == 0) {
+        cerr << "Need a file with Scheme instructions" << endl;
+        return 4;
+    }
     try {
-        Machine* machine = compile_and_execute(input());
+        Machine* machine = compile_and_execute(input(string(argv[1])));
         machine->start();
     } catch (std::runtime_error e) {
         cerr << e.what() << endl;

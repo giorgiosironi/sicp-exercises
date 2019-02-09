@@ -5,7 +5,7 @@ using namespace std;
 // https://igor.io/2012/12/07/sexpr-lexer.html
 vector<string> Lexer::tokenize(string input)
 {
-    auto whitespace = set<char>({ ' ', });
+    auto whitespace = set<char>({ ' ', '\n' });
     auto nonAtom = set<char>({ '(', ')', ' ', });
 
     auto tokens = vector<string>({});

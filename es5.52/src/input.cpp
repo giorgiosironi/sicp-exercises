@@ -33,6 +33,11 @@ std::vector<Value*> input(string filename)
 	Reader reader;
 
     List* parsed = reader.parse(lexer.tokenize(input));
-    cout << "parsed: " << parsed->to_string() << endl;
+    // debug start
+    vector<Value*> parsed_vector = parsed->to_vector();
+    for (vector<Value*>::iterator it = parsed_vector.begin() ; it != parsed_vector.end(); ++it) {
+        cout << "[p] " << (*it)->to_string() << endl;
+    }
+    // debug end
 	return parsed->to_vector();
 }

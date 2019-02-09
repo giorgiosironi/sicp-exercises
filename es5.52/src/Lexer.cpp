@@ -6,7 +6,7 @@ using namespace std;
 vector<string> Lexer::tokenize(string input)
 {
     auto whitespace = set<char>({ ' ', '\n' });
-    auto nonAtom = set<char>({ '(', ')', ' ', });
+    auto nonAtom = set<char>({ '(', ')', ' ', '\n' });
 
     auto tokens = vector<string>({});
     int length = input.size();

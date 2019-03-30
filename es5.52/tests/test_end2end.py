@@ -3,13 +3,14 @@ import unittest
 
 class End2endTest(unittest.TestCase):
     def setUp(self):
-        self._p = Popen(['./main'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
         self.maxDiff = None
 
     def test_integer(self):
         self._input('42')
         self._assertOutput([])
         self._assertErr([
+            '[p] 42',
+            '[a] (perform (op initialize-stack))',
             '[a] operation: initialize-stack',
             '[a] make_perform: Operation-InitializeStack',
             '[a] (assign env (op get-global-environment))',
@@ -18,7 +19,9 @@ class End2endTest(unittest.TestCase):
             '[a] make_assign (const): 42',
             '[e] Perform: Operation-InitializeStack []',
             '[e] Assign (env): Operation-GetGlobalEnvironment',
-            '[e] Assign result: Environment',
+            '[e] Assign result: Environment: (',
+            'Frame(true false ),',
+            ' ...)',
             '[e] Assign (val): 42',
             'End of controller'
         ])
@@ -70,6 +73,8 @@ class End2endTest(unittest.TestCase):
         )
         self._assertOutput([])
         self._assertErr([
+            '[p] (define answer 42)',
+            '[a] (perform (op initialize-stack))',
             '[a] operation: initialize-stack',
             '[a] make_perform: Operation-InitializeStack',
             '[a] (assign env (op get-global-environment))',
@@ -85,9 +90,13 @@ class End2endTest(unittest.TestCase):
             '[a] make_assign (const): ok',
             '[e] Perform: Operation-InitializeStack []',
             '[e] Assign (env): Operation-GetGlobalEnvironment',
-            '[e] Assign result: Environment',
+            '[e] Assign result: Environment: (',
+            'Frame(true false ),',
+            ' ...)',
             '[e] Assign (val): 42',
-            '[e] Perform: Operation-DefineVariable [answer, 42, Environment, ]',
+            '[e] Perform: Operation-DefineVariable [answer, 42, Environment: (',
+            'Frame(true false ),',
+            ' ...), ]',
             '[e] Assign (val): ok',
             'End of controller',
         ])
@@ -179,8 +188,11 @@ class End2endTest(unittest.TestCase):
         self._assertOutput(['5'])
 
     def _input(self, *lines):
+        with open("/tmp/input.scm", "w") as fp:
+            fp.write("\n".join(lines))
+        self._p = Popen(['./main', '/tmp/input.scm'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
         # not very clear how long this waits
-        (self._stdout_data, self._stderr_data) = self._p.communicate(input="\n".join(lines))
+        (self._stdout_data, self._stderr_data) = self._p.communicate()
 
     def _output(self):
         output_lines = self._stdout_data.split("\n")

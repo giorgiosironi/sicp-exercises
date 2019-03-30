@@ -1897,12 +1897,13 @@ Machine* compile_and_execute(std::vector<Value*> expressions)
 
 
 int main(int argc, char** argv) {
-    if (argc == 0) {
-        cerr << "Need a file with Scheme instructions" << endl;
+    if (argc < 2) {
+        cerr << "Need a file with Scheme instructions: ./main FILE.scm" << endl;
         return 4;
     }
     try {
-        Machine* machine = compile_and_execute(input(string(argv[1])));
+        std::vector<Value*> expressions = input(string(argv[1]));
+        Machine* machine = compile_and_execute(expressions);
         machine->start();
     } catch (std::runtime_error e) {
         cerr << e.what() << endl;

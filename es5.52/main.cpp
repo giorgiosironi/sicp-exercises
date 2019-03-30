@@ -51,6 +51,7 @@ using namespace std;
 #include "src/primitive_greater_than.h"
 #include "src/primitive_is_null.h"
 #include "src/primitive_is_number.h"
+#include "src/primitive_is_pair.h"
 #include "src/primitive_cons.h"
 #include "src/primitive_car.h"
 #include "src/primitive_cdr.h"
@@ -1756,6 +1757,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             new Symbol(">"),
             new Symbol("null?"),
             new Symbol("number?"),
+            new Symbol("pair?"),
             new Symbol("cons"),
             new Symbol("car"),
             new Symbol("cdr"),
@@ -1779,6 +1781,7 @@ Environment* add_primitive_procedures(Environment* initial_environment)
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveGreaterThan() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveIsNull() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveIsNumber() }),
+            Cons::from_vector({ new Symbol("primitive"), new PrimitiveIsPair() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveCons() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveCar() }),
             Cons::from_vector({ new Symbol("primitive"), new PrimitiveCdr() }),
